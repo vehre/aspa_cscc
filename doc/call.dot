@@ -1,5 +1,5 @@
 digraph L0 {
-        size = "2,2.5";
+        size = "2,2";
         ordering=out;
         node [shape = plaintext];
         SUB_CALL -> ARGLIST_VALUES;

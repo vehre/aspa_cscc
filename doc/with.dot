@@ -1,5 +1,5 @@
 digraph L0 {
-        size = "4,3";
+        size = "2,2";
         ordering=out;
         node [shape = plaintext];
         with -> {EXPR statement};

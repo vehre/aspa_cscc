@@ -1,5 +1,5 @@
 digraph L0 {
-        size = "2,2";
+        size = "1,1.5";
         ordering=out;
         node [shape = plaintext];
         SUB -> statements;

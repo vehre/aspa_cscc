@@ -1,5 +1,5 @@
 digraph L0 {
-        size = "2,2";
+        size = "2.5,2";
         ordering=out;
         node [shape = plaintext];
         CONST -> {IDENTIFIER expression};
