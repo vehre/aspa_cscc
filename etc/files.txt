@@ -27,6 +27,12 @@ vb_comment.asp:vb_comment.xml:
 vb_defmeth.asp:vb_defmeth.xml:
 vb_switch.asp:vb_switch.xml:
 vb_print_session.asp:vb_print_session.xml:
+vb_class.asp:vb_class.xml:
+vb_class_var.asp:vb_class_var.xml:
+vb_class_priv_var.asp:vb_class_priv_var.xml:
+vb_array.asp:vb_array.xml:
+vb_inline_if.asp:vb_inline_if.xml:
+vb_switch_expr.asp:vb_switch_expr.xml:
 js_expression.asp:js_expression.xml
 js_request.asp:js_request.xml
 string.asp:string.xml

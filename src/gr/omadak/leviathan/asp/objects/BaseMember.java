@@ -93,7 +93,7 @@ public abstract class BaseMember extends BaseObject implements Member {
 
     public void setArgs(List args) {
         if (this.args == null) {
-            this.args = args;
+            this.args = new ArrayList(args);
         } else if (args != null) {
             this.args.addAll(args);
         }

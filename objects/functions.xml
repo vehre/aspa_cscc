@@ -219,8 +219,51 @@
     </method>
 
     <!--
-    hour, InStr, InStrRev, time
+    hour, InStrRev, time
     -->
+    <method name="InStr" type="DINT">
+        <arg type="DSTRING" />
+        <arg type="DSTRING" />
+        <ast name="METHOD_CALL" text="stripos">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+                <arg index="2" />
+            </ast>
+        </ast>
+    </method>
+    <method name="InStr" type="DINT">
+        <arg type="DINT" />
+        <arg type="DSTRING" />
+        <arg type="DSTRING" />
+        <ast name="METHOD_CALL" text="stripos">
+            <ast name="ARGLIST_VALUES">
+                <arg index="2" />
+                <arg index="3" />
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+    <!--
+    Problem:
+    if the 4 argument has value 0 = vbBinaryCompare
+    then stripos should be called
+    if value = 1 = vbTextCompare then strpos should be called
+    In this translation strpos is called allways
+    -->
+    <method name="InStr" type="DINT">
+        <arg type="DINT" />
+        <arg type="DSTRING" />
+        <arg type="DSTRING" />
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="strpos">
+            <ast name="ARGLIST_VALUES">
+                <arg index="2" />
+                <arg index="3" />
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
     <method name="int" type="DINT">
         <arg type="DFLOAT" />
         <ast name="METHOD_CALL" text="floor">
@@ -414,7 +457,26 @@
         </ast>
     </method>
 
-    <!-- Replace, RGB -->
+    <!-- RGB -->
+    <!--
+        The method can optionally accept an
+        start and count and mode(vbBinaryCompare|vbTextCompare) arg,
+        but php function does not support those
+    -->
+    <method name="Replace" type="DSTRING">
+        <arg type="DSTRING" />
+        <arg type="DSTRING" />
+        <arg type="DSTRING" />
+        <ast name="METHOD_CALL" text="str_replace">
+            <ast name="ARGLIST_VALUES">
+                <arg index="2" />
+                <arg index="3" />
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+
     <method name="Right" type="DSTRING">
         <arg type="DSTRING" />
         <arg type="DINT" />
@@ -619,7 +681,29 @@
         </ast>
     </method>
 
-    <!-- Timer, TimeSerial, TimeValue, UBound-->
+    <!-- Timer, TimeSerial, TimeValue-->
+    <method name="UBound" type="DINT">
+        <arg type="ARRAY" />
+        <ast name="METHOD_CALL" text="count">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+    <method name="UBound" type="DINT">
+        <arg type="ARRAY" />
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="count">
+            <ast name="ARGLIST_VALUES">
+                <ast name="INDEX_OP">
+                    <arg index="1" />
+                    <arg index="2" />
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+
     <method name="UCase" type="DSTRING">
         <arg type="DSTRING" />
         <ast name="METHOD_CALL" text="strtoupper">

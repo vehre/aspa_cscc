@@ -1,1 +1,8 @@
 13/9/2004 - Initial Release
+24/9/2004
+    Modified vbs.g, vbs.act, tree_vbs.g, tree_vbs.act, producer_vbs.g,
+    producer_vbs_php.act in order to support the translation of vb classes.
+    Added VbUserDefinedProperty.java which represents a property in a user
+    defined vb class
+    Added method setName(String) to the ASPObject interface
+    producer_vbs.g: Would not add a ';' after an include statement

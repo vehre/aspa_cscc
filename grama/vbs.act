@@ -26,8 +26,14 @@ import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.TreeSet;
 import gr.omadak.leviathan.asp.objects.VbUserDefinedMethod;
+import gr.omadak.leviathan.asp.objects.VbUserDefinedProperty;
+import gr.omadak.leviathan.asp.objects.Member;
+import gr.omadak.leviathan.asp.objects.Property;
+import gr.omadak.leviathan.asp.objects.Method;
+import gr.omadak.leviathan.asp.objects.GenericASPProperty;
+import gr.omadak.leviathan.asp.objects.GenericMethod;
 import gr.omadak.leviathan.asp.objects.XmlASPClass;
-//import org.apache.log4j.Logger;
+import org.apache.log4j.Logger;
 
 @tokens :
     AND; CALL; CASE; CONST; DIM; DO; EACH; ELSE; ELSEIF;
@@ -44,12 +50,14 @@ import gr.omadak.leviathan.asp.objects.XmlASPClass;
     SUB_NAME; CASE_ELSE; WHILE_WEND; CASE_LIST;
     HTML; EQ_HTML; PROPERTY_GET; PROPERTY_LET; PROPERTY_SET;
     WITH_DOT; ASP; INDEX_OP; INDEX_LIST; DO_UNTIL; DO_WHILE;
-    FOR_INIT; INCLUDE;
+    FOR_INIT; INCLUDE; EXIT_PROPERTY;
+    ARRAY;
 
 @init : {
     private boolean inWith;
     private int withCount = 0;
     private Set arrays = new TreeSet();
+    private Set globalArrays = arrays;
     private String lastId;
     private List functions;
     private List args;
@@ -58,11 +66,21 @@ import gr.omadak.leviathan.asp.objects.XmlASPClass;
 	private XmlASPClass currentClass;
     private VbUserDefinedMethod currentFunction;
 
-    //private static Logger LOG = Logger.getLogger(VbsParser.class);
+    private static Logger LOG = Logger.getLogger(VbsParser.class);
 
     private VbUserDefinedMethod getFunction(String name) {
         VbUserDefinedMethod result = null;
-        if (functions != null) {
+        if (currentClass != null) {
+            for (Iterator it = currentClass.getMemberList(name).iterator();
+            it.hasNext();) {
+                Member mem = (Member) it.next();
+                if (mem instanceof VbUserDefinedMethod) {
+                    result = (VbUserDefinedMethod) mem;
+                    break;
+                }
+            }
+        }
+        if (result == null && functions != null) {
             for (Iterator it = functions.iterator(); it.hasNext();) {
                 VbUserDefinedMethod method = (VbUserDefinedMethod) it.next();
                 if (name.equals(method.getName())) {
@@ -75,7 +93,23 @@ import gr.omadak.leviathan.asp.objects.XmlASPClass;
     }
 
 
-	public List getFunctions() {
+    private void addMethod(String name) {
+        List arguments = args == null ? Collections.EMPTY_LIST : args;
+        args = null;
+        currentFunction = new VbUserDefinedMethod(name, arguments,
+        false, false);
+        if (currentClass != null) {
+            currentClass.addMember(currentFunction);
+        } else {
+            if (functions == null) {
+                functions = new ArrayList();
+            }
+            functions.add(currentFunction);
+        }
+    }
+
+
+    public List getFunctions() {
 		return functions;
 	}
 
@@ -87,6 +121,37 @@ import gr.omadak.leviathan.asp.objects.XmlASPClass;
 
     public Set getGlobalIds() {
         return globalIds;
+    }
+
+
+    private Property createIdProperty(String name) {
+        AST read = #(#[DOT, "DOT"], #[CommonConstants.INSTANCE],
+        #[IDENTIFIER, name]);
+        AST write = #(#[ASSIGN, "="],
+        #(#[DOT, "DOT"], #[CommonConstants.INSTANCE], #[IDENTIFIER, name]),
+        #[CommonConstants.TEMPLATE, "1"]);
+        return new GenericASPProperty(name, read, write, -1);
+    }
+
+
+    private Property createArrayProperty(AST root) {
+        /*
+        String name = root.getText();
+        AST fChild = root.getFirstChild();
+        int count = 0;
+        while (fChild != null) {
+            count++;
+            fChild = fChild.getNextSibling();
+        }
+        */
+        return createIdProperty(root.getText());
+    }
+
+
+    private void addDim(AST node) {
+        currentClass.addMember(#node.getFirstChild() == null 
+        ? createIdProperty(#node.getText())
+        : createArrayProperty(#node));
     }
 }
 
@@ -107,42 +172,177 @@ import gr.omadak.leviathan.asp.objects.XmlASPClass;
 }
 
 @add_array : {
+    #id.setType(ARRAY);
     arrays.add(#id.getText());
 }
 
-@expr_statement : { #expression_statement = #e1; }
+@expr_statement : { ## = #e1; }
 @expr_statement_list : {
-#expression_statement = #(#[SUB_CALL, "Sub Call"], e1_AST.getFirstChild(), #el);
+## = #(#[SUB_CALL, "Sub Call"], e1_AST.getFirstChild(), #el);
 }
 
 @call_sub : {#im.setType(SUB_CALL);}
 @call_obj : {#im.setType(IDENTIFIER); #in.setType(SUB_CALL);}
 
+@class_init: {List properties = new ArrayList();}
 @class_start : {
 	#IDENTIFIER.setType(CLASS);
-	currentClass = new XmlASPClass(#IDENTIFIER.getText());
-	if (classes == null) {
+    String name = #IDENTIFIER.getText();
+    int id = IDENTIFIER;
+    currentClass = new XmlASPClass(name);
+    currentClass.addConstructor(new GenericMethod(name, CommonConstants.OBJECT,
+    Collections.EMPTY_LIST, #([NEW, "new"], [id, name])));
+    if (classes == null) {
 		classes = new ArrayList();
 	}
 	classes.add(currentClass);
 }
-@class_end : { currentClass = null;}
-@add_prop : { #class_statement.addChild(#(#[PROPERTY, "Property"], p1, p2)); }
+@class_end : {
+    for (Iterator it = currentClass.getProperties(); it.hasNext();) {
+        Object obj = it.next();
+        if (obj instanceof VbUserDefinedProperty) {
+            VbUserDefinedProperty prop = (VbUserDefinedProperty) obj;
+            String name = prop.getName();
+            if (!Character.isUpperCase(name.charAt(0))) {
+                name = name.substring(0, 1).toUpperCase()
+                + name.substring(1);
+            }
+            Method method = prop.getGet();
+            if (method != null) {
+                if (currentClass.getMemberObject("get" + name) != null) {
+                    method.setName("propGet" + name);
+                } else {
+                    method.setName("get" + name);
+                }
+            }
+            method = prop.getLet();
+            if (method != null) {
+                if (prop.hasSet() 
+                || currentClass.getMemberObject("set" + name) != null) {
+                    method.setName("propLet" + name);
+                } else {
+                    method.setName("set" + name);
+                }
+            }
+            method = prop.getSet();
+            if (method != null) {
+                if (prop.hasLet() 
+                || currentClass.getMemberObject("set" + name) != null) {
+                    method.setName("propSet" + name);
+                } else {
+                    method.setName("set" + name);
+                }
+            }
+        }
+    }
+    currentClass = null;
+    if (!properties.isEmpty()) {
+        AST id = #IDENTIFIER;
+        AST fChild = id.getFirstChild();
+        if (fChild == null) {
+            properties.add(0, #IDENTIFIER);
+            ## = astFactory.make((AST[]) properties.toArray(new AST[0]));
+        } else {
+            while (fChild.getNextSibling() != null) {
+                fChild = fChild.getNextSibling();
+            }
+            properties.add(0, null);
+            AST all = astFactory.make((AST[]) properties.toArray(new AST[0]));
+            fChild.setNextSibling(all);
+        }
+    }
+}
+@add_prop : {
+    if (#p1 != null) { //private or default
+        Member mem = currentClass.getMemberObject(#p2.getText());
+        if (mem != null && mem instanceof VbUserDefinedProperty) {
+            VbUserDefinedProperty vbProp = (VbUserDefinedProperty) mem;
+            vbProp.setPrivate(#p1.getType() == PRIVATE);
+            vbProp.setDefault(#p1.getType() == DEFAULT);
+        }
+    }
+    properties.add(#p2);
+}
 @append_prop : {
-#class_statement.addChild(#(#[PROPERTY, "Property"], #[PUBLIC, "Public"], p3));
+    properties.add(#p3);
 }
 
 @prop_get : {
 	#IDENTIFIER.setType(PROPERTY_GET);
     List arguments = args == null ? Collections.EMPTY_LIST : args;
     args = null;
+	LOG.debug(#IDENTIFIER.getText() + "  " + arguments);
+    VbUserDefinedMethod method = new VbUserDefinedMethod(#IDENTIFIER.getText(),
+    arguments, false, false);
+	Member mem = currentClass.getMemberObject(#IDENTIFIER.getText());
+    if (mem instanceof VbUserDefinedProperty) {
+        ((VbUserDefinedProperty) mem).setGetMethod(method);
+    } else if (mem == null) {
+        VbUserDefinedProperty prop = new VbUserDefinedProperty();
+        prop.setName(#IDENTIFIER.getText());
+        prop.setGetMethod(method);
+        currentClass.addMember(prop);
+    } else {
+        LOG.error("member with name:" + #IDENTIFIER.getText() + " exists and is"
+        + " instance of:" + mem.getClass().getName());
+    }
+}
+@prop_let : {
+    #IDENTIFIER.setType(PROPERTY_LET);
+    List arguments = args == null ? Collections.EMPTY_LIST : args;
+    args = null;
 	VbUserDefinedMethod method = new VbUserDefinedMethod(#IDENTIFIER.getText(),
     arguments, false, false);
-	currentClass.addMember(method);
+	Member mem = currentClass.getMemberObject(#IDENTIFIER.getText());
+    if (mem instanceof VbUserDefinedProperty) {
+        ((VbUserDefinedProperty) mem).setLetMethod(method);
+    } else if (mem == null) {
+        VbUserDefinedProperty prop = new VbUserDefinedProperty();
+        prop.setName(#IDENTIFIER.getText());
+        prop.setLetMethod(method);
+        currentClass.addMember(prop);
+    } else {
+        LOG.error("member with name:" + #IDENTIFIER.getText() + " exists and is"
+        + " instance of:" + mem.getClass().getName());
+    }
 }
-@prop_let : {#IDENTIFIER.setType(PROPERTY_LET);}
-@prop_set : {#IDENTIFIER.setType(PROPERTY_SET);}
+@prop_set : {
+    #IDENTIFIER.setType(PROPERTY_SET);
+    List arguments = args == null ? Collections.EMPTY_LIST : args;
+    args = null;
+	VbUserDefinedMethod method = new VbUserDefinedMethod(#IDENTIFIER.getText(),
+    arguments, false, false);
+	Member mem = currentClass.getMemberObject(#IDENTIFIER.getText());
+    if (mem instanceof VbUserDefinedProperty) {
+        ((VbUserDefinedProperty) mem).setSetMethod(method);
+    } else if (mem == null) {
+        VbUserDefinedProperty prop = new VbUserDefinedProperty();
+        prop.setName(#IDENTIFIER.getText());
+        prop.setSetMethod(method);
+        currentClass.addMember(prop);
+    } else {
+        LOG.error("member with name:" + #IDENTIFIER.getText() + " exists and is"
+        + " instance of:" + mem.getClass().getName());
+    }
+}
+@property : {
+    if (#pdecl.getNextSibling() != null) {
+        AST next = #pdecl.getNextSibling();
+        #pdecl.addChild(next);
+        #pdecl.setNextSibling(null);
+    }
+}
+@exit_prop : { #ex.setType(EXIT_PROPERTY); }
 
+@add_dim : {
+    addDim(#sd);
+}
+@add_dim2 : {
+    addDim(#sd2);
+}
+@add_id : {
+    currentClass.addMember(createIdProperty(#cid.getText()));
+}
 @do_init : { boolean whileFound = false;}
 @while_found : { #d.setType(DO_WHILE); #d.setText("do_while");}
 @until_found : { #d.setType(DO_UNTIL); #d.setText("do_until");}
@@ -182,33 +382,24 @@ import gr.omadak.leviathan.asp.objects.XmlASPClass;
 
 @sub : {
     #IDENTIFIER.setType(SUB);
-    List arguments = args == null ? Collections.EMPTY_LIST : args;
-    args = null;
-    if (functions == null) {
-        functions = new ArrayList();
-    }
-    currentFunction = new VbUserDefinedMethod(#IDENTIFIER.getText(), arguments,
-    false, false);
-    functions.add(currentFunction);
+    addMethod(#IDENTIFIER.getText());
+    arrays = new TreeSet();
 }
 
 @function : {
     #IDENTIFIER.setType(FUNCTION);
-    List arguments = args == null ? Collections.EMPTY_LIST : args;
-    args = null;
-    if (functions == null) {
-        functions = new ArrayList();
-    }
-    currentFunction = new VbUserDefinedMethod(#IDENTIFIER.getText(), arguments,
-    false, false);
-    functions.add(currentFunction);
+    addMethod(#IDENTIFIER.getText());
+    arrays = new TreeSet();
 }
 
-@erase_func : { currentFunction = null; }
+@erase_func : {
+    arrays = globalArrays;
+    currentFunction = null;
+}
 @tset : !
 @set : {
     AST ex = #expr;
-    #simple_statement = #([EXPR, "EXPR"],
+    ## = #([EXPR, "EXPR"],
     #(#ASSIGN, #lset, ex.getFirstChild()));
 }
 
@@ -216,13 +407,13 @@ import gr.omadak.leviathan.asp.objects.XmlASPClass;
     String text = #h.getText();
     if (text != null && text.length() > 0) {
         int i = 0;
-        while (i < text.length() && 
+        while (i < text.length() &&
         !(text.charAt(i) == 10 || text.charAt(i) == 13 || text.charAt(i) == 32)
         ) {
             i++;
         }
         if (i != text.length()) {
-            #simple_statement = #h;
+            ## = #h;
         }
     }
 }
@@ -253,7 +444,10 @@ import gr.omadak.leviathan.asp.objects.XmlASPClass;
 @array_init : { boolean isArray = false; }
 @array_lastid : { lastId = null; }
 @array_lparen : {
-    isArray = lastId != null && arrays.contains(lastId);
+    isArray = lastId != null
+    && ((currentFunction == null && arrays.contains(lastId))
+    || currentFunction != null
+    && (arrays.contains(lastId) || globalArrays.contains(lastId)));
     #LPAREN.setType(isArray ? INDEX_OP : METHOD_CALL);
 }
 
@@ -278,15 +472,6 @@ import gr.omadak.leviathan.asp.objects.XmlASPClass;
     method.setDefault(true);
 }
 
-@psub : {
-    VbUserDefinedMethod method = getFunction(#psub.getText());
-    method.setPrivate(true);
-}
-
-@pfunc : {
-    VbUserDefinedMethod method = getFunction(#pfunc.getText());
-    method.setPrivate(true);
-}
 
 
 @method_arg_init : { boolean byRef = false; }

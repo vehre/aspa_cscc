@@ -1,7 +1,7 @@
 digraph flow {
         size = "6.8,11";
         ordering=out;
-        cmulty[label="Lexer Multyplexing"];
+        cmulty[label="Lexer Multiplexing"];
         asp-> cmulty -> lexer -> {ASP_START RESPONSE DOT WRITE HWORLD ASP_END};
         cmulty -> parser -> subcall -> dot -> {response write};
         subcall -> arg_list -> hworld;

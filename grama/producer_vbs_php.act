@@ -19,9 +19,13 @@
 import org.apache.log4j.Logger;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.util.Set;
+import java.util.HashSet;
 
 @init : {
     private SourceBuffer out;
+    private Set ids = new HashSet();
+    private boolean inClass;
     private static Logger LOG = Logger.getLogger(VbsGenerator.class);
 
     public SourceBuffer getBuffer() {
@@ -37,7 +41,12 @@ import java.io.Writer;
 
 @int : { out.print(#DINT.getText()); }
 @float : { out.print(#DFLOAT.getText()); }
-@id : { out.print("$" + #IDENTIFIER.getText()); }
+@id : {
+    if (inClass && ids.contains(#IDENTIFIER.getText())) {
+        out.print("$this->");
+    }
+    out.print("$" + #IDENTIFIER.getText()); 
+}
 @string : { out.print(out.makeString(#DSTRING.getText())); }
 @true : { out.print("true"); }
 @false : { out.print("false"); }
@@ -109,7 +118,7 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
 
 
 @include : {
-    out.println("require '" + #INCLUDE.getText() + "'");
+    out.println("require '" + #INCLUDE.getText() + "';");
 }
 
 @eq_html : {
@@ -121,17 +130,8 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
 
 @switch : { out.print("switch ("); }
 @switch_end : { out.println(") {"); }
-@case : {
-    out.print("case ");
-    String caseVal;
-    if (#cint != null) {
-        caseVal = #cint.getText();
-    } else if (#cfloat != null) {
-        caseVal = #cfloat.getText();
-    } else {
-        caseVal = out.makeString(cstr.getText());
-    }
-    out.print(caseVal);
+@case : { out.print("case ");}
+@case_expr_end : {
     out.println(" :");
     out.incLevel();
 }
@@ -257,5 +257,21 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
 @lp : { out.print('('); }
 @lp_end : { out.print(')'); }
 
+@new : {
+    out.print("new " + #IDENTIFIER.getText());
+}
 
+@class : {
+    inClass = true;
+    out.println("class " + #CLASS.getText() + " {");
+    out.incLevel();
+}
+@class_end : {
+    inClass = false;
+    ids.clear();
+}
+@cid : {
+    out.println("var " + #IDENTIFIER.getText() + ";");
+    ids.add(#IDENTIFIER.getText());
+}
 @end : { out.end();}

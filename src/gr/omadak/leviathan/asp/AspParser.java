@@ -158,6 +158,15 @@ public class AspParser {
     }
 
 
+    /**
+    * Parses an asp file and generates a List with the AST forest produced.
+    * @param file is the file to parse
+    * @param isVb indicates if the default language is VbScript
+    * @param sTable is an instance of SymbolTableExposer. If the file
+    * parsed is part of an include statement, then the parameter is not null,
+    * otherwise is expected to be null.
+    * @return a List which contains the AST forest if preserveAST is true.
+    */
     private List parseFile(File file, boolean isVb, SymbolTableExposer sTable)
     throws ANTLRException {
         List result;
@@ -166,6 +175,7 @@ public class AspParser {
             sTable);
             result = Collections.EMPTY_LIST;
         } else {
+            LOG.info("Parsing file:" + file.getAbsolutePath());
             AspStreamSelector selector = new AspStreamSelector(file, baseDir,
             sTable == null);
             VbsParser vbParser = null;
@@ -173,7 +183,6 @@ public class AspParser {
             VbsTree vbtree = null;
             JsTree jsTree = null;
             selector.setDefaultVb(isVb);
-            boolean lastVb = false;
             result = new ArrayList();
             Set includes = null;
             if (generateCode) {
@@ -190,6 +199,7 @@ public class AspParser {
                     }
                     vbParser.start_rule();
                     AST node = vbParser.getAST();
+                    //new antlr.DumpASTVisitor().visit(node);
                     if (node != null) {
                         if (vbtree == null) {
                             vbtree = new VbsTree();
@@ -209,7 +219,6 @@ public class AspParser {
                         result.add(new Object[] {Boolean.TRUE, node,
                         vbtree.getAST()});
                     }
-                    lastVb = true;
                 } else {
                     if (jsParser == null) {
                         jsParser = new JsParser(selector);
@@ -237,7 +246,6 @@ public class AspParser {
                         result.add(new Object[] {Boolean.FALSE, node,
                         jsTree.getAST()});
                     }
-                    lastVb = false;
                 }
             }
             if (preserveAST) {
@@ -262,6 +270,7 @@ public class AspParser {
             if (sTable != null) {
                 mergeSymbols(holder, sTable);
             }
+            LOG.info("Parsed file:" + file.getAbsolutePath());
         }
         return result;
     }
@@ -298,9 +307,8 @@ public class AspParser {
                     isFirst = false;
                     generator.generate(phpTree);
                 } catch (ANTLRException an) {
-                    System.err.println("Failed to produce code from "
-                    + (isVbTree ? "vb" : "js") + an);
-                    an.printStackTrace();
+                    LOG.error("Failed to produce code from "
+                    + (isVbTree ? "vb" : "js"), an);
                     try {
                         generator.getBuffer().end();
                         writer.flush();
@@ -348,6 +356,23 @@ public class AspParser {
     }
 
 
+    private String getCommonPath(File dir, File file) {
+        String dPath = dir.getAbsolutePath();
+        String fPath = file.getAbsolutePath();
+        int i = 0;
+        for (i = 0; i < Math.min(dPath.length(), fPath.length()); i++) {
+            if (dPath.charAt(i) != fPath.charAt(i)) {
+                break;
+            }
+        }
+        String result = fPath.substring(i);
+        if (result.charAt(0) == '/' || result.charAt(0) == '\\') {
+            result = result.substring(1);
+        }
+        return new String(result);
+    }
+
+
     public List parseFile(File file, boolean isVb) throws ANTLRException {
         List result = new ArrayList(parseFile(file, isVb, null));
         if (preserveAST) {
@@ -363,12 +388,13 @@ public class AspParser {
     }
 
 
-    public void parseInclude(String path, SymbolTableExposer sTable,
+    public String parseInclude(String path, SymbolTableExposer sTable,
     boolean isVb) throws ANTLRException {
         File file = new File(path);
         if (file.exists() && file.isFile() && file.canRead()) {
             parseFile(file, isVb, sTable);
         }
+        return getCommonPath(baseDir, file);
     }
 
 

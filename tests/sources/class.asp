@@ -56,8 +56,8 @@ class test
 
 
     'Property test
-    property get age
-        age = theage
+    property get p_age
+        p_age = theage
     end property
 
     private property get p2

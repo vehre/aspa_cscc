@@ -38,13 +38,17 @@ generate
 
 statements
   :
-  (html | statement)*
+  (HTML <html> | statement)*
   ;
 
 
-html
+function
   :
-  HTML <html>
+  #(FUNCTION <function>
+      (#(ARGLIST <arglist_init> (BYREF <byref> | IDENTIFIER <arg_id>)+))?
+      <arglist_end>
+      (#(GLOBALS <glob_init> (IDENTIFIER <id_glob>)+))? <func_end> statements
+  )
   ;
 
 
@@ -56,10 +60,7 @@ nested
       (#(ELSE <else> statements))?
   )
   | #(WHILE <while> expr <while_expr> statements)
-  | #(FUNCTION <function>
-      (#(ARGLIST <arglist_init> (BYREF <byref> | IDENTIFIER <arg_id>)+))?
-      <arglist_end>
-      (#(GLOBALS <glob_init> (IDENTIFIER <id_glob>)+))? <func_end> statements)
+  | function
   | #(SELECT <switch> expr <switch_end>
       (select_case)*
       (#(CASE_ELSE <default> statements <case_end>))?
@@ -73,6 +74,7 @@ nested
   | #(FOR_EACH <foreach> #(FOR_INIT expr <foreach_expr>
           expr <foreach_end>) statements
   )
+  | #(CLASS <class> (IDENTIFIER <cid> | function <nested_end>)* <class_end>)
   ;
 
 
@@ -92,8 +94,8 @@ statement
 
 select_case
   :
-  #(CASE (cint:DINT | cfloat:DFLOAT | cstr:DSTRING)
-      <case> statements <case_end>)
+  #(CASE <case> expr <case_expr_end>
+       statements <case_end>)
   ;
 
 
@@ -145,6 +147,7 @@ expression
   | #(POST_MINUS expression <post_minus>)
   | #(DOT expression <dot> expression)
   | #(LPAREN <lp> expression <lp_end>)
+  | #(NEW IDENTIFIER <new>)
   | DINT <int>
   | DFLOAT <float>
   | IDENTIFIER <id>

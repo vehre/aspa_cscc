@@ -15,7 +15,9 @@
         </ast>
         <ast name="CASE" text="case">
           <ast name="CASE_LIST" text="CASE_LIST">
-            <ast name="DINT" text="2"/>
+            <ast name="EXPR" text="EXPR">
+              <ast name="DINT" text="2"/>
+            </ast>
           </ast>
           <ast name="SUB_CALL" text="Sub Call">
             <ast name="DOT" text=".">
@@ -29,7 +31,9 @@
         </ast>
         <ast name="CASE" text="case">
           <ast name="CASE_LIST" text="CASE_LIST">
-            <ast name="DINT" text="3"/>
+            <ast name="EXPR" text="EXPR">
+              <ast name="DINT" text="3"/>
+            </ast>
           </ast>
           <ast name="SUB_CALL" text="Sub Call">
             <ast name="DOT" text=".">
@@ -43,7 +47,9 @@
         </ast>
         <ast name="CASE" text="case">
           <ast name="CASE_LIST" text="CASE_LIST">
-            <ast name="DINT" text="30"/>
+            <ast name="EXPR" text="EXPR">
+              <ast name="DINT" text="30"/>
+            </ast>
           </ast>
           <ast name="SUB_CALL" text="Sub Call">
             <ast name="DOT" text=".">
@@ -84,7 +90,9 @@
           <ast name="IDENTIFIER" text="a"/>
         </ast>
         <ast name="CASE" text="case">
-          <ast name="DINT" text="2"/>
+          <ast name="EXPR" text="EXPR">
+            <ast name="DINT" text="2"/>
+          </ast>
           <ast name="EXPR" text="EXPR">
             <ast name="METHOD_CALL" text="print">
               <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
@@ -95,7 +103,9 @@
           <ast name="BREAK" text="break"/>
         </ast>
         <ast name="CASE" text="case">
-          <ast name="DINT" text="3"/>
+          <ast name="EXPR" text="EXPR">
+            <ast name="DINT" text="3"/>
+          </ast>
           <ast name="EXPR" text="EXPR">
             <ast name="METHOD_CALL" text="print">
               <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
@@ -106,7 +116,9 @@
           <ast name="BREAK" text="break"/>
         </ast>
         <ast name="CASE" text="case">
-          <ast name="DINT" text="30"/>
+          <ast name="EXPR" text="EXPR">
+            <ast name="DINT" text="30"/>
+          </ast>
           <ast name="EXPR" text="EXPR">
             <ast name="METHOD_CALL" text="print">
               <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="ISO-8859-7"?>
 
 <asp>
   <vb>
@@ -9,7 +9,9 @@
         </ast>
         <ast name="CASE" text="CASe">
           <ast name="CASE_LIST" text="CASE_LIST">
-            <ast name="DINT" text="12"/>
+            <ast name="EXPR" text="EXPR">
+              <ast name="DINT" text="12"/>
+            </ast>
           </ast>
           <ast name="SUB_CALL" text="Sub Call">
             <ast name="DOT" text=".">
@@ -23,9 +25,15 @@
         </ast>
         <ast name="CASE" text="Case">
           <ast name="CASE_LIST" text="CASE_LIST">
-            <ast name="DSTRING" text="red"/>
-            <ast name="DSTRING" text="rose"/>
-            <ast name="DSTRING" text="#ffgh"/>
+            <ast name="EXPR" text="EXPR">
+              <ast name="DSTRING" text="red"/>
+            </ast>
+            <ast name="EXPR" text="EXPR">
+              <ast name="DSTRING" text="rose"/>
+            </ast>
+            <ast name="EXPR" text="EXPR">
+              <ast name="DSTRING" text="#ffgh"/>
+            </ast>
           </ast>
           <ast name="SUB_CALL" text="Sub Call">
             <ast name="DOT" text=".">
@@ -39,7 +47,9 @@
         </ast>
         <ast name="CASE" text="Case">
           <ast name="CASE_LIST" text="CASE_LIST">
-            <ast name="DSTRING" text="green"/>
+            <ast name="EXPR" text="EXPR">
+              <ast name="DSTRING" text="green"/>
+            </ast>
           </ast>
           <ast name="SUB_CALL" text="Sub Call">
             <ast name="DOT" text=".">
@@ -53,7 +63,9 @@
         </ast>
         <ast name="CASE" text="Case">
           <ast name="CASE_LIST" text="CASE_LIST">
-            <ast name="DSTRING" text="blue"/>
+            <ast name="EXPR" text="EXPR">
+              <ast name="DSTRING" text="blue"/>
+            </ast>
           </ast>
           <ast name="SUB_CALL" text="Sub Call">
             <ast name="DOT" text=".">
@@ -67,10 +79,18 @@
         </ast>
         <ast name="CASE" text="case">
           <ast name="CASE_LIST" text="CASE_LIST">
-            <ast name="DINT" text="13"/>
-            <ast name="DINT" text="45"/>
-            <ast name="DINT" text="89"/>
-            <ast name="DINT" text="1234"/>
+            <ast name="EXPR" text="EXPR">
+              <ast name="DINT" text="13"/>
+            </ast>
+            <ast name="EXPR" text="EXPR">
+              <ast name="DINT" text="45"/>
+            </ast>
+            <ast name="EXPR" text="EXPR">
+              <ast name="DINT" text="89"/>
+            </ast>
+            <ast name="EXPR" text="EXPR">
+              <ast name="DINT" text="1234"/>
+            </ast>
           </ast>
           <ast name="SUB_CALL" text="Sub Call">
             <ast name="DOT" text=".">
@@ -101,7 +121,9 @@
           <ast name="IDENTIFIER" text="MyVar"/>
         </ast>
         <ast name="CASE" text="case">
-          <ast name="DINT" text="12"/>
+          <ast name="EXPR" text="EXPR">
+            <ast name="DINT" text="12"/>
+          </ast>
           <ast name="EXPR" text="EXPR">
             <ast name="METHOD_CALL" text="print">
               <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
@@ -112,13 +134,19 @@
           <ast name="BREAK" text="break"/>
         </ast>
         <ast name="CASE" text="case">
-          <ast name="DSTRING" text="red"/>
+          <ast name="EXPR" text="EXPR">
+            <ast name="DSTRING" text="red"/>
+          </ast>
         </ast>
         <ast name="CASE" text="case">
-          <ast name="DSTRING" text="rose"/>
+          <ast name="EXPR" text="EXPR">
+            <ast name="DSTRING" text="rose"/>
+          </ast>
         </ast>
         <ast name="CASE" text="case">
-          <ast name="DSTRING" text="#ffgh"/>
+          <ast name="EXPR" text="EXPR">
+            <ast name="DSTRING" text="#ffgh"/>
+          </ast>
           <ast name="EXPR" text="EXPR">
             <ast name="METHOD_CALL" text="print">
               <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
@@ -129,7 +157,9 @@
           <ast name="BREAK" text="break"/>
         </ast>
         <ast name="CASE" text="case">
-          <ast name="DSTRING" text="green"/>
+          <ast name="EXPR" text="EXPR">
+            <ast name="DSTRING" text="green"/>
+          </ast>
           <ast name="EXPR" text="EXPR">
             <ast name="METHOD_CALL" text="print">
               <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
@@ -140,7 +170,9 @@
           <ast name="BREAK" text="break"/>
         </ast>
         <ast name="CASE" text="case">
-          <ast name="DSTRING" text="blue"/>
+          <ast name="EXPR" text="EXPR">
+            <ast name="DSTRING" text="blue"/>
+          </ast>
           <ast name="EXPR" text="EXPR">
             <ast name="METHOD_CALL" text="print">
               <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
@@ -151,16 +183,24 @@
           <ast name="BREAK" text="break"/>
         </ast>
         <ast name="CASE" text="case">
-          <ast name="DINT" text="13"/>
+          <ast name="EXPR" text="EXPR">
+            <ast name="DINT" text="13"/>
+          </ast>
         </ast>
         <ast name="CASE" text="case">
-          <ast name="DINT" text="45"/>
+          <ast name="EXPR" text="EXPR">
+            <ast name="DINT" text="45"/>
+          </ast>
         </ast>
         <ast name="CASE" text="case">
-          <ast name="DINT" text="89"/>
+          <ast name="EXPR" text="EXPR">
+            <ast name="DINT" text="89"/>
+          </ast>
         </ast>
         <ast name="CASE" text="case">
-          <ast name="DINT" text="1234"/>
+          <ast name="EXPR" text="EXPR">
+            <ast name="DINT" text="1234"/>
+          </ast>
           <ast name="EXPR" text="EXPR">
             <ast name="METHOD_CALL" text="print">
               <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">

@@ -30,6 +30,10 @@ public interface ASPObject {
     */
     public String getName();
     /**
+    * Sets the name of the Object
+    */
+    public void setName(String name);
+    /**
     * Adds a dependency for this ASPObject.
     * Dependencies are files which should be included
     * when the services the ASPObject provides are used.

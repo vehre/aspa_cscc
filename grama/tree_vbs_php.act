@@ -34,6 +34,7 @@ import gr.omadak.leviathan.asp.objects.Property;
 import gr.omadak.leviathan.asp.objects.Member;
 import gr.omadak.leviathan.asp.objects.Method;
 import gr.omadak.leviathan.asp.objects.VbUserDefinedMethod;
+import gr.omadak.leviathan.asp.objects.VbUserDefinedProperty;
 import org.apache.log4j.Logger;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Transformer;
@@ -42,9 +43,10 @@ import org.apache.commons.collections.Transformer;
     STAR_ASSIGN; CONCAT_ASSIGN; DIV_ASSIGN; MINUS_ASSIGN; MOD_ASSIGN;
     PLUS_ASSIGN; OBJECT_MEMBER; OBJECT_METHOD; VOID; CAST; DBOOL; CONDITIONAL;
     CONSTANT; BREAK; CASE_ROOT; FOR_EACH; LCURLY;
-    LBRACK; ANY; GLOBALS; ARRAY; UKNOWN_METHOD;
+    LBRACK; ANY; GLOBALS; UKNOWN_METHOD;
     DO_END; POST_PLUS; POST_MINUS; RETURN;
     NON_APPLICABLE_HEADER; UNSUPPORTED; INVALID_OBJECT;
+    OBJECT_ATTRIBUTE;
 
 @init :
 {
@@ -59,6 +61,8 @@ import org.apache.commons.collections.Transformer;
     private Map localFunctions = new HashMap();
 	private Map localClasses = new HashMap();
     private VbUserDefinedMethod currentFunction;
+    private ASPClass currentClass;
+    private Property currentProperty;
     private Set identifiers;
     private Set dependencies;
 
@@ -110,9 +114,29 @@ import org.apache.commons.collections.Transformer;
     }
 
 
-    public void appendVariables(Map variables) {}
-    public void appendFunctions(List funcs) {}
-    public void appendClasses(List classes) {}
+    public void appendVariables(Map variables) {
+        objects.putAll(variables);
+    }
+
+
+    public void appendFunctions(List funcs) {
+        for (Iterator it = funcs.iterator(); it.hasNext();) {
+            Method method = (Method) it.next();
+            if (!localFunctions.containsKey(method.getName())) {
+                localFunctions.put(method.getName(), method);
+            }
+        }
+    }
+
+
+    public void appendClasses(List classes) {
+        for (Iterator it = classes.iterator(); it.hasNext();) {
+            ASPClass clazz = (ASPClass) it.next();
+            if (!localClasses.containsKey(clazz.getName())) {
+                localClasses.put(clazz.getName(), clazz);
+            }
+        }
+    }
 
 
     public void setFunctions(List functions) {
@@ -790,6 +814,156 @@ import org.apache.commons.collections.Transformer;
         }, out);
         return out;
     }
+
+
+    //index is:0 for get, 1 for let, 2 for set
+    private void addProperty(Map props, AST root, int index) {
+        String name = root.getText();
+        Member mem = currentClass.getMemberObject(name);
+        if (mem instanceof VbUserDefinedProperty) {
+            VbUserDefinedProperty property = (VbUserDefinedProperty) mem;
+            String newName;
+            switch (index) {
+                case 0: newName = property.getGet().getName(); break;
+                case 1: newName = property.getLet().getName(); break;
+                default: newName = property.getSet().getName(); break;
+            }
+            root.setText(newName);
+            root.setType(FUNCTION);
+        }
+        AST[] items = (AST[]) props.get(name);
+        boolean isNew = items == null;
+        if (isNew) {
+            items = new AST[3];
+        }
+        items[index] = root;
+        if (isNew) {
+            props.put(name, items);
+        }
+        currentFunction = null;
+        currentProperty = null;
+    }
+
+
+    private void makeSub(AST subRoot) {
+        AST fList;
+        List args = currentFunction.getArgTypes();
+        if (args != null && !args.isEmpty()) {
+            fList = makeFromList(args, #[ARGLIST, "ARGLIST"]);
+        } else {
+            fList = null;
+        }
+        subRoot.setType(FUNCTION);
+        List globals = currentFunction.getUsedGlobals();
+        AST globalsAST = null;
+        if (!globals.isEmpty()) {
+            globalsAST = makeFromList(transform(globals), #[GLOBALS, "GLOBALS"]);
+        }
+        if (fList != null) {
+            AST fChild = subRoot.getFirstChild();
+            subRoot.setFirstChild(fList);
+            fList.setNextSibling(fChild);
+        }
+        if (fList != null && globalsAST != null) {
+            AST arguments = subRoot.getFirstChild();
+            AST next = arguments.getNextSibling();
+            arguments.setNextSibling(globalsAST);
+            globalsAST.setNextSibling(next);
+        } else if (globalsAST != null) {
+            AST fChild = subRoot.getFirstChild();
+            subRoot.setFirstChild(globalsAST);
+            globalsAST.setNextSibling(fChild);
+        }
+        currentFunction = null;
+    }
+
+
+    private AST makeFunction(AST funcRoot, AST statements) {
+        AST fList;
+        AST result;
+        List args = currentFunction.getArgTypes();
+        if (args != null && !args.isEmpty()) {
+            fList = makeFromList(args, #[ARGLIST, "ARGLIST"]);
+        } else {
+            fList = null;
+        }
+        if (statements == null) { //no statements, so no globals or anything else
+            AST nullRet =
+            #([RETURN, "return"],
+                ([EXPR, "EXPR"], [NULL, "null"])
+            );
+            if (fList != null) {
+                result = #(funcRoot, fList, nullRet);
+            } else {
+                result = #(funcRoot, nullRet);
+            }
+        } else {
+            List elements = new ArrayList();
+            if (fList != null) {
+                elements.add(fList);
+            }
+            List globals = currentFunction.getUsedGlobals();
+            if (!globals.isEmpty()) {
+                AST globalsAST = makeFromList(transform(globals),
+                #[GLOBALS, "GLOBALS"]);
+                elements.add(globalsAST);
+            }
+            if (!valueAsignedForLevel()) {
+                AST declExpr =
+                #([EXPR, "EXPR"],
+                    ([ASSIGN, "="],
+                        [IDENTIFIER, FUNCTION_RESULT],
+                        [NULL, "null"]
+                    )
+                );
+                elements.add(declExpr);
+            }
+            AST stm = statements;
+            elements.add(stm);
+            while ((stm = stm.getNextSibling()) != null) {
+                elements.add(stm);
+            }
+            if (!exitForLevel()) {
+                AST retExpr =
+                #([RETURN, "return"],
+                    ([EXPR, "EXPR"],
+                        [IDENTIFIER, FUNCTION_RESULT]
+                    )
+                );
+                elements.add(retExpr);
+            }
+            result = makeFromList(elements,
+            #[funcRoot.getType(), funcRoot.getText()]);
+        }
+        currentFunction = null;
+        return result;
+    }
+
+
+    private AST exitFunction() {
+        AST result = valueAsignedForLevel()
+        ? #([RETURN, "return"],
+                    #([EXPR, "EXPR"],
+                    [IDENTIFIER, FUNCTION_RESULT])
+            )
+        : #([RETURN, "return"]);
+        setExit();
+        return result;
+    }
+
+
+    private VbUserDefinedMethod getProperty(String name, int type) {
+        VbUserDefinedProperty prop =
+        (VbUserDefinedProperty) currentClass.getMemberObject(name);
+        currentProperty = prop;
+        Method result;
+        switch (type) {
+            case 0 : result = prop.getGet(); break;
+            case 1 : result = prop.getLet(); break;
+            default : result = prop.getSet(); break;
+        }
+        return (VbUserDefinedMethod) result;
+    }
 }
 
 
@@ -917,10 +1091,10 @@ import org.apache.commons.collections.Transformer;
     instance = (ASPObjectInstance) stored[1];
     AST decl = (AST) stored[0];
     if (decl != null) {
-        #nested = decl;
-        #nested.setNextSibling(#statements);
+        ## = decl;
+        ##.setNextSibling(#statements);
     } else {
-        #nested = #statements;
+        ## = #statements;
     }
 }
 
@@ -954,6 +1128,19 @@ import org.apache.commons.collections.Transformer;
     }
 }
 
+
+@tnew : !
+@new : {
+    String className = #IDENTIFIER.getText();
+    ASPClass clazz = (ASPClass) localClasses.get(className);
+    if (clazz != null) {
+        ASPObjectInstance instance = new ASPObjectInstance(clazz);
+        instance.setMember((Method) clazz.getConstructors().get(0));
+        ## = createObjectAST(CommonConstants.OBJECT, clazz.getName(), instance);
+    } else {
+        LOG.error("No class with name:" + className);
+    }
+}
 /* Operators */
 
 @timp : !
@@ -1166,9 +1353,12 @@ import org.apache.commons.collections.Transformer;
         && (currentFunction == null
         || !currentFunction.getName().equals(#IDENTIFIER.getText()))) {
             #IDENTIFIER.setType(METHOD_CALL);
-        } else if (currentFunction != null
-        && currentFunction.getName().equals(#IDENTIFIER.getText())) {
-            #IDENTIFIER.setText(FUNCTION_RESULT);
+        } else if (currentFunction != null) {
+            if (currentFunction.getName().equals(#IDENTIFIER.getText())
+            || (currentProperty != null && currentProperty.getName().equals(
+            #IDENTIFIER.getText()))) {
+                #IDENTIFIER.setText(FUNCTION_RESULT);
+            }
         }
     }
 }
@@ -1189,7 +1379,7 @@ import org.apache.commons.collections.Transformer;
                 fChild = fChild.getNextSibling();
                 old.setNextSibling(null);
             }
-            #expr = makeFromList(expressions, null);
+            ## = makeFromList(expressions, null);
         } else {
             #expr = #([type, "EXPR"], #e);
         }
@@ -1212,9 +1402,9 @@ import org.apache.commons.collections.Transformer;
 
 @tsub : !
 @sub_call_end : {
-    #statement = handleFunctionSubEnd(#sub_name, lastStackSize);
-    if (#statement != null) {
-        #statement = #([EXPR, "EXPR"], #statement);
+    ## = handleFunctionSubEnd(#sub_name, lastStackSize);
+    if (## != null) {
+        ## = #([EXPR, "EXPR"], #statement);
     }
 }
 
@@ -1222,20 +1412,20 @@ import org.apache.commons.collections.Transformer;
 @randomize : {
     if (#ex != null) {
         AST fChild = #ex.getFirstChild();
-        #statement =
+        ## =
         #([EXPR, "EXPR"],
             #([METHOD_CALL, "srand"],
                 #([ARGLIST_VALUES,"ARGLIST_VALUES"], fChild)
             )
         );
     } else {
-        #statement = #([EXPR, "EXPR"], [METHOD_CALL, "srand"]);
+        ## = #([EXPR, "EXPR"], [METHOD_CALL, "srand"]);
     }
 }
 
 
 @const_end : {
-    #statement =
+    ## =
     #([EXPR, "EXPR"],
         #([METHOD_CALL, "define"],
             #([ARGLIST_VALUES, "ARGLIST_VALUES"],
@@ -1250,7 +1440,7 @@ import org.apache.commons.collections.Transformer;
 
 @terase : !
 @erase : {
-    #statement =
+    ## =
     #([EXPR, "EXPR"],
         #([METHOD_CALL, "unset"],
             #([ARGLIST_VALUES, "ARGLIST_VALUES"], #ei)
@@ -1260,10 +1450,10 @@ import org.apache.commons.collections.Transformer;
 
 
 @texit : !
-@exit_do : { #statement = #[BREAK, "break"]; }
-@exit_for : { #statement = #[BREAK, "break"]; }
+@exit_do : { ## = #[BREAK, "break"]; }
+@exit_for : { ## = #[BREAK, "break"]; }
 @exit_sub : {
-    #statement = #([RETURN, "return"]);
+    ## = #([RETURN, "return"]);
 }
 
 
@@ -1271,7 +1461,7 @@ import org.apache.commons.collections.Transformer;
 @eq_end : {
     AST exprChild = #mlexpr.getFirstChild();
     exprChild.setNextSibling(null);
-    #statement =
+    ## =
     #([EXPR, "EXPR"],
         #([METHOD_CALL, "print"],
             #([ARGLIST_VALUES, "ARGLIST_VALUES"],
@@ -1281,38 +1471,66 @@ import org.apache.commons.collections.Transformer;
     );
 }
 
+@tarray : ! { int dimCount = 0;}
+@inc_dim : { dimCount++; }
+@array_decl : {
+    String varName = #ARRAY.getText();
+    AST arrayCreate = #[METHOD_CALL, "array"];
+    AST current = arrayCreate;
+    for (int i = 1; i < dimCount; i++) {
+        AST create = #[METHOD_CALL, "array"];
+        current.addChild(#([ARGLIST_VALUES, "ARGLIST_VALUES"], create));
+        current = create;
+    }
+    ## = #([ASSIGN, "="], [IDENTIFIER, varName], arrayCreate);
+}
+@dim_init : { List dimArrays = null; }
 @dim_decl : {
+    if (#decl.getType() != IDENTIFIER) {
+        if (dimArrays == null) {
+            dimArrays = new ArrayList();
+        }
+        dimArrays.add(#([EXPR, "EXPR"], #decl));
+    }
     if (currentFunction != null) {
-        currentFunction.addVariable(#decl.getText(), true);
+        currentFunction.addVariable(
+        #decl.getType() == IDENTIFIER ? #decl.getText()
+        : #decl.getFirstChild().getText(), true);
+    }
+}
+@dim_end : {
+    if (dimArrays != null) {
+        ##  = makeFromList(dimArrays, #[CommonConstants.TRANSLATE_ROOT]);
     }
 }
 
+
 @tdw : !
-@do_while : { #nested = #([WHILE, "while"], #do_while_expr, #dws); }
+@do_while : { ## = #([WHILE, "while"], #do_while_expr, #dws); }
 
 @tdu: !
 @du_expr : {
     translateUntil(#do_until_expr);
 }
-@do_until : { #nested = #([WHILE, "while"], #do_until_expr, #dus); }
+@do_until : { ## = #([WHILE, "while"], #do_until_expr, #dus); }
 
 @tdo : !
 @wh_condition : {
-    #nested = #([DO, "do"], #dost, #([DO_END, "while"], #wh));
+    ## = #([DO, "do"], #dost, #([DO_END, "while"], #wh));
 }
 @u_condition : {
-    translateUntil(#unt); #nested = #([DO, "do"], #dost,
+    translateUntil(#unt); ## = #([DO, "do"], #dost,
     #([DO_END, "while"], #unt));
 }
 @do_plain : {
-    #nested = #([DO, "do"], #dost, #([DO_END, "while"], #([EXPR, "EXPR"],
+    ## = #([DO, "do"], #dost, #([DO_END, "while"], #([EXPR, "EXPR"],
     [TRUE, "true"])));
 }
 @while_wend_end : { #wend.setType(WHILE); }
 
 @tcsmt: !
 @case_list_init : { List conditions = new ArrayList(); }
-@case : { conditions.add(#ccase); }
+@case : { conditions.add(#ccase);}
 @case_end : {
     int caseType = CASE;
     if (conditions.size() == 1) {
@@ -1450,7 +1668,7 @@ import org.apache.commons.collections.Transformer;
         String incName = "while_step" + lastForWhile;
         String limName = "while_lim" + lastForWhile++;
         AST incLim = #[IDENTIFIER, limName];
-        #nested =
+        ## =
         #([CommonConstants.TRANSLATE_ROOT, "fake"],
             #([EXPR, "EXPR"], #([ASSIGN, "="], [IDENTIFIER, incName],
             toStep.getFirstChild())), #([EXPR, "EXPR"], #([ASSIGN, "="],
@@ -1469,10 +1687,10 @@ import org.apache.commons.collections.Transformer;
         );
     } else if (fInit != null) {
         int forCode = FOR;
-        #nested = #([forCode, "for"], fIn, fstm);
+        ## = #([forCode, "for"], fIn, fstm);
     } else { //talking about foreach
         //TODO: Try to determine if the iterated variable is an array
-        #nested =
+        ## =
         #([FOR_EACH, "forach"],
             ([FOR_INIT, "for_init"],
                 inexpr,
@@ -1490,126 +1708,59 @@ import org.apache.commons.collections.Transformer;
             #stm = #stm.getFirstChild();
         }
         if (#statements == null) {
-            #statements = #stm;
+            ## = #stm;
             lastStatement = #stm;
         } else {
             lastStatement.setNextSibling(#stm);
-            while (lastStatement.getNextSibling() != null) {
-                lastStatement = lastStatement.getNextSibling();
-            }
+        }
+        while (lastStatement.getNextSibling() != null) {
+            lastStatement = lastStatement.getNextSibling();
         }
     }
 }
 
 @sub_decl : {
-    currentFunction = (VbUserDefinedMethod) localFunctions.get(#s.getText());
+    String text = #s.getText();
+    if (currentClass != null) {
+        Member mem = currentClass.getMemberObject(text);
+        if (mem instanceof VbUserDefinedMethod) {
+            currentFunction = (VbUserDefinedMethod) mem;
+        } else {
+            LOG.error("Class:" + currentClass.getName() + " has no member:"
+            + text);
+        }
+    } else {
+        currentFunction = (VbUserDefinedMethod) localFunctions.get(text);
+    }
 }
 @sub_end : {
-    AST fList;
-    List args = currentFunction.getArgTypes();
-    if (args != null && !args.isEmpty()) {
-        fList = makeFromList(args, #[ARGLIST, "ARGLIST"]);
-    } else {
-        fList = null;
-    }
-    #s.setType(FUNCTION);
-    List globals = currentFunction.getUsedGlobals();
-    AST globalsAST = null;
-    if (!globals.isEmpty()) {
-        globalsAST = makeFromList(transform(globals), #[GLOBALS, "GLOBALS"]);
-    }
-    if (fList != null) {
-		AST fChild = #s.getFirstChild();
-		#s.setFirstChild(fList);
-		fList.setNextSibling(fChild);
-	}
-	if (fList != null && globalsAST != null) {
-        AST arguments = #s.getFirstChild();
-		AST next = arguments.getNextSibling();
-        arguments.setNextSibling(globalsAST);
-        globalsAST.setNextSibling(next);
-    } else if (globalsAST != null) {
-        AST fChild = #s.getFirstChild();
-        #s.setFirstChild(globalsAST);
-        globalsAST.setNextSibling(fChild);
-    }
+    makeSub(#s);
     currentFunction = null;
 }
 
 
 @tfunc : !
 @func_decl : {
-    currentFunction = (VbUserDefinedMethod) localFunctions.get(#f.getText());
+    String text = #f.getText();
+    if (currentClass != null) {
+        Member mem = currentClass.getMemberObject(text);
+        if (mem instanceof VbUserDefinedMethod) {
+            currentFunction = (VbUserDefinedMethod) mem;
+        } else {
+            LOG.error("Class:" + currentClass.getName() + " has no member:"
+            + text);
+        }
+    } else {
+        currentFunction = (VbUserDefinedMethod) localFunctions.get(text);
+    }
     levelList.clear();
 }
 @func_end : {
-    AST fList;
-    List args = currentFunction.getArgTypes();
-    if (args != null && !args.isEmpty()) {
-        fList = makeFromList(args, #[ARGLIST, "ARGLIST"]);
-    } else {
-        fList = null;
-    }
-    if (#fst == null) { //no statements, so no globals or anything else
-        AST nullRet =
-        #([RETURN, "return"],
-            ([EXPR, "EXPR"], [NULL, "null"])
-        );
-        if (fList != null) {
-            #nested = #(f, fList, nullRet);
-        } else {
-            #nested = #(f, nullRet);
-        }
-    } else {
-        List elements = new ArrayList();
-        if (fList != null) {
-            elements.add(fList);
-        }
-        List globals = currentFunction.getUsedGlobals();
-        if (!globals.isEmpty()) {
-            AST globalsAST = makeFromList(transform(globals),
-            #[GLOBALS, "GLOBALS"]);
-            elements.add(globalsAST);
-        }
-        if (!valueAsignedForLevel()) {
-            AST declExpr =
-            #([EXPR, "EXPR"],
-                ([ASSIGN, "="],
-                    [IDENTIFIER, FUNCTION_RESULT],
-                    [NULL, "null"]
-                )
-            );
-            elements.add(declExpr);
-        }
-        AST stm = #fst;
-        elements.add(stm);
-        while ((stm = stm.getNextSibling()) != null) {
-            elements.add(stm);
-        }
-        if (!exitForLevel()) {
-            AST retExpr =
-            #([RETURN, "return"],
-                ([EXPR, "EXPR"],
-                    [IDENTIFIER, FUNCTION_RESULT]
-                )
-            );
-            elements.add(retExpr);
-        }
-        #nested = makeFromList(elements, #[f.getType(), f.getText()]);
-    }
+    ## = makeFunction(#f, #fst);
     currentFunction = null;
 }
 @exit_func : {
-    if (valueAsignedForLevel()) {
-        #statement =
-            #([RETURN, "return"],
-                #([EXPR, "EXPR"],
-                [IDENTIFIER, FUNCTION_RESULT])
-            );
-    } else {
-        #statement = #([RETURN, "return"]);
-    }
-    setExit();
+    ## = exitFunction();
 }
 
 @nested : { cLevel++; }
@@ -1617,9 +1768,126 @@ import org.apache.commons.collections.Transformer;
 
 @include : {
     try {
-        parser.parseInclude(#include.getText(), this, true);
+        String text = parser.parseInclude(#include.getText(), this, true);
+        #include.setText(text);
     } catch (ANTLRException aex) {
         LOG.error("Failed to parse included file:" + #include.getText(), aex);
     }
 }
 
+
+@class_init : {
+    Map properties = new HashMap();
+    List ids = new ArrayList();
+    List functions = new ArrayList();
+}
+@tclass : !
+@class_start : {
+    currentClass = (ASPClass) localClasses.get(#c.getText());
+    if (currentClass == null) {
+        LOG.error("Failed to locate class:" + #c.getText());
+    }
+}
+
+@tprivmem : !
+@priv_mem : {
+    if (#id != null) {
+        ## = #id;
+    } else {
+        ## = #s;
+    }
+}
+@pmem : {
+    if (#pmem.getType() == IDENTIFIER) {
+        ids.add(#pmem);
+    } else {
+        functions.add(#pmem);
+    }
+}
+@pg_init : {
+    currentFunction = getProperty(#pg.getText(), 0);
+}
+@pget : {
+    addProperty(properties, makeFunction(#pg, #gst), 0);
+}
+
+@pl_init : {
+    currentFunction = getProperty(#pl.getText(), 1);
+}
+@plet : {
+    #pl.addChild(#lst);
+    addProperty(properties, #pl, 1);
+}
+
+@ps_init : {
+    currentFunction = getProperty(#ps.getText(), 2);
+}
+@pset : {
+    #ps.addChild(#sst);
+    makeSub(#ps);
+    addProperty(properties, #ps, 2);
+}
+
+@exit_prop : {
+    if (propType == 0) {
+        ## = exitFunction();
+    } else {
+        ## = #([RETURN, "return"]);
+    }
+}
+
+@cid : {
+    ids.add(#id);
+}
+
+@csub : {
+    functions.add(#subfunc);
+}
+
+@class_end : {
+    currentClass = null;
+    AST lastChild = null;
+    //add members
+    for (Iterator it = ids.iterator(); it.hasNext();) {
+        if (lastChild == null) {
+            lastChild = (AST) it.next();
+            #c.addChild(lastChild);
+        } else {
+            AST next = (AST) it.next();
+            lastChild.setNextSibling(next);
+            lastChild = next;
+        }
+    }
+    //add subs and functions
+    for (Iterator it = functions.iterator(); it.hasNext();) {
+        if (lastChild == null) {
+            lastChild = (AST) it.next();
+            #c.addChild(lastChild);
+        } else {
+            AST next = (AST) it.next();
+            lastChild.setNextSibling(next);
+            lastChild = next;
+        }
+    }
+    //add properties
+    for (Iterator it = properties.values().iterator(); it.hasNext();) {
+        AST[] props = (AST[]) it.next();
+        for (int i = 0; i < 3; i++) {
+            if (props[i] != null) {
+                if (lastChild == null) {
+                    lastChild = props[i];
+                    #c.addChild(lastChild);
+                } else {
+                    lastChild.setNextSibling(props[i]);
+                    lastChild = props[i];
+                }
+            }
+        }
+    }
+    /*
+    LOG.debug(ids);
+    LOG.debug(functions);
+    LOG.debug(properties);
+    */
+    ## = #c;
+}

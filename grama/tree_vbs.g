@@ -41,6 +41,23 @@ start_rule
   ;
 
 
+sub_statement
+  :
+  #(s:SUB <sub_decl> statements <sub_end>)
+  ;
+
+function_statement
+  :
+  <tfunc> #(f:FUNCTION <func_decl> fst:statements <func_end>)
+  ;
+
+
+sub_func
+  :
+  sub_statement | function_statement
+  ;
+
+
 statement
   <init_stat>
   :
@@ -49,8 +66,8 @@ statement
   | expr
   |<tconst> #(CONST ci:IDENTIFIER cex:expression <const_end>)
   |<trand> #(RANDOMIZE (ex:expr)? <randomize>)
-  |<tdim> #(DIM (decl:s_decl <dim_decl>)+)
-  |<tredim> #(REDIM (s_decl)+)
+  |<tdim> #(DIM <dim_init> (decl:s_decl <dim_decl>)+ <dim_end>)
+  |<tredim> #(REDIM (s_decl)+) //TODO: Handle this.Preserve previus values
   |<terase>#(ERASE ei:IDENTIFIER <erase>)
   | #(ERROR (RESUME | ZERO))
   |<tsub> #(SUB_CALL sub_name:expression <func_call> list:argListValues
@@ -61,10 +78,11 @@ statement
           | FOR <exit_for>
           | SUB <exit_sub>
           | FUNCTION <exit_func>
-          | PROPERTY
       )
   )
   |<tml> #(EQ_HTML mlexpr:expr <eq_end>)
+  | sub_func
+  | #(PRIVATE sub_func)
   | nested <nested_end>
   ;
 
@@ -89,8 +107,6 @@ nested
   | #(wend:WHILE_WEND  wexpr:expr statements <while_wend_end>)
   |<twith> #(WITH with_expr:expr <with_expr_end> statements:statements
       <with_end>)
-  | #(s:SUB <sub_decl> statements <sub_end> )
-  |<tfunc> #(f:FUNCTION <func_decl> fst:statements <func_end> )
   | #(select:SELECT expr
           (case_stm)*
           (case_else)?
@@ -109,17 +125,38 @@ nested
   ;
 
 
-class_decl
+priv_mem
   :
-  #(CLASS
+  <tprivmem> #(PRIVATE (id:IDENTIFIER | s:sub_func) <priv_mem>)
+  ;
+
+
+prop_stm [int propType]
+  :
+  EXIT_PROPERTY <exit_prop>
+  | statement
+  ;
+
+
+prop_stms [int propType]
+  :
+  (prop_stm[propType])*
+  ;
+
+
+class_decl
+  <class_init>
+  :
+  <tclass>#(c:CLASS <class_start>
       (
-          #(PRIVATE IDENTIFIER)
-          | #(PROPERTY_GET (PRIVATE | DEFAULT)? (argList)? statements)
-          | #(PROPERTY_LET (PRIVATE | DEFAULT)? argList statements)
-          | #(PROPERTY_SET (PRIVATE | DEFAULT)? argList statements)
-          | IDENTIFIER
-          | statement
+          pmem:priv_mem <pmem>
+          | #(pg:PROPERTY_GET <pg_init> gst:prop_stm[0] <pget>)
+          | #(pl:PROPERTY_LET <pl_init> lst:prop_stm[1] <plet>)
+          | #(ps:PROPERTY_SET <ps_init> sst:prop_stm[2] <pset>)
+          | id:IDENTIFIER <cid>
+          | subfunc:sub_func <csub>
       )*
+  <class_end>
   )
   ;
 
@@ -127,7 +164,7 @@ class_decl
 case_stm
   <case_list_init>
   :<tcsmt>#(CASE
-      #(CASE_LIST (ccase:case_cond <case>)+)
+      #(CASE_LIST (ccase:expr <case>)+)
       st:statements <case_end>
   )
   ;
@@ -154,7 +191,7 @@ statements
 
 s_decl
   :
-  #(IDENTIFIER (DINT)*)
+  IDENTIFIER |<tarray> #(ARRAY (DINT <inc_dim>)*) <array_decl>
   ;
 
 
@@ -202,6 +239,7 @@ expression
       <func_call_end>)
   |! #(WITH_DOT with_dotexpr:expression <with_dot_end>)
   | #(LPAREN expression)
+  |<tnew> #(NEW IDENTIFIER <new>)
   | DINT
   | DFLOAT
   | IDENTIFIER <id>

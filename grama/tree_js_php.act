@@ -2259,7 +2259,8 @@ BAND, "&"); }
 
 @include : {
     try {
-        parser.parseInclude(#include.getText(), this, false);
+        String text = parser.parseInclude(#include.getText(), this, false);
+        #include.setText(text);
     } catch (ANTLRException ex) {
         LOG.error("Failed to parse included file:" + #include.getText(), ex);
     }

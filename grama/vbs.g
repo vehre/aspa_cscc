@@ -58,7 +58,7 @@ onError
 
 s_decl
   :
-  id:IDENTIFIER^ (LPAREN! <add_array> DINT (COMMA! DINT)* RPAREN!)?
+  id:IDENTIFIER^ (LPAREN! <add_array> (DINT (COMMA! DINT)*)? RPAREN!)?
   ;
 
 
@@ -69,23 +69,11 @@ expression_statement
   ;
 
 
-simple_statement
+set_statement
   :
-  (
-  (DIM^ | REDIM^) s_decl (COMMA! s_decl)*
-  |! OPTION EXPLICIT
-  | ERASE^ IDENTIFIER
-  | CALL! im:IDENTIFIER <call_sub>
-  (DOT^ in:IDENTIFIER <call_obj>)*
-  LPAREN! (expressionList)? RPAREN!
-  |<tset> SET lset:left_set ASSIGN expr:expression <set>
-  | RANDOMIZE^ (expression)?
-  ) statement_term
-  | expression_statement_list STATEMENT_END!
-  | EQ_HTML^ expression
-  |! h:HTML <html>
-  | INCLUDE
+  <tset> SET lset:left_set ASSIGN expr:expression <set>
   ;
+
 
 left_set
   :
@@ -97,28 +85,29 @@ const_statement
   CONST^ IDENTIFIER ASSIGN! relationalImpExpression
   ;
 
-
-block_statement
+sub_func
   :
-  onError
-  | EXIT^ (PROPERTY | DO | SUB | FUNCTION | FOR) statement_term
-  | PUBLIC! (
+  PUBLIC! (
       DEFAULT! <default_matched> (
           dsub:sub_statement <sub_def>
           | dfunc:function_statement <func_def>
       )
       | sub_statement
       | function_statement
-      | const_statement
   )
-  | PRIVATE! (
-      psub:sub_statement <psub>
-      | pfunc:function_statement <pfunc>
-      | const_statement
+  | PRIVATE^ (
+      psub:sub_statement
+      | pfunc:function_statement
   )
   | sub_statement
   | function_statement
-  | const_statement
+  ;
+
+
+block_statement
+  :
+  onError
+  | sub_func
   | class_statement
   | if_then_else_statement
   | do_statement
@@ -126,13 +115,41 @@ block_statement
   | select_case_statement
   | for_statement
   | with_statement
+  | (!PRIVATE | PUBLIC) const_statement
+  ;
+
+
+simple_statement
+  :
+  (DIM^ | REDIM^) s_decl (COMMA! s_decl)*
+  |! OPTION EXPLICIT
+  | ERASE^ IDENTIFIER
+  | CALL! im:IDENTIFIER <call_sub>
+      (DOT^ in:IDENTIFIER <call_obj>)*
+      LPAREN! (expressionList)? RPAREN!
+  | set_statement
+  | RANDOMIZE^ (expression)?
+  | expression_statement
+  | EQ_HTML^ expression
+  | const_statement
+  | EXIT^ (DO | SUB | FUNCTION | FOR)
+  ;
+
+
+non_term
+  :
+  !h:HTML <html> //palced here because html does not need an statement_term
+  | INCLUDE
   ;
 
 
 statement
- :
- simple_statement | block_statement | statement_term
- ;
+  :
+  simple_statement statement_term
+  | non_term
+  | block_statement
+  | statement_term
+  ;
 
 
 pp
@@ -140,25 +157,40 @@ pp
   PUBLIC! ({currentClass != null}? (DEFAULT)? |) | PRIVATE
   ;
 
+dim_stm
+  :
+  DIM^ s_decl (COMMA! s_decl)*
+  ;
 
 class_statement
+    <class_init>
     :
     CLASS! IDENTIFIER^ <class_start> statement_term
     (
         ((PUBLIC | PRIVATE) IDENTIFIER)=> pp_var
         |! (pp PROPERTY)=> p1:pp p2:property <add_prop>
         |! p3:property <append_prop>
-        | statement
+        | DIM! sd:s_decl <add_dim> (COMMA! sd2:s_decl <add_dim2>)*
+        | sub_func
+        //| set_statement Not sure if allowed
+        | cid:IDENTIFIER <add_id>
+        | statement_term
     )*
     (!END CLASS) <class_end> statement_term
     ;
 
 
+exit_prop
+    :
+    ex:EXIT !PROPERTY <exit_prop>
+    ;
+
+
 property
     :
-    PROPERTY! prop_decl statement_term
-    (statement)*
-    (!END PROPERTY) statement_term
+    PROPERTY! pdecl:prop_decl statement_term
+    (statement | exit_prop)*
+    (!END PROPERTY) statement_term <property>
     ;
 
 
@@ -172,7 +204,8 @@ prop_decl
 
 pp_var
     :
-    (PUBLIC! | PRIVATE^) s_decl (COMMA s_decl)* statement_term
+    (PUBLIC! | PRIVATE^) sd:s_decl <add_dim> (COMMA sd2:s_decl <add_dim2>)*
+    statement_term
     ;
 
 
@@ -243,15 +276,9 @@ for_stepexpr
   ;
 
 
-expression_statement_list
-  :
-  expression_statement (COLON! expression_statement)*
-  ;
-
-
 else_single_line
   :
-  ELSE^  expression_statement_list
+  ELSE^  (simple_statement | non_term) (COLON! (simple_statement | non_term))*
   ;
 
 
@@ -265,7 +292,7 @@ if_then_else_statement
       (else_rule)?
       (!END IF statement_term)
       |
-      expression_statement_list
+      (simple_statement | non_term) (COLON! (simple_statement))*
       (else_single_line)?
       (!(END IF)? STATEMENT_END)
   )
@@ -308,7 +335,8 @@ case_rule
 
 case_list
   :
-  (DINT | DFLOAT | DSTRING) (COMMA! (DINT | DFLOAT | DSTRING))*
+  //(DINT | DFLOAT | DSTRING) (COMMA! (DINT | DFLOAT | DSTRING))*
+  expression (COMMA! expression)*
   <case_list>
   ;
 

@@ -28,14 +28,6 @@
     <mkdir dir="logs" />
 </target>
 
-<!--
-<property name="pmd_lib" value="/home/anakreon/tmp/pmd-1.7/lib" />
-<taskdef classname="net.sourceforge.pmd.ant.PMDTask" name="pmd">
-    <classpath>
-        <fileset dir="${pmd_lib}" includes="*.jar" />
-    </classpath>
-</taskdef>
--->
 <!--  ANTLR   -->
 <target name="antlr" depends="prepare">
     <java classname="annotation.Insert" classpathref="classpath" 
@@ -156,7 +148,7 @@
     </copy>
 
     <javac debug="${compile.debug}" deprecation="${compile.deprecation}"
-    destdir="${build_dir}/classes" optimize="${compile.optimize}">
+    destdir="${build_dir}/classes" optimize="${compile.optimize}" compiler="javac1.3">
         <src location="${src_dir}" />
         <src location="${build_dir}/src" />
         <classpath refid="classpath"/>
@@ -180,7 +172,8 @@ description="Compiles the tests">
         debug="${compile.debug}"
         deprecation="${compile.deprecation}"
         optimize="${compile.optimize}"
-        destdir="${build_dir}/classes">
+        destdir="${build_dir}/classes"
+	compiler="javac1.3">
         <classpath refid="classpath"/>
     </javac>
 </target>
@@ -196,12 +189,11 @@ description="Runs the tests in batch mode">
     </junit>
 </target>
 
-<!--
-<target name="pmd">
-    <pmd rulesetfiles="rulesets/imports.xml,rulesets/unusedcode.xml,rulesets/basic.xml">
-        <formatter type="html" toFile="${test_reports}/pmd.html"/>
-        <fileset dir="src" includes="**/*.java" />
-    </pmd>
+<target name="jar" depends="compile">
+    <jar basedir="build/classes" destfile="build/aspa.jar">
+        <exclude name="ASPSuite*"/>
+        <exclude name="ASPTest*" />
+    </jar>
 </target>
--->
+
 </project>

@@ -60,7 +60,7 @@ public interface Member extends ASPObject {
 
     /** Returns the class of the Object the Member returns */
     public ASPClass getRetObjectClass();
-    
+
     /** Sets the code for the return type of the Member */
     public void setReturnType(int type);
 }

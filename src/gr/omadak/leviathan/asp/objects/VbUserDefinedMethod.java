@@ -24,10 +24,9 @@ import java.util.Iterator;
 import java.util.List;
 
 public class VbUserDefinedMethod extends UserDefinedMethod {
-    /*
     private boolean privateFunction;
     private boolean defaultFunction;
-    */
+
     private BitSet argMethod;
 
     static {
@@ -59,10 +58,8 @@ public class VbUserDefinedMethod extends UserDefinedMethod {
                 index++;
             }
         }
-        /*
         privateFunction = isPrivate;
         defaultFunction = isDefault;
-        */
     }
 
 
