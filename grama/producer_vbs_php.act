@@ -70,9 +70,12 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
 
 @exp_end : { out.println(";"); }
 
-@xor : { out.print(" ^ "); }
+@xor : { out.print(" xor "); }
 @or : { out.print(" || "); }
 @and : { out.print(" && "); }
+@bor : { out.print(" | "); }
+@band : { out.print(" & "); }
+@bxor : { out.print(" ^ "); }
 @lt : { out.print(" < "); }
 @gt : { out.print(" > "); }
 @le : { out.print(" <= "); }
@@ -96,6 +99,7 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
 @umin : { out.print("-"); }
 
 @not : { out.print('!'); }
+@bnot : { out.print("~"); }
 
 @post_plus : { out.print("++"); }
 @post_minus : { out.print("--"); }

@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Stack;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.TreeMap;
 import antlr.CommonToken;
 import gr.omadak.leviathan.asp.objects.ObjectAST;
 import gr.omadak.leviathan.asp.objects.ASPObject;
@@ -46,14 +47,13 @@ import org.apache.commons.collections.Transformer;
     LBRACK; ANY; GLOBALS; UKNOWN_METHOD;
     DO_END; POST_PLUS; POST_MINUS; RETURN;
     NON_APPLICABLE_HEADER; UNSUPPORTED; INVALID_OBJECT;
-    OBJECT_ATTRIBUTE;
-
+    OBJECT_ATTRIBUTE; BXOR; BOR; BAND; BNOT;
 @init :
 {
     private int lastForWhile = 1;
     private Stack argStack = new Stack();
     private Stack withObjects = new Stack();
-    private Map objects = new HashMap();
+    private Map variables = new TreeMap();
     private Map levelList = new HashMap();
     private int cLevel = 0;
     private AspParser parser;
@@ -65,7 +65,9 @@ import org.apache.commons.collections.Transformer;
     private Property currentProperty;
     private Set identifiers;
     private Set dependencies;
-    private Set arrays;
+	private Stack typeStack = new Stack();
+	private int lastType;
+
 
     private static Logger LOG = Logger.getLogger(VbsTree.class);
     private static Map OBJECT_CLASSES;
@@ -81,6 +83,7 @@ import org.apache.commons.collections.Transformer;
 
     /* Implementation of SymbolTableExposer */
     public Map getVariables() {
+		/*
         HashMap variables = new HashMap(objects);
         if (identifiers != null) {
             for (Iterator it = identifiers.iterator(); it.hasNext();) {
@@ -91,6 +94,8 @@ import org.apache.commons.collections.Transformer;
             }
         }
         return new HashMap(objects);
+		*/
+		return new HashMap(variables);
     }
 
 
@@ -115,8 +120,8 @@ import org.apache.commons.collections.Transformer;
     }
 
 
-    public void appendVariables(Map variables) {
-        objects.putAll(variables);
+    public void appendVariables(Map vars) {
+        variables.putAll(vars);
     }
 
 
@@ -273,6 +278,7 @@ import org.apache.commons.collections.Transformer;
         }
         if (result != null) {
             collectDependencies(mem);
+			lastType = mem.getReturnType();
         }
         return result;
     }
@@ -287,6 +293,7 @@ import org.apache.commons.collections.Transformer;
             if (result != null) {
                 collectDependencies(prop);
             }
+			lastType = prop.getReturnType();
         } else {
             Property property;
             if (mem.getEvaluatedClass() != null) {
@@ -308,6 +315,39 @@ import org.apache.commons.collections.Transformer;
     }
 
 
+	private int getType(AST ast) {
+		int result;
+		switch (ast.getType()) {
+		case DINT:
+		case DFLOAT:
+		case DSTRING:
+		case DDATE:
+		case TRUE:
+		case FALSE:
+		case NULL:
+		case NOTHING:
+		case EMPTY:
+			result = ast.getType();
+			break;
+		case IDENTIFIER:
+			result = getIdentifierType(#ast.getText());
+			break;
+		case UKNOWN_METHOD:
+		case INVALID_OBJECT:
+			result = CommonConstants.UKNOWN_TYPE;
+			break;
+		default:
+			if (!typeStack.isEmpty()) {
+				result = ((Integer) typeStack.pop()).intValue();
+			} else {
+				result = CommonConstants.UKNOWN_TYPE;
+			}
+			break;
+		}
+		return result;
+	}
+
+
 	private AST getDefault(AST ast) {
         AST result = null;
         if (ast != null) {
@@ -315,20 +355,20 @@ import org.apache.commons.collections.Transformer;
             && !FUNCTION_RESULT.equals(ast.getText())) {
                 String name = ast.getText();
                 boolean isGlob = identifiers.contains(name);
-                if (!isGlob
-                && !currentFunction.hasVar(name)) {
-                    currentFunction.addVariable(name, true);
-                } else if (isGlob) {
-                    currentFunction.addVariable(name, false);
-                }
+				currentFunction.placeVar(name, getIdentifierType(name), !isGlob);
             }
-            result = translateObject(ast);
+			if (ast instanceof ObjectAST || ast.getType() == IDENTIFIER) {
+				result = translateObject(ast);
+				//the type will be handled by translateObject(ObjectAST)
+			} else {
+				lastType = getType(ast);
+			}
         }
 		return result == null ? ast : result;
 	}
 
 
-    private AST translateObjects(int type, AST left, AST right) {
+    private AST createNode(int type, AST left, AST right) {
         try {
 			String label = _tokenNames[type];
             return #([type, label], left, right);
@@ -577,7 +617,7 @@ import org.apache.commons.collections.Transformer;
             currentFunction.placeObject(name, inst,
             !identifiers.contains(name) || currentFunction.hasVar(name));
         } else {
-            objects.put(name, inst);
+            variables.put(name, inst);
         }
     }
 
@@ -586,7 +626,7 @@ import org.apache.commons.collections.Transformer;
         if (currentFunction != null) {
             currentFunction.removeObject(name);
         } else {
-            objects.remove(name);
+            variables.remove(name);
         }
     }
 
@@ -597,10 +637,23 @@ import org.apache.commons.collections.Transformer;
             result = currentFunction.getObject(name);
         }
         if (result == null) {
-            result = (ASPObjectInstance) objects.get(name);
+			Object obj = variables.get(name);
+			if (obj instanceof ASPObjectInstance) {
+				result = (ASPObjectInstance) variables.get(name);
+			}
         }
         return result;
     }
+
+
+	private void removeVariable(String name) {
+		variables.remove(name);
+	}
+
+
+	private void addVariable(String name, int type) {
+		variables.put(name, new Integer(type));
+	}
 
 
     private AST handleIdObject(AST id, ObjectAST obj) {
@@ -650,8 +703,12 @@ import org.apache.commons.collections.Transformer;
                 }
             }
         }
-        if (retType > 0 || retType == -1) {
-            removeObject(id.getText());
+		if (retType != 0) {
+			if (retType == -1) {
+				removeObject(id.getText());
+			} else {
+				addVariable(id.getText(), retType);
+			}
         }
         return result;
     }
@@ -702,7 +759,7 @@ import org.apache.commons.collections.Transformer;
                 } else {
                     Property prop = clazz.getDefaultProperty();
                     if (prop != null) {
-                    result = translateMember(prop, instance.getInstance());
+						result = translateMember(prop, instance.getInstance());
                     } else {
                         LOG.error("class:" + clazz.getName()
                         + " has no default property");
@@ -727,6 +784,9 @@ import org.apache.commons.collections.Transformer;
             }
         } else if (ast.getType() == IDENTIFIER) {
            instance = getObjectInstance(ast);
+		   if (instance == null) {
+			   lastType = getIdentifierType(ast.getText());
+		   }
         } else {
             instance = null;
         }
@@ -758,9 +818,10 @@ import org.apache.commons.collections.Transformer;
 
 
     private AST handleFunctionSubEnd(AST methodAST, int lastStackSize) {
-        List arguments = argStack.size() != lastStackSize
-        ? (List) argStack.pop()
-        : Collections.EMPTY_LIST;
+		List[] args = argStack.size() != lastStackSize
+        ? (List[]) argStack.pop()
+        : null;
+        List arguments = args == null ? Collections.EMPTY_LIST : args[0];
         AST result = null;
         ASPObjectInstance methodInstance = getMethod(methodAST, arguments);
         if (methodInstance != null) {
@@ -781,7 +842,7 @@ import org.apache.commons.collections.Transformer;
                         result = createObjectAST(CommonConstants.OBJECT,
                         clazz.getName(), new ASPObjectInstance(
                         methodInstance.getInstance(), clazz));
-                    } else if (method.getRetObjectClass() != null) {
+					} else if (method.getRetObjectClass() != null) {
                         ASPClass clazz = method.getRetObjectClass();
                         AST trans = translateMember(method,
                         methodInstance.getInstance());
@@ -794,6 +855,7 @@ import org.apache.commons.collections.Transformer;
                 } else {
                     result = translateMember(method,
                     methodInstance.getInstance());
+					typeStack.push(new Integer(method.getReturnType()));
                 }
             }
         } else {
@@ -807,6 +869,27 @@ import org.apache.commons.collections.Transformer;
         }
         return result;
     }
+
+
+	private AST translateArray(AST array, int lastStackSize) {
+		AST result;
+		List[] args = argStack.size() != lastStackSize
+        ? (List[]) argStack.pop()
+        : null;
+		if (args == null) {
+			LOG.warn("No indexe passed to array access:" + array);
+			//this case should not happen
+			result = null;
+		} else {
+			List indexes = args[0];
+			if (indexes.size() > 1) {
+				LOG.warn("For now it is not supported to access multydimension arrays");
+			}
+			AST index = (AST) indexes.get(0);
+			result = #([INDEX_OP, "INDEX_OP"], array , index);
+		}
+		return result;
+	}
 
 
     private ObjectAST createObjectAST(int type, String label,
@@ -975,6 +1058,24 @@ import org.apache.commons.collections.Transformer;
         }
         return (VbUserDefinedMethod) result;
     }
+
+
+	private int getIdentifierType(String name) {
+		int result;
+		if (currentFunction != null) {
+			result = currentFunction.getVariableType(name);
+		} else {
+			Object obj = variables.get(name);
+			if (obj instanceof Integer) {
+				result = ((Integer) obj).intValue();
+			} else if (obj instanceof ASPObjectInstance) {
+				result = CommonConstants.OBJECT;
+			} else {
+				result = CommonConstants.UKNOWN_TYPE;
+			}
+		}
+		return result;
+	}
 }
 
 
@@ -1035,8 +1136,15 @@ import org.apache.commons.collections.Transformer;
     } else if (!areObjects) {
         if (#eq_ex2.getType() != NOTHING) {
             #expression = #([this_type, "="], #eq_ex1, #eq_ex2);
+			if (#eq_ex1.getType() == IDENTIFIER) {
+				int rightType = getType(#eq_ex2);
+				if (rightType == CommonConstants.UKNOWN_TYPE) {
+					removeVariable(#eq_ex1.getText());
+				} else {
+					addVariable(#eq_ex1.getText(), rightType);
+				}
+			}
         }
-        LOG.debug(#eq_ex1 + ":" + #eq_ex2);
     } else {
         if (!(#eq_ex1 instanceof ObjectAST)) {
             ObjectAST expr2 = (ObjectAST) #eq_ex2;
@@ -1052,6 +1160,7 @@ import org.apache.commons.collections.Transformer;
             value);
         }
     }
+	typeStack.clear();
 }
 
 @tconst : !
@@ -1166,6 +1275,7 @@ import org.apache.commons.collections.Transformer;
             #([NOT, "not"], getDefault(#imp2))
         )
     );
+typeStack.push(new Integer(DBOOL));   
 }
 
 
@@ -1177,6 +1287,7 @@ import org.apache.commons.collections.Transformer;
     #([NOT, "not"],
         #([XOR, "xor"], #eqv1, getDefault(#eqv2))
     );
+typeStack.push(new Integer(DBOOL));
 }
 
 
@@ -1189,24 +1300,30 @@ import org.apache.commons.collections.Transformer;
             #([DIVIDE, "/"], #int_div1, getDefault(#int_div2))
         )
     );
+typeStack.push(new Integer(DINT));
 }
 
 
 @tdiv : !
 @pre_div : { #div1 = getDefault(#div1); }
-@post_div: { #expression = translateObjects(DIVIDE, #div1, getDefault(#div2)); }
+@post_div: {
+    #expression = createNode(DIVIDE, #div1, getDefault(#div2));
+	typeStack.push(new Integer(DFLOAT));
+}
 
 
 @tmul : !
-@pre_mul : { #mul1 = getDefault(#mul1); }
+@pre_mul : { #mul1 = getDefault(#mul1); boolean leftDint = lastType == DINT;}
 @post_mul: {
     #mul2 = getDefault(#mul2);
-    #expression = translateObjects(ASTERISK, #mul1, #mul2);
+    #expression = createNode(ASTERISK, #mul1, #mul2);
+	lastType = !leftDint || lastType != DINT ? DFLOAT : DINT;
+	typeStack.push(new Integer(lastType));
 }
 
 
 @tpow : !
-@pre_exp : { #exp1 = getDefault(#exp1); }
+@pre_exp : { #exp1 = getDefault(#exp1); boolean leftDint = lastType == DINT;}
 @post_exp :          {
     #expression =
     #([METHOD_CALL, "pow"],
@@ -1214,30 +1331,50 @@ import org.apache.commons.collections.Transformer;
             #exp1,  getDefault(#exp2)
         )
     );
+	lastType = !leftDint || lastType != DINT ? DFLOAT : DINT;
+	typeStack.push(new Integer(lastType));
 }
 
 
 @txor : !
-@pre_xor: { #xor1 = getDefault(#xor1);}
+@pre_xor: { #xor1 = getDefault(#xor1); boolean leftDint = lastType == DINT;}
 @post_xor : {
     #xor2 = getDefault(#xor2);
-    #expression = translateObjects(XOR, #xor1, #xor2);
+	if (leftDint && lastType == DINT) { //binary
+		#expression = createNode(BXOR, #xor1, #xor2);
+		typeStack.push(new Integer(DINT));
+	} else {
+        #expression = createNode(XOR, #xor1, #xor2);
+		typeStack.push(new Integer(DBOOL));
+	}
 }
 
 
 @tor : !
-@pre_or: { #or1 = getDefault(#or1);}
+@pre_or: { #or1 = getDefault(#or1); boolean leftDint = lastType == DINT;}
 @post_or : {
     #or2 = getDefault(#or2);
-    #expression = translateObjects(OR, #or1, #or2);
+	if (leftDint && lastType == DINT) {
+		#expression = createNode(BOR, #or1, #or2);
+		typeStack.push(new Integer(DINT));
+	} else {
+        #expression = createNode(OR, #or1, #or2);
+		typeStack.push(new Integer(DBOOL));
+	}
 }
 
 
 @tand : !
-@pre_and: { #and1 = getDefault(#and1);}
+@pre_and: { #and1 = getDefault(#and1); boolean leftDint = lastType == DINT;}
 @post_and : {
     #and2 = getDefault(#and2);
-    #expression = translateObjects(AND, #and1, #and2);
+	if (leftDint && lastType == DINT) {
+		#expression = createNode(BAND, #and1, #and2);
+		typeStack.push(new Integer(DINT));
+	} else {
+        #expression = createNode(AND, #and1, #and2);
+		typeStack.push(new Integer(DBOOL));
+	}
 }
 
 
@@ -1245,7 +1382,8 @@ import org.apache.commons.collections.Transformer;
 @pre_lt: { #lt1 = getDefault(#lt1);}
 @post_lt : {
     #lt2 = getDefault(#lt2);
-    #expression = translateObjects(LT, #lt1, #lt2);
+    #expression = createNode(LT, #lt1, #lt2);
+	typeStack.push(new Integer(DBOOL));
 }
 
 
@@ -1253,7 +1391,8 @@ import org.apache.commons.collections.Transformer;
 @pre_gt: { #gt1 = getDefault(#gt1);}
 @post_gt : {
     #gt2 = getDefault(#gt2);
-    #expression = translateObjects(GT, #gt1, #gt2);
+    #expression = createNode(GT, #gt1, #gt2);
+	typeStack.push(new Integer(DBOOL));
 }
 
 
@@ -1261,7 +1400,8 @@ import org.apache.commons.collections.Transformer;
 @pre_le: { #le1 = getDefault(#le1);}
 @post_le : {
     #le2 = getDefault(#le2);
-    #expression = translateObjects(LE, #le1, #le2);
+    #expression = createNode(LE, #le1, #le2);
+	typeStack.push(new Integer(DBOOL));
 }
 
 
@@ -1269,7 +1409,8 @@ import org.apache.commons.collections.Transformer;
 @pre_ge: { #ge1 = getDefault(#ge1);}
 @post_ge : {
     #ge2 = getDefault(#ge2);
-    #expression = translateObjects(GE, #ge1, #ge2);
+    #expression = createNode(GE, #ge1, #ge2);
+	typeStack.push(new Integer(DBOOL));
 }
 
 
@@ -1279,6 +1420,7 @@ import org.apache.commons.collections.Transformer;
     #eq_comp2 = getDefault(#eq_comp2);
     int code = EQ;
     #expression = #([code, "="], #eq_comp1, #eq_comp2);
+	typeStack.push(new Integer(DBOOL));
 }
 
 
@@ -1286,7 +1428,8 @@ import org.apache.commons.collections.Transformer;
 @pre_neq: { #neq1 = getDefault(#neq1);}
 @post_neq : {
     #neq2 = getDefault(#neq2);
-    #expression = translateObjects(NEQ, #neq1, #neq2);
+    #expression = createNode(NEQ, #neq1, #neq2);
+	typeStack.push(new Integer(DBOOL));
 }
 
 
@@ -1294,23 +1437,28 @@ import org.apache.commons.collections.Transformer;
 @pre_concat: { #concat1 = getDefault(#concat1);}
 @post_concat : {
     #concat2 = getDefault(#concat2);
-    #expression = translateObjects(CONCAT, #concat1, #concat2);
+    #expression = createNode(CONCAT, #concat1, #concat2);
+	typeStack.push(new Integer(DSTRING));
 }
 
 
 @tplus : !
-@pre_plus: { #plus1 = getDefault(#plus1);}
+@pre_plus: { #plus1 = getDefault(#plus1); boolean leftDint = lastType == DINT;}
 @post_plus : {
     #plus2 = getDefault(#plus2);
-    #expression = translateObjects(PLUS, #plus1, #plus2);
+    #expression = createNode(PLUS, #plus1, #plus2);
+	lastType = !leftDint || lastType != DINT ? DFLOAT : DINT;
+	typeStack.push(new Integer(lastType));
 }
 
 
 @tminus : !
-@pre_minus: { #minus1 = getDefault(#minus1);}
+@pre_minus: { #minus1 = getDefault(#minus1); boolean leftDint = lastType == DINT;}
 @post_minus : {
     #minus2 = getDefault(#minus2);
-    #expression = translateObjects(MINUS, #minus1, #minus2);
+    #expression = createNode(MINUS, #minus1, #minus2);
+	lastType = !leftDint || lastType != DINT ? DFLOAT : DINT;
+	typeStack.push(new Integer(lastType));
 }
 
 
@@ -1318,7 +1466,8 @@ import org.apache.commons.collections.Transformer;
 @pre_mod: { #mod1 = getDefault(#mod1);}
 @post_mod : {
     #mod2 = getDefault(#mod2);
-    #expression = translateObjects(MOD, #mod1, #mod2);
+    #expression = createNode(MOD, #mod1, #mod2);
+	typeStack.push(new Integer(DINT));
 }
 
 
@@ -1329,7 +1478,8 @@ import org.apache.commons.collections.Transformer;
     if (#not.getType() == NOT) {
         #expression = #not.getFirstChild();
     } else {
-        int code = NOT;
+        int code = lastType == DINT ? BNOT : NOT;
+		typeStack.push(new Integer(lastType == DINT ? lastType : DBOOL));
         #expression = #([code, "not"], #not);
     }
 }
@@ -1338,6 +1488,10 @@ import org.apache.commons.collections.Transformer;
 @tuminus : !
 @unary_minus : {
     #uminus = getDefault(#uminus);
+	if (lastType != DINT && lastType != DFLOAT) {
+		lastType = DINT;
+    }
+    typeStack.push(new Integer(lastType));
     if (#uminus != null) {
         AST child = #uminus.getFirstChild();
         if (child != null && child.getType() == UNARY_MINUS) {
@@ -1354,6 +1508,10 @@ import org.apache.commons.collections.Transformer;
 @tuplas : !
 @unary_plus :   {
     #uplus = getDefault(#uplus);
+	if (lastType != DINT && lastType != DFLOAT) {
+		lastType = DINT;
+    }
+    typeStack.push(new Integer(lastType));
     if (#uplus != null) {
         #expression = #uplus;
     }
@@ -1377,6 +1535,7 @@ import org.apache.commons.collections.Transformer;
 
 @texpr: !
 @expr : {
+	typeStack.clear();
     #e = hardTranslate(#e);
     if (#e != null && #e.getType() != Token.SKIP) {
         int type = EXPR;
@@ -1398,18 +1557,30 @@ import org.apache.commons.collections.Transformer;
     }
 }
 
-@arg_val : { argStack.push(new ArrayList()); }
+@arg_val : { argStack.push(new List[] {new ArrayList(), new ArrayList()}); }
 @arg_val_end : {
-    List arguments = (List) argStack.peek();
-    arguments.add(hardTranslate(#arg));
+    List[] arguments = (List[]) argStack.peek();
+    arguments[0].add(hardTranslate(#arg));
+	arguments[1].add(new Integer(lastType));
+	typeStack.clear();
 }
 
 @init_stat : { int lastStackSize = 0; }
 @init_expr : { int lastStackSize = 0; }
 
 @tmethod : !
-@func_call : { lastStackSize = argStack.size(); }
-@func_call_end : { #expression = handleFunctionSubEnd(#func, lastStackSize); }
+@func_call : {
+	lastStackSize = argStack.size();
+	boolean isArray = #func != null && #func.getType() == IDENTIFIER
+		&& getIdentifierType(#func.getText()) == ARRAY;
+}
+@func_call_end : {
+	if (isArray) {
+		#expression = translateArray(#func, lastStackSize);
+	} else {
+        #expression = handleFunctionSubEnd(#func, lastStackSize); 
+	}
+}
 
 
 @tsub : !
@@ -1500,9 +1671,9 @@ import org.apache.commons.collections.Transformer;
         dimArrays.add(#([EXPR, "EXPR"], #decl));
     }
     if (currentFunction != null) {
-        currentFunction.addVariable(
+        currentFunction.placeVar(
         #decl.getType() == IDENTIFIER ? #decl.getText()
-        : #decl.getFirstChild().getText(), true);
+        : #decl.getFirstChild().getText(), CommonConstants.UKNOWN_TYPE, true);
     }
 }
 @dim_end : {
@@ -1898,3 +2069,5 @@ import org.apache.commons.collections.Transformer;
     */
     ## = #c;
 }
+
+@index : { typeStack.clear(); }

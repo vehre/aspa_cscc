@@ -19,6 +19,7 @@ package gr.omadak.leviathan.asp.objects;
 
 import antlr.collections.AST;
 import gr.omadak.leviathan.asp.TreeVbsTokenTypes;
+import gr.omadak.leviathan.asp.CommonConstants;
 import java.util.BitSet;
 import java.util.Iterator;
 import java.util.List;
@@ -85,18 +86,22 @@ public class VbUserDefinedMethod extends UserDefinedMethod {
         return argMethod;
     }
 
-
     public void setDefault(boolean def) {
-    //    defaultFunction = def;
+        defaultFunction = def;
     }
-
+	/*
 
     public void setPrivate(boolean priv) {
-    //    privateFunction = priv;
+        privateFunction = priv;
     }
-
+	*/
 
     public String toString() {
 		return getName();
+	}
+
+
+	public int getVariableType(String name) {
+		return CommonConstants.UKNOWN_TYPE;
 	}
 }

@@ -36,7 +36,7 @@ public class JsUserDefinedMethod extends UserDefinedMethod {
 
     /**
      keeps the variables declared in the parent method which where
-    alterered in this method
+     alterered in this method
     */
     private Map parentAlteredVars;
     /** The parent method */
@@ -334,16 +334,18 @@ public class JsUserDefinedMethod extends UserDefinedMethod {
     }
 
 
-    public void addVariable(String name, boolean local) {
+    public void placeVar(String name, int type, boolean local) {
         local = local || (localObjects != null
         && localObjects.containsKey(name));
         if (local) {
             usedVars.add(name);
-            super.addVariable(name, local);
-            removeVarFromChildren(name);
+			if (!hasVar(name)) {
+				super.placeVar(name, type, local);
+				removeVarFromChildren(name);
+			}
         } else if (globalObjects == null || !globalObjects.containsKey(name)) {
             usedVars.add(name);
-            super.addVariable(name, false);
+            super.placeVar(name, type, false);
         }
     }
 

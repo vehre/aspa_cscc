@@ -70,7 +70,8 @@ public class ASPSuite {
             File sourceFile = new File(baseDir, line.substring(0, sup));
             if (!(sourceFile.exists() && sourceFile.isFile())) {
                 throw new IllegalStateException(
-                "source file should exist and should be a file");
+                "source file:" + sourceFile.getAbsolutePath()
+				+ " should exist and should be a file");
             }
             line = line.substring(sup + 1);
             sup = line.indexOf(':');
@@ -81,7 +82,8 @@ public class ASPSuite {
             File xmlFile =  new File(baseXml, line);
             if (!(xmlFile.exists() && xmlFile.isFile())) {
                 throw new IllegalStateException(
-                "xml file should exist and should be a file");
+                "xml file:" + xmlFile.getAbsolutePath()
+				+ " should exist and should be a file");
             }
             suite.addTest(new ASPTest("testASP",
             baseDir, sourceFile, xmlFile, !caseInsens));

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="ISO-8859-7"?>
+
+<asp>
+  <vb>
+    <original>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="DINT" text="20"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="DINT" text="30"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="c"/>
+          <ast name="PLUS" text="+">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="IDENTIFIER" text="b"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="d"/>
+          <ast name="DIVIDE" text="/">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="IDENTIFIER" text="b"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="e"/>
+          <ast name="INT_DIVIDE" text="\">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="IDENTIFIER" text="b"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="f"/>
+          <ast name="MOD" text="mod">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="IDENTIFIER" text="b"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="g"/>
+          <ast name="OR" text="or">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="IDENTIFIER" text="b"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="h"/>
+          <ast name="DSTRING" text="Hello There"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="k"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="IDENTIFIER" text="split"/>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="d"/>
+              <ast name="DSTRING" text=" "/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="l"/>
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="Request"/>
+            <ast name="IDENTIFIER" text="QueryString"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="m"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="IDENTIFIER" text="k"/>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DINT" text="0"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="DINT" text="20"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="DINT" text="30"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="c"/>
+          <ast name="PLUS" text="PLUS">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="IDENTIFIER" text="b"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="d"/>
+          <ast name="DIVIDE" text="DIVIDE">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="IDENTIFIER" text="b"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="e"/>
+          <ast name="METHOD_CALL" text="ceil">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DIVIDE" text="/">
+                <ast name="IDENTIFIER" text="a"/>
+                <ast name="IDENTIFIER" text="b"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="f"/>
+          <ast name="MOD" text="MOD">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="IDENTIFIER" text="b"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="g"/>
+          <ast name="BOR" text="BOR">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="IDENTIFIER" text="b"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="h"/>
+          <ast name="DSTRING" text="Hello There"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="k"/>
+          <ast name="METHOD_CALL" text="explode">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text=" "/>
+              <ast name="IDENTIFIER" text="d"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="l"/>
+          <ast name="INDEX_OP" text="INDEX_OP">
+            <ast name="IDENTIFIER" text="_SERVER"/>
+            <ast name="DSTRING" text="QUERY_STRING"/>
+          </ast>
+        </ast>
+      </ast>
+	  <ast name="EXPR" text="EXPR">
+	    <ast name="ASSIGN" text="=">
+		  <ast name="IDENTIFIER" text="m"/>
+          <ast name="INDEX_OP" text="INDEX_OP">
+            <ast name="IDENTIFIER" text="k"/>
+            <ast name="DINT" text="0"/>
+          </ast>
+	    </ast>
+	  </ast>
+    </translated>
+  </vb>
+</asp>

@@ -37,7 +37,7 @@ tokens {
 start_rule
   <start>
   :
-  statements
+  statements {/*LOG.debug(variables);*/}
   ;
 
 
@@ -254,7 +254,7 @@ expression
 
 indexes
   :
-  #(INDEX_LIST (expression)+)
+  #(INDEX_LIST (expression <index>)+)
   ;
 
 

@@ -567,14 +567,10 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
             for (Iterator it = globals.keySet().iterator(); it.hasNext();) {
                 Object name = it.next();
                 Object value = globals.get(name);
-                if (value == null) {
+                if (!(value instanceof ASPObjectInstance)) {
                     objects.remove(name);
                 } else {
-                    /*
-                    make the cast as a check.If I am wrong then a Exception
-                    will be throw in the cast
-                    */
-                    objects.put(name, (ASPObjectInstance) value);
+                    objects.put(name, value);
                 }
             }
         }
@@ -642,7 +638,7 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
             result = ast.getFirstChild();
         } else if (currentMethod != null && !inArgDef
         && ast.getType() == IDENTIFIER) {
-            currentMethod.addVariable(ast.getText(), currentMethod.isInVar());
+            currentMethod.placeVar(ast.getText(), CommonConstants.UKNOWN_TYPE, currentMethod.isInVar());
         }
         if (result == null) {
             result = ast;
@@ -1229,7 +1225,7 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
         }
         if (value.getType() == IDENTIFIER
         &&  !currentMethod.hasVar(value.getText())) {
-            currentMethod.addVariable(value.getText(), currentMethod.isInVar());
+            currentMethod.placeVar(value.getText(), CommonConstants.UKNOWN_TYPE, currentMethod.isInVar());
         }
         return #([ASSIGN, "="], [OBJECT_ATTRIBUTE, attr.getText()], value);
     }
@@ -2124,7 +2120,7 @@ BAND, "&"); }
 }
 @var_decl : {
     if (currentMethod != null && #vid != null) {
-        currentMethod.addVariable(#vid.getText(), true);
+        currentMethod.placeVar(#vid.getText(), CommonConstants.UKNOWN_TYPE, true);
     }
 }
 @var_expr : {
@@ -2137,7 +2133,7 @@ BAND, "&"); }
         } else {
             AST fChild = #vexpr.getFirstChild().getFirstChild();
             if (fChild.getType() == IDENTIFIER) {
-                currentMethod.addVariable(fChild.getText(), true);
+                currentMethod.placeVar(fChild.getText(), CommonConstants.UKNOWN_TYPE, true);
             }
             currentMethod.addVarExpression(#vexpr);
         }
@@ -2168,7 +2164,7 @@ BAND, "&"); }
 }
 @fvar_decl : {
     if (currentMethod != null && #fid != null) {
-        currentMethod.addVariable(#fid.getText(), true);
+        currentMethod.placeVar(#fid.getText(), CommonConstants.UKNOWN_TYPE, true);
     }
     var_expressions.add(#fid.getText());
 }
@@ -2178,7 +2174,7 @@ BAND, "&"); }
         if (currentMethod != null) {
             AST fChild = #fexpr.getFirstChild().getFirstChild();
             if (fChild.getType() == IDENTIFIER) {
-                currentMethod.addVariable(fChild.getText(), true);
+                currentMethod.placeVar(fChild.getText(), CommonConstants.UKNOWN_TYPE, true);
             }
         }
     } else {

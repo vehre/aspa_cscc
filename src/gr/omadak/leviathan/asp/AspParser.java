@@ -261,8 +261,10 @@ public class AspParser {
     throws ANTLRException {
         List result;
         if (fileIsParsed(file)) {
-            mergeSymbols((DataHolder) parsedFiles.get(file.getAbsolutePath()),
-            sTable);
+			if (sTable != null) { //is an include file
+				mergeSymbols((DataHolder) parsedFiles.get(file.getAbsolutePath()),
+				sTable);
+			}
             result = Collections.EMPTY_LIST;
         } else {
             LOG.info("Parsing file:" + file.getAbsolutePath());

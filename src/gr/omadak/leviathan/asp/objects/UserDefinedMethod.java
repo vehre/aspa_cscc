@@ -81,7 +81,8 @@ public abstract class UserDefinedMethod extends GenericMethod {
     * with this name which holds an Object reference
     */
     public boolean objectExists(String name) {
-        return localObjects != null && localObjects.get(name) != null;
+        return localObjects != null
+			&& localObjects.get(name) instanceof ASPObjectInstance;
     }
 
 
@@ -98,6 +99,21 @@ public abstract class UserDefinedMethod extends GenericMethod {
     }
 
 
+	private void place(String name, Object obj, boolean local) {
+		if (local) {
+			if (localObjects == null) {
+				localObjects = new HashMap();
+			}
+			localObjects.put(name, obj);
+		} else {
+			if (globalObjects == null) {
+				globalObjects = new HashMap();
+			}
+			globalObjects.put(name, obj);
+		}
+	}
+
+
     /**
     * Initilizes or places a new variable initilized with instance.
     * @param name is the name of the variable
@@ -106,18 +122,13 @@ public abstract class UserDefinedMethod extends GenericMethod {
     */
     public void placeObject(String name, ASPObjectInstance inst,
     boolean local) {
-        if (local) {
-            if (localObjects == null) {
-                localObjects = new HashMap();
-            }
-            localObjects.put(name, inst);
-        } else {
-            if (globalObjects == null) {
-                globalObjects = new HashMap();
-            }
-            globalObjects.put(name, inst);
-        }
+		place(name, inst, local);
     }
+
+
+	public void placeVar(String name, int type, boolean local) {
+		place(name, new Integer(type), local);
+	}
 
 
     /**
@@ -136,9 +147,8 @@ public abstract class UserDefinedMethod extends GenericMethod {
     * with that name.
     */
     public ASPObjectInstance getObject(String name) {
-        return localObjects != null
-        ? (ASPObjectInstance) localObjects.get(name)
-        : null;
+		Object obj = localObjects == null ? null : localObjects.get(name);
+		return obj instanceof ASPObjectInstance ? (ASPObjectInstance) obj : null;
     }
 
 
@@ -161,25 +171,6 @@ public abstract class UserDefinedMethod extends GenericMethod {
             result = name.equals(arg.getText());
         }
         return result;
-    }
-
-
-    public void addVariable(String name, boolean local) {
-        if (local) {
-            if (localObjects == null) {
-                localObjects = new TreeMap();
-            }
-            if (!localObjects.containsKey(name)) {
-                localObjects.put(name, null);
-            }
-        } else {
-            if (globalObjects == null) {
-                globalObjects = new TreeMap();
-            }
-            if (!globalObjects.containsKey(name)) {
-                globalObjects.put(name, null);
-            }
-        }
     }
 
 

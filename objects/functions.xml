@@ -567,7 +567,7 @@
         </ast>
     </method>
 
-    <method name="Split" type="INDEX_OP">
+    <method name="Split" type="ARRAY">
         <arg type="DSTRING" />
         <ast name="METHOD_CALL" text="explode">
             <ast name="ARGLIST_VALUES">
@@ -576,7 +576,7 @@
             </ast>
         </ast>
     </method>
-    <method name="Split" type="INDEX_OP">
+    <method name="Split" type="ARRAY">
         <arg type="DSTRING" />
         <arg type="DSTRING" />
         <ast name="METHOD_CALL" text="explode">
@@ -586,7 +586,7 @@
             </ast>
         </ast>
     </method>
-    <method name="Split" type="INDEX_OP">
+    <method name="Split" type="ARRAY">
         <arg type="DSTRING" />
         <arg type="DSTRING" />
         <arg type="DINT" />
@@ -598,7 +598,7 @@
             </ast>
         </ast>
     </method>
-    <method name="Split" type="INDEX_OP">
+    <method name="Split" type="ARRAY">
         <arg type="DSTRING" />
         <arg type="DSTRING" />
         <arg type="DINT" />
