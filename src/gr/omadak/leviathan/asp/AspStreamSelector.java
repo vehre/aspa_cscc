@@ -131,7 +131,9 @@ public class AspStreamSelector extends TokenStreamSelector {
             //The @language directive should be the first
             //in an asp.Previus tokens are of no interest
             result = processHTML();
-        } else {
+		} else if (next.getType() == HtmlLexerUtil.ASP_END) {
+			result = processJsVb(next);
+		} else {
             boolean isEq =
             (lexerType == LEX_VB && next.getType() == VbsTokenTypes.ASSIGN)
             || (lexerType == LEX_JS && next.getType() == JsTokenTypes.ASSIGN);
@@ -274,8 +276,8 @@ public class AspStreamSelector extends TokenStreamSelector {
     /*
       Called after <% Token found.
     */
-    private Token processJsVb() throws TokenStreamException {
-        Token result = tokenNext();
+    private Token processJsVb(Token t) throws TokenStreamException {
+        Token result = t != null ? t : tokenNext();
         int type = result.getType();
         boolean shouldPop = type ==
         HtmlLexerUtil.ASP_END
@@ -308,7 +310,7 @@ public class AspStreamSelector extends TokenStreamSelector {
                 break;
             case LEX_JS:
             case LEX_VB:
-                result = processJsVb();
+                result = processJsVb(null);
                 break;
             default:
                 //should never happen

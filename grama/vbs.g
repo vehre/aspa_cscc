@@ -58,7 +58,7 @@ onError
 
 s_decl
   :
-  id:IDENTIFIER^ (LPAREN! <add_array> (DINT (COMMA! DINT)*)? RPAREN!)?
+  id:IDENTIFIER^ (LPAREN! <add_array> (addSubExpression (COMMA! addSubExpression)*)? RPAREN!)?
   ;
 
 
@@ -121,10 +121,10 @@ block_statement
 
 simple_statement
   :
-  (DIM^ | REDIM^) s_decl (COMMA! s_decl)*
+  (DIM^ | r:REDIM^ (!PRESERVE <preserve>)?) s_decl (COMMA! s_decl)*
   |! OPTION EXPLICIT
   | ERASE^ IDENTIFIER
-  | CALL! im:IDENTIFIER <call_sub>
+  | CALL! ({inWith}? (| imw:IDENTIFIER <call_sub>) | im:IDENTIFIER <call_sub>)
       (DOT^ in:IDENTIFIER <call_obj>)*
       LPAREN! (expressionList)? RPAREN!
   | set_statement
@@ -138,7 +138,7 @@ simple_statement
 
 non_term
   :
-  !h:HTML <html> //palced here because html does not need an statement_term
+  !h:HTML <html> //placed here because html does not need an statement_term
   | INCLUDE
   ;
 
@@ -335,7 +335,6 @@ case_rule
 
 case_list
   :
-  //(DINT | DFLOAT | DSTRING) (COMMA! (DINT | DFLOAT | DSTRING))*
   expression (COMMA! expression)*
   <case_list>
   ;
@@ -651,7 +650,7 @@ class VbsLexer extends Lexer;
 options {
     exportVocab = Vbs;
     testLiterals = false;
-    k = 3;
+    k = 2;
     caseSensitive = false;
     caseSensitiveLiterals = false;
     filter = false;
@@ -685,7 +684,6 @@ INT_CONST
         | 'o' ('0' .. '7')+ <lexer_typeint>
       )?
   )
-  <lexer_lasttoken>
   ;
 
 
@@ -717,19 +715,20 @@ PLUS : '+' ;
 MINUS : '-' ;
 DIVIDE : '/' ;
 INT_DIVIDE: '\\';
-ASSIGN : '=' <lexer_lasttoken_assign>;
+ASSIGN : '=';
 GT: '>' ;
 LT : '<' ;
-GE: ">=" ;
-LE : "<="  ;
+GE: ">=";
+GE2 : "=>" <lexer_ge>;
+LE : "<=" | "=<" ;
 NEQ : "<>" ;
 POW : '^' ;
-COLON : ':' <lexer_lasttoken_none>;
+COLON : ':';
 
 CONTINUE_STAT : '_' (WS!)? <lexer_lasttoken_stat>;
 
 
-IDENTIFIER_TYPES : id:IDENTIFIER <lexer_identifier>;
+IDENTIFIER_TYPES : <lexer_store_last> id:IDENTIFIER <lexer_identifier>;
 
 
 ASP_END : "%>" <lexer_aspend>;
@@ -767,7 +766,7 @@ HEX_DIGIT
 
 protected LETTER
   :
-    'a' .. 'z'
+  'a' .. 'z'
   ;
 
 
@@ -783,7 +782,11 @@ protected LINE : (~'\n')* '\n' <lexer_line> ;
 COMMENT
   :
   '\''
-  LINE <lexer_comment>
+  (      
+        {LA(2) != '>'}? '%'
+        | ~('\n' | '%')
+  )*
+  <lexer_comment>
   ;
 
 

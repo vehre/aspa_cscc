@@ -79,7 +79,9 @@ public final class VbsConstants {
          KEYWORDS.put("PRIVATE", new Integer(VbsTokenTypes.PRIVATE));
          KEYWORDS.put("DEFAULT", new Integer(VbsTokenTypes.DEFAULT));
          KEYWORDS.put("PROPERTY", new Integer(VbsTokenTypes.PROPERTY));
+		 KEYWORDS.put("PRESERVE", new Integer(VbsTokenTypes.PRESERVE));
          KEYWORDS.put("GET", new Integer(VbsTokenTypes.GET));
+		 KEYWORDS.put("GOTO", new Integer(VbsTokenTypes.GOTO));
          KEYWORDS.put("LET", new Integer(VbsTokenTypes.LET));
          KEYWORDS.put("BYREF", new Integer(VbsTokenTypes.BYREF));
          KEYWORDS.put("BYVAL", new Integer(VbsTokenTypes.BYVAL));

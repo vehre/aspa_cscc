@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
     NOTHING; NULL; ON; OPTION; OR; REDIM; REM; RESUME;
     SELECT; SET; STEP; SUB; THEN; TO; TRUE; WEND; WHILE;
     WITH; XOR; UNTIL; CLASS; PUBLIC; PRIVATE; DEFAULT; PROPERTY;
-    LET; GET; BYREF; BYVAL; NEW; RANDOMIZE;
+    LET; GET; BYREF; BYVAL; NEW; RANDOMIZE; PRESERVE;
 
     STATEMENT_END; EXPR; EQ; UNARY_PLUS; UNARY_MINUS; ARGLIST; ZERO;
     ARGLIST_VALUES; SUB_CALL; METHOD_CALL;
@@ -50,7 +50,7 @@ import org.apache.log4j.Logger;
     SUB_NAME; CASE_ELSE; WHILE_WEND; CASE_LIST;
     HTML; EQ_HTML; PROPERTY_GET; PROPERTY_LET; PROPERTY_SET;
     WITH_DOT; ASP; INDEX_OP; INDEX_LIST; DO_UNTIL; DO_WHILE;
-    FOR_INIT; INCLUDE; EXIT_PROPERTY; ARRAY;
+    FOR_INIT; INCLUDE; EXIT_PROPERTY; ARRAY; REDIM_PRESERVE;
 
 @init : {
     private boolean inWith;
@@ -188,8 +188,21 @@ import org.apache.log4j.Logger;
         );
     }
 }
-@call_sub : {#im.setType(SUB_CALL);}
-@call_obj : {#im.setType(IDENTIFIER); #in.setType(SUB_CALL);}
+@call_sub : {
+	if (inWith) {
+        #imw.setType(SUB_CALL);
+	} else {
+		#im.setType(SUB_CALL);
+	}
+}
+@call_obj : {
+	if (inWith) {
+		#imw.setType(IDENTIFIER);
+	} else {
+        #im.setType(IDENTIFIER);
+	}
+    #in.setType(SUB_CALL);
+}
 
 @class_init: {List properties = new ArrayList();}
 @class_start : {
@@ -489,14 +502,14 @@ import org.apache.log4j.Logger;
     args.add(#id);
 }
 
-@end : {
-}
+@preserve : { #r.setType(REDIM_PRESERVE); }
+@end : {}
 
 
 
 
 @lexer_init : {
-    private int lastToken = -1;
+    private int lastToken;
     /*
     Keeps all IDENTIFIER found during lexing fase
     After the firts occurance of an IDENTIFIER all other occurances
@@ -506,15 +519,20 @@ import org.apache.log4j.Logger;
     private Map identifiers = new TreeMap();
 
     private int getProperType() {
-        int result = -1;
-        if (lastToken == CONTINUE_STAT || lastToken == -1) {
+        int result;
+        if (lastToken == CONTINUE_STAT || lastToken == STATEMENT_END) {
             result = Token.SKIP;
         } else {
-            lastToken = -1;
             result = STATEMENT_END;
         }
         return result;
     }
+
+
+	protected Token makeToken(int type) {
+		lastToken = type;
+		return super.makeToken(type);
+	}
 }
 
 
@@ -522,14 +540,9 @@ import org.apache.log4j.Logger;
 @lexer_typefloat : { _ttype = DFLOAT; }
 @lexer_typeint : {_ttype = DINT;}
 @lexer_typeconcat : { _ttype = CONCAT; }
-@lexer_lasttoken :   {
-  lastToken = _ttype;
-}
-
-@lexer_lasttoken_assign : {lastToken = ASSIGN;}
-@lexer_lasttoken_none : { lastToken = -1; }
 @lexer_lasttoken_stat : {lastToken = CONTINUE_STAT; $setType(Token.SKIP);}
 
+@lexer_store_last : { int prev = lastToken; }
 @lexer_identifier : {
     /*
       Since ASP uses ActiveX components
@@ -537,6 +550,7 @@ import org.apache.log4j.Logger;
       name equal to some keyword, be sure that the last token
       wasn't DOT
     */
+	lastToken = prev;
     if (lastToken != DOT) {
         String idText = id.getText().toUpperCase();
         Object intVal = VbsConstants.KEYWORDS.get(idText);
@@ -558,9 +572,7 @@ import org.apache.log4j.Logger;
             identifiers.put(key, idText);
         }
     }
-    if (_ttype != REM) {
-        lastToken = _ttype;
-    } else {
+    if (_ttype == REM) {
         mLINE(false);
         _ttype = STATEMENT_END;
     }
@@ -588,9 +600,13 @@ import org.apache.log4j.Logger;
 @lexer_line : { newline();}
 
 @lexer_comment : {
-    $setType(STATEMENT_END);
+	if (LA(1) == '\n') {
+		match('\n');
+		newline();
+	}
+    $setType(getProperType());
     $setText("");
 }
 
-
+@lexer_ge : { $setType(GE); }
 @lexer_ignored :   {_ttype = Token.SKIP;}

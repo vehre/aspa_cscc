@@ -652,7 +652,12 @@ import org.apache.commons.collections.Transformer;
 
 
 	private void addVariable(String name, int type) {
-		variables.put(name, new Integer(type));
+		if (currentFunction != null) {
+			boolean local = currentFunction.hasVar(name) || !variables.containsKey(name);
+			currentFunction.placeVar(name, type, local);
+		} else {
+			variables.put(name, new Integer(type));
+		}
 	}
 
 
@@ -1062,7 +1067,7 @@ import org.apache.commons.collections.Transformer;
 
 	private int getIdentifierType(String name) {
 		int result;
-		if (currentFunction != null) {
+		if (currentFunction != null && currentFunction.hasVar(name)) {
 			result = currentFunction.getVariableType(name);
 		} else {
 			Object obj = variables.get(name);
@@ -1081,7 +1086,7 @@ import org.apache.commons.collections.Transformer;
 
 @tdim : !
 @tredim : !
-
+@tredimp : !
 
 @start : { TokenMap.IS_JS = false; }
 

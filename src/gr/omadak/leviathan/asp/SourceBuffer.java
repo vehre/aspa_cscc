@@ -20,6 +20,12 @@ package gr.omadak.leviathan.asp;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+/**
+ * SourceBuffer provides methods for pretty printing source code
+ *
+ * @author <a href="mailto:anakreonmejde@yahoo.gr">anakreon</a>
+ * @version 1.0
+ */
 public class SourceBuffer {
     private PrintWriter out;
     private boolean inPhp;
@@ -57,7 +63,12 @@ public class SourceBuffer {
     }
 
 
-    public SourceBuffer(PrintWriter ps) {
+    /**
+	 * Creates a new <code>SourceBuffer</code> instance.
+	 *
+	 * @param ps a <code>PrintWriter</code> value
+	 */
+	public SourceBuffer(PrintWriter ps) {
         this.out = ps;
     }
 

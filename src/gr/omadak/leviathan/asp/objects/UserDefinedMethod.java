@@ -27,6 +27,8 @@ import java.util.TreeMap;
 import java.util.Iterator;
 import gr.omadak.leviathan.asp.CommonConstants;
 
+import org.apache.log4j.Logger;
+
 public abstract class UserDefinedMethod extends GenericMethod {
     /**keeps the local variables*/
     protected Map localObjects;
@@ -37,6 +39,7 @@ public abstract class UserDefinedMethod extends GenericMethod {
     protected static int DOT;
     protected static int ARGLIST_VALUES;
     protected static int NEW;
+	private static Logger LOG = Logger.getLogger(UserDefinedMethod.class);
 
 
     private void correctArgs() {
@@ -62,7 +65,13 @@ public abstract class UserDefinedMethod extends GenericMethod {
     }
 
 
-    public UserDefinedMethod(String name, List args) {
+    /**
+	 * Creates a new <code>UserDefinedMethod</code> instance.
+	 *
+	 * @param name the method's name
+	 * @param args the names of the arguments the method receives
+	 */
+	public UserDefinedMethod(String name, List args) {
         super(name, CommonConstants.UKNOWN_TYPE, args, null);
 		if (!args.isEmpty()) {
             localObjects = new TreeMap();
@@ -126,6 +135,13 @@ public abstract class UserDefinedMethod extends GenericMethod {
     }
 
 
+	/**
+	 * Adds a variable to the function
+	 *
+	 * @param name is the name of the variable to add
+	 * @param type the type of the variable
+	 * @param local indicates if it is a local variable
+	 */
 	public void placeVar(String name, int type, boolean local) {
 		place(name, new Integer(type), local);
 	}
@@ -152,7 +168,12 @@ public abstract class UserDefinedMethod extends GenericMethod {
     }
 
 
-    public List getUsedGlobals() {
+    /**
+	 * Returns the names of the global variables this method
+	 * used
+	 * @return a List with the names
+	 */
+	public List getUsedGlobals() {
         return globalObjects == null ? Collections.EMPTY_LIST
         : new ArrayList(globalObjects.keySet());
     }
@@ -163,7 +184,13 @@ public abstract class UserDefinedMethod extends GenericMethod {
     }
 
 
-    public boolean hasArg(String name) {
+    /**
+	 * Tells if the method contains an arg with this name
+	 *
+	 * @param name the name of the argument
+	 * @return true if it has that arg
+	 */
+	public boolean hasArg(String name) {
         boolean result = false;
         Iterator it = getArgTypes().iterator();
         while (it.hasNext() && !result) {
@@ -174,7 +201,14 @@ public abstract class UserDefinedMethod extends GenericMethod {
     }
 
 
-    public AST translate(AST ast) {
+    /**
+	 * Generates the AST of the method call
+	 *
+	 * @param ast is the instance of the class where the method belongs.
+	 * if the method does not belong to a class the param is null
+	 * @return the translation of the method call
+	 */
+	public AST translate(AST ast) {
         AST template;
         correctArgs();
         if (args.isEmpty()) {

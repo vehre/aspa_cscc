@@ -67,7 +67,8 @@ statement
   |<tconst> #(CONST ci:IDENTIFIER cex:expression <const_end>)
   |<trand> #(RANDOMIZE (ex:expr)? <randomize>)
   |<tdim> #(DIM <dim_init> (decl:s_decl <dim_decl>)+ <dim_end>)
-  |<tredim> #(REDIM (s_decl)+) //TODO: Handle this.Preserve previus values
+  |<tredim> #(REDIM (s_decl)+)
+  |<tredimp> #(REDIM_PRESERVE (s_decl)+)
   |<terase>#(ERASE ei:IDENTIFIER <erase>)
   | #(ERROR (RESUME | ZERO))
   |<texit> #(EXIT
