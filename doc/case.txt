@@ -1,0 +1,5 @@
+select case value
+    case 12, 13, 14 statements
+    case 15 statements
+    case else error
+end select

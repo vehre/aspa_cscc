@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <vb>
+    <original>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Request"/>
+              <ast name="IDENTIFIER" text="Cookies"/>
+            </ast>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DINT" text="34"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="Request"/>
+            <ast name="IDENTIFIER" text="Cookies"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="CONCAT" text="&amp;">
+            <ast name="METHOD_CALL" text="(">
+              <ast name="DOT" text=".">
+                <ast name="IDENTIFIER" text="Request"/>
+                <ast name="IDENTIFIER" text="Cookies"/>
+              </ast>
+              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                <ast name="DSTRING" text="c"/>
+              </ast>
+            </ast>
+            <ast name="METHOD_CALL" text="(">
+              <ast name="DOT" text=".">
+                <ast name="IDENTIFIER" text="Request"/>
+                <ast name="IDENTIFIER" text="Cookies"/>
+              </ast>
+              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                <ast name="DSTRING" text="d"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="METHOD_CALL" text="(">
+              <ast name="DOT" text=".">
+                <ast name="IDENTIFIER" text="Request"/>
+                <ast name="IDENTIFIER" text="Cookies"/>
+              </ast>
+              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                <ast name="IDENTIFIER" text="b"/>
+              </ast>
+            </ast>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="c"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Request"/>
+              <ast name="IDENTIFIER" text="Cookies"/>
+            </ast>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="hello"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="METHOD_CALL" text="(">
+              <ast name="DOT" text=".">
+                <ast name="IDENTIFIER" text="Request"/>
+                <ast name="IDENTIFIER" text="Cookies"/>
+              </ast>
+              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                <ast name="DSTRING" text="hello"/>
+              </ast>
+            </ast>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="there"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Request"/>
+              <ast name="IDENTIFIER" text="Cookies"/>
+            </ast>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="b"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="OR" text="or">
+            <ast name="DOT" text=".">
+              <ast name="METHOD_CALL" text="(">
+                <ast name="DOT" text=".">
+                  <ast name="IDENTIFIER" text="Request"/>
+                  <ast name="IDENTIFIER" text="Cookies"/>
+                </ast>
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="IDENTIFIER" text="b"/>
+                </ast>
+              </ast>
+              <ast name="IDENTIFIER" text="hasKeys"/>
+            </ast>
+            <ast name="DOT" text=".">
+              <ast name="METHOD_CALL" text="(">
+                <ast name="DOT" text=".">
+                  <ast name="IDENTIFIER" text="Request"/>
+                  <ast name="IDENTIFIER" text="Cookies"/>
+                </ast>
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="DSTRING" text="ccokie"/>
+                </ast>
+              </ast>
+              <ast name="IDENTIFIER" text="hasKeys"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="d"/>
+          <ast name="CONCAT" text="&amp;">
+            <ast name="CONCAT" text="&amp;">
+              <ast name="CONCAT" text="&amp;">
+                <ast name="DSTRING" text="Hello"/>
+                <ast name="METHOD_CALL" text="(">
+                  <ast name="DOT" text=".">
+                    <ast name="IDENTIFIER" text="Request"/>
+                    <ast name="IDENTIFIER" text="Cookies"/>
+                  </ast>
+                  <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                    <ast name="DSTRING" text="a"/>
+                  </ast>
+                </ast>
+              </ast>
+              <ast name="METHOD_CALL" text="(">
+                <ast name="DOT" text=".">
+                  <ast name="IDENTIFIER" text="Request"/>
+                  <ast name="IDENTIFIER" text="Cookies"/>
+                </ast>
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="DSTRING" text="b"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="METHOD_CALL" text="(">
+              <ast name="METHOD_CALL" text="(">
+                <ast name="DOT" text=".">
+                  <ast name="IDENTIFIER" text="Request"/>
+                  <ast name="IDENTIFIER" text="Cookies"/>
+                </ast>
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="DSTRING" text="a"/>
+                </ast>
+              </ast>
+              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                <ast name="DSTRING" text="c"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="tyext"/>
+          <ast name="CONCAT" text="&amp;">
+            <ast name="CONCAT" text="&amp;">
+              <ast name="CONCAT" text="&amp;">
+                <ast name="DOT" text=".">
+                  <ast name="IDENTIFIER" text="Request"/>
+                  <ast name="IDENTIFIER" text="Form"/>
+                </ast>
+                <ast name="METHOD_CALL" text="(">
+                  <ast name="DOT" text=".">
+                    <ast name="IDENTIFIER" text="Request"/>
+                    <ast name="IDENTIFIER" text="Cookies"/>
+                  </ast>
+                  <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                    <ast name="DSTRING" text="some_cookie"/>
+                  </ast>
+                </ast>
+              </ast>
+              <ast name="METHOD_CALL" text="(">
+                <ast name="DOT" text=".">
+                  <ast name="IDENTIFIER" text="Request"/>
+                  <ast name="IDENTIFIER" text="Form"/>
+                </ast>
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="DSTRING" text="a"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="METHOD_CALL" text="(">
+              <ast name="METHOD_CALL" text="(">
+                <ast name="DOT" text=".">
+                  <ast name="IDENTIFIER" text="Request"/>
+                  <ast name="IDENTIFIER" text="Form"/>
+                </ast>
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="DSTRING" text="b"/>
+                </ast>
+              </ast>
+              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                <ast name="DINT" text="0"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="hasParams"/>
+          <ast name="OR" text="or">
+            <ast name="OR" text="or">
+              <ast name="DOT" text=".">
+                <ast name="METHOD_CALL" text="(">
+                  <ast name="DOT" text=".">
+                    <ast name="IDENTIFIER" text="Request"/>
+                    <ast name="IDENTIFIER" text="Cookies"/>
+                  </ast>
+                  <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                    <ast name="DSTRING" text="a"/>
+                  </ast>
+                </ast>
+                <ast name="IDENTIFIER" text="hasKeys"/>
+              </ast>
+              <ast name="GT" text="&gt;">
+                <ast name="DOT" text=".">
+                  <ast name="METHOD_CALL" text="(">
+                    <ast name="DOT" text=".">
+                      <ast name="IDENTIFIER" text="Request"/>
+                      <ast name="IDENTIFIER" text="Form"/>
+                    </ast>
+                    <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                      <ast name="DSTRING" text="a"/>
+                    </ast>
+                  </ast>
+                  <ast name="IDENTIFIER" text="Count"/>
+                </ast>
+                <ast name="DINT" text="0"/>
+              </ast>
+            </ast>
+            <ast name="EQ" text="=">
+              <ast name="DOT" text=".">
+                <ast name="METHOD_CALL" text="(">
+                  <ast name="DOT" text=".">
+                    <ast name="IDENTIFIER" text="Request"/>
+                    <ast name="IDENTIFIER" text="QueryString"/>
+                  </ast>
+                  <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                    <ast name="DSTRING" text="a"/>
+                  </ast>
+                </ast>
+                <ast name="IDENTIFIER" text="Count"/>
+              </ast>
+              <ast name="DINT" text="1"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="INDEX_OP" text="INDEX_OP">
+            <ast name="IDENTIFIER" text="HTTP_COOKIE_VARS"/>
+            <ast name="DINT" text="34"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="INDEX_OP" text="INDEX_OP">
+            <ast name="IDENTIFIER" text="_SERVER"/>
+            <ast name="DSTRING" text="HTTP_COOKIE"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="CONCAT" text="CONCAT">
+            <ast name="INDEX_OP" text="INDEX_OP">
+              <ast name="IDENTIFIER" text="HTTP_COOKIE_VARS"/>
+              <ast name="DSTRING" text="c"/>
+            </ast>
+            <ast name="INDEX_OP" text="INDEX_OP">
+              <ast name="IDENTIFIER" text="HTTP_COOKIE_VARS"/>
+              <ast name="DSTRING" text="d"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="getSubCookie">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="b"/>
+              <ast name="IDENTIFIER" text="c"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="INDEX_OP" text="INDEX_OP">
+            <ast name="IDENTIFIER" text="HTTP_COOKIE_VARS"/>
+            <ast name="DSTRING" text="hello"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="getSubCookie">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="hello"/>
+              <ast name="DSTRING" text="there"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="INDEX_OP" text="INDEX_OP">
+            <ast name="IDENTIFIER" text="HTTP_COOKIE_VARS"/>
+            <ast name="DSTRING" text="b"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="OR" text="OR">
+            <ast name="NEQ" text="NEQ">
+              <ast name="METHOD_CALL" text="strpos">
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="INDEX_OP" text="INDEX_OP">
+                    <ast name="IDENTIFIER" text="HTTP_COOKIE_VARS"/>
+                    <ast name="IDENTIFIER" text="b"/>
+                  </ast>
+                  <ast name="DSTRING" text="&amp;"/>
+                </ast>
+              </ast>
+              <ast name="DINT" text="0"/>
+            </ast>
+            <ast name="NEQ" text="NEQ">
+              <ast name="METHOD_CALL" text="strpos">
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="INDEX_OP" text="INDEX_OP">
+                    <ast name="IDENTIFIER" text="HTTP_COOKIE_VARS"/>
+                    <ast name="DSTRING" text="ccokie"/>
+                  </ast>
+                  <ast name="DSTRING" text="&amp;"/>
+                </ast>
+              </ast>
+              <ast name="DINT" text="0"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="d"/>
+          <ast name="CONCAT" text="CONCAT">
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="CONCAT" text="CONCAT">
+                <ast name="DSTRING" text="Hello"/>
+                <ast name="INDEX_OP" text="INDEX_OP">
+                  <ast name="IDENTIFIER" text="HTTP_COOKIE_VARS"/>
+                  <ast name="DSTRING" text="a"/>
+                </ast>
+              </ast>
+              <ast name="INDEX_OP" text="INDEX_OP">
+                <ast name="IDENTIFIER" text="HTTP_COOKIE_VARS"/>
+                <ast name="DSTRING" text="b"/>
+              </ast>
+            </ast>
+            <ast name="METHOD_CALL" text="getSubCookie">
+              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                <ast name="DSTRING" text="a"/>
+                <ast name="DSTRING" text="c"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="tyext"/>
+          <ast name="CONCAT" text="CONCAT">
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="CONCAT" text="CONCAT">
+                <ast name="INDEX_OP" text="INDEX_OP">
+                  <ast name="IDENTIFIER" text="_SERVER"/>
+                  <ast name="DSTRING" text="HTTP_POST_VARS"/>
+                </ast>
+                <ast name="INDEX_OP" text="INDEX_OP">
+                  <ast name="IDENTIFIER" text="HTTP_COOKIE_VARS"/>
+                  <ast name="DSTRING" text="some_cookie"/>
+                </ast>
+              </ast>
+              <ast name="INDEX_OP" text="INDEX_OP">
+                <ast name="IDENTIFIER" text="HTTP_POST_VARS"/>
+                <ast name="DSTRING" text="a"/>
+              </ast>
+            </ast>
+            <ast name="METHOD_CALL" text="getSubForm">
+              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                <ast name="DSTRING" text="b"/>
+                <ast name="DINT" text="0"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="hasParams"/>
+          <ast name="OR" text="OR">
+            <ast name="OR" text="OR">
+              <ast name="NEQ" text="NEQ">
+                <ast name="METHOD_CALL" text="strpos">
+                  <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                    <ast name="INDEX_OP" text="INDEX_OP">
+                      <ast name="IDENTIFIER" text="HTTP_COOKIE_VARS"/>
+                      <ast name="DSTRING" text="a"/>
+                    </ast>
+                    <ast name="DSTRING" text="&amp;"/>
+                  </ast>
+                </ast>
+                <ast name="DINT" text="0"/>
+              </ast>
+              <ast name="GT" text="GT">
+              <ast name="METHOD_CALL" text="substr_count">
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="INDEX_OP" text="INDEX_OP">
+                    <ast name="IDENTIFIER" text="HTTP_POST_VARS"/>
+                    <ast name="DSTRING" text="a"/>
+                  </ast>
+                  <ast name="DSTRING" text="&amp;"/>
+                </ast>
+              </ast>
+                <ast name="DINT" text="0"/>
+              </ast>
+            </ast>
+            <ast name="EQ" text="=">
+                <ast name="METHOD_CALL" text="substr_count">
+                  <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                    <ast name="INDEX_OP" text="INDEX_OP">
+                      <ast name="IDENTIFIER" text="HTTP_GET_VARS"/>
+                      <ast name="DSTRING" text="a"/>
+                    </ast>
+                    <ast name="DSTRING" text="&amp;"/>
+                  </ast>
+                </ast>
+              <ast name="DINT" text="1"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </vb>
+</asp>

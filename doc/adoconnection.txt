@@ -1,0 +1,395 @@
+Connection Object Properties, Methods, and Events
+Properties/Collections
+
+Attributes Property
+Indicates one or more characteristics of an object.
+Settings and Return Values
+
+Sets or returns a Long value.
+
+For a Connection object, the Attributes property is read/write, and its value can be the sum of one or more XactAttributeEnum values. The default is zero (0).
+
+For a Parameter object, the Attributes property is read/write, and its value can be the sum of any one or more ParameterAttributesEnum values. The default is adParamSigned.
+
+For a Field object, the Attributes property can be the sum of one or more FieldAttributeEnum values. It is normally read-only, However, for new Field objects that have been appended to the Fields collection of a Record, Attributes is read/write only after the Value property for the Field has been specified and the new Field has been successfully added by the data provider by calling the Update method of the Fields collection.
+
+For a Property object, the Attributes property is read-only, and its value can be the sum of any one or more PropertyAttributesEnum values.
+Remarks
+
+Use the Attributes property to set or return characteristics of Connection objects, Parameter objects, Field objects, or Property objects.
+
+When you set multiple attributes, you can sum the appropriate constants. If you set the property value to a sum including incompatible constants, an error occurs.
+
+    Remote Data Service Usage   This property is not available on a client-side Connection object.
+
+CommandTimeout Property
+Indicates how long to wait while executing a command before terminating the attempt and generating an error.
+Settings and Return Values
+
+Sets or returns a Long value that indicates, in seconds, how long to wait for a command to execute. Default is 30.
+Remarks
+
+Use the CommandTimeout property on a Connection object or Command object to allow the cancellation of an Execute method call, due to delays from network traffic or heavy server use. If the interval set in the CommandTimeout property elapses before the command completes execution, an error occurs and ADO cancels the command. If you set the property to zero, ADO will wait indefinitely until the execution is complete. Make sure the provider and data source to which you are writing code support the CommandTimeout functionality.
+
+The CommandTimeout setting on a Connection object has no effect on the CommandTimeout setting on a Command object on the same Connection; that is, the Command object's CommandTimeout property does not inherit the value of the Connection object's CommandTimeout value.
+
+On a Connection object, the CommandTimeout property remains read/write after the Connection is opened.
+ConnectionString Property
+Indicates the information used to establish a connection to a data source.
+Settings and Return Values
+
+Sets or returns a String value.
+Remarks
+
+Use the ConnectionString property to specify a data source by passing a detailed connection string containing a series of argument = value statements separated by semicolons.
+
+ADO supports five arguments for the ConnectionString property; any other arguments pass directly to the provider without any processing by ADO. The arguments ADO supports are as follows.
+Argument 	Description
+Provider= 	Specifies the name of a provider to use for the connection.
+File Name= 	Specifies the name of a provider-specific file (for example, a persisted data source object) containing preset connection information.
+Remote Provider= 	Specifies the name of a provider to use when opening a client-side connection. (Remote Data Service only.)
+Remote Server= 	Specifies the path name of the server to use when opening a client-side connection. (Remote Data Service only.)
+URL= 	Specifies the connection string as an absolute URL identifying a resource, such as a file or directory.
+
+After you set the ConnectionString property and open the Connection object, the provider may alter the contents of the property, for example, by mapping the ADO-defined argument names to their provider equivalents.
+
+The ConnectionString property automatically inherits the value used for the ConnectionString argument of the Open method, so you can override the current ConnectionString property during the Open method call.
+
+Because the File Name argument causes ADO to load the associated provider, you cannot pass both the Provider and File Name arguments.
+
+The ConnectionString property is read/write when the connection is closed and read-only when it is open.
+
+Duplicates of an argument in the ConnectionString property are ignored. The last instance of any argument is used.
+
+    Remote Data Service Usage   When used on a client-side Connection object, the ConnectionString property can include only the Remote Provider and Remote Server parameters.
+
+
+ConnectionTimeout Property
+Indicates how long to wait while establishing a connection before terminating the attempt and generating an error.
+Settings and Return Values
+
+Sets or returns a Long value that indicates, in seconds, how long to wait for the connection to open. Default is 15.
+Remarks
+
+Use the ConnectionTimeout property on a Connection object if delays from network traffic or heavy server use make it necessary to abandon a connection attempt. If the time from the ConnectionTimeout property setting elapses prior to the opening of the connection, an error occurs and ADO cancels the attempt. If you set the property to zero, ADO will wait indefinitely until the connection is opened. Make sure the provider to which you are writing code supports the ConnectionTimeout functionality.
+
+The ConnectionTimeout property is read/write when the connection is closed and read-only when it is open.
+
+CursorLocation Property
+Indicates the location of the cursor service.
+Settings And Return Values
+
+Sets or returns a Long value that can be set to one of the CursorLocationEnum values.
+Remarks
+
+This property allows you to choose between various cursor libraries accessible to the provider. Usually, you can choose between using a client-side cursor library or one that is located on the server.
+
+This property setting affects connections established only after the property has been set. Changing the CursorLocation property has no effect on existing connections.
+
+Cursors returned by the Execute method inherit this setting. Recordset objects will automatically inherit this setting from their associated connections.
+
+This property is read/write on a Connection or a closed Recordset, and read-only on an open Recordset.
+
+
+DefaultDatabase Property
+Indicates the default database for a Connection object.
+Settings and Return Values
+
+Sets or returns a String value that evaluates to the name of a database available from the provider.
+Remarks
+
+Use the DefaultDatabase property to set or return the name of the default database on a specific Connection object.
+
+If there is a default database, SQL strings may use an unqualified syntax to access objects in that database. To access objects in a database other than the one specified in the DefaultDatabase property, you must qualify object names with the desired database name. Upon connection, the provider will write default database information to the DefaultDatabase property. Some providers allow only one database per connection, in which case you cannot change the DefaultDatabase property.
+
+Some data sources and providers may not support this feature, and may return an error or an empty string.
+
+Errors Collection
+Remarks
+
+Any operation involving ADO objects can generate one or more provider errors. As each error occurs, one or more Error objects can be placed in the Errors collection of the Connection object. When another ADO operation generates an error, the Errors collection is cleared, and the new set of Error objects can be placed in the Errors collection.
+
+Each Error object represents a specific provider error, not an ADO error. ADO errors are exposed to the run-time exception-handling mechanism. For example, in Microsoft Visual Basic, the occurrence of an ADO-specific error will trigger an onError event and appear in the Err object.
+
+ADO operations that don't generate an error have no effect on the Errors collection. Use the Clear method to manually clear the Errors collection.
+
+The set of Error objects in the Errors collection describes all errors that occurred in response to a single statement. Enumerating the specific errors in the Errors collection enables your error-handling routines to more precisely determine the cause and origin of an error, and take appropriate steps to recover.
+
+Some properties and methods return warnings that appear as Error objects in the Errors collection but do not halt a program's execution. Before you call the Resync, UpdateBatch, or CancelBatch methods on a Recordset object, the Open method on a Connection object, or set the Filter property on a Recordset object, call the Clear method on the Errors collection. That way you can read the Count property of the Errors collection to test for returned warnings.
+
+    Note   See the Error object topic for a more detailed explanation of the way a single ADO operation can generate multiple errors.
+
+This section contains the following topic.
+
+    * Errors Collection Properties, Methods, and Events
+
+IsolationLevel Property
+Indicates the level of isolation for a Connection object.
+Settings and Return Values
+
+Sets or returns an IsolationLevelEnum value. The default is adXactReadCommitted.
+Remarks
+
+Use the IsolationLevel property to set the isolation level of a Connection object. The setting does not take effect until the next time you call the BeginTrans method. If the level of isolation you request is unavailable, the provider may select the next greater level of isolation without updating the IsolationLevel property.
+
+The IsolationLevel property is read/write.
+
+    Remote Data Service Usage   When used on a client-side Connection object, the IsolationLevel property can be set only to adXactUnspecified.
+
+    Because users are working with disconnected Recordset objects on a client-side cache, there may be multiuser issues. For instance, when two different users try to update the same record, Remote Data Service simply allows the user who updates the record first to "win." The second user's update request will fail with an error.
+
+Mode Property
+Indicates the available permissions for modifying data in a Connection, Record, or Stream object.
+Settings and Return Values
+
+Sets or returns a ConnectModeEnum value. The default value for a Connection is adModeUnknown. The default value for a Record object is adModeRead. The default value for a Stream associated with an underlying source (opened with a URL as the source, or as the default Stream of a Record) is adModeRead. The default value for a Stream not associated with an underlying source (instantiated in memory) is adModeUnknown.
+Remarks
+
+Use the Mode property to set or return the access permissions in use by the provider on the current connection. You can set the Mode property only when the Connection object is closed.
+
+For a Stream object, if the access mode is not specified, it is inherited from the source used to open the Stream object. For example, if a Stream is opened from a Record object, by default it is opened in the same mode as the Record.
+
+This property is read/write while the object is closed and read-only while the object is open.
+
+
+Properties Collection
+Remarks
+
+Some ADO objects have a Properties collection made up of Property objects. Each Property object corresponds to a characteristic of the ADO object specific to the provider.
+
+    Note   See the Property object topic for a more detailed explanation of how to use Property objects.
+
+
+Provider Property
+Indicates the name of the provider for a Connection object.
+Settings and Return Values
+
+Sets or returns a String value that indicates the provider name.
+Remarks
+
+Use the Provider property to set or return the name of the provider for a connection. This property can also be set by the contents of the ConnectionString property or the ConnectionString argument of the Open method; however, specifying a provider in more than one place while calling the Open method can have unpredictable results. If no provider is specified, the property will default to MSDASQL (Microsoft OLE DB Provider for ODBC).
+
+The Provider property is read/write when the connection is closed and read-only when it is open. The setting does not take effect until you either open the Connection object or access the Properties collection of the Connection object. If the setting is not valid, an error occurs.
+
+State Property
+Indicates for all applicable objects whether the state of the object is open or closed.
+
+Indicates for all applicable objects executing an asynchronous method, whether the current state of the object is connecting, executing, or retrieving.
+Return Value
+
+Returns a Long value that can be an ObjectStateEnum value. The default value is adStateClosed.
+Remarks
+
+You can use the State property to determine the current state of a given object at any time.
+
+The object's State property can have a combination of values. For example, if a statement is executing, this property will have a combined value of adStateOpen and adStateExecuting.
+
+The State property is read-only.
+
+Version Property
+Indicates the ADO version number.
+Return Value
+
+Returns a String value that indicates the version.
+Remarks
+
+Use the Version property to return the version number of the ADO implementation.
+
+The version of the provider will be available as a dynamic property in the 
+
+Methods
+
+BeginTrans, CommitTrans, and RollbackTrans Methods
+These transaction methods manage transaction processing within a Connection object as follows:
+
+    * BeginTrans ? Begins a new transaction.
+    * CommitTrans ? Saves any changes and ends the current transaction. It may also start a new transaction.
+    * RollbackTrans ? Cancels any changes made during the current transaction and ends the transaction. It may also start a new transaction.
+
+Syntax
+
+level = object.BeginTrans()
+object.BeginTrans
+object.CommitTrans
+object.RollbackTrans
+
+Return Value
+
+BeginTrans can be called as a function that returns a Long variable indicating the nesting level of the transaction.
+Parameters
+
+object
+    A Connection object.
+
+Connection
+
+Use these methods with a Connection object when you want to save or cancel a series of changes made to the source data as a single unit. For example, to transfer money between accounts, you subtract an amount from one and add the same amount to the other. If either update fails, the accounts no longer balance. Making these changes within an open transaction ensures that either all or none of the changes go through.
+
+    Note   Not all providers support transactions. Verify that the provider-defined property "Transaction DDL" appears in the Connection object's Properties collection, indicating that the provider supports transactions. If the provider does not support transactions, calling one of these methods will return an error.
+
+After you call the BeginTrans method, the provider will no longer instantaneously commit changes you make until you call CommitTrans or RollbackTrans to end the transaction.
+
+For providers that support nested transactions, calling the BeginTrans method within an open transaction starts a new, nested transaction. The return value indicates the level of nesting: a return value of "1" indicates you have opened a top-level transaction (that is, the transaction is not nested within another transaction), "2" indicates that you have opened a second-level transaction (a transaction nested within a top-level transaction), and so forth. Calling CommitTrans or RollbackTrans affects only the most recently opened transaction; you must close or roll back the current transaction before you can resolve any higher-level transactions.
+
+Calling the CommitTrans method saves changes made within an open transaction on the connection and ends the transaction. Calling the RollbackTrans method reverses any changes made within an open transaction and ends the transaction. Calling either method when there is no open transaction generates an error.
+
+Depending on the Connection object's Attributes property, calling either the CommitTrans or RollbackTrans methods may automatically start a new transaction. If the Attributes property is set to adXactCommitRetaining, the provider automatically starts a new transaction after a CommitTrans call. If the Attributes property is set to adXactAbortRetaining, the provider automatically starts a new transaction after a RollbackTrans call.
+
+
+Cancel Method
+Cancels execution of a pending, asynchronous method call.
+Syntax
+
+object.Cancel
+
+Remarks
+
+Use the Cancel method to terminate execution of an asynchronous method call (that is, a method invoked with the adAsyncConnect, adAsyncExecute, or adAsyncFetch option).
+
+The following table shows what task is terminated when you use the Cancel method on a particular type of object.
+
+If object is a 	The last asynchronous call to this method is terminated
+Command 	Execute
+Connection 	Execute or Open
+Record 	CopyRecord, DeleteRecord, MoveRecord, or Open
+Recordset 	Open
+Stream 	Open
+
+Close Method
+Closes an open object and any dependent objects.
+Syntax
+
+object.Close
+
+Remarks
+
+Use the Close method to close a Connection, a Record, a Recordset, or a Stream object to free any associated system resources. Closing an object does not remove it from memory; you can change its property settings and open it again later. To completely eliminate an object from memory, set the object variable to Nothing (in Visual Basic) after closing the object.
+
+Connection
+
+Using the Close method to close a Connection object also closes any active Recordset objects associated with the connection. A Command object associated with the Connection object you are closing will persist, but it will no longer be associated with a Connection object; that is, its ActiveConnection property will be set to Nothing. Also, the Command object's Parameters collection will be cleared of any provider-defined parameters.
+
+You can later call the Open method to re-establish the connection to the same, or another, data source. While the Connection object is closed, calling any methods that require an open connection to the data source generates an error.
+
+Closing a Connection object while there are open Recordset objects on the connection rolls back any pending changes in all of the Recordset objects. Explicitly closing a Connection object (calling the Close method) while a transaction is in progress generates an error. If a Connection object falls out of scope while a transaction is in progress, ADO automatically rolls back the transaction.
+
+Recordset, Record, Stream
+
+Using the Close method to close a Recordset, Record, or Stream object releases the associated data and any exclusive access you may have had to the data through this particular object. You can later call the Open method to reopen the object with the same, or modified, attributes.
+
+While a Recordset object is closed, calling any methods that require a live cursor generates an error.
+
+If an edit is in progress while in immediate update mode, calling the Close method generates an error; instead, call the Update or CancelUpdate method first. If you close the Recordset object while in batch update mode, all changes since the last UpdateBatch call are lost.
+
+If you use the Clone method to create copies of an open Recordset object, closing the original or a clone does not affect any of the other copies.
+
+Execute Method (ADO Connection)
+Executes the specified query, SQL statement, stored procedure, or provider-specific text.
+Syntax
+
+For a non?row-returning command string:
+
+connection.Execute CommandText, RecordsAffected, Options 
+
+For a row-returning command string:
+
+Set recordset = connection.Execute (CommandText, RecordsAffected, Options)
+
+Return Value
+
+Returns a Recordset object reference.
+Parameters
+
+CommandText
+    A String value that contains the SQL statement, stored procedure, a URL, or provider-specific text to execute. Optionally, table names can be used but only if the provider is SQL aware. For example if a table name of "Customers" is used, ADO will automatically prepend the standard SQL Select syntax to form and pass "SELECT * FROM Customers" as a T-SQL statement to the provider.
+RecordsAffected
+    Optional. A Long variable to which the provider returns the number of records that the operation affected.
+Options
+    Optional. A Long value that indicates how the provider should evaluate the CommandText argument. Can be a bitmask of one or more CommandTypeEnum or ExecuteOptionEnum values.
+
+    Note   Use the ExecuteOptionEnum value adExecuteNoRecords to improve performance by minimizing internal processing.
+
+    Do not use adExecuteStream with the Execute method of a Connection object.
+
+    Do not use the CommandTypeEnum values of adCmdFile or adCmdTableDirect with Execute. These values can only be used as options with the Open and Requery methods of a Recordset.
+
+Remarks
+
+Using the Execute method on a Connection object executes whatever query you pass to the method in the CommandText argument on the specified connection. If the CommandText argument specifies a row-returning query, any results that the execution generates are stored in a new Recordset object. If the command is not intended to return results (for example, an SQL UPDATE query) the provider returns Nothing as long as the option adExecuteNoRecords is specified; otherwise Execute returns a closed Recordset.
+
+The returned Recordset object is always a read-only, forward-only cursor. If you need a Recordset object with more functionality, first create a Recordset object with the desired property settings, then use the Recordset object's Open method to execute the query and return the desired cursor type.
+
+The contents of the CommandText argument are specific to the provider and can be standard SQL syntax or any special command format that the provider supports.
+
+An ExecuteComplete event will be issued when this operation concludes.
+
+    Note   URLs using the http scheme will automatically invoke the Microsoft OLE DB Provider for Internet Publishing. For more information, see Absolute and Relative URLs.
+
+
+Open Method (ADO Connection)
+Opens a connection to a data source.
+Syntax
+
+connection.Open ConnectionString, UserID, Password, Options
+
+Parameters
+
+ConnectionString
+    Optional. A String value that contains connection information. See the ConnectionString property for details on valid settings.
+UserID
+    Optional. A String value that contains a user name to use when establishing the connection.
+Password
+    Optional. A String value that contains a password to use when establishing the connection.
+Options
+    Optional. A ConnectOptionEnum value that determines whether this method should return after (synchronously) or before (asynchronously) the connection is established.
+
+Remarks
+
+Using the Open method on a Connection object establishes the physical connection to a data source. After this method successfully completes, the connection is live and you can issue commands against it and process the results.
+
+Use the optional ConnectionString argument to specify either a connection string containing a series of argument = value statements separated by semicolons, or a file or directory resource identified with a URL. The ConnectionString property automatically inherits the value used for the ConnectionString argument. Therefore, you can either set the ConnectionString property of the Connection object before opening it, or use the ConnectionString argument to set or override the current connection parameters during the Open method call.
+
+If you pass user and password information both in the ConnectionString argument and in the optional UserID and Password arguments, the UserID and Password arguments will override the values specified in ConnectionString.
+
+When you have concluded your operations over an open Connection, use the Close method to free any associated system resources. Closing an object does not remove it from memory; you can change its property settings and use the Open method to open it again later. To completely eliminate an object from memory, set the object variable to Nothing.
+
+    Remote Data Service Usage   When used on a client-side Connection object, the Open method doesn't actually establish a connection to the server until a Recordset is opened on the Connection object.
+
+    Note   URLs using the http scheme will automatically invoke the Microsoft OLE DB Provider for Internet Publishing. For more information, see Absolute and Relative URLs.
+
+
+OpenSchema Method
+Obtains database schema information from the provider.
+Syntax
+
+Set recordset = connection.OpenSchema (QueryType, Criteria, SchemaID)
+
+Return Values
+
+Returns a Recordset object that contains schema information. The Recordset will be opened as a read-only, static cursor. The QueryType determines what columns appear in the Recordset.
+Parameters
+
+QueryType
+    Any SchemaEnum value that represents the type of schema query to run.
+Criteria
+    Optional. An array of query constraints for each QueryType option, as listed in SchemaEnum.
+SchemaID
+    The GUID for a provider-schema query not defined by the OLE DB specification. This parameter is required if QueryType is set to adSchemaProviderSpecific; otherwise, it is not used.
+
+Remarks
+
+The OpenSchema method returns self-descriptive information about the data source, such as what tables are in the data source, the columns in the tables, and the data types supported.
+
+The QueryType argument is a GUID that indicates the columns (schemas) returned. The OLE DB specification has a full list of schemas.
+
+The Criteria argument limits the results of a schema query. Criteria specifies an array of values that must occur in a corresponding subset of columns, called constraint columns, in the resulting Recordset.
+
+The constant adSchemaProviderSpecific is used for the QueryType argument if the provider defines its own nonstandard schema queries outside those listed above. When this constant is used, the SchemaID argument is required to pass the GUID of the schema query to execute. If QueryType is set to adSchemaProviderSpecific but SchemaID is not provided, an error will result.
+
+Providers are not required to support all of the OLE DB standard schema queries. Specifically, only adSchemaTables, adSchemaColumns, and adSchemaProviderTypes are required by the OLE DB specification. However, the provider is not required to support the Criteria constraints listed above for those schema queries.
+
+    Remote Data Service Usage   The OpenSchema method is not available on a client-side Connection object.
+
+    Note   In Visual Basic, columns that have a four-byte unsigned integer (DBTYPE UI4) in the Recordset returned from the OpenSchema method on the Connection object cannot be compared to other variables. For more information about OLE DB data types, see Chapter 13: Data Types in OLE DB and Appendix A: Data Types of the Microsoft OLE DB Programmer's Reference.
+
+    Visual C/C++ Users    When not using client side cursors, retrieving the "ORDINAL_POSITION" of a column schema in ADO returns a variant of type VT_R8 in MDAC 2.7 while the type of used in MDAC 2.6 was VT_I4. Programs written for MDAC 2.6 and that only look for a variant returned of type VT_I4 would get a zero for every ordinal if run under MDAC 2.7 and later without modification. This change was made because the data type that OLE DB returns is DBTYPE_UI4, and in the signed VT_I4 type there is not enough room to contain all possible values without possibly truncation occurring and thereby causing a loss of data.

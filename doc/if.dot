@@ -1,0 +1,10 @@
+digraph L0 {
+        size = "4,2";
+        ordering=out;
+        node [shape = plaintext];
+        EXPR[label=EXPR];
+        STAT [label=statements];
+        if -> {EXPR STAT else};
+        ESTAT [label=statements];
+        else -> ESTAT;
+}

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <vb>
+    <original>
+      <ast name="SUB" text="sub1">
+        <ast name="SUB_CALL" text="Sub Call">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="Response"/>
+            <ast name="IDENTIFIER" text="write"/>
+          </ast>
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="DSTRING" text="Hello from sub1&lt;br&gt;"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="SUB" text="sub2">
+        <ast name="SUB_CALL" text="Sub Call">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="Response"/>
+            <ast name="IDENTIFIER" text="write"/>
+          </ast>
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text="&amp;">
+              <ast name="CONCAT" text="&amp;">
+                <ast name="DSTRING" text="sub2 says:"/>
+                <ast name="IDENTIFIER" text="msg"/>
+              </ast>
+              <ast name="DSTRING" text="&lt;br&gt;"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="SUB" text="sub3">
+        <ast name="IF_ELSE" text="IfThenElse">
+          <ast name="IF" text="if">
+            <ast name="EXPR" text="EXPR">
+              <ast name="EQ" text="=">
+                <ast name="IDENTIFIER" text="nVal"/>
+                <ast name="DINT" text="100"/>
+              </ast>
+            </ast>
+            <ast name="EXIT" text="exit">
+              <ast name="SUB" text="sub"/>
+            </ast>
+          </ast>
+          <ast name="ELSE" text="else">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="nVal"/>
+                <ast name="PLUS" text="+">
+                  <ast name="IDENTIFIER" text="nVal"/>
+                  <ast name="DINT" text="2"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="SUB_CALL" text="Sub Call">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="Response"/>
+            <ast name="IDENTIFIER" text="write"/>
+          </ast>
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text="&amp;">
+              <ast name="CONCAT" text="&amp;">
+                <ast name="CONCAT" text="&amp;">
+                  <ast name="CONCAT" text="&amp;">
+                    <ast name="DSTRING" text="sub3 says:"/>
+                    <ast name="IDENTIFIER" text="msg"/>
+                  </ast>
+                  <ast name="DSTRING" text=" and nVal is:"/>
+                </ast>
+                <ast name="IDENTIFIER" text="nVal"/>
+              </ast>
+              <ast name="DSTRING" text="&lt;br&gt;"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="SUB" text="sub4"/>
+    </original>
+    <translated>
+      <ast name="FUNCTION" text="sub1">
+        <ast name="EXPR" text="EXPR">
+          <ast name="METHOD_CALL" text="print">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="Hello from sub1&lt;br&gt;"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="sub2">
+        <ast name="ARGLIST" text="ARGLIST">
+          <ast name="IDENTIFIER" text="msg"/>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="METHOD_CALL" text="print">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="CONCAT" text="CONCAT">
+                <ast name="CONCAT" text="CONCAT">
+                  <ast name="DSTRING" text="sub2 says:"/>
+                  <ast name="IDENTIFIER" text="msg"/>
+                </ast>
+                <ast name="DSTRING" text="&lt;br&gt;"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="sub3">
+        <ast name="ARGLIST" text="ARGLIST">
+          <ast name="IDENTIFIER" text="msg"/>
+          <ast name="BYREF" text="nVal"/>
+        </ast>
+        <ast name="IF_ELSE" text="IfThenElse">
+          <ast name="IF" text="if">
+            <ast name="EXPR" text="EXPR">
+              <ast name="EQ" text="=">
+                <ast name="IDENTIFIER" text="nVal"/>
+                <ast name="DINT" text="100"/>
+              </ast>
+            </ast>
+            <ast name="RETURN" text="return"/>
+          </ast>
+          <ast name="ELSE" text="else">
+            <ast name="EXPR" text="EXPR">
+              <ast name="PLUS_ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="nVal"/>
+                <ast name="DINT" text="2"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="METHOD_CALL" text="print">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="CONCAT" text="CONCAT">
+                <ast name="CONCAT" text="CONCAT">
+                  <ast name="CONCAT" text="CONCAT">
+                    <ast name="CONCAT" text="CONCAT">
+                      <ast name="DSTRING" text="sub3 says:"/>
+                      <ast name="IDENTIFIER" text="msg"/>
+                    </ast>
+                    <ast name="DSTRING" text=" and nVal is:"/>
+                  </ast>
+                  <ast name="IDENTIFIER" text="nVal"/>
+                </ast>
+                <ast name="DSTRING" text="&lt;br&gt;"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="sub4"/>
+    </translated>
+  </vb>
+</asp>

@@ -1,0 +1,11 @@
+function Point(x, y) {
+    this.x = x;
+    this.y = y;
+    this.getX = _getX;
+}
+
+function _getX() {
+    return this.x;
+}
+
+position = new Point(10, 30);

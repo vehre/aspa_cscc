@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <js>
+    <original>
+      <ast name="VAR" text="var">
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="NUM_INT" text="20"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="VAR" text="var">
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="b"/>
+            <ast name="NUM_INT" text="30"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="func">
+        <ast name="SLIST" text="{">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="c"/>
+              <ast name="NUM_INT" text="20"/>
+            </ast>
+          </ast>
+          <ast name="VAR" text="var">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="e"/>
+                <ast name="UNARY_MINUS" text="-">
+                  <ast name="NUM_INT" text="1"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="IDENTIFIER" text="h"/>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="h"/>
+              <ast name="NUM_INT" text="1"/>
+            </ast>
+          </ast>
+          <ast name="FUNCTION" text="$$$$0">
+            <ast name="SLIST" text="{">
+              <ast name="RETURN" text="return">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="PLUS" text="+">
+                    <ast name="PLUS" text="+">
+                      <ast name="IDENTIFIER" text="l"/>
+                      <ast name="IDENTIFIER" text="m"/>
+                    </ast>
+                    <ast name="IDENTIFIER" text="postDecl"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="VAR" text="var">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="postDecl"/>
+                <ast name="NUM_INT" text="30"/>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="METHOD_CALL" text="(">
+              <ast name="IDENTIFIER" text="inFunc"/>
+              <ast name="ELIST" text="ELIST">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="NUM_INT" text="2"/>
+                </ast>
+                <ast name="EXPR" text="EXPR">
+                  <ast name="NUM_INT" text="3"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="RETURN" text="return">
+            <ast name="EXPR" text="EXPR">
+              <ast name="PLUS" text="+">
+                <ast name="STAR" text="*">
+                  <ast name="IDENTIFIER" text="a"/>
+                  <ast name="IDENTIFIER" text="b"/>
+                </ast>
+                <ast name="DIV" text="/">
+                  <ast name="IDENTIFIER" text="c"/>
+                  <ast name="LPAREN" text="(">
+                    <ast name="PLUS" text="+">
+                      <ast name="IDENTIFIER" text="e"/>
+                      <ast name="IDENTIFIER" text="h"/>
+                    </ast>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="NUM_INT" text="20"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="NUM_INT" text="30"/>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="func">
+        <ast name="GLOBAL" text="GLOBAL">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="IDENTIFIER" text="c"/>
+        </ast>
+        <ast name="SLIST" text="{">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="c"/>
+              <ast name="NUM_INT" text="20"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="e"/>
+              <ast name="UNARY_MINUS" text="-">
+                <ast name="NUM_INT" text="1"/>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="h"/>
+              <ast name="NUM_INT" text="1"/>
+            </ast>
+          </ast>
+          <ast name="FUNCTION" text="inFunc">
+            <ast name="ELIST" text="ELIST">
+              <ast name="IDENTIFIER" text="l"/>
+              <ast name="IDENTIFIER" text="m"/>
+            </ast>
+            <ast name="SLIST" text="{">
+              <ast name="RETURN" text="return">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="PLUS" text="+">
+                    <ast name="PLUS" text="+">
+                      <ast name="IDENTIFIER" text="l"/>
+                      <ast name="IDENTIFIER" text="m"/>
+                    </ast>
+                    <ast name="IDENTIFIER" text="postDecl"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="postDecl"/>
+              <ast name="NUM_INT" text="30"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="METHOD_CALL" text="inFunc">
+              <ast name="ELIST" text="ARGLIST_VALUES">
+                <ast name="NUM_INT" text="2"/>
+                <ast name="NUM_INT" text="3"/>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="RETURN" text="return">
+            <ast name="EXPR" text="EXPR">
+              <ast name="PLUS" text="+">
+                <ast name="STAR" text="*">
+                  <ast name="IDENTIFIER" text="a"/>
+                  <ast name="IDENTIFIER" text="b"/>
+                </ast>
+                <ast name="DIV" text="/">
+                  <ast name="IDENTIFIER" text="c"/>
+                  <ast name="LPAREN" text="(">
+                    <ast name="PLUS" text="+">
+                      <ast name="IDENTIFIER" text="e"/>
+                      <ast name="IDENTIFIER" text="h"/>
+                    </ast>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </js>
+</asp>

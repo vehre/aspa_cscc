@@ -1,0 +1,621 @@
+<!--
+    This file is part of Aspa.
+
+    Aspa is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    Aspa is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Aspa; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+-->
+<class name="ADORecordset" dependant="true">
+      <property name="AbsolutePage" type="DINT">
+          <arg type="DINT" />
+          <read>
+              <ast name="SKIP" />
+          </read>
+          <write>
+              <ast name="SKIP" />
+          </write>
+      </property>
+
+      <property name="AbsolutePosition" type="DINT">
+          <arg type="DINT" />
+          <read>
+              <ast name="PLUS">
+                  <ast name="DOT">
+                      <this />
+                      <ast name="METHOD_CALL" text="CurrentRow">
+                      </ast>
+                  </ast>
+                  <ast name="DINT" text="1" />
+              </ast>
+          </read>
+          <write>
+              <ast name="DOT">
+                  <this />
+                  <ast name="METHOD_CALL" text="Move">
+                      <ast name="ARGLIST_VALUES">
+                          <ast name="MINUS">
+                              <arg index="1" />
+                              <ast name="DINT" text="1" />
+                          </ast>
+                      </ast>
+                  </ast>
+              </ast>
+          </write>
+      </property>
+
+      <!--
+      <property name="ActiveCommand" type="ADOCommand">
+      </property>
+
+      <property name="ActiveConnection" type="ADOConnection">
+      </property>
+      -->
+
+      <property name="EOF" type="DBOOL">
+          <read>
+              <ast name="DOT">
+                  <this />
+                  <ast name="IDENTIFIER" text="EOF" />
+              </ast>
+          </read>
+      </property>
+
+      <property name="BOF" type="DBOOL">
+          <read>
+              <ast name="EQ">
+                  <ast name="DOT">
+                      <this />
+                      <ast name="METHOD_CALL" text="CurrentRow">
+                      </ast>
+                  </ast>
+                  <ast name="DINT" text="-1" />
+              </ast>
+          </read>
+      </property>
+
+      <property name="Bookmark" type="DINT">
+          <arg type="DINT" />
+          <read>
+              <ast name="PLUS">
+                  <ast name="DOT">
+                      <this />
+                      <ast name="METHOD_CALL" text="CurrentRow">
+                      </ast>
+                  </ast>
+                  <ast name="DINT" text="1" />
+              </ast>
+          </read>
+          <write>
+              <ast name="DOT">
+                  <this />
+                  <ast name="METHOD_CALL" text="Move">
+                      <ast name="ARGLIST_VALUES">
+                          <ast name="MINUS">
+                              <arg index="1" />
+                              <ast name="DINT" text="1" />
+                          </ast>
+                      </ast>
+                  </ast>
+              </ast>
+          </write>
+      </property>
+
+      <property name="CacheSize" type="DINT">
+        <arg type="DINT" />
+        <read>
+            <ast name="UNSUPPORTED" />
+        </read>
+        <write>
+            <ast name="UNSUPPORTED" />
+        </write>
+      </property>
+
+      <property name="CursorLocation" type="DINT">
+        <arg type="DINT" />
+        <read>
+            <ast name="UNSUPPORTED" />
+        </read>
+        <write>
+            <ast name="UNSUPPORTED" />
+        </write>
+      </property>
+
+      <property name="CursorType" type="DINT">
+        <arg type="DINT" />
+        <read>
+            <ast name="UNSUPPORTED" />
+        </read>
+        <write>
+            <ast name="UNSUPPORTED" />
+        </write>
+      </property>
+
+      <property name="DataMember" type="DSTRING">
+        <arg type="DSTRING" />
+        <read>
+            <ast name="UNSUPPORTED" />
+        </read>
+        <write>
+            <ast name="UNSUPPORTED" />
+        </write>
+      </property>
+
+      <!--
+      <property name="DeleteCommand" type="ADOCommand">
+      </property>
+
+      <property name="EditMode" type="DINT">
+      </property>
+
+      <property name="Fields">
+      </property>
+
+      <property name="Filter">
+      </property>
+      -->
+
+      <property name="Index" type="DSTRING">
+        <arg type="DSTRING" />
+        <read>
+            <ast name="UNSUPPORTED" />
+        </read>
+        <write>
+            <ast name="UNSUPPORTED" />
+        </write>
+      </property>
+
+      <!--
+      <property name="InsertCommand" type="ADOCommand">
+      </property>
+
+      <property name="LockType" type="DINT">
+      </property>
+      -->
+
+      <property name="MarshalOptions" type="DINT">
+        <arg type="DINT" />
+        <read>
+            <ast name="UNSUPPORTED" />
+        </read>
+        <write>
+            <ast name="UNSUPPORTED" />
+        </write>
+      </property>
+
+      <!--
+      <property name="MaxRecords" type="DINT">
+          <arg type="DINT" />
+      </property>
+
+      <property name="PageCount" type="DINT">
+          <arg type="DINT" />
+      </property>
+
+      <property name="Properties" />
+      -->
+
+      <property name="RecordCount" type="DINT">
+          <read>
+              <ast name="DOT">
+                  <this />
+                  <ast name="METHOD_CALL" text="RecordCount">
+                  </ast>
+              </ast>
+          </read>
+      </property>
+
+      <!--
+      <property name="Sort" />
+      <property name="Sorce" />
+      <property name="State" />
+      <property name="StayInSync" />
+      <property name="UpdateCommand" type="ADOCommand" />
+      -->
+
+      <class name="ADORecordsetValue" dependant="true">
+          <property name="value" type="DSTRING" default="true">
+              <arg type="DSTRING" />
+              <read>
+                  <ast name="DOT">
+                      <this />
+                      <ast name="METHOD_CALL" text="Fields">
+                          <ast name="ARGLIST_VALUES">
+                              <arg index="1" />
+                          </ast>
+                      </ast>
+                  </ast>
+              </read>
+          </property>
+      </class>
+
+      <method name="value" default="true" type="OBJECT"
+      use="ADORecordsetValue" />
+
+      <method name="AddNew" type="VOID">
+          <ast name="SKIP" />
+      </method>
+
+      <method name="Cancel" type="VOID">
+          <ast name="SKIP" />
+      </method>
+
+
+      <method name="CancelBatch" type="VOID">
+          <args />
+          <ast name="SKIP" />
+      </method>
+
+
+      <method name="CancelUpdate" type="VOID">
+          <ast name="SKIP" />
+      </method>
+
+      <method name="CompareBookmarks" type="DINT">
+          <arg type="DINT" />
+          <arg type="DINT" />
+          <ast name="SKIP" />
+      </method>
+
+
+      <method name="Delete" type="VOID">
+          <args />
+          <ast name="SKIP" />
+      </method>
+
+      <method name="Find" type="VOID">
+          <arg type="DSTRING" />
+          <args />
+          <ast name="SKIP" />
+      </method>
+
+      <method name="Requery" type="VOID">
+          <ast name="SKIP" />
+      </method>
+
+      <method name="Save" type="VOID">
+          <ast name="SKIP" />
+      </method>
+
+      <method name="Seek" type="VOID">
+          <ast name="SKIP" />
+      </method>
+      <method name="SetAllRowStatus" type="VOID">
+          <arg type="DINT" />
+          <ast name="SKIP" />
+      </method>
+
+      <method name="Supports" type="DBOOL">
+          <arg type="DINT" />
+          <ast name="FALSE" />
+          <ast name="SKIP" />
+      </method>
+
+      <method name="Update" type="VOID">
+          <ast name="SKIP" />
+      </method>
+      <method name="UpdateBatch" type="VOID">
+          <ast name="SKIP" />
+      </method>
+
+      <method name="Clone" type="ADORecordset">
+          <args />
+          <ast name="TRANSLATE_ROOT">
+              <this />
+          </ast>
+      </method>
+
+      <method name="Close" type="VOID">
+          <ast name="DOT">
+              <this />
+              <ast name="METHOD_CALL" text="Close" />
+          </ast>
+      </method>
+
+      <method name="GetRows" type="LBRACK">
+          <ast name="DOT">
+              <this />
+              <ast name="METHOD_CALL" text="GetRows">
+              </ast>
+          </ast>
+      </method>
+
+      <method name="GetRows" type="LBRACK">
+          <arg type="DINT" />
+          <ast name="DOT">
+              <this />
+              <ast name="METHOD_CALL" text="GetRows">
+              </ast>
+          </ast>
+      </method>
+
+      <method name="GetRows" type="LBRACK">
+          <arg type="DINT" />
+          <arg type="ANY" />
+          <ast name="DOT">
+              <this />
+              <ast name="METHOD_CALL" text="Move">
+                  <ast name="ARGLIST_VALUES">
+                      <ast name="CAST" text="int">
+                          <arg index="2" />
+                      </ast>
+                  </ast>
+              </ast>
+          </ast>
+          <ast name="DOT">
+              <this />
+              <ast name="METHOD_CALL" text="GetRows">
+              </ast>
+          </ast>
+      </method>
+
+      <!--
+      Requires the implementation of a method which will
+      return an array containing a subset of the fields.
+      getSubsetRows(recordsetObject, mixed fields)
+      -->
+      <method name="GetRows" type="LBRACK">
+          <arg type="DINT" />
+          <arg type="ANY" />
+          <arg type="ANY" />
+          <ast name="DOT">
+              <this />
+              <ast name="METHOD_CALL" text="Move">
+                  <ast name="ARGLIST_VALUES">
+                      <ast name="CAST" text="int">
+                          <arg index="2" />
+                      </ast>
+                  </ast>
+              </ast>
+          </ast>
+          <ast name="METHOD_CALL" text="getSubsetRows">
+              <ast name="ARGLIST_VALUES">
+                  <this />
+                  <arg index="3" />
+              </ast>
+          </ast>
+      </method>
+
+      <!--
+      Requires the implementation which will handle
+      the conversion of the RecordSet into a string.
+      toString($recordsetObject, $numRows, $columnDelimeter, $RowDelimeter,$nullExpr) {
+          $count = 0;
+          $result = "";
+          while(!$recordsetObject.EOF && ($count < $numRows || $numRows == -1)) {
+              for ($i = 0; $i < $recordsetObject.FieldCount(); $i++) {
+                  $val = $recordsetObject.fields[i];
+                  if ($val == NULL) {
+                      $val = $nullExpr;
+                  }
+                  $result .= $i == 0 ? "" : $columnDelimeter;
+                  $result .= $val;
+              }
+              $result .= $RowDelimeter;
+              $recordsetObject.MoveNext();
+              $count++;
+          }
+          return $result;
+      }
+      -->
+      <method name="GetString" type="DSTRING">
+          <arg type="DINT" />
+          <ast name="METHOD_CALL" text="toString">
+              <ast name="ARGLIST_VALUES">
+                  <this />
+                  <ast name="DINT" text="-1" />
+                  <ast name="DSTRING" text="\t" />
+                  <ast name="DSTRING" text="\n" />
+                  <ast name="DSTRING" text="" />
+              </ast>
+          </ast>
+      </method>
+
+      <method name="GetString" type="DSTRING">
+          <arg type="DINT" />
+          <arg type="DINT" />
+          <ast name="METHOD_CALL" text="toString">
+              <ast name="ARGLIST_VALUES">
+                  <this />
+                  <arg index="2" />
+                  <ast name="DSTRING" text="\t" />
+                  <ast name="DSTRING" text="\n" />
+                  <ast name="DSTRING" text="" />
+              </ast>
+          </ast>
+      </method>
+
+      <method name="GetString" type="DSTRING">
+          <arg type="DINT" />
+          <arg type="DINT" />
+          <arg type="DSTRING" />
+          <ast name="METHOD_CALL" text="toString">
+              <ast name="ARGLIST_VALUES">
+                  <this />
+                  <arg index="2" />
+                  <arg index="3" />
+                  <ast name="DSTRING" text="\n" />
+                  <ast name="DSTRING" text="" />
+              </ast>
+          </ast>
+      </method>
+
+      <method name="GetString" type="DSTRING">
+          <arg type="DINT" />
+          <arg type="DINT" />
+          <arg type="DSTRING" />
+          <arg type="DSTRING" />
+          <ast name="METHOD_CALL" text="toString">
+              <ast name="ARGLIST_VALUES">
+                  <this />
+                  <arg index="2" />
+                  <arg index="3" />
+                  <arg index="4" />
+                  <ast name="DSTRING" text="" />
+              </ast>
+          </ast>
+      </method>
+
+      <method name="GetString" type="DSTRING">
+          <arg type="DINT" />
+          <arg type="DINT" />
+          <arg type="DSTRING" />
+          <arg type="DSTRING" />
+          <arg type="DSTRING" />
+          <ast name="METHOD_CALL" text="toString">
+              <ast name="ARGLIST_VALUES">
+                  <this />
+                  <arg index="2" />
+                  <arg index="3" />
+                  <arg index="4" />
+                  <arg index="5" />
+              </ast>
+          </ast>
+      </method>
+
+      <method name="Move" type="VOID">
+          <arg type="DINT" />
+          <ast name="DOT">
+              <this />
+              <ast name="METHOD_CALL" text="Move">
+                  <ast name="ARGLIST_VALUES">
+                      <ast name="PLUS">
+                          <ast name="DOT">
+                              <this />
+                              <ast name="METHOD_CALL" text="CurrentRow" />
+                          </ast>
+                          <arg index="1" />
+                      </ast>
+                  </ast>
+              </ast>
+          </ast>
+      </method>
+
+      <method name="Move" type="VOID">
+          <arg type="DINT" />
+          <arg type="DINT" />
+          <ast name="DOT">
+              <this />
+              <ast name="METHOD_CALL" text="Move">
+                  <ast name="ARGLIST_VALUES">
+                      <ast name="MINUS">
+                          <arg index="2" />
+                          <ast name="DINT" text="1" />
+                      </ast>
+                  </ast>
+              </ast>
+          </ast>
+          <ast name="DOT">
+              <this />
+              <ast name="METHOD_CALL" text="Move">
+                  <ast name="ARGLIST_VALUES">
+                      <ast name="PLUS">
+                          <ast name="DOT">
+                              <this />
+                              <ast name="METHOD_CALL" text="CurrentRow" />
+                          </ast>
+                          <arg index="1" />
+                      </ast>
+                  </ast>
+              </ast>
+          </ast>
+      </method>
+
+      <method name="MoveFirst" type="VOID">
+          <ast name="DOT">
+              <this />
+              <ast name="METHOD_CALL" text="MoveFirst" />
+          </ast>
+      </method>
+
+      <method name="MoveLast" type="VOID">
+          <ast name="DOT">
+              <this />
+              <ast name="METHOD_CALL" text="MoveLast" />
+          </ast>
+      </method>
+
+      <method name="MoveNext" type="VOID">
+          <ast name="DOT">
+              <this />
+              <ast name="METHOD_CALL" text="MoveNext" />
+          </ast>
+      </method>
+
+      <method name="MovePrevious" type="VOID">
+          <ast name="DOT">
+              <this />
+              <ast name="METHOD_CALL" text="Move">
+                  <ast name="ARGLIST_VALUES">
+                      <ast name="MINUS">
+                          <ast name="DOT">
+                              <this />
+                              <ast name="METHOD_CALL" text="CurrentRow" />
+                          </ast>
+                          <arg index="1" />
+                      </ast>
+                  </ast>
+              </ast>
+          </ast>
+      </method>
+
+      <method name="NextRecordset" type="ADORecordset">
+          <args />
+          <ast name="DOT">
+              <this />
+              <ast name="METHOD_CALL" text="NextRecordSet" />
+          </ast>
+          <this />
+      </method>
+
+      <method name="Open" type="VOID">
+          <arg type="DSTRING" />
+          <arg type="ADOConnection" />
+          <ast name="ASSIGN">
+              <this />
+              <ast name="DOT">
+                  <arg index="2" />
+                  <ast name="METHOD_CALL" text="Execute">
+                      <ast name="ARGLIST_VALUES">
+                          <arg index="1" />
+                      </ast>
+                  </ast>
+              </ast>
+          </ast>
+      </method>
+
+      <method name="Open" type="VOID">
+          <arg type="DSTRING" />
+          <arg type="DSTRING" />
+          <ast name="ASSIGN">
+              <ast name="IDENTIFIER" text="tmpcon" />
+              <ast name="METHOD_CALL" text="initConnection">
+                  <ast name="ARGLIST_VALUES">
+                      <arg index="2" />
+                 </ast>
+              </ast>
+          </ast>
+          <ast name="EXPR">
+              <ast name="ASSIGN">
+                  <this />
+                  <ast name="DOT">
+                      <ast name="IDENTIFIER" text="tmpcon" />
+                      <ast name="METHOD_CALL" text="Execute">
+                          <ast name="ARGLIST_VALUES">
+                              <arg index="1" />
+                          </ast>
+                      </ast>
+                  </ast>
+              </ast>
+          </ast>
+      </method>
+</class>

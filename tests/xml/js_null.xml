@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <js>
+    <original>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="STRING_LITERAL" text="HEllo"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="z"/>
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="b"/>
+            <ast name="IDENTIFIER" text="length"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="NULL" text="null"/>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="STRING_LITERAL" text="HEllo"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="z"/>
+          <ast name="METHOD_CALL" text="strlen">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="b"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="NULL" text="null"/>
+        </ast>
+      </ast>
+    </translated>
+  </js>
+</asp>

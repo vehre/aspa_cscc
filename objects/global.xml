@@ -1,0 +1,67 @@
+<!--
+    This file is part of Aspa.
+
+    Aspa is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    Aspa is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Aspa; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+-->
+<functions>
+<!-- There is an object called Global.Is a collection of methods -->
+    <method name="parseInt" type="DINT">
+        <arg type="DSTRING" />
+        <ast name="METHOD_CALL" text="intval">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="escape" type="DSTRING">
+    </method>
+
+    <method name="isFinite" type="DBOOL">
+        <arg type="DFLOAT" />
+        <ast name="METHOD_CALL" text="is_finite">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="isNaN" type="DBOOL">
+        <arg type="DFLOAT" />
+        <ast name="METHOD_CALL" text="is_nan">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="parseFloat" type="DFLOAT">
+        <arg type="DSTRING" />
+        <ast name="METHOD_CALL" text="floatval">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="unescape" type="DSTRING">
+    </method>
+
+    <property name="Infinity" type="DINT">
+    </property>
+
+    <property name="NaN" type="DINT">
+    </property>
+</functions>

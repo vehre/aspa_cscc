@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <js>
+    <original>
+      <ast name="VAR" text="var">
+        <ast name="IDENTIFIER" text="a"/>
+        <ast name="IDENTIFIER" text="b"/>
+        <ast name="IDENTIFIER" text="c"/>
+      </ast>
+      <ast name="FUNCTION" text="func">
+        <ast name="SLIST" text="{">
+          <ast name="RETURN" text="return">
+            <ast name="EXPR" text="EXPR">
+              <ast name="PLUS" text="+">
+                <ast name="LPAREN" text="(">
+                  <ast name="QUESTION" text="?">
+                    <ast name="GT" text="&gt;">
+                      <ast name="IDENTIFIER" text="a"/>
+                      <ast name="NUM_INT" text="0"/>
+                    </ast>
+                    <ast name="IDENTIFIER" text="a"/>
+                    <ast name="IDENTIFIER" text="b"/>
+                  </ast>
+                </ast>
+                <ast name="IDENTIFIER" text="c"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="FUNCTION" text="func">
+        <ast name="ELIST" text="ELIST">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="IDENTIFIER" text="b"/>
+        </ast>
+        <ast name="GLOBAL" text="GLOBAL">
+          <ast name="IDENTIFIER" text="c"/>
+        </ast>
+        <ast name="SLIST" text="{">
+          <ast name="RETURN" text="return">
+            <ast name="EXPR" text="EXPR">
+              <ast name="PLUS" text="+">
+                <ast name="LPAREN" text="(">
+                  <ast name="QUESTION" text="?">
+                    <ast name="GT" text="&gt;">
+                      <ast name="IDENTIFIER" text="a"/>
+                      <ast name="NUM_INT" text="0"/>
+                    </ast>
+                    <ast name="IDENTIFIER" text="a"/>
+                    <ast name="IDENTIFIER" text="b"/>
+                  </ast>
+                </ast>
+                <ast name="IDENTIFIER" text="c"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </js>
+</asp>

@@ -1,0 +1,7 @@
+Object.ADORecordset=objects/adorecordset.xml
+Object.ADOConnection=objects/adoconnection.xml
+Object.Request=objects/request.xml
+Object.Response=objects/response.xml
+Object.Session=objects/session.xml
+Object.Server=objects/server.xml
+Functions.1=objects/functions.xml

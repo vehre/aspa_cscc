@@ -1,0 +1,2308 @@
+@import :
+/*
+    This file is part of Aspa.
+
+    Aspa is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    Aspa is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Aspa; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*/
+import java.util.ListIterator;
+import java.util.List;
+import java.util.Stack;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.TreeMap;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Collections;
+import java.util.Set;
+import java.util.HashSet;
+import antlr.CommonToken;
+import org.apache.log4j.Logger;
+import gr.omadak.leviathan.asp.objects.ASPClass;
+import gr.omadak.leviathan.asp.objects.ASPObject;
+import gr.omadak.leviathan.asp.objects.ASPObjectInstance;
+import gr.omadak.leviathan.asp.objects.Member;
+import gr.omadak.leviathan.asp.objects.Method;
+import gr.omadak.leviathan.asp.objects.Property;
+import gr.omadak.leviathan.asp.objects.JsUserDefinedMethod;
+import gr.omadak.leviathan.asp.objects.JsUserDefinedProperty;
+import gr.omadak.leviathan.asp.objects.XmlASPClass;
+import gr.omadak.leviathan.asp.objects.ObjectAST;
+import gr.omadak.leviathan.asp.objects.IntWrapper;
+import org.apache.commons.collections.IteratorUtils;
+import org.apache.commons.collections.Predicate;
+
+@tokens :
+CAST; DBOOL; CONSTANT; UNSUPORTED; CONSTRUCTOR; ELSEIF;
+GLOBAL; UNRESOLVED_METHOD; UNRESOLVED_CLASS; PROTOTYPE;
+OBJECT_ATTRIBUTE; CLASS; UNRESOLVED_ATTRIBUTE; IF_ELSE;
+NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
+
+@init : {
+    //arguments Stack
+    private Stack argStack = new Stack();
+    //keeps references for objects initilized inside the code
+    private Map objects = new TreeMap();
+    private Map functions = new TreeMap();
+	private Map parserFunctions;
+    private Map parserClasses;
+    //keeps the lables defined
+    private Map labels = new TreeMap();
+    private Map pendingGlobals;
+    private int lastExpressionType;
+    private boolean inArgDef;
+    //keeps tho currently parsing function
+    private JsUserDefinedMethod currentMethod;
+    /*
+    keeps the root AST for each anonymous function
+    This is necessery in order to assign the text for
+    the root node when the function name will be known
+    later during the parsing fase
+    */
+    private AspParser parser;
+	private List unamedFunctions;
+    private Stack withObjects = new Stack();
+    private int lastWith;
+    private Set dependencies;
+
+    //keeps the classes externally defined in xml
+    private static Map OBJECT_CLASSES;
+    //keeps the functions defined in xml
+    private static Map FUNCTIONS;
+    private static Logger LOG = Logger.getLogger(JsTree.class);
+    //the Array class
+    private static XmlASPClass ARRAY_OBJ;
+    //the Date class
+    private static XmlASPClass DATE_OBJ;
+    //the String class
+    private static XmlASPClass STRING_OBJ;
+    //the Boolean class
+    private static XmlASPClass BOOL_OBJ;
+    //the Number class
+    private static XmlASPClass NUMBER_OBJECT;
+    private static Integer ALLARGS = new Integer(CommonConstants.ALL_ARGS);
+
+    public static void setClassesAndFunctions(XmlASPClass[] instr_classes,
+    Map objectClasses, Map functions) {
+        ARRAY_OBJ = instr_classes[0];
+        DATE_OBJ = instr_classes[1];
+        STRING_OBJ = instr_classes[2];
+        BOOL_OBJ = instr_classes[3];
+        NUMBER_OBJECT = instr_classes[4];
+        OBJECT_CLASSES = objectClasses;
+        FUNCTIONS = functions;
+    }
+
+    /* Implementation of SymbolTableExposer */
+    public Map getVariables() {
+        return new HashMap(objects);
+    }
+
+
+    public List getFunctions() {
+        return new ArrayList(functions.values());
+    }
+
+
+    public List getClasses() {
+        Set result = new HashSet();
+        for (Iterator it = functions.values().iterator(); it.hasNext();) {
+            Method meth = (Method) it.next();
+            ASPClass clazz = meth.getASPClass();
+            if (clazz != null) {
+                result.add(clazz);
+            }
+        }
+        return new ArrayList(result);
+    }
+
+
+    public List getDependencies() {
+        return dependencies == null ? Collections.EMPTY_LIST 
+        : new ArrayList(dependencies);
+    }
+
+
+    public void setAspParser(AspParser parser) {
+        this.parser = parser;
+    }
+
+
+    public void appendVariables(Map variables) {
+        objects.putAll(variables);
+    }
+
+
+    public void appendFunctions(List funcs) {
+        for (Iterator it = funcs.iterator(); it.hasNext();) {
+            Method meth = (Method) it.next();
+            functions.put(meth.getName(), meth);
+        }
+    }
+
+
+    public void appendClasses(List classes) {
+        //classes are handled as function objects
+    }
+
+
+    public void setFunctions(List funcs) {
+		if (funcs != null) {
+			if (parserFunctions == null) {
+				parserFunctions = new TreeMap();
+			}
+			for (Iterator it = funcs.iterator(); it.hasNext();) {
+				JsUserDefinedMethod method = (JsUserDefinedMethod) it.next();
+				if (method.getParentFunction() == null) {
+                    functions.put(method.getName(), method);
+                } else {
+                    parserFunctions.put(method.getName(), method);
+                }
+			}
+		}
+	}
+
+
+	public void setAnonymousFunctions(List funcs) {
+		if (funcs != null) {
+			unamedFunctions = new ArrayList(funcs);
+		}
+	}
+
+
+	public void setParserClasses(List classes) {
+        if (classes != null) {
+            parserClasses = new TreeMap();
+            for (Iterator it = classes.iterator(); it.hasNext();) {
+                ASPClass clazz = (ASPClass) it.next();
+                parserClasses.put(clazz.getName(), clazz);
+            }
+        }
+    }
+
+
+	private JsUserDefinedMethod getParserFunction(String text) {
+        JsUserDefinedMethod result = null;
+        if (parserFunctions != null && parserFunctions.containsKey(text)) {
+            result = (JsUserDefinedMethod) parserFunctions.remove(text);
+        } else if (functions.containsKey(text)) {
+            result = (JsUserDefinedMethod) functions.get(text);
+        } else if (parserClasses != null) {
+            for (Iterator it = parserClasses.values().iterator(); it.hasNext();
+            ) {
+                ASPClass clazz = (ASPClass) it.next();
+                Member mem = clazz.getMemberObject(text);
+                if (mem instanceof Method) {
+                    result = (JsUserDefinedMethod) mem;
+                    break;
+                }
+            }
+        }
+        return result;
+	}
+
+
+    private JsUserDefinedMethod getAnonymousMethod(String text) {
+		int index = Integer.parseInt(text.substring(
+		CommonConstants.KEY_START.length()));
+		return (JsUserDefinedMethod) unamedFunctions.get(index);
+	}
+
+
+	private void collectDependencies(Member mem) {
+        List incs = mem.getDependencies();
+        if (!incs.isEmpty()) {
+            if (dependencies == null) {
+                dependencies = new HashSet();
+            }
+            dependencies.addAll(incs);
+        }
+    }
+
+
+    private AST retranslate(AST ast) {
+        AST root = ast;
+        AST prevNode = null;
+        boolean fCall = true;
+        for (AST node = ast; node != null; node = node.getNextSibling()) {
+            if (node instanceof ObjectAST) {
+                node = translate(node);
+                if (prevNode != null) {
+                    prevNode.setNextSibling(node);
+                }
+            } else {
+                if (node.getType() == CommonConstants.TRANSLATE_ROOT) {
+                    node = node.getFirstChild();
+                    if (prevNode != null) {
+                        prevNode.setNextSibling(node);
+                    }
+                } else {
+                    if (node.getFirstChild() != null) {
+                        node.setFirstChild(retranslate(node.getFirstChild()));
+                    }
+                }
+            }
+            if (fCall) {
+                root = node;
+                fCall = false;
+            }
+            prevNode = node;
+        }
+        return root;
+    }
+
+
+    private AST createAST(AST ch1, AST ch2, int type, String label) {
+        return #([type, label], ch1, ch2);
+    }
+
+
+    private ASPClass getMemberClass(Member mem) {
+        ASPClass result;
+        if (mem.getRetObjectClass() != null) {
+            result = mem.getRetObjectClass();
+        } else if (mem.getEvaluatedClass() != null) {
+            result = mem.getEvaluatedClass();
+        } else if (mem instanceof JsUserDefinedMethod
+        && ((Method) mem).isConstructor()) {
+            result = mem.getASPClass();
+        } else if (mem instanceof Method && ((Method) mem).isConstructor()) {
+            result = ((Method) mem).getASPClass();
+        } else {
+            result = getClassForType(mem.getReturnType());
+        }
+        return result;
+    }
+
+
+    private ASPObjectInstance getASPClass(AST ast) {
+        ASPObjectInstance result = null;
+        if (ast instanceof ObjectAST) {
+            ASPObjectInstance instance = ((ObjectAST) ast).getInstance();
+            if (instance != null) {
+                AST instanceAST;
+                ASPClass clazz;
+                Member mem = instance.getMember();
+                instanceAST = instance.getInstance();
+                if (mem != null) {
+                    clazz = getMemberClass(mem);
+                    instanceAST = translateMember(mem, instanceAST);
+                } else {
+                    clazz = instance.getASPClass();
+                }
+                result = new ASPObjectInstance(instanceAST, clazz);
+            }
+        } else {
+            switch (ast.getType()) {
+                case IDENTIFIER:
+                String className = ast.getText();
+                //OBJECT_CLASSES contains non instanciative classes
+                if (OBJECT_CLASSES.containsKey(className.toUpperCase())) {
+                    result = new ASPObjectInstance(
+                    (ASPClass) OBJECT_CLASSES.get(className.toUpperCase()));
+                } else if (objectExists(ast.getText())) {
+                    result = getObjectInstance(ast.getText());
+                } else {
+                    LOG.error("No class found with name:" + className);
+                    result = null;
+                }
+                break;
+                case STRING_LITERAL:
+                case NUM_INT:
+                case TRUE:
+                case FALSE:
+                case BOOLEAN:
+                case DATE:
+                    result = new ASPObjectInstance(ast,
+                    getClassForType(ast.getType()));
+                    break;
+                case OBJECT_ATTRIBUTE:
+                ASPClass clazz = currentMethod.getASPClass();
+                Property prop = (Property) clazz.getMemberObject(ast.getText());
+                if (prop != null && prop.getRetObjectClass() != null) {
+                    result = new ASPObjectInstance(prop.getRetObjectClass());
+                } else {
+                    if (prop == null) {
+                        LOG.warn("No property:" + ast.getText()
+                        + " found from class:" + clazz.getName());
+                    } else {
+                        LOG.warn("property:" + ast.getText()
+                        + " does not evaluate into an object");
+                    }
+                }
+                break;
+            }
+        }
+        return result;
+    }
+
+
+    private ASPObjectInstance getMethod(ObjectAST oAST, List args) {
+        ASPObjectInstance result = null;
+        ASPObjectInstance inst = oAST.getInstance();
+        if (inst != null) {
+            ASPObject obj;
+            AST instance = null;
+             Member mem = inst.getMember();
+             instance = inst.getInstance();
+             if (mem == null) {
+                 List methods = inst.getMemberList();
+                 if (methods != null) {
+                     obj = getSuitableMethod(methods, args);
+                 } else {
+                     obj = inst.getASPClass();
+                 }
+            } else {
+                obj = mem;
+            }
+            if (obj instanceof Method) {
+                result = new ASPObjectInstance(instance);
+                result.setMember((Method) obj);
+            } else if (obj instanceof ASPClass) {
+                ASPClass clazz = (ASPClass) obj;
+                result = new ASPObjectInstance(instance, clazz);
+                Member member = clazz.getDefaultMethod();
+                if (member == null) {
+                    LOG.error("Class:" + obj.getName()
+                    + " returned [null] default method");
+                } else {
+                    result.setMember(member);
+                }
+            } else if (obj instanceof Property) {
+                ASPClass clazz = ((Property) obj).getEvaluatedClass();
+                if (clazz == null) {
+                    LOG.error("Expected method but found property:"
+                    + obj.getName() + " wich does not evaluate to class" );
+                } else {
+                    result = new ASPObjectInstance(instance, clazz);
+                    Method method = clazz.getDefaultMethod();
+                    if (method == null) {
+                        LOG.warn("Class:" + clazz.getName()
+                        + " evaluated from property:" + obj.getName()
+                        + " has no default method");
+                    } else {
+                        result.setMember(method);
+                    }
+                }
+            } else {
+                if (inst.getMemberList() != null) {
+                    result = inst;
+                    result.setMember(getSuitableMethod(
+                    result.getMemberList(), args));
+                }
+            }
+        }
+        return result;
+    }
+
+
+    private ASPObjectInstance getMethodFromWith(AST ast, List args) {
+        ASPObjectInstance result = null;
+        for (int i = withObjects.size() - 1; i > -1; i--) {
+            ASPObjectInstance inst = (ASPObjectInstance) withObjects.get(i);
+            List members = inst.getASPClass().getMemberList(
+            ast.getText());
+            Method method = null;
+            if (!members.isEmpty()) {
+                List methods = IteratorUtils.toList(
+                IteratorUtils.filteredIterator(members.iterator(),
+                new Predicate() {
+                    public boolean evaluate(Object ob) {
+                        return ob instanceof Method;
+                    }
+                }));
+                if (!methods.isEmpty()) {
+                    method = getSuitableMethod(methods, args);
+                } else {
+                    for (Iterator it = members.iterator(); it.hasNext();) {
+                        Member mem = (Member) it.next();
+                        ASPClass clazz = mem.getEvaluatedClass();
+                        if (clazz != null) {
+                            mem = clazz.getDefaultMethod();
+                            if (mem instanceof Method) {
+                                method = (Method) mem;
+                            }
+                        }
+                    }
+                }
+            }
+            if (method != null) {
+                result = new ASPObjectInstance(inst.getInstance(),
+                inst.getASPClass());
+                result.setMember(method);
+                break;
+            }
+        }
+        return result;
+    }
+
+
+    private ASPObjectInstance lookupFunction(AST ast) {
+        ASPObjectInstance result = null;
+        if (FUNCTIONS.containsKey(ast.getText().toUpperCase())) {
+            result = new ASPObjectInstance();
+            result.setMember((Method) FUNCTIONS.get(
+            ast.getText().toUpperCase()));
+        } else if (functions.containsKey(ast.getText())) {
+            result = new ASPObjectInstance();
+            result.setMember((Method) functions.get(ast.getText()));
+        } else if (OBJECT_CLASSES.containsKey(ast.getText().toUpperCase())) {
+            ASPClass clazz = (ASPClass) OBJECT_CLASSES.get(
+            ast.getText().toUpperCase());
+            Method method = clazz.getDefaultMethod();
+            if (method == null) {
+                LOG.warn("Class:" + ast.getText()
+                + " has no default method");
+            } else {
+                result = new ASPObjectInstance(clazz);
+                result.setMember(method);
+            }
+        } else if (currentMethod != null) {
+            Method method = currentMethod.getLocalFunction(ast.getText());
+            if (method != null) {
+                result = new ASPObjectInstance();
+                result.setMember(method);
+            } else {
+                LOG.warn(currentMethod.getName()
+                + " knows no function with name:"
+                + ast.getText() + ". Can not find the function!");
+            }
+        }
+        return result;
+    }
+
+
+    private ASPObjectInstance getMethod(AST ast, List args) {
+        ASPObjectInstance result = null;
+        if (ast instanceof ObjectAST) {
+            result = getMethod((ObjectAST) ast, args);
+        } else if (ast.getType() == IDENTIFIER
+        || ast.getType() == UNRESOLVED_METHOD) {
+            if (!withObjects.isEmpty()) {
+                result = getMethodFromWith(ast, args);
+            }
+            if (result == null) {
+                ASPObjectInstance test = getObjectInstance(ast.getText());
+                if (test != null && test.getASPClass() != null
+                && test.getASPClass().getDefaultMethod() != null) {
+                    result = new ASPObjectInstance(ast);
+                    result.setMember(test.getASPClass().getDefaultMethod());
+                } else {
+                    result = lookupFunction(ast);
+                }
+            }
+        } else {
+            LOG.error("Expected an IDENTIFIER or an ObjectAST but is:["
+            + ast.getType() + ", " + ast.getText() + "]");
+        }
+        if (result != null && result.getMember() != null) {
+            result.getMember().setArgs(args);
+        }
+        return result;
+    }
+
+
+    private Method getSuitableMethod(List methods, List args) {
+        List comply = new ArrayList();
+        Method result = null;
+        for (Iterator it = methods.iterator(); it.hasNext();) {
+            Member mem = (Member) it.next();
+            if (mem instanceof Method) {
+                Method method = (Method) mem;
+                List methArgs = method.getArgTypes();
+                if (methArgs.size() == args.size()
+                || (methArgs.size() - 1 < args.size()
+                && methArgs.contains(ALLARGS))) {
+                    comply.add(method);
+                }
+            }
+        }
+        switch (comply.size()) {
+        case 0:
+            for (Iterator it = methods.iterator(); it.hasNext();) {
+                Member mem = (Member) it.next();
+                if (mem instanceof Method) {
+                    result = (Method) mem;
+                    break;
+                }
+            }
+            break;
+        case 1:
+            result = (Method) comply.get(0);
+            break;
+        case 2:
+            Method m1 = (Method) comply.get(0);
+            Method m2 = (Method) comply.get(1);
+            if (m1.getArgTypes().contains(ALLARGS)) {
+                result = m2;
+            } else {
+                result = m1;
+            }
+            break;
+        default:
+            LOG.warn("More then 2 alternatives for method:"
+            + ((ASPObject) comply.get(0)).getName()
+            + " for args:" + args);
+            result = (Method) comply.get(0);
+            break;
+        }
+        return result;
+    }
+
+
+    private void handleFunctionObjects(JsUserDefinedMethod method) {
+        if (method.isFirstCall() && method.isAccessibleOutsideParent()) {
+            Map globals = method.getGlobalObjects();
+            for (Iterator it = globals.keySet().iterator(); it.hasNext();) {
+                Object name = it.next();
+                Object value = globals.get(name);
+                if (value == null) {
+                    objects.remove(name);
+                } else {
+                    /*
+                    make the cast as a check.If I am wrong then a Exception
+                    will be throw in the cast
+                    */
+                    objects.put(name, (ASPObjectInstance) value);
+                }
+            }
+        }
+        if (method.getASPClass() == null) {
+            Iterator funcIt = method.getLocalFunctions();
+            while (funcIt.hasNext()) {
+                JsUserDefinedMethod func = (JsUserDefinedMethod) funcIt.next();
+                functions.put(func.getName(), func);
+            }
+        }
+    }
+
+
+    private AST translateMember(Member mem, AST instance) {
+        AST result;
+        if (mem instanceof Property) {
+            Property prop  = (Property) mem;
+            result = prop.read(instance);
+        } else if (mem instanceof Method) {
+            Method method  = (Method) mem;
+            result = method.translate(instance);
+            if (method instanceof JsUserDefinedMethod) {
+                handleFunctionObjects((JsUserDefinedMethod) method);
+            }
+        } else {
+            result = null;
+            LOG.error("Passed null for translateMember");
+        }
+        if (result != null) {
+            collectDependencies(mem);
+        }
+        return result;
+    }
+
+
+    private AST translate(ASPObjectInstance inst) {
+        Member mem = inst.getMember();
+        if (mem == null) {
+            ASPClass clazz = inst.getASPClass();
+            if (clazz != null) {
+                mem = clazz.getDefaultProperty();
+                if (mem == null) {
+                    mem = clazz.getDefaultMethod();
+                }
+            }
+        }
+        AST result;
+        if (mem instanceof Member) {
+            result = translateMember(mem, inst.getInstance());
+        } else { //is null
+            result = null;
+        }
+        return result;
+    }
+
+
+    private AST translate(AST ast) {
+        AST result = ast;
+        if (ast instanceof ObjectAST) {
+            result = translate(((ObjectAST) ast).getInstance());
+            if (result != null) {
+                result = retranslate(result);
+            }
+        } else if (ast.getType() == CommonConstants.TRANSLATE_ROOT) {
+            result = ast.getFirstChild();
+        } else if (currentMethod != null && !inArgDef
+        && ast.getType() == IDENTIFIER) {
+            currentMethod.addVariable(ast.getText(), currentMethod.isInVar());
+        }
+        if (result == null) {
+            result = ast;
+        }
+        return result;
+    }
+
+
+    private AST getAST(AST ex1, AST ex2, int code, String label) {
+        AST result;
+        ex2 = translate(ex2);
+        if (ex1.getType() == Token.SKIP || ex2.getType() == Token.SKIP) {
+            result = ex1.getType() == Token.SKIP ? ex1 : ex2;
+            if (result != null && result.getType() == Token.SKIP) {
+                result = null;
+            }
+        } else {
+            result = #([code, label], ex1, ex2);
+        }
+        return result;
+    }
+
+
+    private AST getAST(AST ex, int code, String label) {
+        return ex.getType() != Token.SKIP
+        ? #([code, label], translate(ex)) : null;
+    }
+
+
+    private List createList(AST elem) {
+        return Collections.singletonList(elem);
+    }
+
+
+    private AST handleIdObject(AST id, ObjectAST obj) {
+        AST transl = null;
+        int retType = -1;
+        ASPObjectInstance aInst = obj.getInstance();
+        ASPObject aspObj = aInst.getMember();
+        AST instance = aInst.getInstance();
+        if (aspObj == null) {
+            aspObj = aInst.getASPClass();
+        }
+        if (aspObj instanceof ASPClass) {
+            ASPClass clazz = (ASPClass) aspObj;
+            if (!clazz.hasConstructor()) {
+                Property prop = clazz.getDefaultProperty();
+                if (prop != null) {
+                    transl = translateMember(prop, instance);
+                    retType = prop.getReturnType();
+                }
+                /*
+                else {
+                    LOG.info("Class:" + clazz.getName()
+                    + " has no constructor and no default Property");
+                }
+                */
+            } else {
+                Method constr = getConstructor(clazz, Collections.EMPTY_LIST);
+                if (constr != null) {
+                    transl = translateMember(constr, instance);
+                }
+            }
+            if (retType == -1) {
+                placeObject(id.getText(), new ASPObjectInstance(
+                astFactory.dup(id), clazz));
+                retType = 0;
+            }
+        } else {
+            Member member = (Member) aspObj;
+            boolean wasConstr = false;
+            if (member instanceof Method) {
+                Method method = (Method) member;
+                if (method.isConstructor()
+                || method.getRetObjectClass() != null) {
+                    ASPClass clazz = method.isConstructor()
+                    ? method.getASPClass()
+                    : method.getRetObjectClass();
+                    placeObject(id.getText(), new ASPObjectInstance(
+                    astFactory.dup(id), clazz));
+                    retType = 0;
+                    wasConstr = true;
+                }
+            }
+            transl = translateMember(member, instance);
+            if (!wasConstr) {
+                ASPClass clazz;
+                switch (member.getReturnType()) {
+                    case LBRACK:
+                        clazz = ARRAY_OBJ; break;
+                    case DATE:
+                        clazz = DATE_OBJ; break;
+                    case STRING:
+                    case STRING_LITERAL:
+                        clazz = STRING_OBJ; break;
+                    case TRUE:
+                    case FALSE:
+                    case BOOLEAN:
+                        clazz = BOOL_OBJ; break;
+                    case NUMBER:
+                    case OBJECT:
+                    default: clazz = null; break;
+                }
+                if (clazz != null) {
+                    placeObject(id.getText(), new ASPObjectInstance(
+                    astFactory.dup(id), clazz));
+                    retType = 0;
+                }
+            }
+            retType = retType == 0 ? 0 : member.getReturnType();
+        }
+        if ((retType > 0 || retType == -1) && retType != STRING_LITERAL) {
+            removeObject(id.getText());
+        }
+        return transl;
+    }
+
+
+    private AST translateProperty(Property property, AST arg, AST instance) {
+        if (arg instanceof ObjectAST
+        || arg.getType() == CommonConstants.TRANSLATE_ROOT) {
+            arg = translate(arg);
+        }
+        property.setArgs(createList(arg));
+        AST result = property.write(instance);
+        if (result != null) {
+            collectDependencies(property);
+            if (result.getType() == EXPR) {
+                result = result.getFirstChild();
+            }
+        }
+        return result;
+    }
+
+
+    private AST createAssignAST(AST ch1, AST ch2, int type, String label) {
+        lastExpressionType = 0;
+        if (ch1.getType() == IDENTIFIER) {
+            removeObject(ch1.getText());
+        }
+        return #([type, label], ch1, ch2);
+    }
+
+
+    private boolean isStringType(AST ast) {
+        boolean result = false;
+        if (ast == null) {
+        } else if (ast instanceof ObjectAST) {
+            ASPObjectInstance inst = ((ObjectAST) ast).getInstance();
+            ASPObject obj;
+            if (inst.getMember() != null) {
+                obj = inst.getMember();
+            } else if (inst.getMemberList() != null) {
+                List list = inst.getMemberList();
+                obj = (Member) list.get(0);
+            } else {
+                obj = inst.getASPClass();
+            }
+            if (obj instanceof Member) {
+                int type = ((Member) obj).getReturnType();
+                result = type == STRING_LITERAL
+                || type == CommonConstants.OBJECT;
+            } else if (obj instanceof ASPClass) {
+                ASPClass clazz = (ASPClass) obj;
+                result = "String".equals(clazz.getName())
+                || (clazz.getDefaultProperty() != null
+                && clazz.getDefaultProperty().getReturnType()
+                == STRING_LITERAL);
+            }
+        } else if (ast.getType() == CONCAT || ast.getType() == STRING_LITERAL) {
+            result = true;
+        } else if (ast.getType() == IDENTIFIER) {
+            ASPObjectInstance inst = getObjectInstance(ast.getText());
+            if (inst != null) {
+                ASPClass clazz = inst.getASPClass();
+                result = clazz != null && "String".equals(clazz.getName());
+            }
+        }
+        return result;
+    }
+
+
+    private AST makePrimitiveObject(AST id, AST primitive, ASPClass clazz) {
+        AST nId = astFactory.dup(id);
+        List args = createList(primitive);
+        Method constructor = getConstructor(clazz, args);
+        placeObject(id.getText(), new ASPObjectInstance(nId, clazz));
+        collectDependencies(constructor);
+        return constructor.translate(nId);
+    }
+
+
+    private AST makeString(AST id, AST string) {
+        return makePrimitiveObject(id, string, STRING_OBJ);
+    }
+
+
+    private ObjectAST createObjectAST(int type, String label,
+    ASPObjectInstance instance) {
+        return new ObjectAST(new CommonToken(type, label), instance);
+    }
+
+
+    private Method getConstructor(ASPClass clazz, List args) {
+        List constructors = clazz.getConstructors();
+        Method constructor = getSuitableMethod(constructors, args);
+        constructor.setArgs(args);
+        return constructor;
+    }
+
+
+    private boolean shouldDetach(int type) {
+        return type == EXPR || type == VAR;
+    }
+
+
+    private List collectExpressions(AST start) {
+        AST node = start;
+        Stack stack = null;
+        List result = null;
+        AST lastNode = null;
+        while (node != null) {
+            boolean detach = shouldDetach(node.getType());
+            if (detach) {
+                if (result == null) {
+                    result = new ArrayList();
+                }
+                result.add(node);
+                if (lastNode != null) {
+                    lastNode.setNextSibling(node.getNextSibling());
+                }
+            }
+            if (node.getFirstChild() != null) {
+                AST child = node.getFirstChild();
+                while (child != null && shouldDetach(child.getType())) {
+                    if (stack == null) {
+                        stack = new Stack();
+                    }
+                    stack.push(child);
+                    node.setFirstChild(child.getNextSibling());
+                    child = node.getFirstChild();
+                }
+                if (child != null) {
+                    if (stack == null) {
+                        stack = new Stack();
+                    }
+                    stack.push(child);
+                }
+            }
+            lastNode = node;
+            node = node.getNextSibling();
+            if (node == null && stack != null && !stack.isEmpty()) {
+                node = (AST) stack.pop();
+                lastNode = null;
+            }
+        }
+        return result == null ? Collections.EMPTY_LIST : result;
+    }
+
+
+    private AST handleNull(AST left, AST right, String label, int type) {
+        ASPObjectInstance i =
+        removeObject(left.getText());
+        AST result = null;
+        if (i == null) {
+            LOG.warn("Null for aspclass when args are:"
+            + left.toStringList() + ", " + right.toStringList()
+            + ", " + label + ", " + type);
+            result = createAST(left, right, type, label);
+        } else {
+            ASPClass clazz = i.getASPClass();
+            if (right.getType() == NULL) {
+                result = clazz.getDeleteAST();
+            }
+            if (result == null) {
+                result = createAST(left, right, type, label);
+            }
+        }
+        return result;
+    }
+
+
+    private void incLabels() {
+        for (Iterator it = labels.keySet().iterator(); it.hasNext();) {
+            IntWrapper value = (IntWrapper) labels.get(it.next());
+            value.incValue();
+        }
+    }
+
+
+    private void decLabels() {
+        for (Iterator it = labels.keySet().iterator(); it.hasNext();) {
+            IntWrapper value = (IntWrapper) labels.get(it.next());
+            value.decValue();
+        }
+    }
+
+
+    private AST interuptStatement(int code, AST label) {
+        String stmName = code == BREAK ? "break" : "continue";
+        int level = -1;
+        String labelName = null;
+        if (#label != null) {
+            labelName = label.getText();
+            IntWrapper wrapper = (IntWrapper) labels.get(labelName);
+            if (wrapper == null) {
+                LOG.error("Failed to resolve level for label:" + label
+                + " in " + stmName + " statement");
+            } else {
+                level = wrapper.getInt();
+                if (level == 1) { level = -1; }
+            }
+        }
+        switch (level) {
+            case -1 : return #[code, stmName];
+            case 0 :
+            /*
+                this indicates usage of break for non looping
+                statements like this:
+                label: if (expr) {
+                    statements;
+                    break label;
+                }
+                statement1;
+                statement2;
+                ......
+                statementN;
+                Javascript requires to continue execution with statement1.
+                Unfortunatly I have no idea how to do this for PHP.
+                By the whay, the code sample above is ruther bad practice.
+                Is a goto!!
+            */
+                LOG.warn("Seems that:" + stmName
+                + " is used to interrupt a non looping"
+                + " statement for label:" + labelName
+                + ".Can't translate this!");
+                return null;
+            default: return #([code, stmName],
+            [NUM_INT, Integer.toString(level)]);
+        }
+    }
+
+
+    private boolean objectExists(String name) {
+        boolean result = false;
+        if (currentMethod != null) {
+            result = currentMethod.objectExists(name);
+        }
+        if (!result) {
+            result = objects.containsKey(name);
+        }
+        return result;
+    }
+
+
+    private void placeObject(String name, ASPObjectInstance instance) {
+        if (currentMethod != null) {
+            currentMethod.placeObject(name, instance, currentMethod.isInVar());
+        } else {
+            objects.put(name, instance);
+        }
+    }
+
+
+    private ASPObjectInstance getObjectInstance(String name) {
+        ASPObjectInstance result;
+        if ((currentMethod != null && !currentMethod.objectExists(name))
+        || currentMethod == null) {
+            result = (ASPObjectInstance) objects.get(name);
+        } else {
+            result = currentMethod.getObject(name);
+        }
+        return result;
+    }
+
+
+    private ASPObjectInstance removeObject(String name) {
+        ASPObjectInstance result;
+        if ((currentMethod != null && !currentMethod.objectExists(name))
+        || currentMethod == null) {
+            result = (ASPObjectInstance) objects.remove(name);
+        } else {
+            result = currentMethod.removeObject(name);
+        }
+        return result;
+    }
+
+
+    private AST makeFromList(List elements, AST root) {
+        AST result;
+        if (elements.isEmpty()) {
+            result = root;
+        } else {
+            for (ListIterator it = elements.listIterator(); it.hasNext();) {
+                Object obj = it.next();
+                if (obj instanceof AST) {
+                    AST elem = (AST) obj;
+                    elem.setNextSibling(null);
+                } else {
+                    it.set(#[IDENTIFIER, obj.toString()]);
+                }
+            }
+            elements.add(0, root);
+            AST[] ast_array = (AST[]) elements.toArray(new AST[0]);
+            result = astFactory.make(ast_array);
+            elements.remove(0);
+        }
+        return result;
+    }
+
+
+    private void handleFunctionGlobals(AST append) {
+        List globals = currentMethod.getUsedGlobals();
+        if (!globals.isEmpty()) {
+            addGlobalsToFunction(append, globals);
+        }
+        if (pendingGlobals != null) {
+            for (Iterator it = pendingGlobals.keySet().iterator();
+            it.hasNext();) {
+                JsUserDefinedMethod method = (JsUserDefinedMethod) it.next();
+                AST statement = (AST) pendingGlobals.get(method);
+                List methodGlobals = method.getUsedGlobals();
+                if (!methodGlobals.isEmpty()) {
+                    addGlobalsToFunction(statement, methodGlobals);
+                }
+            }
+            pendingGlobals.clear();
+            pendingGlobals = null;
+        }
+    }
+
+
+    private AST functionEnd(AST statements) {
+		List args = currentMethod.getArgTypes();
+        AST root = args.isEmpty() ? null : #[ELIST, "ELIST"];
+        AST argsList = makeFromList(args, root);
+        AST function = #[FUNCTION, currentMethod.getName()];
+        AST result = #(function, argsList, statements);
+        currentMethod.setRootAST(result);
+        result = currentMethod.getASPClass() == null
+        || currentMethod.isConstructor() ? result : null;
+        AST globalsRoot = root == null ? function : root;
+        if (currentMethod.getParentFunction() != null) {
+            addPendingFunction(globalsRoot);
+        } else {
+            handleFunctionGlobals(globalsRoot);
+        }
+        currentMethod.setDefinitionFinished(true);
+		currentMethod = currentMethod.getParentFunction();
+        return result;
+    }
+
+
+    private void addPendingFunction(AST globRoot) {
+        if (pendingGlobals == null) {
+            pendingGlobals = new HashMap();
+            pendingGlobals.put(currentMethod, globRoot);
+        } else if (!pendingGlobals.containsKey(currentMethod)) {
+            pendingGlobals.put(currentMethod, globRoot);
+        }
+    }
+
+
+    private void addGlobalsToFunction(AST append, List globals) {
+        AST globalAST = makeFromList(globals, #[GLOBAL, "GLOBAL"]);
+        if (append.getType() == FUNCTION) {
+            AST child = append.getFirstChild();
+            append.setFirstChild(globalAST);
+            if (child != null) {
+                globalAST.setNextSibling(child);
+            }
+        } else {
+            AST prevSib = append.getNextSibling();
+            append.setNextSibling(globalAST);
+            if (prevSib != null) {
+                globalAST.setNextSibling(prevSib);
+            }
+        }
+    }
+
+
+    private AST handleAssignIdentifier(AST left, AST right) {
+        AST result;
+        if (!(right instanceof ObjectAST)) {
+            int type = right.getType();
+            if (type == STRING_LITERAL
+            || lastExpressionType == STRING_LITERAL) {
+                result = createAST(left,
+                translate(makeString(left, right)),
+                ASSIGN, "=");
+            } else if (type == NUM_INT) {
+                result = createAST(left,
+                translate(makePrimitiveObject(left, right, NUMBER_OBJECT)),
+                ASSIGN, "=");
+            } else if (type == BOOLEAN) {
+                result = createAST(left,
+                translate(makePrimitiveObject(left, right, BOOL_OBJ)),
+                ASSIGN, "=");
+            } else if (type == TRUE || type == FALSE) {
+                result = createAST(left, right, ASSIGN, "=");
+                placeObject(left.getText(),
+                new ASPObjectInstance(astFactory.dup(left), BOOL_OBJ));
+            } else if (type == TYPEOF) {
+                result = #([ASSIGN, "="], left,
+                    #([METHOD_CALL, "gettype"],
+                        #([ELIST, "ELIST"], right.getFirstChild())
+                    )
+                );
+            } else if (type == IDENTIFIER) {
+                if (objectExists(right.getText())) {
+                    String key = right.getText();
+                    placeObject(left.getText(),
+                    new ASPObjectInstance(astFactory.dup(left),
+                    getObjectInstance(key)));
+                    result = createAST(left, right,
+                    ASSIGN, "=");
+                } else if (objectExists(left.getText())) {
+                    result = handleNull(left, right, "=", ASSIGN);
+                } else {
+                    result = createAST(left, right, ASSIGN, "=");
+                }
+            } else if (objectExists(left.getText())) {
+                result = handleNull(left, right, "=", ASSIGN);
+            } else {
+                result = createAST(left, right, ASSIGN, "=");
+            }
+        } else {
+            AST idObj = handleIdObject(left,
+            (ObjectAST) right);
+            if (idObj != null && idObj.getType() != Token.SKIP) {
+                result = createAST(left, retranslate(idObj),
+                ASSIGN, "=");
+            } else {
+                result = null;
+            }
+        }
+        return result;
+    }
+
+
+    private AST handleAssignObject(AST left, AST right) {
+        ObjectAST oAST = (ObjectAST) left;
+        ASPObjectInstance i = oAST.getInstance();
+        AST instance = i.getInstance();
+        ASPObject obj;
+        if (i.getMember() != null) {
+            obj = i.getMember();
+        } else {
+            obj = i.getASPClass();
+        }
+        Property property = null;
+        if (obj instanceof ASPClass) {
+            property = ((ASPClass) obj).getDefaultProperty();
+            if (property == null) {
+                LOG.warn("Class:" + obj.getName() + " has no default property");
+            }
+        } else if (obj instanceof Property) {
+            property = (Property) obj;
+        } else if (obj instanceof Method) {
+            ASPClass methClass = ((Method) obj).getEvaluatedClass();
+            if (methClass == null) {
+                LOG.warn("Method:" + obj.getName() + " has no evaluated class"
+                + " Unable to get Property for assignement");
+            } else {
+                property = methClass.getDefaultProperty();
+                if (property == null) {
+                    LOG.warn("Unable to get default property from class:"
+                    + methClass.getName() + " resolved from method:"
+                    + obj.getName());
+                }
+            }
+        }
+        return property != null
+        ? translateProperty(property, right, instance)
+        : null;
+    }
+
+
+    private AST handleObjectAttribute(AST attr, AST value) {
+        if (value instanceof ObjectAST) {
+            ASPObjectInstance aspInstance = ((ObjectAST) value).getInstance();
+            value = translateMember(aspInstance.getMember(),
+            aspInstance.getInstance());
+        }
+        if (value.getType() == IDENTIFIER
+        &&  !currentMethod.hasVar(value.getText())) {
+            currentMethod.addVariable(value.getText(), currentMethod.isInVar());
+        }
+        return #([ASSIGN, "="], [OBJECT_ATTRIBUTE, attr.getText()], value);
+    }
+
+
+    private boolean isTypeOf(AST left, AST right) {
+        return left.getType() == TYPEOF || right.getType() == TYPEOF;
+    }
+
+
+    private AST handleTypeOf(AST left, AST right, boolean isEQ) {
+        boolean isLeft = left.getType() == TYPEOF;
+        AST var = isLeft ? left.getFirstChild() : right.getFirstChild();
+        AST typeName = isLeft ? right : left;
+        AST result;
+        if (typeName.getType() != STRING_LITERAL) {
+            AST root = isEQ ? #[EQUAL, "=="] : #[NOT_EQUAL, "!="];
+            result = #(root,
+                #([METHOD_CALL, "gettype"],
+                    #([ELIST, "ELIST"], var)),
+                typeName
+            );
+        } else {
+            String txtName = typeName.getText();
+            boolean notFound = false;
+            if ("number".equals(txtName)) {
+                result = #([LAND, "&&"],
+                    ([METHOD_CALL, "is_numeric"], ([ELIST, "ELIST"], var)),
+                    ([LNOT, "!"],
+                        ([METHOD_CALL, "is_string"], ([ELIST, "ELIST"], var))
+                    )
+                );
+            } else if ("boolean".equals(txtName)) {
+                result = #([METHOD_CALL, "is_bool"], ([ELIST, "ELIST"], var));
+            } else if ("string".equals(txtName)) {
+                result = #([METHOD_CALL, "is_string"], ([ELIST, "ELIST"], var));
+            } else if ("object".equals(txtName)) {
+                result = #([METHOD_CALL, "is_object"], ([ELIST, "ELIST"], var));
+            } else if ("function".equals(txtName)) {
+                result = #([METHOD_CALL, "function_exists"],
+                    ([ELIST, "ELIST"],
+                        [STRING_LITERAL, var.getText()]
+                    )
+                );
+            } else if ("undefined".equals(txtName)) {
+                result = #([METHOD_CALL, "isset"], ([ELIST, "ELIST"], var));
+            } else {
+                LOG.warn("Unexpected type comparassion value in typeof:"
+                + txtName);
+                AST root = isEQ ? #[EQUAL, "=="] : #[NOT_EQUAL, "!="];
+                result = #(root,
+                    #([METHOD_CALL, "gettype"],
+                        #([ELIST, "ELIST"], var)),
+                    typeName
+                );
+                notFound = true;
+            }
+            if (!notFound && !isEQ) {
+                result = #([LNOT, "!"], result);
+            }
+        }
+        return result;
+    }
+
+
+    private ASPClass getClassForType(int type) {
+        ASPClass result;
+        switch (type) {
+            case STRING_LITERAL:
+                result = STRING_OBJ;
+                break;
+            case NUM_INT:
+                result = NUMBER_OBJECT;
+                break;
+            case TRUE:
+            case FALSE:
+            case BOOLEAN:
+                result = BOOL_OBJ;
+                break;
+            case DATE:
+                result = DATE_OBJ;
+                break;
+            default:
+                result = null;
+                break;
+        }
+        return result;
+    }
+
+
+    private AST resolveDot(AST left, AST right) {
+        AST result;
+        ASPObjectInstance instance = getASPClass(left);
+        Member member = null;
+        ASPClass clazz = instance == null ? null : instance.getASPClass();
+        if (instance != null) {
+            if (clazz == null) {
+                LOG.error("Failed to resolve class from AST:["
+                + left.getType() +  ", " + left.getText() + "]");
+            } else {
+                member = clazz.getMemberObject(right.getText());
+            }
+        }
+        if (member == null) {
+            int code = DOT;
+            LOG.error("Failed to resolve member:" + left.getText()
+            + " from class:"
+            + (clazz != null ? clazz.getName() : "[null]"));
+            result = #([code, "DOT"], left, right);
+        } else {
+            ASPObjectInstance ninstance = new ASPObjectInstance(
+            instance.getInstance(), clazz);
+            ninstance.setMember(member);
+            int retType = member.getReturnType();
+            Token token = new CommonToken(retType, right.getText());
+            if (member instanceof Method) {
+                List alts = clazz.getMemberList(right.getText());
+                if (alts.size() > 1) {
+                    ninstance.setMemberList(alts);
+                }
+            }
+            result = new ObjectAST(token, ninstance);
+        }
+        return result;
+    }
+
+
+    private AST resolveClassAttribute(AST type, AST attribute) {
+        if (attribute.getType() != IDENTIFIER
+        || !("constructor".equals(attribute.getText())
+        ^ "prototype".equals(attribute.getText()))) {
+            return null;
+        }
+        boolean isProto = "prototype".equals(attribute.getText());
+        AST result = null;
+        ASPClass clazz = null;
+        switch (type.getType()) {
+            case ARRAY:
+                if (isProto) {
+                    clazz = new XmlASPClass(ARRAY_OBJ);
+                } else {
+                    result = #[STRING_LITERAL, "Array"];
+                }
+                break;
+            case DATE:
+                if (isProto) {
+                    clazz = new XmlASPClass(DATE_OBJ);
+                } else {
+                    result = #[STRING_LITERAL, "Date"];
+                }
+                break;
+            case STRING:
+                if (isProto) {
+                    clazz = new XmlASPClass(STRING_OBJ);
+                } else {
+                    result = #[STRING_LITERAL, "String"];
+                }
+                break;
+            case TRUE:
+            case FALSE:
+            case BOOLEAN:
+                if (isProto) {
+                    clazz = new XmlASPClass(BOOL_OBJ);
+                } else {
+                    result = #[STRING_LITERAL, "Boolean"];
+                }
+                break;
+            case NUMBER:
+                if (isProto) {
+                    clazz = new XmlASPClass(NUMBER_OBJECT);
+                } else {
+                    result = #[STRING_LITERAL, "Number"];
+                }
+                break;
+            case OBJECT:
+                if (isProto) {
+                    clazz = new XmlASPClass("Object");
+                } else {
+                    result = #[STRING_LITERAL, "Object"];
+                }
+                break;
+            default: break;
+        }
+        if (isProto) {
+            result = new ObjectAST(new CommonToken(PROTOTYPE, "proto"),
+            new ASPObjectInstance(clazz));
+        }
+        return result;
+    }
+
+
+    private AST resolveObjectAttribute(AST attribute) {
+        AST result = null;
+        if (attribute.getType() == IDENTIFIER) {
+            ASPClass clazz = currentMethod.getASPClass();
+            Member mem = clazz.getMemberObject(attribute.getText());
+            if (mem == null) {
+                mem = new JsUserDefinedProperty(attribute.getText());
+                currentMethod.getASPClass().addMember(mem);
+            } else if (mem.getRetObjectClass() != null) {
+                clazz = mem.getRetObjectClass();
+            }
+            ASPObjectInstance instance = new ASPObjectInstance(
+            null, clazz);
+            instance.setMember(mem);
+            result = createObjectAST(OBJECT_ATTRIBUTE,
+            attribute.getText(), instance);
+        }
+        return result;
+    }
+
+
+    private void transformToClass(ASPClass clazz,
+    JsUserDefinedMethod constructor) {
+        AST root = constructor.getRootAST();
+        AST nFuncRoot = astFactory.dup(root);
+        nFuncRoot.setFirstChild(root.getFirstChild());
+        root.setType(CLASS);
+        AST lastChild = null;
+        AST firstChild = null;
+        for (Iterator pit = clazz.getProperties(); pit.hasNext();) {
+            Property prop = (Property) pit.next();
+            AST varDecl = #([VAR, "var"], [IDENTIFIER, prop.getName()]);
+            if (lastChild != null) {
+                lastChild.setNextSibling(varDecl);
+            }
+            if (firstChild == null) {
+                firstChild = varDecl;
+            }
+            lastChild = varDecl;
+        }
+        if (lastChild != null) {
+            lastChild.setNextSibling(nFuncRoot);
+            lastChild = nFuncRoot;
+        } else {
+            lastChild = nFuncRoot;
+            firstChild = nFuncRoot;
+        }
+        for (Iterator mIt = clazz.getMethods(); mIt.hasNext();) {
+            JsUserDefinedMethod method = (JsUserDefinedMethod) mIt.next();
+            if (!method.isConstructor()) {
+                AST fRoot = method.getRootAST();
+                lastChild.setNextSibling(fRoot);
+                lastChild = fRoot;
+            }
+        }
+        root.setFirstChild(firstChild);
+    }
+}
+
+@start : { TokenMap.IS_JS = true;}
+@start_rule : { #start_rule = #([Token.SKIP, "FAKE_ROOT"], #start_rule); }
+@telist : !
+@arg_init : {
+    List arguments = new ArrayList();
+    argStack.push(arguments);
+    int oldType = lastExpressionType;
+}
+@arglist : {
+    arguments.add(#e.getFirstChild());
+}
+@arglist_end : { lastExpressionType = oldType; }
+
+@tassign : !
+@assign : {
+    /*
+    Cases:
+    1)IDENTIFIER = IDENTIFIER
+    2)IDENTIFIER = primitive
+    3)IDENTIFIER = OBJECT
+    4)IDENTIFIER = null
+    5)somthing = (+, -, %, * , /, >>, <<, &, |, ^) somthing [somthing else]
+    6)Object Property = somthing
+
+    Check if we have expression = expression or expression = anonymFunction
+    */
+    int type = -1;
+    String label = null;
+    switch (#assign_expr2.getType()) {
+        case PLUS: type = PLUS_ASSIGN; label = "+="; break;
+        case MINUS: type = MINUS_ASSIGN; label = "-="; break;
+        case MOD: type = MOD_ASSIGN; label = "%="; break;
+        case STAR: type = STAR_ASSIGN; label = "*="; break;
+        case DIV: type = DIV_ASSIGN; label = "/="; break;
+        case SR: type = SR_ASSIGN; label = ">>="; break;
+        case SL: type = SL_ASSIGN; label = "<<="; break;
+        case BAND: type = BAND_ASSIGN; label = "&="; break;
+        case BOR: type = BOR_ASSIGN; label = "|="; break;
+        case BXOR: type = BXOR_ASSIGN; label = "^="; break;
+    }
+    //check if can translate a = a operator expr into a operator= expr
+    if (type != -1
+    && #assign_expr1.equalsTree(#assign_expr2.getFirstChild())) {
+        //if a = a + ..
+        #assign_expr1 = #assign_expr2.getFirstChild();
+        #assign_expr2 = #assign_expr1.getNextSibling();
+        #assign_expr1.setNextSibling(null);
+        #expression = createAST(#assign_expr1, #assign_expr2, type, label);
+    } else {
+        if (#assign_expr1.getType() == IDENTIFIER) {
+            #expression = handleAssignIdentifier(#assign_expr1, #assign_expr2);
+        } else if (#assign_expr1.getType() == OBJECT_ATTRIBUTE) {
+            #expression = handleObjectAttribute(#assign_expr1, #assign_expr2);
+        } else if (#assign_expr1 instanceof ObjectAST) {
+            #expression = handleAssignObject(#assign_expr1, #assign_expr2);
+        } else {
+            type = ASSIGN;
+            #expression = createAST(#assign_expr1, #assign_expr2, type, "=");
+        }
+    }
+    lastExpressionType = 0;
+}
+
+@tplus_assign : !
+@plus_assign : {
+    boolean makeString = #plus_assign_expr1.getType() == IDENTIFIER
+    && (lastExpressionType == STRING_LITERAL
+    || isStringType(#plus_assign_expr2))
+    && !objectExists(#plus_assign_expr1.getText());
+    if (makeString) {
+        #expression = createAST(#plus_assign_expr1,
+        translate(makeString(#plus_assign_expr1, #plus_assign_expr2)),
+        CONCAT_ASSIGN, ".=");
+    } else {
+        #expression = createAST(#plus_assign_expr1, #plus_assign_expr2,
+        PLUS_ASSIGN, "+=");
+    }
+    lastExpressionType = 0;
+}
+
+@tminus_assign : !
+@minus_assign : {
+    #expression = createAssignAST(#minus_assign_expr1, #minus_assign_expr2,
+    MINUS_ASSIGN, "-=");
+}
+
+@tstar_assign : !
+@star_assign : {
+    #expression = createAssignAST(#star_assign_expr1, #star_assign_expr2,
+    STAR_ASSIGN, "*=");
+}
+
+@tdiv_assign : !
+@div_assign : {
+    #expression = createAssignAST(#div_assign_expr1, #div_assign_expr2,
+    DIV_ASSIGN, "/=");
+}
+
+@tmod_assign : !
+@mod_assign : {
+    #expression = createAssignAST(#mod_assign_expr1, #mod_assign_expr2,
+    MOD_ASSIGN, "%=");
+}
+
+@tsr_assign : !
+@sr_assign : {
+    #expression = createAssignAST(#sr_assign_expr1, #sr_assign_expr2,
+    SR_ASSIGN, ">>=");
+}
+
+@tbsr_assign : !
+@bsr_assign : {
+    #expression = createAssignAST(#bsr_assign_expr1, #bsr_assign_expr2,
+    BSR_ASSIGN, ">>>=");
+}
+
+@tsl_assign : !
+@sl_assign : {
+    #expression = createAssignAST(#sl_assign_expr1, #sl_assign_expr2,
+    SL_ASSIGN, "<<=");
+}
+
+@tband_assign : !
+@band_assign : {
+    #expression = createAssignAST(#band_assign_expr1, #band_assign_expr2,
+    BAND_ASSIGN, "&=");
+}
+
+@tinstanceof : !
+@pre_instanceof : {#iex = translate(#iex);}
+@instanceof : {
+    if (#itype != null) {
+        String methName;
+        switch (#itype.getType()) {
+            case ARRAY: methName = "is_array"; break;
+            case DATE: methName = "is_int"; break;
+            case OBJECT: methName = "is_object"; break;
+            case STRING: methName = "is_string"; break;
+            case NUMBER: methName = "is_numeric"; break;
+            case TRUE:
+            case FALSE:
+            case BOOLEAN: methName = "is_bool"; break;
+            default: methName = null; break;
+        }
+        if (methName != null) {
+            #expression = #([METHOD_CALL, methName], ([ELIST, "ELIST"], #iex));
+        }
+    } else {
+        #expression = #([METHOD_CALL, "is_a"], ([ELIST, "ELIST"], #iex,
+        [STRING_LITERAL, #idtype.getText()]));
+    }
+}
+
+@tbxor_assign : !
+@bxor_assign : {
+    #expression = createAssignAST(#bxor_assign_expr1, #bxor_assign_expr2,
+    BXOR_ASSIGN, "^=");
+}
+
+@tbor_assign : !
+@bor_assign : {
+    #expression = createAssignAST(#bor_assign_expr1, #bor_assign_expr2,
+    BOR_ASSIGN, "|=");
+}
+
+@tlp_back : !
+@lp_back : {
+    List args = (List) argStack.pop();
+    List constructors = ARRAY_OBJ.getConstructors();
+    Method constructor = null;
+    if (args.isEmpty()) {
+        for (Iterator it = constructors.iterator(); it.hasNext();) {
+            Method method = (Method) it.next();
+            if (method.getArgTypes().isEmpty()) {
+                constructor = method;
+                break;
+            }
+        }
+    } else {
+        for (Iterator it = constructors.iterator(); it.hasNext();) {
+            Method method = (Method) it.next();
+            if (method.getArgTypes().size() == 1
+            && CommonConstants.ALL_ARGS ==
+            ((Integer) method.getArgTypes().get(0)).intValue()) {
+                constructor = method;
+                break;
+            }
+        }
+    }
+    constructor.setArgs(args);
+    ASPObjectInstance instance = new ASPObjectInstance(ARRAY_OBJ);
+    instance.setMember(constructor);
+    #expression = createObjectAST(LBRACK, "[", instance);
+}
+
+@tnew : !
+@no_args : {argStack.push(Collections.EMPTY_LIST); }
+@new : {
+    XmlASPClass clazz = null;
+    List args = (List) argStack.pop();
+    int type = OBJECT;
+    if (#t != null) {
+        switch (#t.getType()) {
+            case ARRAY:
+                clazz = ARRAY_OBJ;
+                type = LBRACK;
+                break;
+            case DATE:
+                clazz = DATE_OBJ;
+                type = DATE;
+                break;
+            case STRING:
+                clazz = STRING_OBJ;
+                type = STRING;
+                break;
+            case TRUE:
+            case FALSE:
+            case BOOLEAN:
+                clazz = BOOL_OBJ;
+                type = BOOLEAN;
+                break;
+            case NUMBER:
+                clazz = NUMBER_OBJECT;
+                type = NUMBER;
+                break;
+            case OBJECT:
+                clazz = new XmlASPClass("Object");
+                type = OBJECT;
+                break;
+            default: clazz = null; break;
+        }
+    } else {
+        String className = #tid.getText();
+        if (functions.containsKey(className)) {
+            Method func = (Method) functions.get(className);
+            if (func.getASPClass() != null) {
+                clazz = (XmlASPClass) func.getASPClass();
+            }
+        } else {
+            #expression = #([UNRESOLVED_CLASS, className]);
+        }
+    }
+    if (clazz != null) {
+        ASPObjectInstance instance = new ASPObjectInstance(clazz);
+        #expression = createObjectAST(type, clazz.getName(), instance);
+        if (clazz.hasConstructor()) {
+            Method constr = getConstructor(clazz, args);
+            instance.setMember(constr);
+        }
+    } else {
+        LOG.warn("Uknow class for new with AST:" + #t);
+    }
+}
+
+@tdot : !
+@dot : {
+    if (#d1 != null) { //expression.expression
+        #expression = resolveDot(#d1, #d2);
+    } else if (#dt != null) { //Array.prototype
+        #expression = resolveClassAttribute(#dt, #d2);
+    } else { //this.something
+        #expression = resolveObjectAttribute(#d2);
+    }
+}
+
+@tmethod_call : !
+@method_call : {
+    List args = (List) argStack.pop();
+    ASPObjectInstance m = getMethod(#meth, args);
+    if (m == null) {
+        LOG.warn("No method found with name:" + #meth.getText());
+        #meth.setType(UNRESOLVED_METHOD);
+        AST argAST = makeFromList(args, #[ELIST, "ELIST"]);
+        #expression = #(#meth, argAST);
+    } else {
+        Method method = (Method) m.getMember();
+        AST translated = null;
+        if (method.getReturnType() == CommonConstants.OBJECT
+        && method.getEvaluatedClass() != null) {
+            ASPClass clazz = method.getEvaluatedClass();
+            translated = createObjectAST(CommonConstants.OBJECT,
+            clazz.getName(), new ASPObjectInstance(m.getInstance(), clazz));
+        } else {
+            translated = createObjectAST(CommonConstants.OBJECT,
+            method.getName(), m);
+        }
+        if (translated != null) {
+            #expression = translated;
+        }
+    }
+}
+
+@tquestion: !
+@q1 : { #eaqcond = translate(#eaqcond); }
+@q2 : { #eaqtrue = translate(#eaqtrue); }
+@question : {
+    int code = QUESTION;
+    #expression = #([code, "?"], #eaqcond, #eaqtrue, translate(#eaqfalse));
+}
+
+@tplus : !
+@pre_plus : {
+    boolean isP1String = isStringType(#plus_expr1);
+    #plus_expr1 = translate(#plus_expr1);
+}
+@plus: {
+    if (isP1String || isStringType(#plus_expr2)) {
+        #expression = getAST(#plus_expr1, #plus_expr2, CONCAT, ".");
+        lastExpressionType = STRING_LITERAL;
+    } else {
+        #expression = getAST(#plus_expr1, #plus_expr2,
+        PLUS, "+");
+    }
+}
+
+@tminus : !
+@pre_minus : { #minus_expr1 = translate(#minus_expr1); }
+@minus: {
+    #expression = getAST(#minus_expr1, #minus_expr2, MINUS, "-");
+}
+
+@tstar : !
+@pre_star : { #star_expr1 = translate(#star_expr1); }
+@star: {
+    #expression = getAST(#star_expr1, #star_expr2, STAR, "*");
+}
+
+@tdiv : !
+@pre_div : { #div_expr1 = translate(#div_expr1); }
+@div: {
+    #expression = getAST(#div_expr1, #div_expr2, DIV, "/");
+}
+
+@tmod : !
+@pre_mod : { #mod_expr1 = translate(#mod_expr1); }
+@mod: {
+    #expression = getAST(#mod_expr1, #mod_expr2, MOD, "%");
+}
+
+@tinc : !
+@inc : {
+    #expression = getAST(#inc, INC, "++");
+}
+
+@tdec : !
+@dec : {
+    #expression = getAST(#dec, DEC, "--");
+}
+
+@tunary_minus : !
+@unary_minus : {
+    #expression = getAST(#um, UNARY_MINUS, "-");
+}
+
+@tunary_plus : !
+@unary_plus : {
+    #expression = translate(#up.getFirstChild());
+}
+
+@tbnot : !
+@bnot : { int code = BNOT; #expression = #([code, "~"], translate(#bnot)); }
+
+@tlnot : !
+@lnot : { int code = LNOT; #expression = #([code, "!"], translate(#lnot)); }
+
+@tland : !
+@pre_land : { #land_expr1 = translate(#land_expr1); }
+@land : { #expression = getAST(#land_expr1, #land_expr2, LAND,
+ "&&"); }
+
+@tlor : !
+@pre_lor : {#lor_expr1 = translate(#lor_expr1);}
+@lor : { #expression = getAST(#lor_expr1, #lor_expr2,
+LOR, "||"); }
+
+@tbor : !
+@pre_bor : { #bor_expr1 = translate(#bor_expr1); }
+@bor : { #expression = getAST(#bor_expr1, #bor_expr2,
+BOR, "|"); }
+
+@tbxor : !
+@pre_bxor : { #bxor_assign_expr1 = translate(#bxor_expr1); }
+@bxor : { #expression = getAST(#bxor_assign_expr1, #bxor_expr2,
+BXOR, "^"); }
+
+@tband : !
+@pre_band : { #band_expr1 = translate(#band_expr1); }
+@band : { #expression = getAST(#band_expr1, #band_expr2,
+BAND, "&"); }
+
+@tnot_equal : !
+@pre_not_equal : { #not_equal_expr1 = translate(#not_equal_expr1); }
+@not_equal: {
+    if (isTypeOf(#not_equal_expr1, #not_equal_expr2)) {
+        #expression = handleTypeOf(#not_equal_expr1, #not_equal_expr2,
+        false);
+    } else {
+        #expression = getAST(#not_equal_expr1, #not_equal_expr2,
+        NOT_EQUAL , "!=");
+    }
+}
+
+@tequal : !
+@pre_equal : { #equal_expr1 = translate(#equal_expr1); }
+@equal : {
+    if (isTypeOf(#equal_expr1, #equal_expr2)) {
+        #expression = handleTypeOf(#equal_expr1, #equal_expr2, true);
+    } else {
+        #expression = getAST(#equal_expr1, #equal_expr2, EQUAL, "==");
+    }
+}
+
+@id : {
+    if (!withObjects.isEmpty()) {
+        for (int i = withObjects.size() - 1; i > -1; i--) {
+            ASPObjectInstance inst = (ASPObjectInstance) withObjects.get(i);
+            ASPClass clazz = inst.getASPClass();
+            List members = clazz.getMemberList(#IDENTIFIER.getText());
+            if (!members.isEmpty()) {
+                ASPObjectInstance nInst = new ASPObjectInstance(
+                inst.getInstance(), inst.getASPClass());
+                if (members.size() == 1) {
+                    nInst.setMember((Member) members.get(0));
+                } else {
+                    nInst.setMemberList(members);
+                }
+                #expression = createObjectAST(OBJECT, #IDENTIFIER.getText(),
+                nInst);
+                break;
+            }
+        }
+    }
+}
+@tidentical : !
+@pre_identical : { #identical_expr1 = translate(#identical_expr1); }
+@identical : {
+    #expression = getAST(#identical_expr1, #identical_expr2,
+    IDENTICAL, "===");
+}
+
+@tnot_identical : !
+@pre_not_identical : {
+    #not_identical_expr1 = translate(#not_identical_expr1);
+}
+@not_identical : {
+    #expression = getAST(#not_identical_expr1, #not_identical_expr2,
+    NOT_IDENTICAL, "!==");
+}
+
+@tlt : !
+@pre_lt : { #lt_expr1 = translate(#lt_expr1); }
+@lt : { #expression = getAST(#lt_expr1,
+#lt_expr2, LT, "<"); }
+
+@tgt : !
+@pre_gt : { #gt_expr1 = translate(#gt_expr1); }
+@gt : { #expression = getAST(#gt_expr1,
+#gt_expr2, GT, ">"); }
+
+@tle : !
+@pre_le : { #le_expr1 = translate(#le_expr1); }
+@le : { #expression = getAST(#le_expr1,
+#le_expr2, LE, "<="); }
+
+@tge : !
+@pre_ge : { #ge_expr1 = translate(#ge_expr1); }
+@ge : { #expression = getAST(#ge_expr1,
+#ge_expr2, GE, ">="); }
+
+@tsl : !
+@pre_sl : { #sl_expr1 = translate(#sl_expr1); }
+@sl : { #expression = getAST(#sl_expr1,
+#sl_expr2, SL, "<<"); }
+
+@tsr : !
+@pre_sr : { #sr_expr1 = translate(#sr_expr1); }
+@sr : { #expression = getAST(#sr_expr1,
+#sr_expr2, SR, ">>"); }
+
+@tbsr : !
+@pre_bsr : { #bsr_expr1 = translate(#bsr_expr1); }
+@bsr : { #expression = getAST(#bsr_expr1,
+#bsr_expr2, BSR, ">>>"); }
+
+@tpost_inc : !
+@post_inc : {
+    int code = POST_INC;
+    #expression = #([code, "++"], translate(#post_inc));
+}
+
+@tpost_dec : !
+@post_dec : {
+    int code = POST_DEC;
+    #expression = #([code, "--"], translate(#post_dec));
+}
+
+@tdelete : !
+@delete : {
+    #expression = #([METHOD_CALL, "unset"], #([ELIST, "ELIST"],
+    translate(#delete)));
+}
+
+@texpr : !
+@expr : {
+    if (#ex != null) {
+        if (#ex.getType() == FUNCTION) {
+            #expr = #ex;
+        } else {
+            List others = collectExpressions(#ex);
+            if (others.isEmpty()) {
+                if (#ex instanceof ObjectAST) {
+                    ObjectAST oAST = (ObjectAST) #ex;
+                    #ex = translate(oAST.getInstance());
+                }
+                if (#ex != null) {
+                    #expr = getAST(#ex, EXPR, "EXPR");
+                }
+            } else {
+                while (#ex != null && #ex.getType() == EXPR) {
+                    #ex = #ex.getNextSibling();
+                }
+                if (#ex != null) {
+                    AST expression = getAST(#ex, EXPR, "EXPR");
+                    others.add(expression);
+                }
+                #expr = makeFromList(others, null);
+            }
+        }
+    }
+    lastExpressionType = 0;
+}
+
+@tindex_op : !
+@pre_index_op : { #arr = translate(#arr);}
+@index_op : {
+    List indexes = (List) argStack.pop();
+    if (!indexes.isEmpty()) {
+        if (#arr.getType() == INDEX_OP) {
+            AST arrayName = #arr.getFirstChild();
+            AST elem = arrayName.getNextSibling();
+            while (elem != null) {
+                indexes.add(0, elem);
+                elem = elem.getNextSibling();
+            }
+            arrayName.setNextSibling(null);
+            #arr = arrayName;
+        }
+        #expression = getAST(#arr, makeFromList(indexes, null), INDEX_OP, "[");
+    } else {
+        LOG.error("No indexes for array:" + #arr.toString());
+    }
+}
+
+@tif : !
+@if : {
+    int code = IF;
+    if (#elsestm != null) {
+        #statement = #([IF_ELSE, "IF_ELSE"], ([code, "if"], #if_expr, #if_stm),
+        #elsestm);
+    } else {
+        #statement = #([IF_ELSE, "IF_ELSE"], ([code, "if"], #if_expr, #if_stm));
+    }
+}
+@telse : !
+@else : {
+    if (#elsestm.getType() == IF_ELSE) {
+        AST ifAST = #elsestm.getFirstChild();
+        ifAST.initialize(ELSEIF, "elseif");
+        #else_statement = ifAST;
+    } else {
+        int code = ELSE;
+        #else_statement = #([code, "else"], #elsestm);
+    }
+}
+
+@tlabel : !
+@pre_label : {
+    labels.put(#label.getText(), new IntWrapper());
+}
+@label : {
+    labels.remove(#label.getText());
+    #statement = #label_stat;
+}
+
+@pre_while : { incLabels(); }
+@post_while : { decLabels(); }
+
+@pre_do : { incLabels(); }
+@post_do : { decLabels(); }
+
+@pre_switch : { incLabels(); }
+@post_switch : { decLabels(); }
+
+@pre_for : { incLabels(); }
+@for_init : {
+    List args = (List) argStack.pop();
+    if (!args.isEmpty()) {
+        if (args.size() == 1) {
+            AST elem = (AST) args.get(0);
+            #finit.setFirstChild(#([EXPR, "EXPR"], elem));
+        } else {
+            for (ListIterator li = args.listIterator(); li.hasNext();) {
+                AST elem = (AST) li.next();
+                li.set(#([EXPR, "EXPR"], elem));
+            }
+            makeFromList(args, #finit);
+        }
+    }
+}
+@for_iter : {
+    List args = (List) argStack.pop();
+    if (!args.isEmpty()) {
+        if (args.size() == 1) {
+            AST elem = (AST) args.get(0);
+            #fiter.setFirstChild(#([EXPR, "EXPR"], elem));
+        } else {
+            for (ListIterator li = args.listIterator(); li.hasNext();) {
+                AST elem = (AST) li.next();
+                li.set(#([EXPR, "EXPR"], elem));
+            }
+            makeFromList(args, #fiter);
+        }
+    }
+}
+@post_for : { decLabels(); }
+
+@tbreak : !
+@break : {
+    #statement = interuptStatement(BREAK, #brid);
+}
+
+@tcontinue : !
+@continue : {
+    #statement = interuptStatement(CONTINUE, #contid);
+}
+@tvar : !
+@pre_var : {
+    List var_expressions  = null;
+    if (currentMethod != null) {
+        currentMethod.setInVar(true);
+    }
+}
+@var_decl : {
+    if (currentMethod != null && #vid != null) {
+        currentMethod.addVariable(#vid.getText(), true);
+    }
+}
+@var_expr : {
+    if (#vexpr != null) {
+        if (currentMethod == null) {
+            if (var_expressions == null) {
+                var_expressions = new ArrayList();
+            }
+            var_expressions.add(#vexpr);
+        } else {
+            AST fChild = #vexpr.getFirstChild().getFirstChild();
+            if (fChild.getType() == IDENTIFIER) {
+                currentMethod.addVariable(fChild.getText(), true);
+            }
+            currentMethod.addVarExpression(#vexpr);
+        }
+    }
+}
+@var_end : {
+    if (currentMethod != null) {
+        currentMethod.setInVar(false);
+        List expressions = currentMethod.getVarExpressions();
+        if (expressions != null) {
+            #var = makeFromList(expressions, null);
+            expressions.clear();
+        }
+    } else {
+        if (var_expressions != null) {
+            #var = makeFromList(var_expressions, null);
+            var_expressions.clear();
+        }
+    }
+}
+
+@tfvar : !
+@pre_fvar : {
+    List var_expressions = new ArrayList();
+    if (currentMethod != null) {
+        currentMethod.setInVar(true);
+    }
+}
+@fvar_decl : {
+    if (currentMethod != null && #fid != null) {
+        currentMethod.addVariable(#fid.getText(), true);
+    }
+    var_expressions.add(#fid.getText());
+}
+@fvar_expr : {
+    if (#fexpr != null) {
+        var_expressions.add(#fexpr);
+        if (currentMethod != null) {
+            AST fChild = #fexpr.getFirstChild().getFirstChild();
+            if (fChild.getType() == IDENTIFIER) {
+                currentMethod.addVariable(fChild.getText(), true);
+            }
+        }
+    } else {
+        LOG.error("Null expression in var!");
+    }
+}
+@fvar_end : {
+    if (currentMethod != null) {
+        currentMethod.setInVar(false);
+        for (Iterator it = var_expressions.iterator(); it.hasNext();) {
+            AST ast = (AST) it.next();
+            AST id;
+            if (ast.getType() == EXPR) {
+                id = ast.getFirstChild().getFirstChild();
+            } else {
+                id = ast;
+            }
+            currentMethod.removeVariable(id.getText());
+        }
+    }
+    for (ListIterator li = var_expressions.listIterator(); li.hasNext();) {
+        AST ast = (AST) li.next();
+        if (ast.getType() == IDENTIFIER) {
+            li.set(#([EXPR, "EXPR"], ast));
+        }
+    }
+    #fvar = makeFromList(var_expressions, null);
+}
+
+@tfunc : ! {inArgDef = true;}
+@func_decl : {
+	inArgDef = false;
+	JsUserDefinedMethod function;
+	if (#FUNCTION.getText().startsWith(CommonConstants.KEY_START)) {
+		function = getAnonymousMethod(#FUNCTION.getText());
+	} else {
+		function = getParserFunction(#FUNCTION.getText());
+	}
+	currentMethod = function;
+}
+@func_end : {
+	#statement = functionEnd(#fncstm);
+}
+
+@tmem : !
+@function_member : {
+    currentMethod = (JsUserDefinedMethod) currentMethod.getASPClass()
+    .getMemberObject(#FUNCTION_MEMBER.getText());
+    currentMethod.setRootAST(#FUNCTION_MEMBER);
+    #FUNCTION_MEMBER.setType(FUNCTION);
+}
+@funcmem_end : {
+    #FUNCTION_MEMBER.setFirstChild(#memstm);
+    currentMethod = currentMethod.getParentFunction();
+}
+
+@tanon_func : ! {inArgDef = true; }
+@anon_decl : {
+    inArgDef = false;
+}
+@anon_end : {
+    #anonym_function = functionEnd(#fncstm);
+}
+@end : {
+    if (parserClasses != null) {
+        for (Iterator it = parserClasses.values().iterator(); it.hasNext();) {
+            XmlASPClass clazz = (XmlASPClass) it.next();
+            JsUserDefinedMethod constr =
+            (JsUserDefinedMethod) clazz.getConstructors().get(0);
+            //should have constructor
+            transformToClass(clazz, constr);
+        }
+    }
+    /* Remove the artificial node inserted at the beginning of parsing */
+    #start_rule = #start_rule.getNextSibling();
+}
+
+
+@include : {
+    try {
+        parser.parseInclude(#include.getText(), this, false);
+    } catch (ANTLRException ex) {
+        LOG.error("Failed to parse included file:" + #include.getText(), ex);
+    }
+}
+
+@twith : !
+@with_obj : {
+    ASPObjectInstance instance;
+    AST withExpr = null;
+    if (#with_expr instanceof ObjectAST) {
+        instance = ((ObjectAST) #with_expr).getInstance();
+    } else if (#with_expr.getType() == IDENTIFIER) {
+        instance = getObjectInstance(#with_expr.getText());
+        if (instance == null) {
+            instance = getASPClass(#with_expr);
+        }
+    } else {
+        instance = null;
+    }
+    if (instance != null) {
+        if (instance.getMember() != null) {
+            String name = "withobj" + (++lastWith);
+            AST id = #[IDENTIFIER, name];
+            int code = EXPR;
+            Member mem = instance.getMember();
+            withExpr = #([code, "EXPR"],
+            ([ASSIGN, "="], astFactory.dup(id),
+            translateMember(mem, instance.getInstance())
+            ));
+            instance = new ASPObjectInstance(id, getMemberClass(mem));
+        }
+        withObjects.push(instance);
+    }
+}
+@with_end : {
+    withObjects.pop();
+    if (#with_stm != null) {
+        AST withStatements = #with_stm.getType() == SLIST
+        ? #with_stm.getFirstChild() : #with_stm;
+        if (withExpr != null) {
+            #statement = #(null, withExpr, withStatements);
+        } else {
+            #statement = withStatements;
+        }
+    }
+}

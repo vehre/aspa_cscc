@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <js>
+    <original>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="result"/>
+          <ast name="LAND" text="&amp;&amp;">
+            <ast name="LAND" text="&amp;&amp;">
+              <ast name="LAND" text="&amp;&amp;">
+                <ast name="LAND" text="&amp;&amp;">
+                  <ast name="INSTANCEOF" text="instanceof">
+                    <ast name="STRING_LITERAL" text="Hello"/>
+                    <ast name="STRING" text="String"/>
+                  </ast>
+                  <ast name="INSTANCEOF" text="instanceof">
+                    <ast name="NEW" text="new">
+                      <ast name="DATE" text="Date"/>
+                    </ast>
+                    <ast name="DATE" text="Date"/>
+                  </ast>
+                </ast>
+                <ast name="INSTANCEOF" text="instanceof">
+                  <ast name="NEW" text="new">
+                    <ast name="ARRAY" text="Array"/>
+                  </ast>
+                  <ast name="ARRAY" text="Array"/>
+                </ast>
+              </ast>
+              <ast name="INSTANCEOF" text="instanceof">
+                <ast name="NEW" text="new">
+                  <ast name="NUMBER" text="Number"/>
+                  <ast name="ELIST" text="ELIST">
+                    <ast name="EXPR" text="EXPR">
+                      <ast name="NUM_INT" text="23"/>
+                    </ast>
+                  </ast>
+                </ast>
+                <ast name="NUMBER" text="Number"/>
+              </ast>
+            </ast>
+            <ast name="INSTANCEOF" text="instanceof">
+              <ast name="NEW" text="new">
+                <ast name="BOOLEAN" text="Boolean"/>
+              </ast>
+              <ast name="BOOLEAN" text="Boolean"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="result"/>
+          <ast name="LAND" text="&amp;&amp;">
+            <ast name="LAND" text="&amp;&amp;">
+              <ast name="LAND" text="&amp;&amp;">
+                <ast name="LAND" text="&amp;&amp;">
+                  <ast name="METHOD_CALL" text="is_string">
+                    <ast name="ELIST" text="ELIST">
+                      <ast name="STRING_LITERAL" text="Hello"/>
+                    </ast>
+                  </ast>
+                  <ast name="METHOD_CALL" text="is_int">
+                    <ast name="ELIST" text="ELIST">
+                      <ast name="METHOD_CALL" text="getdate"/>
+                    </ast>
+                  </ast>
+                </ast>
+                <ast name="METHOD_CALL" text="is_array">
+                  <ast name="ELIST" text="ELIST">
+                    <ast name="METHOD_CALL" text="array"/>
+                  </ast>
+                </ast>
+              </ast>
+              <ast name="METHOD_CALL" text="is_numeric">
+                <ast name="ELIST" text="ELIST">
+                  <ast name="NUM_INT" text="23"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="METHOD_CALL" text="is_bool">
+              <ast name="ELIST" text="ELIST">
+                <ast name="FALSE" text="FALSE"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </js>
+</asp>

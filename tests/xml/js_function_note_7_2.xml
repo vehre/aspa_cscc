@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <js>
+    <original>
+      <ast name="FUNCTION" text="function">
+        <ast name="IDENTIFIER" text="nestedFunction4"/>
+        <ast name="ELIST" text="ELIST"/>
+        <ast name="SLIST" text="{">
+          <ast name="EXPR" text="EXPR">
+            <ast name="METHOD_CALL" text="(">
+              <ast name="IDENTIFIER" text="inFucn4"/>
+              <ast name="ELIST" text="ELIST"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="inFucn4"/>
+              <ast name="FUNCTION" text="function">
+                <ast name="ELIST" text="ELIST"/>
+                <ast name="SLIST" text="{">
+                  <ast name="EXPR" text="EXPR">
+                    <ast name="METHOD_CALL" text="(">
+                      <ast name="IDENTIFIER" text="alert"/>
+                      <ast name="ELIST" text="ELIST">
+                        <ast name="EXPR" text="EXPR">
+                          <ast name="STRING_LITERAL" text="inFucn4"/>
+                        </ast>
+                      </ast>
+                    </ast>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="IDENTIFIER" text="nestedFunction4"/>
+          <ast name="ELIST" text="ELIST"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="IDENTIFIER" text="nestedFunction5"/>
+          <ast name="ELIST" text="ELIST"/>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="function">
+        <ast name="IDENTIFIER" text="nestedFunction5"/>
+        <ast name="ELIST" text="ELIST"/>
+        <ast name="SLIST" text="{">
+          <ast name="EXPR" text="EXPR">
+            <ast name="METHOD_CALL" text="(">
+              <ast name="IDENTIFIER" text="inFucn5"/>
+              <ast name="ELIST" text="ELIST"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="inFucn5"/>
+              <ast name="FUNCTION" text="function">
+                <ast name="ELIST" text="ELIST"/>
+                <ast name="SLIST" text="{">
+                  <ast name="EXPR" text="EXPR">
+                    <ast name="METHOD_CALL" text="(">
+                      <ast name="IDENTIFIER" text="alert"/>
+                      <ast name="ELIST" text="ELIST">
+                        <ast name="EXPR" text="EXPR">
+                          <ast name="STRING_LITERAL" text="inFucn5"/>
+                        </ast>
+                      </ast>
+                    </ast>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="FUNCTION" text="nestedFunction4">
+        <ast name="SLIST" text="{">
+          <ast name="EXPR" text="EXPR">
+            <ast name="UNRESOLVED_METHOD" text="inFucn4"/>
+          </ast>
+          <ast name="FUNCTION" text="inFucn4">
+            <ast name="SLIST" text="{">
+              <ast name="EXPR" text="EXPR">
+                <ast name="UNRESOLVED_METHOD" text="alert"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="nestedFunction4"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="nestedFunction5"/>
+      </ast>
+      <ast name="FUNCTION" text="nestedFunction5">
+        <ast name="SLIST" text="{">
+          <ast name="EXPR" text="EXPR">
+            <ast name="UNRESOLVED_METHOD" text="inFucn5"/>
+          </ast>
+          <ast name="FUNCTION" text="inFucn5">
+            <ast name="SLIST" text="{">
+              <ast name="EXPR" text="EXPR">
+                <ast name="UNRESOLVED_METHOD" text="alert"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </js>
+</asp>

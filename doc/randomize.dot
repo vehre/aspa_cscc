@@ -1,0 +1,6 @@
+digraph L0 {
+        size = "1.5,1.5";
+        ordering=out;
+        node [shape = plaintext];
+        RANDOMIZE -> EXPR;
+}

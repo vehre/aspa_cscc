@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <js>
+    <original>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="x"/>
+          <ast name="PLUS" text="+">
+            <ast name="METHOD_CALL" text="(">
+              <ast name="DOT" text=".">
+                <ast name="IDENTIFIER" text="Math"/>
+                <ast name="IDENTIFIER" text="cos"/>
+              </ast>
+              <ast name="ELIST" text="ELIST">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="STAR" text="*">
+                    <ast name="NUM_INT" text="3"/>
+                    <ast name="DOT" text=".">
+                      <ast name="IDENTIFIER" text="Math"/>
+                      <ast name="IDENTIFIER" text="PI"/>
+                    </ast>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="METHOD_CALL" text="(">
+              <ast name="DOT" text=".">
+                <ast name="IDENTIFIER" text="Math"/>
+                <ast name="IDENTIFIER" text="sin"/>
+              </ast>
+              <ast name="ELIST" text="ELIST">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="DOT" text=".">
+                    <ast name="IDENTIFIER" text="Math"/>
+                    <ast name="IDENTIFIER" text="LN10"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="y"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Math"/>
+              <ast name="IDENTIFIER" text="tan"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="STAR" text="*">
+                  <ast name="NUM_INT" text="14"/>
+                  <ast name="DOT" text=".">
+                    <ast name="IDENTIFIER" text="Math"/>
+                    <ast name="IDENTIFIER" text="E"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="WITH" text="with">
+        <ast name="EXPR" text="EXPR">
+          <ast name="IDENTIFIER" text="Math"/>
+        </ast>
+        <ast name="SLIST" text="{">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="x"/>
+              <ast name="PLUS" text="+">
+                <ast name="METHOD_CALL" text="(">
+                  <ast name="IDENTIFIER" text="cos"/>
+                  <ast name="ELIST" text="ELIST">
+                    <ast name="EXPR" text="EXPR">
+                      <ast name="STAR" text="*">
+                        <ast name="NUM_INT" text="3"/>
+                        <ast name="IDENTIFIER" text="PI"/>
+                      </ast>
+                    </ast>
+                  </ast>
+                </ast>
+                <ast name="METHOD_CALL" text="(">
+                  <ast name="IDENTIFIER" text="sin"/>
+                  <ast name="ELIST" text="ELIST">
+                    <ast name="EXPR" text="EXPR">
+                      <ast name="IDENTIFIER" text="LN10"/>
+                    </ast>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="y"/>
+              <ast name="METHOD_CALL" text="(">
+                <ast name="IDENTIFIER" text="tan"/>
+                <ast name="ELIST" text="ELIST">
+                  <ast name="EXPR" text="EXPR">
+                    <ast name="STAR" text="*">
+                      <ast name="NUM_INT" text="14"/>
+                      <ast name="IDENTIFIER" text="E"/>
+                    </ast>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="WITH" text="with">
+        <ast name="EXPR" text="EXPR">
+          <ast name="NEW" text="new">
+            <ast name="DATE" text="Date"/>
+            <ast name="ELIST" text="ELIST"/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Response"/>
+              <ast name="IDENTIFIER" text="write"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="PLUS" text="+">
+                  <ast name="STRING_LITERAL" text="Time is:"/>
+                  <ast name="METHOD_CALL" text="(">
+                    <ast name="IDENTIFIER" text="getDay"/>
+                    <ast name="ELIST" text="ELIST"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="WITH" text="with">
+        <ast name="EXPR" text="EXPR">
+          <ast name="NEW" text="new">
+            <ast name="DATE" text="Date"/>
+            <ast name="ELIST" text="ELIST"/>
+          </ast>
+        </ast>
+        <ast name="WITH" text="with">
+          <ast name="EXPR" text="EXPR">
+            <ast name="IDENTIFIER" text="Response"/>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="METHOD_CALL" text="(">
+              <ast name="IDENTIFIER" text="write"/>
+              <ast name="ELIST" text="ELIST">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="PLUS" text="+">
+                    <ast name="STRING_LITERAL" text="Time is:"/>
+                    <ast name="METHOD_CALL" text="(">
+                      <ast name="IDENTIFIER" text="getDay"/>
+                      <ast name="ELIST" text="ELIST"/>
+                    </ast>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="VAR" text="var">
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="d"/>
+            <ast name="NEW" text="new">
+              <ast name="DATE" text="Date"/>
+              <ast name="ELIST" text="ELIST"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="WITH" text="with">
+        <ast name="EXPR" text="EXPR">
+          <ast name="IDENTIFIER" text="d"/>
+        </ast>
+        <ast name="WITH" text="with">
+          <ast name="EXPR" text="EXPR">
+            <ast name="IDENTIFIER" text="Response"/>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="METHOD_CALL" text="(">
+              <ast name="IDENTIFIER" text="write"/>
+              <ast name="ELIST" text="ELIST">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="PLUS" text="+">
+                    <ast name="STRING_LITERAL" text="Time is:"/>
+                    <ast name="METHOD_CALL" text="(">
+                      <ast name="IDENTIFIER" text="getDay"/>
+                      <ast name="ELIST" text="ELIST"/>
+                    </ast>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="x"/>
+          <ast name="PLUS" text="+">
+            <ast name="METHOD_CALL" text="cos">
+              <ast name="ELIST" text="ARGLIST_VALUES">
+                <ast name="STAR" text="*">
+                  <ast name="NUM_INT" text="3"/>
+                  <ast name="CONSTANT" text="M_PI"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="METHOD_CALL" text="sin">
+              <ast name="ELIST" text="ARGLIST_VALUES">
+                <ast name="CONSTANT" text="M_LN10"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="y"/>
+          <ast name="METHOD_CALL" text="tan">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="STAR" text="*">
+                <ast name="NUM_INT" text="14"/>
+                <ast name="CONSTANT" text="M_E"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="x"/>
+          <ast name="PLUS" text="+">
+            <ast name="METHOD_CALL" text="cos">
+              <ast name="ELIST" text="ARGLIST_VALUES">
+                <ast name="STAR" text="*">
+                  <ast name="NUM_INT" text="3"/>
+                  <ast name="CONSTANT" text="M_PI"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="METHOD_CALL" text="sin">
+              <ast name="ELIST" text="ARGLIST_VALUES">
+                <ast name="CONSTANT" text="M_LN10"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="y"/>
+          <ast name="METHOD_CALL" text="tan">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="STAR" text="*">
+                <ast name="NUM_INT" text="14"/>
+                <ast name="CONSTANT" text="M_E"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="withobj1"/>
+          <ast name="METHOD_CALL" text="getdate"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="print">
+          <ast name="ELIST" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text=".">
+              <ast name="STRING_LITERAL" text="Time is:"/>
+              <ast name="INDEX_OP" text="INDEX_OP">
+                <ast name="IDENTIFIER" text="withobj1"/>
+                <ast name="STRING_LITERAL" text="wday"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="withobj2"/>
+          <ast name="METHOD_CALL" text="getdate"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="print">
+          <ast name="ELIST" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text=".">
+              <ast name="STRING_LITERAL" text="Time is:"/>
+              <ast name="INDEX_OP" text="INDEX_OP">
+                <ast name="IDENTIFIER" text="withobj2"/>
+                <ast name="STRING_LITERAL" text="wday"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="d"/>
+          <ast name="METHOD_CALL" text="getdate"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="print">
+          <ast name="ELIST" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text=".">
+              <ast name="STRING_LITERAL" text="Time is:"/>
+              <ast name="INDEX_OP" text="INDEX_OP">
+                <ast name="IDENTIFIER" text="d"/>
+                <ast name="STRING_LITERAL" text="wday"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </js>
+</asp>

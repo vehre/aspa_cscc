@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <vb>
+    <original>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="Response"/>
+            <ast name="IDENTIFIER" text="Buffer"/>
+          </ast>
+          <ast name="TRUE" text="true"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="Response"/>
+            <ast name="IDENTIFIER" text="CacheControl"/>
+          </ast>
+          <ast name="DSTRING" text="Public"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="cache"/>
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="Response"/>
+            <ast name="IDENTIFIER" text="CacheControl"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="Response"/>
+            <ast name="IDENTIFIER" text="ContentType"/>
+          </ast>
+          <ast name="DSTRING" text="text/plain"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="cType"/>
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="Response"/>
+            <ast name="IDENTIFIER" text="ContentType"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="Response"/>
+            <ast name="IDENTIFIER" text="isClientConnected"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="Response"/>
+            <ast name="IDENTIFIER" text="status"/>
+          </ast>
+          <ast name="DSTRING" text="Some Status"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="Response"/>
+            <ast name="IDENTIFIER" text="pics"/>
+          </ast>
+          <ast name="DSTRING" text="pics"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="Response"/>
+            <ast name="IDENTIFIER" text="Expires"/>
+          </ast>
+          <ast name="DSTRING" text="123"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="Response"/>
+            <ast name="IDENTIFIER" text="ExpiresAbsolute"/>
+          </ast>
+          <ast name="DSTRING" text="12/2/2004"/>
+        </ast>
+      </ast>
+      <ast name="SUB_CALL" text="Sub Call">
+        <ast name="DOT" text=".">
+          <ast name="IDENTIFIER" text="Response"/>
+          <ast name="IDENTIFIER" text="addHeader"/>
+        </ast>
+        <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+          <ast name="DSTRING" text="MyHeader"/>
+          <ast name="DSTRING" text="HeaderValue"/>
+        </ast>
+      </ast>
+      <ast name="SUB_CALL" text="Sub Call">
+        <ast name="DOT" text=".">
+          <ast name="IDENTIFIER" text="Response"/>
+          <ast name="IDENTIFIER" text="AppendToLog"/>
+        </ast>
+        <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+          <ast name="DSTRING" text="This is my message"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="Response"/>
+            <ast name="IDENTIFIER" text="Clear"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="DOT" text=".">
+          <ast name="IDENTIFIER" text="Response"/>
+          <ast name="IDENTIFIER" text="Clear"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="DOT" text=".">
+          <ast name="IDENTIFIER" text="Response"/>
+          <ast name="IDENTIFIER" text="end"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="Response"/>
+            <ast name="IDENTIFIER" text="end"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="DOT" text=".">
+          <ast name="IDENTIFIER" text="Response"/>
+          <ast name="IDENTIFIER" text="Flush"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="Response"/>
+            <ast name="IDENTIFIER" text="Flush"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="SUB_CALL" text="Sub Call">
+        <ast name="DOT" text=".">
+          <ast name="IDENTIFIER" text="Response"/>
+          <ast name="IDENTIFIER" text="redirect"/>
+        </ast>
+        <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+          <ast name="DSTRING" text="Some url"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="Response"/>
+            <ast name="IDENTIFIER" text="write"/>
+          </ast>
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="IDENTIFIER" text="html"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="SUB_CALL" text="Sub Call">
+        <ast name="DOT" text=".">
+          <ast name="IDENTIFIER" text="Response"/>
+          <ast name="IDENTIFIER" text="write"/>
+        </ast>
+        <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+          <ast name="CONCAT" text="&amp;">
+            <ast name="IDENTIFIER" text="html"/>
+            <ast name="DSTRING" text="&lt;br&gt;"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Response"/>
+              <ast name="IDENTIFIER" text="Cookies"/>
+            </ast>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="A"/>
+            </ast>
+          </ast>
+          <ast name="DSTRING" text="Value"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="METHOD_CALL" text="(">
+            <ast name="METHOD_CALL" text="(">
+              <ast name="DOT" text=".">
+                <ast name="IDENTIFIER" text="Response"/>
+                <ast name="IDENTIFIER" text="Cookies"/>
+              </ast>
+              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                <ast name="DSTRING" text="A"/>
+              </ast>
+            </ast>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="B"/>
+            </ast>
+          </ast>
+          <ast name="DSTRING" text="Other value"/>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="ob_start"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="session_cache_limiter">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="DSTRING" text="Public"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="cache"/>
+          <ast name="METHOD_CALL" text="session_cache_limiter"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="header">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="DSTRING" text="Content-type: "/>
+              <ast name="DSTRING" text="text/plain"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="cType"/>
+          <ast name="INDEX_OP" text="INDEX_OP">
+            <ast name="IDENTIFIER" text="_SERVER"/>
+            <ast name="DSTRING" text="CONTENT_TYPE"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="EQ" text="EQ">
+            <ast name="METHOD_CALL" text="connection_status"/>
+            <ast name="DINT" text="0"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="header">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="DSTRING" text="Status: "/>
+              <ast name="DSTRING" text="Some Status"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="header">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="DSTRING" text="pics-label: "/>
+              <ast name="DSTRING" text="pics"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="header">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="DSTRING" text="Expires: "/>
+              <ast name="CONCAT" text="CONCAT">
+                <ast name="METHOD_CALL" text="gmdate">
+                  <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                    <ast name="DSTRING" text="D, d M Y H:i:s"/>
+                    <ast name="PLUS" text="PLUS">
+                      <ast name="METHOD_CALL" text="time"/>
+                      <ast name="DSTRING" text="123"/>
+                    </ast>
+                  </ast>
+                </ast>
+                <ast name="DSTRING" text="GMT"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="header">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="DSTRING" text="Expires: "/>
+              <ast name="DSTRING" text="12/2/2004"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="header">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="CONCAT" text="CONCAT">
+                <ast name="DSTRING" text="MyHeader"/>
+                <ast name="DSTRING" text=": "/>
+              </ast>
+              <ast name="DSTRING" text="HeaderValue"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="error_log">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="DSTRING" text="This is my message"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="ob_clean"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="ob_clean"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="ob_flush_end"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="exit"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="ob_flush_end"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="exit"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="ob_flush"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="ob_flush"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="header">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="DSTRING" text="Location: "/>
+              <ast name="DSTRING" text="Some url"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="print">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="IDENTIFIER" text="html"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="print">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="IDENTIFIER" text="html"/>
+              <ast name="DSTRING" text="&lt;br&gt;"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="set_cookie">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="DSTRING" text="A"/>
+            <ast name="DSTRING" text="Value"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="set_cookie">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="DSTRING" text="A"/>
+              <ast name="CONCAT" text="CONCAT">
+                <ast name="DSTRING" text="["/>
+                <ast name="CONCAT" text="CONCAT">
+                  <ast name="DSTRING" text="B"/>
+                  <ast name="DSTRING" text="]"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="DSTRING" text="Other value"/>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </vb>
+</asp>

@@ -1,0 +1,207 @@
+<?xml version="1.0"?>
+
+<project name="ASP_PARSER" default="compile" basedir=".">
+
+<!-- PROJECT OPTIONS -->
+<property file="build.properties" />
+
+<path id="classpath">
+	<fileset id="classfiles" dir="${lib_dir}">
+		<include name="**/ext/*.jar"/>
+		<include name="**/*.jar"/>
+	</fileset>
+  <pathelement location="${build_dir}/classes"/>
+</path>
+
+<target name="prepare">
+    <tstamp />
+    <mkdir dir="${src_dir}"/>
+    <mkdir dir="${build_dir}/src/gr/omadak/leviathan/asp" />
+    <mkdir dir="${build_dir}/classes" />
+    <mkdir dir="${build_dir}/${grama_dir}" />
+    <mkdir dir="${lib_dir}"/>
+    <mkdir dir="${lib_dir}/${lib_ext_dir}"/>
+    <mkdir dir="etc"/>
+    <mkdir dir="etc/META-INF"/>
+    <mkdir dir="${test_dir}" />
+    <mkdir dir="${test_reports}" />
+    <mkdir dir="logs" />
+</target>
+
+<!--
+<property name="pmd_lib" value="/home/anakreon/tmp/pmd-1.7/lib" />
+<taskdef classname="net.sourceforge.pmd.ant.PMDTask" name="pmd">
+    <classpath>
+        <fileset dir="${pmd_lib}" includes="*.jar" />
+    </classpath>
+</taskdef>
+-->
+<!--  ANTLR   -->
+<target name="antlr" depends="prepare">
+    <java classname="annotation.Insert" classpathref="classpath" 
+    failonerror="yes" fork="yes">
+        <arg value="-s"/>
+        <arg value="${grama_dir}/html.g" />
+        <arg value="-i" />
+        <arg value="${grama_dir}/html.act" />
+        <arg value="-d" />
+        <arg value="${build_dir}/${grama_dir}/html.g" />
+    </java>
+    <antlr target="${build_dir}/${grama_dir}/html.g"
+        outputdirectory="${build_dir}/src/gr/omadak/leviathan/asp"
+        debug="${antlr.debug}" html="${antlr.html}"
+        diagnostic="${antlr.diagnostic}"
+    />
+    <java classname="annotation.Insert" classpathref="classpath" 
+    failonerror="yes" fork="yes">
+        <arg value="-s"/>
+        <arg value="${grama_dir}/vbs.g" />
+        <arg value="-i" />
+        <arg value="${grama_dir}/vbs.act" />
+        <arg value="-d" />
+        <arg value="${build_dir}/${grama_dir}/vbs.g" />
+    </java>
+    <antlr target="${build_dir}/${grama_dir}/vbs.g"
+        outputdirectory="${build_dir}/src/gr/omadak/leviathan/asp"
+        debug="${antlr.debug}" html="${antlr.html}"
+        diagnostic="${antlr.diagnostic}"
+    />
+    <java classname="annotation.Insert" classpathref="classpath" 
+    failonerror="yes" fork="yes">
+        <arg value="-s"/>
+        <arg value="${grama_dir}/tree_vbs.g" />
+        <arg value="-i" />
+        <arg value="${grama_dir}/tree_vbs_php.act" />
+        <arg value="-d" />
+        <arg value="${build_dir}/${grama_dir}/tree_vbs.g" />
+    </java>
+    <antlr target="${build_dir}/${grama_dir}/tree_vbs.g"
+        outputdirectory="${build_dir}/src/gr/omadak/leviathan/asp"
+        debug="${antlr.debug}" html="${antlr.html}"
+        diagnostic="${antlr.diagnostic}"
+    />
+    <java classname="annotation.Insert" classpathref="classpath" 
+    failonerror="yes" fork="yes">
+        <arg value="-s"/>
+        <arg value="${grama_dir}/producer_vbs.g" />
+        <arg value="-i" />
+        <arg value="${grama_dir}/producer_vbs_php.act" />
+        <arg value="-d" />
+        <arg value="${build_dir}/${grama_dir}/producer_vbs.g" />
+    </java>
+    <antlr target="${build_dir}/${grama_dir}/producer_vbs.g"
+        outputdirectory="${build_dir}/src/gr/omadak/leviathan/asp"
+        debug="${antlr.debug}" html="${antlr.html}"
+        diagnostic="${antlr.diagnostic}"
+    />
+    <java classname="annotation.Insert" classpathref="classpath" 
+    failonerror="yes" fork="yes">
+        <arg value="-s"/>
+        <arg value="${grama_dir}/js.g" />
+        <arg value="-i" />
+        <arg value="${grama_dir}/js.act" />
+        <arg value="-d" />
+        <arg value="${build_dir}/${grama_dir}/js.g" />
+    </java>
+    <antlr target="${build_dir}/${grama_dir}/js.g"
+        outputdirectory="${build_dir}/src/gr/omadak/leviathan/asp"
+        debug="${antlr.debug}" html="${antlr.html}"
+        diagnostic="${antlr.diagnostic}"
+    />
+    <java classname="annotation.Insert" classpathref="classpath" 
+    failonerror="yes" fork="yes">
+        <arg value="-s"/>
+        <arg value="${grama_dir}/tree_js.g" />
+        <arg value="-i" />
+        <arg value="${grama_dir}/tree_js_php.act" />
+        <arg value="-d" />
+        <arg value="${build_dir}/${grama_dir}/tree_js.g" />
+    </java>
+    <antlr target="${build_dir}/${grama_dir}/tree_js.g"
+        outputdirectory="${build_dir}/src/gr/omadak/leviathan/asp"
+        debug="${antlr.debug}" html="${antlr.html}"
+        diagnostic="${antlr.diagnostic}"
+    />
+    <java classname="annotation.Insert" classpathref="classpath" 
+    failonerror="yes" fork="yes">
+        <arg value="-s"/>
+        <arg value="${grama_dir}/producer_js.g" />
+        <arg value="-i" />
+        <arg value="${grama_dir}/producer_js_php.act" />
+        <arg value="-d" />
+        <arg value="${build_dir}/${grama_dir}/producer_js.g" />
+    </java>
+    <antlr target="${build_dir}/${grama_dir}/producer_js.g"
+        outputdirectory="${build_dir}/src/gr/omadak/leviathan/asp"
+        debug="${antlr.debug}" html="${antlr.html}"
+        diagnostic="${antlr.diagnostic}"
+    />
+</target>
+
+
+<!--  COMPILE -->
+<target name="compile" depends="antlr,scompile" />
+
+<target name="scompile" depends="prepare" >
+    <copy todir="${build_dir}/classes/gr/omadak/leviathan/asp" file="etc/log4j.properties" />
+    <mkdir dir="${build_dir}/classes/gr/omadak/leviathan/asp/tokens" />
+    <copy todir="${build_dir}/classes/gr/omadak/leviathan/asp/tokens">
+        <fileset dir="etc/tokens" includes="*.txt" />
+    </copy>
+    <copy todir="${build_dir}/classes/gr/omadak/leviathan/asp/tokens">
+        <fileset dir="${build_dir}/src/gr/omadak/leviathan/asp" includes="*.txt" />
+    </copy>
+    <copy todir="${build_dir}/classes/gr/omadak/leviathan/asp/objects">
+      <fileset dir="objects" includes="*.xml" />
+    </copy>
+
+    <javac debug="${compile.debug}" deprecation="${compile.deprecation}"
+    destdir="${build_dir}/classes" optimize="${compile.optimize}">
+        <src location="${src_dir}" />
+        <src location="${build_dir}/src" />
+        <classpath refid="classpath"/>
+    </javac>
+</target>
+
+
+<!--  CLEAN -->
+<target name="clean">
+    <delete dir="${build_dir}" quiet="true"/>
+    <delete dir="{$docs_dir}/${javadoc_dir}" quiet="true"/>
+</target>
+
+
+<!-- COMPILE TESTS -->
+<target name="compile_tests" depends="scompile"
+description="Compiles the tests">
+    <copy file="etc/files.txt" 
+    todir="${build_dir}/classes/gr/omadak/leviathan/asp"/>
+    <javac  srcdir="${test_dir}"
+        debug="${compile.debug}"
+        deprecation="${compile.deprecation}"
+        optimize="${compile.optimize}"
+        destdir="${build_dir}/classes">
+        <classpath refid="classpath"/>
+    </javac>
+</target>
+
+<!-- RUN TESTS-->
+<target name="test" depends="compile_tests"
+description="Runs the tests in batch mode">
+    <junit fork="true">
+        <classpath refid="classpath" />
+        <formatter type="${test.formater}" usefile="true"/>
+        <test name="${test.class}" todir="${test_reports}"
+        outfile="output" />
+    </junit>
+</target>
+
+<!--
+<target name="pmd">
+    <pmd rulesetfiles="rulesets/imports.xml,rulesets/unusedcode.xml,rulesets/basic.xml">
+        <formatter type="html" toFile="${test_reports}/pmd.html"/>
+        <fileset dir="src" includes="**/*.java" />
+    </pmd>
+</target>
+-->
+</project>

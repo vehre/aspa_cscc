@@ -1,0 +1,2 @@
+string.length = 20;
+a = string.anchor(url);

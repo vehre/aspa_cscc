@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <js>
+    <original>
+      <ast name="FUNCTION" text="nonGlobalInner">
+        <ast name="SLIST" text="{">
+          <ast name="FUNCTION" text="$$$$0">
+            <ast name="SLIST" text="{">
+              <ast name="VAR" text="var">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="ASSIGN" text="=">
+                    <ast name="IDENTIFIER" text="b"/>
+                    <ast name="NUM_INT" text="30"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="METHOD_CALL" text="(">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="ELIST" text="ELIST"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="ELIST" text="ELIST"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="IDENTIFIER" text="nonGlobalInner"/>
+          <ast name="ELIST" text="ELIST"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="ELIST" text="ELIST"/>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="globalInner">
+        <ast name="SLIST" text="{">
+          <ast name="FUNCTION" text="$$$$1">
+            <ast name="SLIST" text="{">
+              <ast name="VAR" text="var">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="ASSIGN" text="=">
+                    <ast name="IDENTIFIER" text="b"/>
+                    <ast name="NUM_INT" text="30"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="METHOD_CALL" text="(">
+              <ast name="IDENTIFIER" text="zz"/>
+              <ast name="ELIST" text="ELIST"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="IDENTIFIER" text="zz"/>
+          <ast name="ELIST" text="ELIST"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="IDENTIFIER" text="globalInner"/>
+          <ast name="ELIST" text="ELIST"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="IDENTIFIER" text="zz"/>
+          <ast name="ELIST" text="ELIST"/>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="FUNCTION" text="nonGlobalInner">
+        <ast name="SLIST" text="{">
+          <ast name="FUNCTION" text="a">
+            <ast name="SLIST" text="{">
+              <ast name="EXPR" text="EXPR">
+                <ast name="ASSIGN" text="=">
+                  <ast name="IDENTIFIER" text="b"/>
+                  <ast name="NUM_INT" text="30"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="METHOD_CALL" text="a"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="UNRESOLVED_METHOD" text="a">
+          <ast name="ELIST" text="ELIST"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="nonGlobalInner"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="UNRESOLVED_METHOD" text="a">
+          <ast name="ELIST" text="ELIST"/>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="globalInner">
+        <ast name="SLIST" text="{">
+          <ast name="FUNCTION" text="zz">
+            <ast name="SLIST" text="{">
+              <ast name="EXPR" text="EXPR">
+                <ast name="ASSIGN" text="=">
+                  <ast name="IDENTIFIER" text="b"/>
+                  <ast name="NUM_INT" text="30"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="METHOD_CALL" text="zz"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="UNRESOLVED_METHOD" text="zz">
+          <ast name="ELIST" text="ELIST"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="globalInner"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="zz"/>
+      </ast>
+    </translated>
+  </js>
+</asp>

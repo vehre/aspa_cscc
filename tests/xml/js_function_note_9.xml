@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <js>
+    <original>
+      <ast name="FUNCTION" text="f">
+        <ast name="SLIST" text="{">
+          <ast name="RETURN" text="return">
+            <ast name="EXPR" text="EXPR">
+              <ast name="NUM_INT" text="1"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="g">
+        <ast name="SLIST" text="{"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="IDENTIFIER" text="f"/>
+          <ast name="ELIST" text="ELIST">
+            <ast name="EXPR" text="EXPR">
+              <ast name="NUM_INT" text="12"/>
+            </ast>
+            <ast name="EXPR" text="EXPR">
+              <ast name="NUM_INT" text="34"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="IDENTIFIER" text="f"/>
+          <ast name="ELIST" text="ELIST">
+            <ast name="EXPR" text="EXPR">
+              <ast name="NUM_INT" text="12"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="IDENTIFIER" text="f"/>
+          <ast name="ELIST" text="ELIST"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="IDENTIFIER" text="g"/>
+          <ast name="ELIST" text="ELIST"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="IDENTIFIER" text="g"/>
+          <ast name="ELIST" text="ELIST">
+            <ast name="EXPR" text="EXPR">
+              <ast name="NUM_INT" text="1"/>
+            </ast>
+            <ast name="EXPR" text="EXPR">
+              <ast name="NUM_INT" text="2"/>
+            </ast>
+            <ast name="EXPR" text="EXPR">
+              <ast name="NUM_INT" text="3"/>
+            </ast>
+            <ast name="EXPR" text="EXPR">
+              <ast name="NUM_INT" text="4"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="FUNCTION" text="f">
+        <ast name="ELIST" text="ELIST">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="IDENTIFIER" text="c"/>
+        </ast>
+        <ast name="SLIST" text="{">
+          <ast name="RETURN" text="return">
+            <ast name="EXPR" text="EXPR">
+              <ast name="NUM_INT" text="1"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="g">
+        <ast name="SLIST" text="{"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="f">
+          <ast name="ELIST" text="ARGLIST_VALUES">
+            <ast name="NUM_INT" text="12"/>
+            <ast name="NUM_INT" text="34"/>
+            <ast name="NULL" text="null"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="f">
+          <ast name="ELIST" text="ARGLIST_VALUES">
+            <ast name="NUM_INT" text="12"/>
+            <ast name="NULL" text="null"/>
+            <ast name="NULL" text="null"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="f">
+          <ast name="ELIST" text="ARGLIST_VALUES">
+            <ast name="NULL" text="null"/>
+            <ast name="NULL" text="null"/>
+            <ast name="NULL" text="null"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="g"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="g"/>
+      </ast>
+    </translated>
+  </js>
+</asp>

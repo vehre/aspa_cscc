@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <vb>
+    <original>
+      <ast name="RANDOMIZE" text="Randomize">
+        <ast name="EXPR" text="EXPR">
+          <ast name="DINT" text="34"/>
+        </ast>
+      </ast>
+      <ast name="RANDOMIZE" text="Randomize">
+        <ast name="EXPR" text="EXPR">
+          <ast name="DFLOAT" text="56.009"/>
+        </ast>
+      </ast>
+      <ast name="RANDOMIZE" text="Randomize">
+        <ast name="EXPR" text="EXPR">
+          <ast name="IDENTIFIER" text="variable"/>
+        </ast>
+      </ast>
+      <ast name="RANDOMIZE" text="Randomize">
+        <ast name="EXPR" text="EXPR">
+          <ast name="PLUS" text="+">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="ASTERISK" text="*">
+              <ast name="IDENTIFIER" text="b"/>
+              <ast name="LPAREN" text="(">
+                <ast name="PLUS" text="+">
+                  <ast name="DFLOAT" text="34.89"/>
+                  <ast name="DINT" text="7"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="RANDOMIZE" text="Randomize">
+        <ast name="EXPR" text="EXPR">
+          <ast name="POW" text="^">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="LPAREN" text="(">
+              <ast name="MINUS" text="-">
+                <ast name="DINT" text="43"/>
+                <ast name="DINT" text="2"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="srand">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="DINT" text="34"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="srand">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="DFLOAT" text="56.009"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="srand">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="IDENTIFIER" text="variable"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="srand">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="PLUS" text="PLUS">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="ASTERISK" text="ASTERISK">
+                <ast name="IDENTIFIER" text="b"/>
+                <ast name="LPAREN" text="(">
+                  <ast name="PLUS" text="PLUS">
+                    <ast name="DFLOAT" text="34.89"/>
+                    <ast name="DINT" text="7"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="srand">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="METHOD_CALL" text="pow">
+              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                <ast name="IDENTIFIER" text="a"/>
+                <ast name="LPAREN" text="(">
+                  <ast name="MINUS" text="MINUS">
+                    <ast name="DINT" text="43"/>
+                    <ast name="DINT" text="2"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </vb>
+</asp>

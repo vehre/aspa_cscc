@@ -1,0 +1,16 @@
+    <method name="anchor" type="DSTRING">
+        <arg type="DSTRING" />
+        <ast name="CONCAT">
+            <ast name="DSTRING" text="&lt;A NAME=&quot;" />
+            <ast name="CONCAT">
+                <arg index="1" />
+                <ast name="CONCAT">
+                    <ast name="DSTRING" text="&quot;&gt;" />
+                    <ast name="CONCAT">
+                        <this />
+                        <ast name="DSTRING" text="&lt;/A&gt;" />
+                    </ast>
+                </ast>
+            </ast>
+        </ast>
+    </method>

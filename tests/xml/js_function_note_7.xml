@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <js>
+    <original>
+      <ast name="VAR" text="var">
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="METHOD_CALL" text="(">
+              <ast name="IDENTIFIER" text="getMax"/>
+              <ast name="ELIST" text="ELIST">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="NUM_INT" text="12"/>
+                </ast>
+                <ast name="EXPR" text="EXPR">
+                  <ast name="NUM_INT" text="34"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="IDENTIFIER" text="varOuter"/>
+          <ast name="ELIST" text="ELIST"/>
+        </ast>
+      </ast>
+      <ast name="VAR" text="var">
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="b"/>
+            <ast name="METHOD_CALL" text="(">
+              <ast name="IDENTIFIER" text="varOuterFounction"/>
+              <ast name="ELIST" text="ELIST">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="NUM_INT" text="12.43"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="getMax">
+        <ast name="SLIST" text="{">
+          <ast name="RETURN" text="return">
+            <ast name="EXPR" text="EXPR">
+              <ast name="QUESTION" text="?">
+                <ast name="GT" text="&gt;">
+                  <ast name="IDENTIFIER" text="a"/>
+                  <ast name="IDENTIFIER" text="b"/>
+                </ast>
+                <ast name="IDENTIFIER" text="a"/>
+                <ast name="IDENTIFIER" text="b"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="varOuter">
+        <ast name="SLIST" text="{">
+          <ast name="FUNCTION" text="$$$$0">
+            <ast name="SLIST" text="{">
+              <ast name="RETURN" text="return">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="IDENTIFIER" text="a"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="VAR" text="var">
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="c"/>
+            <ast name="METHOD_CALL" text="(">
+              <ast name="IDENTIFIER" text="varOuterFounction2"/>
+              <ast name="ELIST" text="ELIST"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="varOuter2">
+        <ast name="SLIST" text="{">
+          <ast name="FUNCTION" text="$$$$1">
+            <ast name="SLIST" text="{">
+              <ast name="RETURN" text="return">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="IDENTIFIER" text="a"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="getMax">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="NUM_INT" text="12"/>
+              <ast name="NUM_INT" text="34"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="varOuter"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="METHOD_CALL" text="varOuterFounction">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="NUM_INT" text="12.43"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="getMax">
+        <ast name="ELIST" text="ELIST">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="IDENTIFIER" text="b"/>
+        </ast>
+        <ast name="SLIST" text="{">
+          <ast name="RETURN" text="return">
+            <ast name="EXPR" text="EXPR">
+              <ast name="QUESTION" text="?">
+                <ast name="GT" text="&gt;">
+                  <ast name="IDENTIFIER" text="a"/>
+                  <ast name="IDENTIFIER" text="b"/>
+                </ast>
+                <ast name="IDENTIFIER" text="a"/>
+                <ast name="IDENTIFIER" text="b"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="varOuter">
+        <ast name="SLIST" text="{">
+          <ast name="FUNCTION" text="varOuterFounction">
+            <ast name="ELIST" text="ELIST">
+              <ast name="IDENTIFIER" text="a"/>
+            </ast>
+            <ast name="SLIST" text="{">
+              <ast name="RETURN" text="return">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="IDENTIFIER" text="a"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="c"/>
+          <ast name="UNRESOLVED_METHOD" text="varOuterFounction2">
+            <ast name="ELIST" text="ELIST"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="varOuter2">
+        <ast name="SLIST" text="{">
+          <ast name="FUNCTION" text="varOuterFounction2">
+            <ast name="ELIST" text="ELIST">
+              <ast name="IDENTIFIER" text="a"/>
+            </ast>
+            <ast name="SLIST" text="{">
+              <ast name="RETURN" text="return">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="IDENTIFIER" text="a"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </js>
+</asp>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <js>
+    <original>
+      <ast name="FUNCTION" text="nonGlobal">
+        <ast name="SLIST" text="{">
+          <ast name="VAR" text="var">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="a"/>
+                <ast name="STRING_LITERAL" text="Hello"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="IDENTIFIER" text="length"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="IDENTIFIER" text="nonGlobal"/>
+          <ast name="ELIST" text="ELIST"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="IDENTIFIER" text="length"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="globalVar">
+        <ast name="SLIST" text="{">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="STRING_LITERAL" text="Hello"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="IDENTIFIER" text="length"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="IDENTIFIER" text="globalVar"/>
+          <ast name="ELIST" text="ELIST"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="IDENTIFIER" text="length"/>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="FUNCTION" text="nonGlobal">
+        <ast name="SLIST" text="{">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="STRING_LITERAL" text="Hello"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="DOT" text="DOT">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="IDENTIFIER" text="length"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="nonGlobal"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="DOT" text="DOT">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="IDENTIFIER" text="length"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="globalVar">
+        <ast name="GLOBAL" text="GLOBAL">
+          <ast name="IDENTIFIER" text="a"/>
+        </ast>
+        <ast name="SLIST" text="{">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="STRING_LITERAL" text="Hello"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="DOT" text="DOT">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="IDENTIFIER" text="length"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="globalVar"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="METHOD_CALL" text="strlen">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="a"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </js>
+</asp>

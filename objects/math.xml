@@ -1,0 +1,225 @@
+<!--
+    This file is part of Aspa.
+
+    Aspa is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    Aspa is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Aspa; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+-->
+<class name="Math" dependant="true">
+    <property name="E" type="DFLOAT">
+        <read>
+            <ast name="CONSTANT" text="M_E"/>
+        </read>
+    </property>
+
+    <property name="LN2" type="DFLOAT">
+        <read>
+            <ast name="CONSTANT" text="M_LN2"/>
+        </read>
+    </property>
+
+    <property name="LN10" type="DFLOAT">
+        <read>
+            <ast name="CONSTANT" text="M_LN10"/>
+        </read>
+    </property>
+
+    <property name="LOG2E" type="DFLOAT">
+        <read>
+            <ast name="CONSTANT" text="M_LOG2E"/>
+        </read>
+    </property>
+
+    <property name="LOG10E" type="DFLOAT">
+        <read>
+            <ast name="CONSTANT" text="M_LOG10E"/>
+        </read>
+    </property>
+
+    <property name="PI" type="DFLOAT">
+        <read>
+            <ast name="CONSTANT" text="M_PI"/>
+        </read>
+    </property>
+
+    <property name="SQRT1_2" type="DFLOAT">
+        <read>
+            <ast name="CONSTANT" text="M_SQRT1_2"/>
+        </read>
+    </property>
+
+    <property name="SQRT2" type="DFLOAT">
+        <read>
+            <ast name="CONSTANT" text="M_SQRT2"/>
+        </read>
+    </property>
+
+    <method name="abs" type="DINT">
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="abs">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="acos" type="DINT">
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="acos">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="asin" type="DINT">
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="asin">
+            <ast name="ARGLIST_VALUES"> 
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="atan" type="DINT">
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="atan">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="atan2" type="DINT">
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="atan2">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="ceil" type="DINT">
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="ceil">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="cos" type="DINT">
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="cos">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="exp" type="DINT">
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="exp">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="floor" type="DINT">
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="floor">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="log" type="DINT">
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="log">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="max" type="DINT">
+        <args />
+        <ast name="METHOD_CALL" text="max">
+            <ast name="ARGLIST_VALUES">
+                <args />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="min" type="DINT">
+        <args />
+        <ast name="METHOD_CALL" text="min">
+            <ast name="ARGLIST_VALUES">
+                <args />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="pow" type="DINT">
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="pow">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+                <arg index="2" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="random" type="DINT">
+        <ast name="METHOD_CALL" text="rand" />
+    </method>
+
+    <method name="round" type="DINT">
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="round">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="sin" type="DINT">
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="sin">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="sqrt" type="DINT">
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="sqrt">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="tan" type="DINT">
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="tan">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+</class>

@@ -1,0 +1,275 @@
+@import :
+/*
+    This file is part of Aspa.
+
+    Aspa is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    Aspa is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Aspa; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*/
+import org.apache.log4j.Logger;
+import java.io.PrintWriter;
+import java.io.Writer;
+
+@init : {
+    private SourceBuffer out;
+    private boolean dontPrintCBrack;
+    private boolean dontPrintOBrack;
+
+    private static Logger LOG = Logger.getLogger(JsGenerator.class);
+
+    public SourceBuffer getBuffer() {
+        return out;
+    }
+
+
+    public void setWriter(Writer writer) {
+        out = new SourceBuffer(new PrintWriter(writer));
+    }
+}
+
+@expr_end : { out.println(";"); }
+@html : {
+    out.printHTML(#HTML.getText());
+}
+@include : { out.println("require '" + #INCLUDE.getText() + "'");}
+@break : {
+    String text = "break";
+    if (#num != null) {
+        text += " " + #num.getText();
+    }
+    text += ";";
+    out.println(text);
+}
+@continue : {
+    String text = "continue";
+    if (#cnum != null) {
+        text += " " + #cnum.getText();
+    }
+    text += ";";
+    out.println(text);
+}
+@return : { out.print("return "); }
+@return_end : { out.println(";"); }
+@var : { out.println("var $" + #IDENTIFIER.getText() + ";"); }
+
+@eq_html : { out.print("echo "); }
+@eq_html_end : { out.println(";"); }
+
+@slist : {
+    boolean printOBrak = !dontPrintOBrack;
+    boolean printCBrak = !dontPrintCBrack;
+    out.incLevel();
+    if (printOBrak) {
+        out.println("{");
+    }
+}
+@slist_end : {
+    out.decLevel();
+    if (printCBrak) {
+        out.println("}");
+    }
+}
+
+@func : {
+    out.print("function " + #FUNCTION.getText() + "(");
+    dontPrintOBrack = true;
+}
+@arg_end : { out.println(") {");}
+
+@global : {
+    out.incLevel();
+    boolean isFirst = true;
+    out.print("global ");
+}
+@global_id : {
+    if (!isFirst) {
+        out.print(", ");
+    } else {
+        isFirst = false;
+    }
+    out.print("$" + #IDENTIFIER.getText());
+}
+@glob_end : { out.println(";"); out.decLevel(); }
+@func_end : { dontPrintOBrack = false; }
+
+@if : { out.print("if ("); dontPrintCBrack = true; }
+@if_expr : { out.print(") "); }
+@elseif : { out.print("} elseif ("); dontPrintCBrack = true; }
+@elseif_expr : { out.print(") "); }
+@else : { out.print("} else "); dontPrintCBrack = true; }
+@if_end : { dontPrintCBrack = false; out.println("}"); }
+
+@class : {
+    out.println("class " + #CLASS.getText() + " {");
+    out.incLevel();
+}
+@class_end : {
+    out.decLevel();
+    out.println("}");
+}
+
+@semi : { 
+    out.println(";"); 
+}
+
+@in : { 
+    out.print("foreach ("); 
+    out.startBuffering(); 
+}
+@in_expr : { 
+    String foreachId = out.getBuffer().toString();
+     out.clearBuffer();
+}
+@in_end : { 
+    String foreachObj = out.getBuffer().toString();
+    out.stopBuffering();
+    out.print(foreachObj + " as " + foreachId + ") ");
+}
+
+@for : { out.print("for ("); }
+@forinit_end : { out.print("; "); }
+@for_cond_end : { out.print("; "); }
+@for_it_end : { out.print(") "); }
+
+@while : { out.print("while ("); }
+@while_end : { out.print(") "); }
+
+@do : { out.print("do "); }
+@in_while : { out.print(" while ("); }
+@out_while : { out.println(");"); }
+
+@switch : { out.print("switch ("); }
+@switch_expr : { out.println(") {"); out.incLevel(); }
+@case : { out.print("case "); }
+@case_expr : {out.println(":"); }
+@default : { out.println("default :"); }
+@case_stm : { out.incLevel(); }
+@case_stmend : { out.decLevel(); }
+
+@pre_exprlist : { out.print(", "); }
+
+
+@elist : { boolean firstArg = true; }
+@elist_id : {
+    if (!firstArg) {
+        out.print(", ");
+    } else {
+        firstArg = false;
+    }
+    out.print("$" + #IDENTIFIER.getText());
+}
+
+@question : { out.print(" ? "); }
+@colon : { out.print(" : "); }
+
+@cast : {
+    String typeName;
+    if (#array != null) {
+        typeName = "array";
+    } else if (#obj != null || #id != null) {
+        typeName = "object";
+    } else if (#str != null) {
+        typeName = "string";
+    } else if (#num != null) {
+        typeName = #num.getText().indexOf('.') == -1 ? "int" : "float";
+    } else if (#bool != null) {
+        typeName = "boolean";
+    } else {
+        LOG.error("This should never happen.In the cast found an uknown type");
+        typeName = null;
+    }
+    if (typeName != null) {
+        out.print("(" + typeName + ") ");
+    }
+}
+
+@assign : { out.print(" = "); }
+/*THIS IS A BIG PROBLEM.CHECK WHEN CONCAT*/
+@plus_assign : { out.print(" += "); }
+@min_assign : { out.print(" -= "); }
+@star_assign : { out.print(" *= "); }
+@div_assign : { out.print(" /= "); }
+@mod_assign : { out.print(" %= "); }
+@sr_assign : { out.print(" >>= "); }
+@bsr_assign : { out.print(" >>>= "); }
+@sl_assign : { out.print(" <<= "); }
+@band_assign : { out.print(" &= "); }
+@bxor_assign : { out.print(" ^= "); }
+@bor_assign : { out.print(" |= "); }
+@land : { out.print(" && "); }
+@lor : { out.print(" || "); }
+@bor : { out.print(" | "); }
+@bxor : { out.print(" ^ "); }
+@band : { out.print(" & "); }
+@neq : { out.print(" != "); }
+@eq : { out.print(" == "); }
+@identical : { out.print(" === "); }
+@nidentical : { out.print(" !=== "); }
+@lt : { out.print(" < "); }
+@gt : { out.print(" > "); }
+@le : { out.print(" <= "); }
+@ge : { out.print(" >= "); }
+@sl : { out.print(" << "); }
+@sr : { out.print(" >> "); }
+@bsr : { out.print(" >>> "); }
+@plus : { out.print(" + "); }
+@min : { out.print(" - "); }
+@star : { out.print(" * "); }
+@div : { out.print(" / "); }
+@mod : { out.print(" % "); }
+@dot : { out.print("->"); }
+@inc : { out.print("++"); }
+@dec : { out.print("--"); }
+@new : { out.print("new "); }
+
+@method_call : { out.print(#METHOD_CALL.getText() + "("); }
+@argvals : {  boolean firstArg = true; }
+@arg_val : {
+    if (!firstArg) {
+        out.print(", ");
+    } else {
+        firstArg = false;
+    }
+}
+@method_end : { out.print(")"); }
+
+@bnot : { out.print('~'); } /* This two should check for LPAREN */
+@lnot : { out.print('!'); }
+@id : { out.print("$" + #IDENTIFIER.getText()); }
+@true : { out.print("true"); }
+@false : { out.print("false"); }
+@null : { out.print("null"); }
+@reg : { out.print(#REG_EXP.getText()); } /* fix this */
+@number : { out.print(#NUM_INT.getText()); }
+@string : { out.print(out.makeString(#STRING_LITERAL.getText())); }
+@attr : { out.print("$this->" + #OBJECT_ATTRIBUTE.getText()); }
+
+@pre_op : { out.print('['); }
+@post_op : { out.print(']'); }
+
+@precurl : { out.print('{'); }
+@postcurl : { out.print('}'); }
+
+@unresolved_method : { out.print("/*Unresolved Method*/"
++ #UNRESOLVED_METHOD.getText() + "("); }
+@nhead : {
+    out.print("/*Unsupported Header*/\""
+    + #NON_APPLICABLE_HEADER.getText() + "\"");
+}
+@const : { out.print(#CONSTANT.getText()); }
+@unsup : { out.print("/*Unsuported method:" + #UNSUPORTED.getText() + "*/"); }
+
+@lp : { out.print('('); }
+@lp_end : { out.print(')'); }
+@concat : { out.print(" . "); }
+@end : { out.end();}

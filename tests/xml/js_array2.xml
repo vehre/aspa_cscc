@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <js>
+    <original>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="NEW" text="new">
+            <ast name="ARRAY" text="Array"/>
+            <ast name="ELIST" text="ELIST"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="INDEX_OP" text="[">
+            <ast name="INDEX_OP" text="[">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="ELIST" text="ELIST">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="NUM_INT" text="0"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="NUM_INT" text="10"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="INDEX_OP" text="[">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="NUM_INT" text="11"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="INDEX_OP" text="[">
+            <ast name="INDEX_OP" text="[">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="ELIST" text="ELIST">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="NUM_INT" text="0"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="1"/>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="NUM_INT" text="30"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="INDEX_OP" text="[">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="1"/>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="NUM_INT" text="20"/>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="array"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="INDEX_OP" text="[">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="NUM_INT" text="0"/>
+            <ast name="NUM_INT" text="0"/>
+          </ast>
+          <ast name="NUM_INT" text="10"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="INDEX_OP" text="[">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="NUM_INT" text="0"/>
+            <ast name="NUM_INT" text="0"/>
+          </ast>
+          <ast name="NUM_INT" text="11"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="INDEX_OP" text="[">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="NUM_INT" text="0"/>
+            <ast name="NUM_INT" text="1"/>
+          </ast>
+          <ast name="NUM_INT" text="30"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="INDEX_OP" text="[">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="NUM_INT" text="0"/>
+            <ast name="NUM_INT" text="1"/>
+          </ast>
+          <ast name="NUM_INT" text="20"/>
+        </ast>
+      </ast>
+    </translated>
+  </js>
+</asp>

@@ -1,0 +1,1262 @@
+<!--
+    This file is part of Aspa.
+
+    Aspa is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    Aspa is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Aspa; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+-->
+<class name="Date" standalone="true">
+    <constructor>
+        <ast name="METHOD_CALL" text="getdate">
+        </ast>
+    </constructor>
+
+    <constructor>
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="getdate">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </constructor>
+
+    <constructor>
+        <arg type="DSTRING" />
+        <ast name="METHOD_CALL" text="getdate">
+            <ast name="ARGLIST_VALUES">
+                <ast name="METHOD_CALL" text="strtotime">
+                    <ast name="ARGLIST_VALUES">
+                        <arg index="1" />
+                    </ast>
+                </ast>
+            </ast>
+        </ast>
+    </constructor>
+
+    <constructor>
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="getdate">
+            <ast name="ARGLIST_VALUES">
+                <ast name="METHOD_CALL" text="mktime">
+                    <ast name="ARGLIST_VALUES">
+                        <ast name="DINT" text="0" />
+                        <ast name="DINT" text="0" />
+                        <ast name="DINT" text="0" />
+                        <arg index="3" />
+                        <arg index="2" />
+                        <arg index="1" />
+                    </ast>
+                </ast>
+            </ast>
+        </ast>
+    </constructor>
+
+    <constructor>
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="getdate">
+            <ast name="ARGLIST_VALUES">
+                <ast name="METHOD_CALL" text="mktime">
+                    <ast name="ARGLIST_VALUES">
+                        <arg index="4" />
+                        <ast name="DINT" text="0" />
+                        <ast name="DINT" text="0" />
+                        <arg index="3" />
+                        <arg index="2" />
+                        <arg index="1" />
+                    </ast>
+                </ast>
+            </ast>
+        </ast>
+    </constructor>
+
+    <constructor>
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="getdate">
+            <ast name="ARGLIST_VALUES">
+                <ast name="METHOD_CALL" text="mktime">
+                    <ast name="ARGLIST_VALUES">
+                        <arg index="4" />
+                        <arg index="5" />
+                        <ast name="DINT" text="0" />
+                        <arg index="3" />
+                        <arg index="2" />
+                        <arg index="1" />
+                    </ast>
+                </ast>
+            </ast>
+        </ast>
+    </constructor>
+
+    <constructor>
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="getdate">
+            <ast name="ARGLIST_VALUES">
+                <ast name="METHOD_CALL" text="mktime">
+                    <ast name="ARGLIST_VALUES">
+                        <arg index="4" />
+                        <arg index="5" />
+                        <arg index="6" />
+                        <arg index="3" />
+                        <arg index="2" />
+                        <arg index="1" />
+                    </ast>
+                </ast>
+            </ast>
+        </ast>
+    </constructor>
+
+
+    <method name="getDate" type="DINT">
+        <ast name="INDEX_OP">
+            <this />
+            <ast name="DSTRING" text="mday" />
+        </ast>
+    </method>
+
+    <method name="getDay" type="DINT">
+        <ast name="INDEX_OP">
+            <this />
+            <ast name="DSTRING" text="wday" />
+        </ast>
+    </method>
+
+    <method name="getFullYear" type="DINT">
+        <ast name="INDEX_OP">
+            <this />
+            <ast name="DSTRING" text="year" />
+        </ast>
+    </method>
+
+    <method name="getHours" type="DINT">
+        <ast name="INDEX_OP">
+            <this />
+            <ast name="DSTRING" text="hours" />
+        </ast>
+    </method>
+
+    <!-- -->
+    <method name="getMilliseconds" type="DINT">
+        <ast name="UNSUPORTED" text="getMilliseconds" />
+        <!--
+        <ast name="INDEX_OP">
+            <this />
+            <ast name="DSTRING" text="mday" />
+        </ast>
+        -->
+    </method>
+
+    <method name="getMinutes" type="DINT">
+        <ast name="INDEX_OP">
+            <this />
+            <ast name="DSTRING" text="minutes" />
+        </ast>
+    </method>
+
+    <method name="getMonth" type="DINT">
+        <ast name="INDEX_OP">
+            <this />
+            <ast name="DSTRING" text="mon" />
+        </ast>
+    </method>
+
+    <method name="getSeconds" type="DINT">
+        <ast name="INDEX_OP">
+            <this />
+            <ast name="DSTRING" text="seconds" />
+        </ast>
+    </method>
+
+    <method name="getTime" type="DINT">
+        <ast name="METHOD_CALL" text="mktime">
+            <ast name="ARGLIST_VALUES">
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="hours" />
+                </ast>
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="minutes" />
+                </ast>
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="seconds" />
+                </ast>
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="mon" />
+                </ast>
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="mday" />
+                </ast>
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="year" />
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <method name="getTimezoneOffset" type="DINT">
+        <!-- This is localtime - UTC date -->
+        <ast name="MINUS">
+            <ast name="METHOD_CALL" text="mktime">
+                <ast name="ARGLIST_VALUES">
+                    <ast name="INDEX_OP">
+                        <this />
+                        <ast name="DSTRING" text="hours" />
+                    </ast>
+                    <ast name="INDEX_OP">
+                        <this />
+                        <ast name="DSTRING" text="minutes" />
+                    </ast>
+                    <ast name="INDEX_OP">
+                        <this />
+                        <ast name="DSTRING" text="seconds" />
+                    </ast>
+                    <ast name="INDEX_OP">
+                        <this />
+                        <ast name="DSTRING" text="mon" />
+                    </ast>
+                    <ast name="INDEX_OP">
+                        <this />
+                        <ast name="DSTRING" text="mday" />
+                    </ast>
+                    <ast name="INDEX_OP">
+                        <this />
+                        <ast name="DSTRING" text="year" />
+                    </ast>
+                </ast>
+            </ast>
+            <ast name="METHOD_CALL" text="gmmktime">
+                <ast name="ARGLIST_VALUES">
+                    <ast name="INDEX_OP">
+                        <this />
+                        <ast name="DSTRING" text="hours" />
+                    </ast>
+                    <ast name="INDEX_OP">
+                        <this />
+                        <ast name="DSTRING" text="minutes" />
+                    </ast>
+                    <ast name="INDEX_OP">
+                        <this />
+                        <ast name="DSTRING" text="seconds" />
+                    </ast>
+                    <ast name="INDEX_OP">
+                        <this />
+                        <ast name="DSTRING" text="mon" />
+                    </ast>
+                    <ast name="INDEX_OP">
+                        <this />
+                        <ast name="DSTRING" text="mday" />
+                    </ast>
+                    <ast name="INDEX_OP">
+                        <this />
+                        <ast name="DSTRING" text="year" />
+                    </ast>
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <method name="getUTCDate" type="DINT">
+        <ast name="INDEX_OP">
+            <ast name="METHOD_CALL" text="getdate">
+                <ast name="ARGLIST_VALUES">
+                    <ast name="METHOD_CALL" text="gmmktime">
+                        <ast name="ARGLIST_VALUES">
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="hours" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="minutes" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="seconds" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="mon" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="mday" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="year" />
+                            </ast>
+                        </ast>
+                    </ast>
+                </ast>
+            </ast>
+            <ast name="DSTRING" text="mday" />
+        </ast>
+    </method>
+
+    <method name="getUTCDay" type="DINT">
+        <ast name="INDEX_OP">
+            <ast name="METHOD_CALL" text="getdate">
+                <ast name="ARGLIST_VALUES">
+                    <ast name="METHOD_CALL" text="gmmktime">
+                        <ast name="ARGLIST_VALUES">
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="hours" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="minutes" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="seconds" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="mon" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="mday" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="year" />
+                            </ast>
+                        </ast>
+                    </ast>
+                </ast>
+            </ast>
+            <ast name="DSTRING" text="wday" />
+        </ast>
+    </method>
+
+    <method name="getUTCFullYear" type="DINT">
+        <ast name="INDEX_OP">
+            <ast name="METHOD_CALL" text="getdate">
+                <ast name="ARGLIST_VALUES">
+                    <ast name="METHOD_CALL" text="gmmktime">
+                        <ast name="ARGLIST_VALUES">
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="hours" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="minutes" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="seconds" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="mon" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="mday" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="year" />
+                            </ast>
+                        </ast>
+                    </ast>
+                </ast>
+            </ast>
+            <ast name="DSTRING" text="year" />
+        </ast>
+    </method>
+
+    <method name="getUTCHours" type="DINT">
+        <ast name="INDEX_OP">
+            <ast name="METHOD_CALL" text="getdate">
+                <ast name="ARGLIST_VALUES">
+                    <ast name="METHOD_CALL" text="gmmktime">
+                        <ast name="ARGLIST_VALUES">
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="hours" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="minutes" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="seconds" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="mon" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="mday" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="year" />
+                            </ast>
+                        </ast>
+                    </ast>
+                </ast>
+            </ast>
+            <ast name="DSTRING" text="hours" />
+        </ast>
+    </method>
+
+    <!-- -->
+    <method name="getUTCMilliseconds" type="DINT">
+        <ast name="UNSUPORTED" text="getMilliseconds" />
+    </method>
+
+    <method name="getUTCMinutes" type="DINT">
+        <ast name="INDEX_OP">
+            <ast name="METHOD_CALL" text="getdate">
+                <ast name="ARGLIST_VALUES">
+                    <ast name="METHOD_CALL" text="gmmktime">
+                        <ast name="ARGLIST_VALUES">
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="hours" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="minutes" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="seconds" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="mon" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="mday" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="year" />
+                            </ast>
+                        </ast>
+                    </ast>
+                </ast>
+            </ast>
+            <ast name="DSTRING" text="minutes" />
+        </ast>
+    </method>
+
+    <method name="getUTCMonth" type="DINT">
+        <ast name="INDEX_OP">
+            <ast name="METHOD_CALL" text="getdate">
+                <ast name="ARGLIST_VALUES">
+                    <ast name="METHOD_CALL" text="gmmktime">
+                        <ast name="ARGLIST_VALUES">
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="hours" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="minutes" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="seconds" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="mon" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="mday" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="year" />
+                            </ast>
+                        </ast>
+                    </ast>
+                </ast>
+            </ast>
+            <ast name="DSTRING" text="mon" />
+        </ast>
+    </method>
+
+    <method name="getUTCSeconds" type="DINT">
+        <ast name="INDEX_OP">
+            <ast name="METHOD_CALL" text="getdate">
+                <ast name="ARGLIST_VALUES">
+                    <ast name="METHOD_CALL" text="gmmktime">
+                        <ast name="ARGLIST_VALUES">
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="hours" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="minutes" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="seconds" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="mon" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="mday" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="year" />
+                            </ast>
+                        </ast>
+                    </ast>
+                </ast>
+            </ast>
+            <ast name="DSTRING" text="seconds" />
+        </ast>
+    </method>
+
+    <method name="getUTCTime" type="DINT">
+        <ast name="METHOD_CALL" text="gmmktime">
+            <ast name="ARGLIST_VALUES">
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="hours" />
+                </ast>
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="minutes" />
+                </ast>
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="seconds" />
+                </ast>
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="mon" />
+                </ast>
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="mday" />
+                </ast>
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="year" />
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <method name="getVarDate" type="OBJECT">
+        <ast name="UNSUPORTED" text="getVarDate" />
+    </method>
+
+    <!-- The JScript method returns a 2 digit year -->
+    <method name="getYear" type="DINT">
+        <ast name="INDEX_OP">
+            <this />
+            <ast name="DSTRING" text="year" />
+        </ast>
+    </method>
+
+    <method name="setDate" type="VOID">
+        <arg type="DINT" />
+        <ast name="EXPR">
+            <ast name="ASSIGN">
+                <this />
+                <ast name="METHOD_CALL" text="getdate">
+                    <ast name="ARGLIST_VALUES">
+                        <arg index="1" />
+                    </ast>
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <method name="setFullYear" type="VOID">
+        <arg type="DINT" />
+        <ast name="EXPR">
+            <ast name="ASSIGN">
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="year" />
+                </ast>
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="setFullYear" type="VOID">
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <ast name="EXPR">
+            <ast name="ASSIGN">
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="year" />
+                </ast>
+                <arg index="1" />
+            </ast>
+        </ast>
+        <ast name="EXPR">
+            <ast name="ASSIGN">
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="mon" />
+                </ast>
+                <arg index="2" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="setFullYear" type="VOID">
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <ast name="EXPR">
+            <ast name="ASSIGN">
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="year" />
+                </ast>
+                <arg index="1" />
+            </ast>
+        </ast>
+        <ast name="EXPR">
+            <ast name="ASSIGN">
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="mon" />
+                </ast>
+                <arg index="2" />
+            </ast>
+        </ast>
+        <ast name="EXPR">
+            <ast name="ASSIGN">
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="mday" />
+                </ast>
+                <arg index="3" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="setHours" type="VOID">
+        <arg type="DINT" />
+        <ast name="EXPR">
+            <ast name="ASSIGN">
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="hours" />
+                </ast>
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="setHours" type="VOID">
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <ast name="EXPR">
+            <ast name="ASSIGN">
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="hours" />
+                </ast>
+                <arg index="1" />
+            </ast>
+        </ast>
+        <ast name="EXPR">
+            <ast name="ASSIGN">
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="minutes" />
+                </ast>
+                <arg index="2" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="setHours" type="VOID">
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <ast name="EXPR">
+            <ast name="ASSIGN">
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="hours" />
+                </ast>
+                <arg index="1" />
+            </ast>
+        </ast>
+        <ast name="EXPR">
+            <ast name="ASSIGN">
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="minutes" />
+                </ast>
+                <arg index="2" />
+            </ast>
+        </ast>
+        <ast name="EXPR">
+            <ast name="ASSIGN">
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="seconds" />
+                </ast>
+                <arg index="3" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="setHours" type="VOID">
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <ast name="EXPR">
+            <ast name="ASSIGN">
+                <this />
+                <ast name="METHOD_CALL" text="getdate">
+                    <ast name="ARGLIST_VALUES">
+                        <ast name="METHOD_CALL" text="mktime">
+                            <ast name="ARGLIST_VALUES">
+                                <arg index="1" />
+                                <arg index="2" />
+                                <arg index="3" />
+                                <ast name="INDEX_OP">
+                                    <this />
+                                    <ast name="DSTRING" text="mon" />
+                                </ast>
+                                <ast name="INDEX_OP">
+                                    <this />
+                                    <ast name="DSTRING" text="mday" />
+                                </ast>
+                                <ast name="INDEX_OP">
+                                    <this />
+                                    <ast name="DSTRING" text="year" />
+                                </ast>
+                                <arg index="4" />
+                            </ast>
+                        </ast>
+                    </ast>
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <method name="setMilliseconds" type="VOID">
+        <arg type="DINT" />
+        <ast name="EXPR">
+            <ast name="ASSIGN">
+                <this />
+                <ast name="METHOD_CALL" text="getdate">
+                    <ast name="ARGLIST_VALUES">
+                        <ast name="METHOD_CALL" text="mktime">
+                            <ast name="ARGLIST_VALUES">
+                                <ast name="INDEX_OP">
+                                    <this />
+                                    <ast name="DSTRING" text="hours" />
+                                </ast>
+                                <ast name="INDEX_OP">
+                                    <this />
+                                    <ast name="DSTRING" text="minutes" />
+                                </ast>
+                                <ast name="INDEX_OP">
+                                    <this />
+                                    <ast name="DSTRING" text="seconds" />
+                                </ast>
+                                <ast name="INDEX_OP">
+                                    <this />
+                                    <ast name="DSTRING" text="mon" />
+                                </ast>
+                                <ast name="INDEX_OP">
+                                    <this />
+                                    <ast name="DSTRING" text="mday" />
+                                </ast>
+                                <ast name="INDEX_OP">
+                                    <this />
+                                    <ast name="DSTRING" text="year" />
+                                </ast>
+                                <arg index="1" />
+                            </ast>
+                        </ast>
+                    </ast>
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <method name="setMinutes" type="VOID">
+        <arg type="DINT" />
+        <ast name="EXPR">
+            <ast name="ASSIGN">
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="minutes" />
+                </ast>
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="setMinutes" type="VOID">
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <ast name="EXPR">
+            <ast name="ASSIGN">
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="minutes" />
+                </ast>
+                <arg index="1" />
+            </ast>
+        </ast>
+        <ast name="EXPR">
+            <ast name="ASSIGN">
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="seconds" />
+                </ast>
+                <arg index="2" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="setMinutes" type="VOID">
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <ast name="EXPR">
+            <ast name="ASSIGN">
+                <this />
+                <ast name="METHOD_CALL" text="getdate">
+                    <ast name="ARGLIST_VALUES">
+                        <ast name="METHOD_CALL" text="mktime">
+                            <ast name="ARGLIST_VALUES">
+                                <ast name="INDEX_OP">
+                                    <this />
+                                    <ast name="DSTRING" text="hours" />
+                                </ast>
+                                <arg index="1" />
+                                <arg index="2" />
+                                <ast name="INDEX_OP">
+                                    <this />
+                                    <ast name="DSTRING" text="mon" />
+                                </ast>
+                                <ast name="INDEX_OP">
+                                    <this />
+                                    <ast name="DSTRING" text="mday" />
+                                </ast>
+                                <ast name="INDEX_OP">
+                                    <this />
+                                    <ast name="DSTRING" text="year" />
+                                </ast>
+                                <arg index="3" />
+                            </ast>
+                        </ast>
+                    </ast>
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <method name="setMonth" type="VOID">
+        <arg type="DINT" />
+        <ast name="EXPR">
+            <ast name="ASSIGN">
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="mon" />
+                </ast>
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="setMonth" type="VOID">
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <ast name="EXPR">
+            <ast name="ASSIGN">
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="mon" />
+                </ast>
+                <arg index="1" />
+            </ast>
+        </ast>
+        <ast name="EXPR">
+            <ast name="ASSIGN">
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="mday" />
+                </ast>
+                <arg index="2" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="setSeconds" type="VOID">
+        <arg type="DINT" />
+        <ast name="EXPR">
+            <ast name="ASSIGN">
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="seconds" />
+                </ast>
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="setSeconds" type="VOID">
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <ast name="EXPR">
+            <ast name="ASSIGN">
+                <this />
+                <ast name="METHOD_CALL" text="getdate">
+                    <ast name="ARGLIST_VALUES">
+                        <ast name="METHOD_CALL" text="mktime">
+                            <ast name="ARGLIST_VALUES">
+                                <ast name="INDEX_OP">
+                                    <this />
+                                    <ast name="DSTRING" text="hours" />
+                                </ast>
+                                <ast name="INDEX_OP">
+                                    <this />
+                                    <ast name="DSTRING" text="minutes" />
+                                </ast>
+                                <arg index="1" />
+                                <ast name="INDEX_OP">
+                                    <this />
+                                    <ast name="DSTRING" text="mon" />
+                                </ast>
+                                <ast name="INDEX_OP">
+                                    <this />
+                                    <ast name="DSTRING" text="mday" />
+                                </ast>
+                                <ast name="INDEX_OP">
+                                    <this />
+                                    <ast name="DSTRING" text="year" />
+                                </ast>
+                                <arg index="2" />
+                            </ast>
+                        </ast>
+                    </ast>
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <method name="setTime" type="VOID">
+        <arg type="DINT" />
+        <ast name="ASSIGN">
+            <this />
+            <ast name="METHOD_CALL" text="getdate">
+                <ast name="ARGLIST_VALUES">
+                    <arg index="1" />
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <!-- More thought about setUTC variants -->
+
+    <method name="toGMTString" type="DSTRING">
+        <ast name="CONCAT">
+            <ast name="METHOD_CALL" text="gmdate">
+                <ast name="ARGLIST_VALUES">
+                    <ast name="DSTRING" text="d M Y H:i:s" />
+                    <ast name="METHOD_CALL" text="mktime">
+                        <ast name="ARGLIST_VALUES">
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="hours" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="minutes" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="seconds" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="mon" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="mday" />
+                            </ast>
+                            <ast name="INDEX_OP">
+                                <this />
+                                <ast name="DSTRING" text="year" />
+                            </ast>
+                        </ast>
+                    </ast>
+                </ast>
+            </ast>
+            <ast name="DSTRING" text=" GMT" />
+        </ast>
+    </method>
+
+    <method name="toLocaleString" type="DSTRING">
+        <ast name="METHOD_CALL" text="strftime">
+            <ast name="ARGLIST_VALUES">
+                <ast name="DSTRING" text="d M Y H:i:s" />
+                <ast name="METHOD_CALL" text="mktime">
+                    <ast name="ARGLIST_VALUES">
+                        <ast name="INDEX_OP">
+                            <this />
+                            <ast name="DSTRING" text="hours" />
+                        </ast>
+                        <ast name="INDEX_OP">
+                            <this />
+                            <ast name="DSTRING" text="minutes" />
+                        </ast>
+                        <ast name="INDEX_OP">
+                            <this />
+                            <ast name="DSTRING" text="seconds" />
+                        </ast>
+                        <ast name="INDEX_OP">
+                            <this />
+                            <ast name="DSTRING" text="mon" />
+                        </ast>
+                        <ast name="INDEX_OP">
+                            <this />
+                            <ast name="DSTRING" text="mday" />
+                        </ast>
+                        <ast name="INDEX_OP">
+                            <this />
+                            <ast name="DSTRING" text="year" />
+                        </ast>
+                    </ast>
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <method name="toUTCString" type="DSTRING">
+        <ast name="METHOD_CALL" text="gmdate">
+            <ast name="ARGLIST_VALUES">
+                <ast name="DSTRING" text="d M Y H:i:s" />
+                <ast name="METHOD_CALL" text="mktime">
+                    <ast name="ARGLIST_VALUES">
+                        <ast name="INDEX_OP">
+                            <this />
+                            <ast name="DSTRING" text="hours" />
+                        </ast>
+                        <ast name="INDEX_OP">
+                            <this />
+                            <ast name="DSTRING" text="minutes" />
+                        </ast>
+                        <ast name="INDEX_OP">
+                            <this />
+                            <ast name="DSTRING" text="seconds" />
+                        </ast>
+                        <ast name="INDEX_OP">
+                            <this />
+                            <ast name="DSTRING" text="mon" />
+                        </ast>
+                        <ast name="INDEX_OP">
+                            <this />
+                            <ast name="DSTRING" text="mday" />
+                        </ast>
+                        <ast name="INDEX_OP">
+                            <this />
+                            <ast name="DSTRING" text="year" />
+                        </ast>
+                    </ast>
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <method name="toString" type="DSTRING">
+        <ast name="METHOD_CALL" text="strftime">
+            <ast name="ARGLIST_VALUES">
+                <ast name="DSTRING" text="d M Y H:i:s" />
+                <ast name="METHOD_CALL" text="mktime">
+                    <ast name="ARGLIST_VALUES">
+                        <ast name="INDEX_OP">
+                            <this />
+                            <ast name="DSTRING" text="hours" />
+                        </ast>
+                        <ast name="INDEX_OP">
+                            <this />
+                            <ast name="DSTRING" text="minutes" />
+                        </ast>
+                        <ast name="INDEX_OP">
+                            <this />
+                            <ast name="DSTRING" text="seconds" />
+                        </ast>
+                        <ast name="INDEX_OP">
+                            <this />
+                            <ast name="DSTRING" text="mon" />
+                        </ast>
+                        <ast name="INDEX_OP">
+                            <this />
+                            <ast name="DSTRING" text="mday" />
+                        </ast>
+                        <ast name="INDEX_OP">
+                            <this />
+                            <ast name="DSTRING" text="year" />
+                        </ast>
+                    </ast>
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <method name="valueOf" type="DINT">
+        <ast name="METHOD_CALL" text="mktime">
+            <ast name="ARGLIST_VALUES">
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="hours" />
+                </ast>
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="minutes" />
+                </ast>
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="seconds" />
+                </ast>
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="mon" />
+                </ast>
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="mday" />
+                </ast>
+                <ast name="INDEX_OP">
+                    <this />
+                    <ast name="DSTRING" text="year" />
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <method name="parse" type="DINT">
+        <ast name="METHOD_CALL" text="strtotime">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="UTC" type="DINT">
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="gmmktime">
+            <ast name="ARGLIST_VALUES">
+                <ast name="DINT" text="0" />
+                <ast name="DINT" text="0" />
+                <ast name="DINT" text="0" />
+                <arg index="3" />
+                <arg index="2" />
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="UTC" type="DINT">
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="gmmktime">
+            <ast name="ARGLIST_VALUES">
+                <arg index="4" />
+                <ast name="DINT" text="0" />
+                <ast name="DINT" text="0" />
+                <arg index="3" />
+                <arg index="2" />
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="UTC" type="DINT">
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="gmmktime">
+            <ast name="ARGLIST_VALUES">
+                <arg index="4" />
+                <arg index="5" />
+                <ast name="DINT" text="0" />
+                <arg index="3" />
+                <arg index="2" />
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="UTC" type="DINT">
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="gmmktime">
+            <ast name="ARGLIST_VALUES">
+                <arg index="4" />
+                <arg index="5" />
+                <arg index="6" />
+                <arg index="3" />
+                <arg index="2" />
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+</class>

@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <vb>
+    <original>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="POW" text="^">
+            <ast name="IDENTIFIER" text="b"/>
+            <ast name="DINT" text="23"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="POW" text="^">
+            <ast name="DINT" text="12"/>
+            <ast name="DINT" text="5"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="POW" text="^">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="DINT" text="4"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="POW" text="^">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="IDENTIFIER" text="b"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="POW" text="^">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="IDENTIFIER" text="a"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="POW" text="^">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Session"/>
+              <ast name="IDENTIFIER" text="Timeout"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="POW" text="^">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="METHOD_CALL" text="(">
+              <ast name="DOT" text=".">
+                <ast name="IDENTIFIER" text="Request"/>
+                <ast name="IDENTIFIER" text="Cookies"/>
+              </ast>
+              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                <ast name="DSTRING" text="count"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="INT_DIVIDE" text="\">
+            <ast name="IDENTIFIER" text="b"/>
+            <ast name="DINT" text="23"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="INT_DIVIDE" text="\">
+            <ast name="DINT" text="12"/>
+            <ast name="DINT" text="5"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="INT_DIVIDE" text="\">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="DINT" text="4"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="INT_DIVIDE" text="\">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="IDENTIFIER" text="b"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="INT_DIVIDE" text="\">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="IDENTIFIER" text="a"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="INT_DIVIDE" text="\">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Session"/>
+              <ast name="IDENTIFIER" text="Timeout"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="INT_DIVIDE" text="\">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="METHOD_CALL" text="(">
+              <ast name="DOT" text=".">
+                <ast name="IDENTIFIER" text="Request"/>
+                <ast name="IDENTIFIER" text="Cookies"/>
+              </ast>
+              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                <ast name="DSTRING" text="count"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="pow">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="b"/>
+              <ast name="DINT" text="23"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="pow">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DINT" text="12"/>
+              <ast name="DINT" text="5"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="pow">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="4"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="pow">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="b"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="pow">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="a"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="pow">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="METHOD_CALL" text="session_cache_expire">
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="pow">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="INDEX_OP" text="INDEX_OP">
+                <ast name="IDENTIFIER" text="HTTP_COOKIE_VARS"/>
+                <ast name="DSTRING" text="count"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="ceil">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DIVIDE" text="/">
+                <ast name="IDENTIFIER" text="b"/>
+                <ast name="DINT" text="23"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="ceil">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DIVIDE" text="/">
+                <ast name="DINT" text="12"/>
+                <ast name="DINT" text="5"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="ceil">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DIVIDE" text="/">
+                <ast name="IDENTIFIER" text="a"/>
+                <ast name="DINT" text="4"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="ceil">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DIVIDE" text="/">
+                <ast name="IDENTIFIER" text="a"/>
+                <ast name="IDENTIFIER" text="b"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="ceil">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DIVIDE" text="/">
+                <ast name="IDENTIFIER" text="a"/>
+                <ast name="IDENTIFIER" text="a"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="ceil">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DIVIDE" text="/">
+                <ast name="IDENTIFIER" text="a"/>
+                <ast name="METHOD_CALL" text="session_cache_expire">
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="ceil">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DIVIDE" text="/">
+                <ast name="IDENTIFIER" text="a"/>
+                <ast name="INDEX_OP" text="INDEX_OP">
+                  <ast name="IDENTIFIER" text="HTTP_COOKIE_VARS"/>
+                  <ast name="DSTRING" text="count"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </vb>
+</asp>

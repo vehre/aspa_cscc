@@ -1,0 +1,742 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <js>
+    <original>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="DOT" text=".">
+            <ast name="NEW" text="new">
+              <ast name="IDENTIFIER" text="Rectangle"/>
+              <ast name="ELIST" text="ELIST"/>
+            </ast>
+            <ast name="IDENTIFIER" text="incPos"/>
+          </ast>
+          <ast name="ELIST" text="ELIST"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="DOT" text=".">
+            <ast name="NEW" text="new">
+              <ast name="IDENTIFIER" text="Point"/>
+              <ast name="ELIST" text="ELIST">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="NUM_INT" text="2"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="IDENTIFIER" text="setY"/>
+          </ast>
+          <ast name="ELIST" text="ELIST">
+            <ast name="EXPR" text="EXPR">
+              <ast name="NUM_INT" text="29"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="VAR" text="var">
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="rect"/>
+            <ast name="NEW" text="new">
+              <ast name="IDENTIFIER" text="Rectangle"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="rect"/>
+            <ast name="IDENTIFIER" text="incPos"/>
+          </ast>
+          <ast name="ELIST" text="ELIST"/>
+        </ast>
+      </ast>
+      <ast name="VAR" text="var">
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="aa"/>
+            <ast name="NUM_INT" text="20"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="getWidth">
+        <ast name="SLIST" text="{">
+          <ast name="RETURN" text="return">
+            <ast name="EXPR" text="EXPR">
+              <ast name="DOT" text=".">
+                <ast name="THIS" text="this"/>
+                <ast name="IDENTIFIER" text="width"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="setWidth">
+        <ast name="SLIST" text="{">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="DOT" text=".">
+                <ast name="THIS" text="this"/>
+                <ast name="IDENTIFIER" text="width"/>
+              </ast>
+              <ast name="IDENTIFIER" text="w"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="getDimension">
+        <ast name="SLIST" text="{">
+          <ast name="RETURN" text="return">
+            <ast name="EXPR" text="EXPR">
+              <ast name="METHOD_CALL" text="(">
+                <ast name="DOT" text=".">
+                  <ast name="IDENTIFIER" text="Math"/>
+                  <ast name="IDENTIFIER" text="pow"/>
+                </ast>
+                <ast name="ELIST" text="ELIST">
+                  <ast name="EXPR" text="EXPR">
+                    <ast name="DOT" text=".">
+                      <ast name="THIS" text="this"/>
+                      <ast name="IDENTIFIER" text="width"/>
+                    </ast>
+                  </ast>
+                  <ast name="EXPR" text="EXPR">
+                    <ast name="NUM_INT" text="2"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="Rectangle">
+        <ast name="SLIST" text="{">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="DOT" text=".">
+                <ast name="THIS" text="this"/>
+                <ast name="IDENTIFIER" text="pos"/>
+              </ast>
+              <ast name="NEW" text="new">
+                <ast name="IDENTIFIER" text="Point"/>
+                <ast name="ELIST" text="ELIST">
+                  <ast name="EXPR" text="EXPR">
+                    <ast name="NUM_INT" text="0"/>
+                  </ast>
+                  <ast name="EXPR" text="EXPR">
+                    <ast name="NUM_INT" text="0"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="DOT" text=".">
+                <ast name="THIS" text="this"/>
+                <ast name="IDENTIFIER" text="width"/>
+              </ast>
+              <ast name="NUM_INT" text="10"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="DOT" text=".">
+                <ast name="THIS" text="this"/>
+                <ast name="IDENTIFIER" text="attr"/>
+              </ast>
+              <ast name="IDENTIFIER" text="aa"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="SKIP_EXPR" text="="/>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="SKIP_EXPR" text="="/>
+          </ast>
+          <ast name="FUNCTION_MEMBER" text="incPos">
+            <ast name="SLIST" text="{">
+              <ast name="EXPR" text="EXPR">
+                <ast name="POST_INC" text="++">
+                  <ast name="DOT" text=".">
+                    <ast name="DOT" text=".">
+                      <ast name="THIS" text="this"/>
+                      <ast name="IDENTIFIER" text="pos"/>
+                    </ast>
+                    <ast name="IDENTIFIER" text="x"/>
+                  </ast>
+                </ast>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="POST_INC" text="++">
+                  <ast name="DOT" text=".">
+                    <ast name="DOT" text=".">
+                      <ast name="THIS" text="this"/>
+                      <ast name="IDENTIFIER" text="pos"/>
+                    </ast>
+                    <ast name="IDENTIFIER" text="y"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="FUNCTION_MEMBER" text="toString">
+            <ast name="SLIST" text="{">
+              <ast name="RETURN" text="return">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="PLUS" text="+">
+                    <ast name="PLUS" text="+">
+                      <ast name="PLUS" text="+">
+                        <ast name="PLUS" text="+">
+                          <ast name="PLUS" text="+">
+                            <ast name="PLUS" text="+">
+                              <ast name="PLUS" text="+">
+                                <ast name="PLUS" text="+">
+                                  <ast name="STRING_LITERAL" text="["/>
+                                  <ast name="DOT" text=".">
+                                    <ast name="DOT" text=".">
+                                      <ast name="THIS" text="this"/>
+                                      <ast name="IDENTIFIER" text="pos"/>
+                                    </ast>
+                                    <ast name="IDENTIFIER" text="x"/>
+                                  </ast>
+                                </ast>
+                                <ast name="STRING_LITERAL" text=", "/>
+                              </ast>
+                              <ast name="DOT" text=".">
+                                <ast name="DOT" text=".">
+                                  <ast name="THIS" text="this"/>
+                                  <ast name="IDENTIFIER" text="pos"/>
+                                </ast>
+                                <ast name="IDENTIFIER" text="y"/>
+                              </ast>
+                            </ast>
+                            <ast name="STRING_LITERAL" text=", "/>
+                          </ast>
+                          <ast name="LPAREN" text="(">
+                            <ast name="PLUS" text="+">
+                              <ast name="DOT" text=".">
+                                <ast name="DOT" text=".">
+                                  <ast name="THIS" text="this"/>
+                                  <ast name="IDENTIFIER" text="pos"/>
+                                </ast>
+                                <ast name="IDENTIFIER" text="x"/>
+                              </ast>
+                              <ast name="DOT" text=".">
+                                <ast name="THIS" text="this"/>
+                                <ast name="IDENTIFIER" text="width"/>
+                              </ast>
+                            </ast>
+                          </ast>
+                        </ast>
+                        <ast name="STRING_LITERAL" text=", "/>
+                      </ast>
+                      <ast name="LPAREN" text="(">
+                        <ast name="PLUS" text="+">
+                          <ast name="DOT" text=".">
+                            <ast name="DOT" text=".">
+                              <ast name="THIS" text="this"/>
+                              <ast name="IDENTIFIER" text="pos"/>
+                            </ast>
+                            <ast name="IDENTIFIER" text="y"/>
+                          </ast>
+                          <ast name="DOT" text=".">
+                            <ast name="THIS" text="this"/>
+                            <ast name="IDENTIFIER" text="width"/>
+                          </ast>
+                        </ast>
+                      </ast>
+                    </ast>
+                    <ast name="STRING_LITERAL" text="]"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="getPosition">
+        <ast name="SLIST" text="{">
+          <ast name="RETURN" text="return">
+            <ast name="EXPR" text="EXPR">
+              <ast name="DOT" text=".">
+                <ast name="THIS" text="this"/>
+                <ast name="IDENTIFIER" text="pos"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="setPosition">
+        <ast name="SLIST" text="{">
+          <ast name="EXPR" text="EXPR">
+            <ast name="METHOD_CALL" text="(">
+              <ast name="DOT" text=".">
+                <ast name="DOT" text=".">
+                  <ast name="THIS" text="this"/>
+                  <ast name="IDENTIFIER" text="pos"/>
+                </ast>
+                <ast name="IDENTIFIER" text="setX"/>
+              </ast>
+              <ast name="ELIST" text="ELIST">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="IDENTIFIER" text="x"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="METHOD_CALL" text="(">
+              <ast name="DOT" text=".">
+                <ast name="DOT" text=".">
+                  <ast name="THIS" text="this"/>
+                  <ast name="IDENTIFIER" text="pos"/>
+                </ast>
+                <ast name="IDENTIFIER" text="setY"/>
+              </ast>
+              <ast name="ELIST" text="ELIST">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="IDENTIFIER" text="y"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="Point">
+        <ast name="SLIST" text="{">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="DOT" text=".">
+                <ast name="THIS" text="this"/>
+                <ast name="IDENTIFIER" text="x"/>
+              </ast>
+              <ast name="IDENTIFIER" text="x"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="DOT" text=".">
+                <ast name="THIS" text="this"/>
+                <ast name="IDENTIFIER" text="y"/>
+              </ast>
+              <ast name="IDENTIFIER" text="y"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="SKIP_EXPR" text="="/>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="SKIP_EXPR" text="="/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="setX">
+        <ast name="SLIST" text="{">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="DOT" text=".">
+                <ast name="THIS" text="this"/>
+                <ast name="IDENTIFIER" text="x"/>
+              </ast>
+              <ast name="IDENTIFIER" text="x"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="setY">
+        <ast name="SLIST" text="{">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="DOT" text=".">
+                <ast name="THIS" text="this"/>
+                <ast name="IDENTIFIER" text="y"/>
+              </ast>
+              <ast name="IDENTIFIER" text="y"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="rect2"/>
+          <ast name="NEW" text="new">
+            <ast name="IDENTIFIER" text="Rectangle"/>
+            <ast name="ELIST" text="ELIST"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="rect2"/>
+            <ast name="IDENTIFIER" text="incPos"/>
+          </ast>
+          <ast name="ELIST" text="ELIST"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="rect2"/>
+            <ast name="IDENTIFIER" text="getWidth"/>
+          </ast>
+          <ast name="ELIST" text="ELIST"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="rect2"/>
+            <ast name="IDENTIFIER" text="getPosition"/>
+          </ast>
+          <ast name="ELIST" text="ELIST"/>
+        </ast>
+      </ast>
+      <ast name="VAR" text="var">
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="str"/>
+            <ast name="METHOD_CALL" text="(">
+              <ast name="DOT" text=".">
+                <ast name="IDENTIFIER" text="rect2"/>
+                <ast name="IDENTIFIER" text="toString"/>
+              </ast>
+              <ast name="ELIST" text="ELIST"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="DOT" text="DOT">
+          <ast name="NEW" text="new">
+            <ast name="METHOD_CALL" text="Rectangle"/>
+          </ast>
+          <ast name="METHOD_CALL" text="incPos"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="DOT" text="DOT">
+          <ast name="NEW" text="new">
+            <ast name="METHOD_CALL" text="Point">
+              <ast name="ELIST" text="ARGLIST_VALUES">
+                <ast name="NUM_INT" text="2"/>
+                <ast name="NULL" text="null"/>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="METHOD_CALL" text="setY">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="NUM_INT" text="29"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="rect"/>
+          <ast name="NEW" text="new">
+            <ast name="METHOD_CALL" text="Rectangle"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="DOT" text="DOT">
+          <ast name="IDENTIFIER" text="rect"/>
+          <ast name="METHOD_CALL" text="incPos"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="aa"/>
+          <ast name="NUM_INT" text="20"/>
+        </ast>
+      </ast>
+      <ast name="CLASS" text="Rectangle">
+        <ast name="VAR" text="var">
+          <ast name="IDENTIFIER" text="width"/>
+        </ast>
+        <ast name="VAR" text="var">
+          <ast name="IDENTIFIER" text="pos"/>
+        </ast>
+        <ast name="VAR" text="var">
+          <ast name="IDENTIFIER" text="attr"/>
+        </ast>
+        <ast name="FUNCTION" text="Rectangle">
+          <ast name="GLOBAL" text="GLOBAL">
+            <ast name="IDENTIFIER" text="aa"/>
+          </ast>
+          <ast name="SLIST" text="{">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="OBJECT_ATTRIBUTE" text="pos"/>
+                <ast name="NEW" text="new">
+                  <ast name="METHOD_CALL" text="Point">
+                    <ast name="ELIST" text="ARGLIST_VALUES">
+                      <ast name="NUM_INT" text="0"/>
+                      <ast name="NUM_INT" text="0"/>
+                    </ast>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="OBJECT_ATTRIBUTE" text="width"/>
+                <ast name="NUM_INT" text="10"/>
+              </ast>
+            </ast>
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="OBJECT_ATTRIBUTE" text="attr"/>
+                <ast name="IDENTIFIER" text="aa"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="FUNCTION" text="getDimension">
+          <ast name="SLIST" text="{">
+            <ast name="RETURN" text="return">
+              <ast name="EXPR" text="EXPR">
+                <ast name="METHOD_CALL" text="pow">
+                  <ast name="ELIST" text="ARGLIST_VALUES">
+                    <ast name="OBJECT_ATTRIBUTE" text="width"/>
+                    <ast name="NUM_INT" text="2"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="FUNCTION" text="getWidth">
+          <ast name="SLIST" text="{">
+            <ast name="RETURN" text="return">
+              <ast name="EXPR" text="EXPR">
+                <ast name="OBJECT_ATTRIBUTE" text="width"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="FUNCTION" text="toString">
+          <ast name="SLIST" text="{">
+            <ast name="RETURN" text="return">
+              <ast name="EXPR" text="EXPR">
+                <ast name="CONCAT" text=".">
+                  <ast name="CONCAT" text=".">
+                    <ast name="CONCAT" text=".">
+                      <ast name="CONCAT" text=".">
+                        <ast name="CONCAT" text=".">
+                          <ast name="CONCAT" text=".">
+                            <ast name="CONCAT" text=".">
+                              <ast name="CONCAT" text=".">
+                                <ast name="STRING_LITERAL" text="["/>
+                                <ast name="DOT" text="DOT">
+                                  <ast name="OBJECT_ATTRIBUTE" text="pos"/>
+                                  <ast name="IDENTIFIER" text="x"/>
+                                </ast>
+                              </ast>
+                              <ast name="STRING_LITERAL" text=", "/>
+                            </ast>
+                            <ast name="DOT" text="DOT">
+                              <ast name="OBJECT_ATTRIBUTE" text="pos"/>
+                              <ast name="IDENTIFIER" text="y"/>
+                            </ast>
+                          </ast>
+                          <ast name="STRING_LITERAL" text=", "/>
+                        </ast>
+                        <ast name="LPAREN" text="(">
+                          <ast name="PLUS" text="+">
+                            <ast name="DOT" text="DOT">
+                              <ast name="OBJECT_ATTRIBUTE" text="pos"/>
+                              <ast name="IDENTIFIER" text="x"/>
+                            </ast>
+                            <ast name="OBJECT_ATTRIBUTE" text="width"/>
+                          </ast>
+                        </ast>
+                      </ast>
+                      <ast name="STRING_LITERAL" text=", "/>
+                    </ast>
+                    <ast name="LPAREN" text="(">
+                      <ast name="PLUS" text="+">
+                        <ast name="DOT" text="DOT">
+                          <ast name="OBJECT_ATTRIBUTE" text="pos"/>
+                          <ast name="IDENTIFIER" text="y"/>
+                        </ast>
+                        <ast name="OBJECT_ATTRIBUTE" text="width"/>
+                      </ast>
+                    </ast>
+                  </ast>
+                  <ast name="STRING_LITERAL" text="]"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="FUNCTION" text="setWidth">
+          <ast name="ELIST" text="ELIST">
+            <ast name="IDENTIFIER" text="w"/>
+          </ast>
+          <ast name="SLIST" text="{">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="OBJECT_ATTRIBUTE" text="width"/>
+                <ast name="IDENTIFIER" text="w"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="FUNCTION" text="setPosition">
+          <ast name="ELIST" text="ELIST">
+            <ast name="IDENTIFIER" text="x"/>
+            <ast name="IDENTIFIER" text="y"/>
+          </ast>
+          <ast name="SLIST" text="{">
+            <ast name="EXPR" text="EXPR">
+              <ast name="DOT" text="DOT">
+                <ast name="OBJECT_ATTRIBUTE" text="pos"/>
+                <ast name="METHOD_CALL" text="setX">
+                  <ast name="ELIST" text="ARGLIST_VALUES">
+                    <ast name="IDENTIFIER" text="x"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="EXPR" text="EXPR">
+              <ast name="DOT" text="DOT">
+                <ast name="OBJECT_ATTRIBUTE" text="pos"/>
+                <ast name="METHOD_CALL" text="setY">
+                  <ast name="ELIST" text="ARGLIST_VALUES">
+                    <ast name="IDENTIFIER" text="y"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="FUNCTION" text="incPos">
+          <ast name="SLIST" text="{">
+            <ast name="EXPR" text="EXPR">
+              <ast name="POST_INC" text="++">
+                <ast name="DOT" text="DOT">
+                  <ast name="OBJECT_ATTRIBUTE" text="pos"/>
+                  <ast name="IDENTIFIER" text="x"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="EXPR" text="EXPR">
+              <ast name="POST_INC" text="++">
+                <ast name="DOT" text="DOT">
+                  <ast name="OBJECT_ATTRIBUTE" text="pos"/>
+                  <ast name="IDENTIFIER" text="y"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="FUNCTION" text="getPosition">
+          <ast name="SLIST" text="{">
+            <ast name="RETURN" text="return">
+              <ast name="EXPR" text="EXPR">
+                <ast name="OBJECT_ATTRIBUTE" text="pos"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="CLASS" text="Point">
+        <ast name="VAR" text="var">
+          <ast name="IDENTIFIER" text="y"/>
+        </ast>
+        <ast name="VAR" text="var">
+          <ast name="IDENTIFIER" text="x"/>
+        </ast>
+        <ast name="FUNCTION" text="Point">
+          <ast name="ELIST" text="ELIST">
+            <ast name="IDENTIFIER" text="x"/>
+            <ast name="IDENTIFIER" text="y"/>
+          </ast>
+          <ast name="SLIST" text="{">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="OBJECT_ATTRIBUTE" text="x"/>
+                <ast name="IDENTIFIER" text="x"/>
+              </ast>
+            </ast>
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="OBJECT_ATTRIBUTE" text="y"/>
+                <ast name="IDENTIFIER" text="y"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="FUNCTION" text="setY">
+          <ast name="ELIST" text="ELIST">
+            <ast name="IDENTIFIER" text="y"/>
+          </ast>
+          <ast name="SLIST" text="{">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="OBJECT_ATTRIBUTE" text="y"/>
+                <ast name="IDENTIFIER" text="y"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="FUNCTION" text="setX">
+          <ast name="ELIST" text="ELIST">
+            <ast name="IDENTIFIER" text="x"/>
+          </ast>
+          <ast name="SLIST" text="{">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="OBJECT_ATTRIBUTE" text="x"/>
+                <ast name="IDENTIFIER" text="x"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="rect2"/>
+          <ast name="NEW" text="new">
+            <ast name="METHOD_CALL" text="Rectangle"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="DOT" text="DOT">
+          <ast name="IDENTIFIER" text="rect2"/>
+          <ast name="METHOD_CALL" text="incPos"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="DOT" text="DOT">
+          <ast name="IDENTIFIER" text="rect2"/>
+          <ast name="METHOD_CALL" text="getWidth"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="DOT" text="DOT">
+          <ast name="IDENTIFIER" text="rect2"/>
+          <ast name="METHOD_CALL" text="getPosition"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="str"/>
+          <ast name="DOT" text="DOT">
+            <ast name="IDENTIFIER" text="rect2"/>
+            <ast name="METHOD_CALL" text="toString"/>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </js>
+</asp>

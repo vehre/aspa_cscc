@@ -1,0 +1,4 @@
+with (string) {
+    length = 20;
+    a = anchor(url);
+}

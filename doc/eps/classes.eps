@@ -1,0 +1,1097 @@
+%!PS-Adobe-2.0
+%%Creator: dot version 1.12 (Sun May 30 12:23:20 UTC 2004)
+%%For: (e) anakreon
+%%Title: classes
+%%Pages: (atend)
+%%BoundingBox: 35 35 527 411
+%%EndComments
+save
+%%BeginProlog
+/DotDict 200 dict def
+DotDict begin
+
+/setupLatin1 {
+mark
+/EncodingVector 256 array def
+ EncodingVector 0
+
+ISOLatin1Encoding 0 255 getinterval putinterval
+
+EncodingVector
+  dup 306 /AE
+  dup 301 /Aacute
+  dup 302 /Acircumflex
+  dup 304 /Adieresis
+  dup 300 /Agrave
+  dup 305 /Aring
+  dup 303 /Atilde
+  dup 307 /Ccedilla
+  dup 311 /Eacute
+  dup 312 /Ecircumflex
+  dup 313 /Edieresis
+  dup 310 /Egrave
+  dup 315 /Iacute
+  dup 316 /Icircumflex
+  dup 317 /Idieresis
+  dup 314 /Igrave
+  dup 334 /Udieresis
+  dup 335 /Yacute
+  dup 376 /thorn
+  dup 337 /germandbls
+  dup 341 /aacute
+  dup 342 /acircumflex
+  dup 344 /adieresis
+  dup 346 /ae
+  dup 340 /agrave
+  dup 345 /aring
+  dup 347 /ccedilla
+  dup 351 /eacute
+  dup 352 /ecircumflex
+  dup 353 /edieresis
+  dup 350 /egrave
+  dup 355 /iacute
+  dup 356 /icircumflex
+  dup 357 /idieresis
+  dup 354 /igrave
+  dup 360 /dcroat
+  dup 361 /ntilde
+  dup 363 /oacute
+  dup 364 /ocircumflex
+  dup 366 /odieresis
+  dup 362 /ograve
+  dup 365 /otilde
+  dup 370 /oslash
+  dup 372 /uacute
+  dup 373 /ucircumflex
+  dup 374 /udieresis
+  dup 371 /ugrave
+  dup 375 /yacute
+  dup 377 /ydieresis  
+
+% Set up ISO Latin 1 character encoding
+/starnetISO {
+        dup dup findfont dup length dict begin
+        { 1 index /FID ne { def }{ pop pop } ifelse
+        } forall
+        /Encoding EncodingVector def
+        currentdict end definefont
+} def
+/Times-Roman starnetISO def
+/Times-Italic starnetISO def
+/Times-Bold starnetISO def
+/Times-BoldItalic starnetISO def
+/Helvetica starnetISO def
+/Helvetica-Oblique starnetISO def
+/Helvetica-Bold starnetISO def
+/Helvetica-BoldOblique starnetISO def
+/Courier starnetISO def
+/Courier-Oblique starnetISO def
+/Courier-Bold starnetISO def
+/Courier-BoldOblique starnetISO def
+cleartomark
+} bind def
+
+%%BeginResource: procset
+/coord-font-family /Times-Roman def
+/default-font-family /Times-Roman def
+/coordfont coord-font-family findfont 8 scalefont def
+
+/InvScaleFactor 1.0 def
+/set_scale {
+	dup 1 exch div /InvScaleFactor exch def
+	dup scale
+} bind def
+
+% styles
+/solid { [] 0 setdash } bind def
+/dashed { [9 InvScaleFactor mul dup ] 0 setdash } bind def
+/dotted { [1 InvScaleFactor mul 6 InvScaleFactor mul] 0 setdash } bind def
+/invis {/fill {newpath} def /stroke {newpath} def /show {pop newpath} def} bind def
+/bold { 2 setlinewidth } bind def
+/filled { } bind def
+/unfilled { } bind def
+/rounded { } bind def
+/diagonals { } bind def
+
+% hooks for setting color 
+/nodecolor { sethsbcolor } bind def
+/edgecolor { sethsbcolor } bind def
+/graphcolor { sethsbcolor } bind def
+/nopcolor {pop pop pop} bind def
+
+/beginpage {	% i j npages
+	/npages exch def
+	/j exch def
+	/i exch def
+	/str 10 string def
+	npages 1 gt {
+		gsave
+			coordfont setfont
+			0 0 moveto
+			(\() show i str cvs show (,) show j str cvs show (\)) show
+		grestore
+	} if
+} bind def
+
+/set_font {
+	findfont exch
+	scalefont setfont
+} def
+
+% draw aligned label in bounding box aligned to current point
+/alignedtext {			% width adj text
+	/text exch def
+	/adj exch def
+	/width exch def
+	gsave
+		width 0 gt {
+			text stringwidth pop adj mul 0 rmoveto
+		} if
+		[] 0 setdash
+		text show
+	grestore
+} def
+
+/boxprim {				% xcorner ycorner xsize ysize
+		4 2 roll
+		moveto
+		2 copy
+		exch 0 rlineto
+		0 exch rlineto
+		pop neg 0 rlineto
+		closepath
+} bind def
+
+/ellipse_path {
+	/ry exch def
+	/rx exch def
+	/y exch def
+	/x exch def
+	matrix currentmatrix
+	newpath
+	x y translate
+	rx ry scale
+	0 0 1 0 360 arc
+	setmatrix
+} bind def
+
+/endpage { showpage } bind def
+/showpage { } def
+
+/layercolorseq
+	[	% layer color sequence - darkest to lightest
+		[0 0 0]
+		[.2 .8 .8]
+		[.4 .8 .8]
+		[.6 .8 .8]
+		[.8 .8 .8]
+	]
+def
+
+/layerlen layercolorseq length def
+
+/setlayer {/maxlayer exch def /curlayer exch def
+	layercolorseq curlayer 1 sub layerlen mod get
+	aload pop sethsbcolor
+	/nodecolor {nopcolor} def
+	/edgecolor {nopcolor} def
+	/graphcolor {nopcolor} def
+} bind def
+
+/onlayer { curlayer ne {invis} if } def
+
+/onlayers {
+	/myupper exch def
+	/mylower exch def
+	curlayer mylower lt
+	curlayer myupper gt
+	or
+	{invis} if
+} def
+
+/curlayer 0 def
+
+%%EndResource
+%%EndProlog
+%%BeginSetup
+14 default-font-family set_font
+1 setmiterlimit
+% /arrowlength 10 def
+% /arrowwidth 5 def
+
+% make sure pdfmark is harmless for PS-interpreters other than Distiller
+/pdfmark where {pop} {userdict /pdfmark /cleartomark load put} ifelse
+% make '<<' and '>>' safe on PS Level 1 devices
+/languagelevel where {pop languagelevel}{1} ifelse
+2 lt {
+    userdict (<<) cvn ([) cvn load put
+    userdict (>>) cvn ([) cvn load put
+} if
+
+%%EndSetup
+%%Page: 1 1
+%%PageBoundingBox: 36 36 527 411
+%%PageOrientation: Portrait
+gsave
+35 35 492 376 boxprim clip newpath
+36 36 translate
+0 0 1 beginpage
+0.4471 set_scale
+0 0 translate 0 rotate
+0.000 0.000 0.000 graphcolor
+14.00 /Times-Roman set_font
+
+%	ASPObject
+gsave 10 dict begin
+bold
+410 26 51 18 ellipse_path
+stroke
+gsave 10 dict begin
+410 21 moveto 76 -0.5 (ASPObject) alignedtext
+end grestore
+end grestore
+
+%	ASPClass
+gsave 10 dict begin
+bold
+286 183 45 18 ellipse_path
+stroke
+gsave 10 dict begin
+286 178 moveto 65 -0.5 (ASPClass) alignedtext
+end grestore
+end grestore
+
+%	ASPClass -> ASPObject
+newpath 300 166 moveto
+322 138 364 84 390 52 curveto
+stroke
+gsave 10 dict begin
+solid
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 393 54 moveto
+396 44 lineto
+387 50 lineto
+closepath
+fill
+0.000 0.000 0.000 edgecolor
+newpath 393 54 moveto
+396 44 lineto
+387 50 lineto
+closepath
+stroke
+end grestore
+
+%	ASPDependantClass
+gsave 10 dict begin
+bold
+111 340 83 18 ellipse_path
+stroke
+gsave 10 dict begin
+111 335 moveto 141 -0.5 (ASPDependantClass) alignedtext
+end grestore
+end grestore
+
+%	ASPDependantClass -> ASPClass
+newpath 131 322 moveto
+162 293 224 238 259 207 curveto
+stroke
+gsave 10 dict begin
+solid
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 262 209 moveto
+267 200 lineto
+257 204 lineto
+closepath
+fill
+0.000 0.000 0.000 edgecolor
+newpath 262 209 moveto
+267 200 lineto
+257 204 lineto
+closepath
+stroke
+end grestore
+
+%	Member
+gsave 10 dict begin
+bold
+523 183 42 18 ellipse_path
+stroke
+gsave 10 dict begin
+523 178 moveto 59 -0.5 (Member) alignedtext
+end grestore
+end grestore
+
+%	Member -> ASPObject
+newpath 510 166 moveto
+491 139 452 84 429 52 curveto
+stroke
+gsave 10 dict begin
+solid
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 432 50 moveto
+423 44 lineto
+426 54 lineto
+closepath
+fill
+0.000 0.000 0.000 edgecolor
+newpath 432 50 moveto
+423 44 lineto
+426 54 lineto
+closepath
+stroke
+end grestore
+
+%	Property
+gsave 10 dict begin
+bold
+876 340 43 18 ellipse_path
+stroke
+gsave 10 dict begin
+876 335 moveto 60 -0.5 (Property) alignedtext
+end grestore
+end grestore
+
+%	Property -> Member
+newpath 847 327 moveto
+783 298 633 231 562 200 curveto
+stroke
+gsave 10 dict begin
+solid
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 563 196 moveto
+552 196 lineto
+560 203 lineto
+closepath
+fill
+0.000 0.000 0.000 edgecolor
+newpath 563 196 moveto
+552 196 lineto
+560 203 lineto
+closepath
+stroke
+end grestore
+
+%	Method
+gsave 10 dict begin
+bold
+487 340 40 18 ellipse_path
+stroke
+gsave 10 dict begin
+487 335 moveto 54 -0.5 (Method) alignedtext
+end grestore
+end grestore
+
+%	Method -> Member
+newpath 491 322 moveto
+497 295 509 243 517 211 curveto
+stroke
+gsave 10 dict begin
+solid
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 520 211 moveto
+519 201 lineto
+514 210 lineto
+closepath
+fill
+0.000 0.000 0.000 edgecolor
+newpath 520 211 moveto
+519 201 lineto
+514 210 lineto
+closepath
+stroke
+end grestore
+
+%	BaseObject
+gsave 10 dict begin
+newpath 456 201 moveto
+364 201 lineto
+364 165 lineto
+456 165 lineto
+closepath
+stroke
+gsave 10 dict begin
+410 178 moveto 77 -0.5 (BaseObject) alignedtext
+end grestore
+end grestore
+
+%	BaseObject -> ASPObject
+newpath 410 165 moveto
+410 138 410 87 410 54 curveto
+stroke
+gsave 10 dict begin
+solid
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 414 54 moveto
+410 44 lineto
+407 54 lineto
+closepath
+fill
+0.000 0.000 0.000 edgecolor
+newpath 414 54 moveto
+410 44 lineto
+407 54 lineto
+closepath
+stroke
+end grestore
+
+%	GenericClass
+gsave 10 dict begin
+newpath 338 358 moveto
+234 358 lineto
+234 322 lineto
+338 322 lineto
+closepath
+stroke
+gsave 10 dict begin
+286 335 moveto 88 -0.5 (GenericClass) alignedtext
+end grestore
+end grestore
+
+%	GenericClass -> ASPClass
+newpath 286 322 moveto
+286 295 286 244 286 211 curveto
+stroke
+gsave 10 dict begin
+solid
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 290 211 moveto
+286 201 lineto
+283 211 lineto
+closepath
+fill
+0.000 0.000 0.000 edgecolor
+newpath 290 211 moveto
+286 201 lineto
+283 211 lineto
+closepath
+stroke
+end grestore
+
+%	GenericClass -> BaseObject
+newpath 300 322 moveto
+322 294 364 242 390 209 curveto
+stroke
+gsave 10 dict begin
+solid
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 393 211 moveto
+396 201 lineto
+387 207 lineto
+closepath
+fill
+0.000 0.000 0.000 edgecolor
+newpath 393 211 moveto
+396 201 lineto
+387 207 lineto
+closepath
+stroke
+end grestore
+
+%	XmlASPClass
+gsave 10 dict begin
+newpath 294 515 moveto
+182 515 lineto
+182 479 lineto
+294 479 lineto
+closepath
+stroke
+gsave 10 dict begin
+238 492 moveto 96 -0.5 (XmlASPClass) alignedtext
+end grestore
+end grestore
+
+%	XmlASPClass -> GenericClass
+newpath 244 479 moveto
+252 452 268 400 277 368 curveto
+stroke
+gsave 10 dict begin
+solid
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 280 369 moveto
+280 358 lineto
+274 367 lineto
+closepath
+fill
+0.000 0.000 0.000 edgecolor
+newpath 280 369 moveto
+280 358 lineto
+274 367 lineto
+closepath
+stroke
+end grestore
+
+%	XmlDependantASPClass
+gsave 10 dict begin
+newpath 188 672 moveto
+0 672 lineto
+0 636 lineto
+188 636 lineto
+closepath
+stroke
+gsave 10 dict begin
+94 649 moveto 172 -0.5 (XmlDependantASPClass) alignedtext
+end grestore
+end grestore
+
+%	XmlDependantASPClass -> ASPDependantClass
+newpath 95 636 moveto
+98 584 106 432 109 368 curveto
+stroke
+gsave 10 dict begin
+solid
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 112 368 moveto
+110 358 lineto
+106 368 lineto
+closepath
+fill
+0.000 0.000 0.000 edgecolor
+newpath 112 368 moveto
+110 358 lineto
+106 368 lineto
+closepath
+stroke
+end grestore
+
+%	XmlDependantASPClass -> XmlASPClass
+newpath 111 636 moveto
+136 608 185 555 214 523 curveto
+stroke
+gsave 10 dict begin
+solid
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 217 525 moveto
+221 515 lineto
+212 520 lineto
+closepath
+fill
+0.000 0.000 0.000 edgecolor
+newpath 217 525 moveto
+221 515 lineto
+212 520 lineto
+closepath
+stroke
+end grestore
+
+%	BaseMember
+gsave 10 dict begin
+newpath 652 358 moveto
+546 358 lineto
+546 322 lineto
+652 322 lineto
+closepath
+stroke
+gsave 10 dict begin
+599 335 moveto 91 -0.5 (BaseMember) alignedtext
+end grestore
+end grestore
+
+%	BaseMember -> Member
+newpath 590 322 moveto
+576 295 551 242 536 210 curveto
+stroke
+gsave 10 dict begin
+solid
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 539 209 moveto
+532 201 lineto
+533 212 lineto
+closepath
+fill
+0.000 0.000 0.000 edgecolor
+newpath 539 209 moveto
+532 201 lineto
+533 212 lineto
+closepath
+stroke
+end grestore
+
+%	BaseMember -> BaseObject
+newpath 577 322 moveto
+544 294 478 239 440 208 curveto
+stroke
+gsave 10 dict begin
+solid
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 442 205 moveto
+432 201 lineto
+437 210 lineto
+closepath
+fill
+0.000 0.000 0.000 edgecolor
+newpath 442 205 moveto
+432 201 lineto
+437 210 lineto
+closepath
+stroke
+end grestore
+
+%	BaseMemberWrapper
+gsave 10 dict begin
+newpath 685 515 moveto
+515 515 lineto
+515 479 lineto
+685 479 lineto
+closepath
+stroke
+gsave 10 dict begin
+600 492 moveto 154 -0.5 (BaseMemberWrapper) alignedtext
+end grestore
+end grestore
+
+%	BaseMemberWrapper -> BaseMember
+newpath 600 479 moveto
+600 452 599 401 599 368 curveto
+stroke
+gsave 10 dict begin
+solid
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 603 368 moveto
+599 358 lineto
+596 368 lineto
+closepath
+fill
+0.000 0.000 0.000 edgecolor
+newpath 603 368 moveto
+599 358 lineto
+596 368 lineto
+closepath
+stroke
+end grestore
+
+%	ASPMethodWrapper
+gsave 10 dict begin
+newpath 694 672 moveto
+532 672 lineto
+532 636 lineto
+694 636 lineto
+closepath
+stroke
+gsave 10 dict begin
+613 649 moveto 147 -0.5 (ASPMethodWrapper) alignedtext
+end grestore
+end grestore
+
+%	ASPMethodWrapper -> Method
+newpath 594 636 moveto
+569 611 526 564 506 515 curveto
+486 466 484 404 486 368 curveto
+stroke
+gsave 10 dict begin
+solid
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 490 368 moveto
+486 358 lineto
+483 368 lineto
+closepath
+fill
+0.000 0.000 0.000 edgecolor
+newpath 490 368 moveto
+486 358 lineto
+483 368 lineto
+closepath
+stroke
+end grestore
+
+%	ASPMethodWrapper -> BaseMemberWrapper
+newpath 612 636 moveto
+609 609 605 558 603 525 curveto
+stroke
+gsave 10 dict begin
+solid
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 606 525 moveto
+602 515 lineto
+600 525 lineto
+closepath
+fill
+0.000 0.000 0.000 edgecolor
+newpath 606 525 moveto
+602 515 lineto
+600 525 lineto
+closepath
+stroke
+end grestore
+
+%	ASPPRopertyWrapper
+gsave 10 dict begin
+newpath 1029 672 moveto
+855 672 lineto
+855 636 lineto
+1029 636 lineto
+closepath
+stroke
+gsave 10 dict begin
+942 649 moveto 159 -0.5 (ASPPRopertyWrapper) alignedtext
+end grestore
+end grestore
+
+%	ASPPRopertyWrapper -> Property
+newpath 971 636 moveto
+1017 605 1096 541 1066 479 curveto
+1028 401 991 382 922 354 curveto
+stroke
+gsave 10 dict begin
+solid
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 923 350 moveto
+912 350 lineto
+920 357 lineto
+closepath
+fill
+0.000 0.000 0.000 edgecolor
+newpath 923 350 moveto
+912 350 lineto
+920 357 lineto
+closepath
+stroke
+end grestore
+
+%	ASPPRopertyWrapper -> BaseMemberWrapper
+newpath 903 636 moveto
+840 607 717 550 648 519 curveto
+stroke
+gsave 10 dict begin
+solid
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 650 516 moveto
+639 515 lineto
+647 522 lineto
+closepath
+fill
+0.000 0.000 0.000 edgecolor
+newpath 650 516 moveto
+639 515 lineto
+647 522 lineto
+closepath
+stroke
+end grestore
+
+%	GenericASPProperty
+gsave 10 dict begin
+newpath 863 515 moveto
+703 515 lineto
+703 479 lineto
+863 479 lineto
+closepath
+stroke
+gsave 10 dict begin
+783 492 moveto 144 -0.5 (GenericASPProperty) alignedtext
+end grestore
+end grestore
+
+%	GenericASPProperty -> Property
+newpath 794 479 moveto
+810 452 842 399 860 367 curveto
+stroke
+gsave 10 dict begin
+solid
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 863 368 moveto
+865 358 lineto
+857 365 lineto
+closepath
+fill
+0.000 0.000 0.000 edgecolor
+newpath 863 368 moveto
+865 358 lineto
+857 365 lineto
+closepath
+stroke
+end grestore
+
+%	GenericASPProperty -> BaseMember
+newpath 762 479 moveto
+729 451 666 396 628 365 curveto
+stroke
+gsave 10 dict begin
+solid
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 630 362 moveto
+620 358 lineto
+625 367 lineto
+closepath
+fill
+0.000 0.000 0.000 edgecolor
+newpath 630 362 moveto
+620 358 lineto
+625 367 lineto
+closepath
+stroke
+end grestore
+
+%	JsUserDefinedProperty
+gsave 10 dict begin
+newpath 1057 515 moveto
+881 515 lineto
+881 479 lineto
+1057 479 lineto
+closepath
+stroke
+gsave 10 dict begin
+969 492 moveto 161 -0.5 (JsUserDefinedProperty) alignedtext
+end grestore
+end grestore
+
+%	JsUserDefinedProperty -> Property
+newpath 958 479 moveto
+942 452 910 399 892 367 curveto
+stroke
+gsave 10 dict begin
+solid
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 895 365 moveto
+887 358 lineto
+889 368 lineto
+closepath
+fill
+0.000 0.000 0.000 edgecolor
+newpath 895 365 moveto
+887 358 lineto
+889 368 lineto
+closepath
+stroke
+end grestore
+
+%	JsUserDefinedProperty -> BaseMember
+newpath 927 479 moveto
+858 450 725 393 651 362 curveto
+stroke
+gsave 10 dict begin
+solid
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 652 358 moveto
+641 358 lineto
+649 365 lineto
+closepath
+fill
+0.000 0.000 0.000 edgecolor
+newpath 652 358 moveto
+641 358 lineto
+649 365 lineto
+closepath
+stroke
+end grestore
+
+%	GenericMethod
+gsave 10 dict begin
+newpath 459 515 moveto
+337 515 lineto
+337 479 lineto
+459 479 lineto
+closepath
+stroke
+gsave 10 dict begin
+398 492 moveto 107 -0.5 (GenericMethod) alignedtext
+end grestore
+end grestore
+
+%	GenericMethod -> Method
+newpath 408 479 moveto
+424 452 454 399 472 367 curveto
+stroke
+gsave 10 dict begin
+solid
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 475 368 moveto
+477 358 lineto
+469 365 lineto
+closepath
+fill
+0.000 0.000 0.000 edgecolor
+newpath 475 368 moveto
+477 358 lineto
+469 365 lineto
+closepath
+stroke
+end grestore
+
+%	GenericMethod -> BaseMember
+newpath 421 479 moveto
+457 451 527 396 568 364 curveto
+stroke
+gsave 10 dict begin
+solid
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 570 367 moveto
+576 358 lineto
+566 361 lineto
+closepath
+fill
+0.000 0.000 0.000 edgecolor
+newpath 570 367 moveto
+576 358 lineto
+566 361 lineto
+closepath
+stroke
+end grestore
+
+%	ASPMethodMap
+gsave 10 dict begin
+newpath 338 672 moveto
+206 672 lineto
+206 636 lineto
+338 636 lineto
+closepath
+stroke
+gsave 10 dict begin
+272 649 moveto 117 -0.5 (ASPMethodMap) alignedtext
+end grestore
+end grestore
+
+%	ASPMethodMap -> GenericMethod
+newpath 286 636 moveto
+309 608 351 556 377 523 curveto
+stroke
+gsave 10 dict begin
+solid
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 380 525 moveto
+383 515 lineto
+374 521 lineto
+closepath
+fill
+0.000 0.000 0.000 edgecolor
+newpath 380 525 moveto
+383 515 lineto
+374 521 lineto
+closepath
+stroke
+end grestore
+
+%	UserDefinedMethod
+gsave 10 dict begin
+newpath 514 672 moveto
+356 672 lineto
+356 636 lineto
+514 636 lineto
+closepath
+stroke
+gsave 10 dict begin
+435 649 moveto 142 -0.5 (UserDefinedMethod) alignedtext
+end grestore
+end grestore
+
+%	UserDefinedMethod -> GenericMethod
+newpath 431 636 moveto
+425 609 412 557 404 525 curveto
+stroke
+gsave 10 dict begin
+solid
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 407 524 moveto
+402 515 lineto
+401 525 lineto
+closepath
+fill
+0.000 0.000 0.000 edgecolor
+newpath 407 524 moveto
+402 515 lineto
+401 525 lineto
+closepath
+stroke
+end grestore
+
+%	JsUserDefinedMethod
+gsave 10 dict begin
+newpath 423 829 moveto
+253 829 lineto
+253 793 lineto
+423 793 lineto
+closepath
+stroke
+gsave 10 dict begin
+338 806 moveto 155 -0.5 (JsUserDefinedMethod) alignedtext
+end grestore
+end grestore
+
+%	JsUserDefinedMethod -> UserDefinedMethod
+newpath 349 793 moveto
+366 766 399 713 419 681 curveto
+stroke
+gsave 10 dict begin
+solid
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 422 682 moveto
+424 672 lineto
+416 679 lineto
+closepath
+fill
+0.000 0.000 0.000 edgecolor
+newpath 422 682 moveto
+424 672 lineto
+416 679 lineto
+closepath
+stroke
+end grestore
+
+%	VbUserDefinedMethod
+gsave 10 dict begin
+newpath 621 829 moveto
+441 829 lineto
+441 793 lineto
+621 793 lineto
+closepath
+stroke
+gsave 10 dict begin
+531 806 moveto 165 -0.5 (VbUserDefinedMethod) alignedtext
+end grestore
+end grestore
+
+%	VbUserDefinedMethod -> UserDefinedMethod
+newpath 520 793 moveto
+504 766 471 713 451 681 curveto
+stroke
+gsave 10 dict begin
+solid
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 454 679 moveto
+446 672 lineto
+448 682 lineto
+closepath
+fill
+0.000 0.000 0.000 edgecolor
+newpath 454 679 moveto
+446 672 lineto
+448 682 lineto
+closepath
+stroke
+end grestore
+endpage
+showpage
+grestore
+%%PageTrailer
+%%EndPage: 1
+%%Trailer
+%%Pages: 1
+end
+restore
+%%EOF

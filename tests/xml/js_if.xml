@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <js>
+    <original>
+      <ast name="IF" text="if">
+        <ast name="EXPR" text="EXPR">
+          <ast name="GT" text="&gt;">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="NUM_INT" text="0"/>
+          </ast>
+        </ast>
+        <ast name="SLIST" text="{">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="NUM_INT" text="30"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="IF" text="if">
+        <ast name="EXPR" text="EXPR">
+          <ast name="LT" text="&lt;">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="NUM_INT" text="40"/>
+          </ast>
+        </ast>
+        <ast name="SLIST" text="{">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="b"/>
+              <ast name="NUM_INT" text="20"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="ELSE" text="else">
+          <ast name="SLIST" text="{">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="b"/>
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="IF" text="if">
+        <ast name="EXPR" text="EXPR">
+          <ast name="EQUAL" text="==">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="NUM_INT" text="1"/>
+          </ast>
+        </ast>
+        <ast name="SLIST" text="{">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="b"/>
+              <ast name="NUM_INT" text="2"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="ELSE" text="else">
+          <ast name="IF" text="if">
+            <ast name="EXPR" text="EXPR">
+              <ast name="EQUAL" text="==">
+                <ast name="IDENTIFIER" text="a"/>
+                <ast name="NUM_INT" text="2"/>
+              </ast>
+            </ast>
+            <ast name="SLIST" text="{">
+              <ast name="EXPR" text="EXPR">
+                <ast name="ASSIGN" text="=">
+                  <ast name="IDENTIFIER" text="b"/>
+                  <ast name="NUM_INT" text="3"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="ELSE" text="else">
+              <ast name="IF" text="if">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="EQUAL" text="==">
+                    <ast name="IDENTIFIER" text="a"/>
+                    <ast name="NUM_INT" text="3"/>
+                  </ast>
+                </ast>
+                <ast name="SLIST" text="{">
+                  <ast name="EXPR" text="EXPR">
+                    <ast name="ASSIGN" text="=">
+                      <ast name="IDENTIFIER" text="b"/>
+                      <ast name="NUM_INT" text="4"/>
+                    </ast>
+                  </ast>
+                </ast>
+                <ast name="ELSE" text="else">
+                  <ast name="IF" text="if">
+                    <ast name="EXPR" text="EXPR">
+                      <ast name="EQUAL" text="==">
+                        <ast name="IDENTIFIER" text="a"/>
+                        <ast name="NUM_INT" text="4"/>
+                      </ast>
+                    </ast>
+                    <ast name="SLIST" text="{">
+                      <ast name="EXPR" text="EXPR">
+                        <ast name="ASSIGN" text="=">
+                          <ast name="IDENTIFIER" text="b"/>
+                          <ast name="NUM_INT" text="5"/>
+                        </ast>
+                      </ast>
+                    </ast>
+                    <ast name="ELSE" text="else">
+                      <ast name="SLIST" text="{">
+                        <ast name="EXPR" text="EXPR">
+                          <ast name="ASSIGN" text="=">
+                            <ast name="IDENTIFIER" text="b"/>
+                            <ast name="PLUS" text="+">
+                              <ast name="IDENTIFIER" text="a"/>
+                              <ast name="NUM_INT" text="1"/>
+                            </ast>
+                          </ast>
+                        </ast>
+                      </ast>
+                    </ast>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="IF_ELSE" text="IF_ELSE">
+        <ast name="IF" text="if">
+          <ast name="EXPR" text="EXPR">
+            <ast name="GT" text="&gt;">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="NUM_INT" text="0"/>
+            </ast>
+          </ast>
+          <ast name="SLIST" text="{">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="a"/>
+                <ast name="NUM_INT" text="30"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="IF_ELSE" text="IF_ELSE">
+        <ast name="IF" text="if">
+          <ast name="EXPR" text="EXPR">
+            <ast name="LT" text="&lt;">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="NUM_INT" text="40"/>
+            </ast>
+          </ast>
+          <ast name="SLIST" text="{">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="b"/>
+                <ast name="NUM_INT" text="20"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="ELSE" text="else">
+          <ast name="SLIST" text="{">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="b"/>
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="IF_ELSE" text="IF_ELSE">
+        <ast name="IF" text="if">
+          <ast name="EXPR" text="EXPR">
+            <ast name="EQUAL" text="==">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="NUM_INT" text="1"/>
+            </ast>
+          </ast>
+          <ast name="SLIST" text="{">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="b"/>
+                <ast name="NUM_INT" text="2"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="ELSEIF" text="elseif">
+          <ast name="EXPR" text="EXPR">
+            <ast name="EQUAL" text="==">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="NUM_INT" text="2"/>
+            </ast>
+          </ast>
+          <ast name="SLIST" text="{">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="b"/>
+                <ast name="NUM_INT" text="3"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="ELSEIF" text="elseif">
+          <ast name="EXPR" text="EXPR">
+            <ast name="EQUAL" text="==">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="NUM_INT" text="3"/>
+            </ast>
+          </ast>
+          <ast name="SLIST" text="{">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="b"/>
+                <ast name="NUM_INT" text="4"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="ELSEIF" text="elseif">
+          <ast name="EXPR" text="EXPR">
+            <ast name="EQUAL" text="==">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="NUM_INT" text="4"/>
+            </ast>
+          </ast>
+          <ast name="SLIST" text="{">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="b"/>
+                <ast name="NUM_INT" text="5"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="ELSE" text="else">
+          <ast name="SLIST" text="{">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="b"/>
+                <ast name="PLUS" text="+">
+                  <ast name="IDENTIFIER" text="a"/>
+                  <ast name="NUM_INT" text="1"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </js>
+</asp>

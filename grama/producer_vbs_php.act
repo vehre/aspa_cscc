@@ -1,0 +1,261 @@
+@import :
+/*
+    This file is part of Aspa.
+
+    Aspa is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    Aspa is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Aspa; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*/
+import org.apache.log4j.Logger;
+import java.io.PrintWriter;
+import java.io.Writer;
+
+@init : {
+    private SourceBuffer out;
+    private static Logger LOG = Logger.getLogger(VbsGenerator.class);
+
+    public SourceBuffer getBuffer() {
+        return out;
+    }
+
+
+    public void setWriter(Writer writer) {
+        out = new SourceBuffer(new PrintWriter(writer));
+    }
+}
+
+
+@int : { out.print(#DINT.getText()); }
+@float : { out.print(#DFLOAT.getText()); }
+@id : { out.print("$" + #IDENTIFIER.getText()); }
+@string : { out.print(out.makeString(#DSTRING.getText())); }
+@true : { out.print("true"); }
+@false : { out.print("false"); }
+@null : { out.print("null"); }
+@date : { 
+/*I think dates are in formad d-m-y */
+LOG.warn("Possible problem with date:" + #DDATE.getText());
+out.print("strtotime(\"" + #DDATE.getText() + "\""); 
+}
+
+@cast : {
+    String type = #CAST.getText();
+    if (type != null) {
+        out.print("(" + type + ") ");
+    }
+}
+
+
+@quest : { out.print(" ? "); }
+@alt : { out.print(" : "); }
+
+@exp_end : { out.println(";"); }
+
+@xor : { out.print(" ^ "); }
+@or : { out.print(" || "); }
+@and : { out.print(" && "); }
+@lt : { out.print(" < "); }
+@gt : { out.print(" > "); }
+@le : { out.print(" <= "); }
+@ge : { out.print(" >= "); }
+@eq : { out.print(" == "); }
+@assign : { out.print(" = "); }
+@cassign : { out.print(" .= "); }
+@passign : { out.print(" += "); }
+@minassign : { out.print(" -= "); }
+@modassign : { out.print(" %= "); }
+@sassign : { out.print(" *= "); }
+@dassign : { out.print(" /= "); }
+@neq : { out.print(" != "); }
+@concat : { out.print(" . "); }
+@plus : { out.print(" + "); }
+@minus : { out.print(" - "); }
+@mod : { out.print(" % "); }
+@star : { out.print(" * "); }
+@div : { out.print(" / "); }
+@uplas : { out.print("+"); }
+@umin : { out.print("-"); }
+
+@not : { out.print('!'); }
+
+@post_plus : { out.print("++"); }
+@post_minus : { out.print("--"); }
+@method : { out.print(#METHOD_CALL.getText()); }
+@dot : { out.print("->"); }
+@no_args : { out.print("()"); }
+@arg_init : { boolean isFirst = true; out.print('('); }
+@arg : {
+    if (!isFirst) {
+        out.print(", ");
+    } else {
+        isFirst = false;
+    }
+}
+@arg_end : { out.print(')'); }
+
+@html : {
+    out.printHTML(#HTML.getText());
+}
+
+
+@include : {
+    out.println("require '" + #INCLUDE.getText() + "'");
+}
+
+@eq_html : {
+    out.print("echo ");
+}
+
+@pre_index : { out.print('['); }
+@post_index : { out.print(']'); }
+
+@switch : { out.print("switch ("); }
+@switch_end : { out.println(") {"); }
+@case : {
+    out.print("case ");
+    String caseVal;
+    if (#cint != null) {
+        caseVal = #cint.getText();
+    } else if (#cfloat != null) {
+        caseVal = #cfloat.getText();
+    } else {
+        caseVal = out.makeString(cstr.getText());
+    }
+    out.print(caseVal);
+    out.println(" :");
+    out.incLevel();
+}
+@case_end : { out.decLevel(); }
+
+@default : { out.println("default :"); out.incLevel();}
+@break : { out.println("break;"); }
+@continue : { out.println("continue;"); }
+
+@nested_end : {
+    out.decLevel();
+    out.println("}");
+}
+
+@uknown_method : {
+    out.print("/* Uknown method:" + #UKNOWN_METHOD.getText() + "*/ "
+    + #UKNOWN_METHOD.getText());
+}
+
+@if : {
+    out.print("if (");
+}
+@if_expr : {
+    out.println(") {");
+    out.incLevel();
+}
+@elseif : {
+    out.decLevel();
+    out.print("} elseif (");
+}
+@elseif_expr : {
+    out.println(") {");
+    out.incLevel();
+}
+@else : {
+    out.decLevel();
+    out.println("} else {");
+    out.incLevel();
+}
+
+@while : { out.print("while (");}
+@while_expr : { out.println(") {"); out.incLevel();}
+
+@do : {
+    out.println("do {");
+    out.incLevel();
+}
+@do_end : {
+    out.decLevel();
+    out.print("} while (");
+}
+@do_expr : {
+    out.println(");");
+}
+
+@finit : {
+    out.print("for (");
+}
+@fexpr1 : {
+    out.print("; ");
+}
+@fexpr3 : {
+    out.println(") {");
+    out.incLevel();
+}
+@foreach : { out.print("foreach ("); }
+@foreach_expr : { out.print(" as "); }
+@foreach_end : { out.println(") {"); out.incLevel(); }
+
+@return : { out.print("return "); }
+@function : {
+    boolean hasGlobals = false;
+    out.print("function " + #FUNCTION.getText() + "(");
+}
+@arglist_init : { boolean firstArg = true; }
+@byref : {
+    if (!firstArg) {
+        out.print(", ");
+    } else {
+        firstArg = false;
+    }
+    out.print("&$" + #BYREF.getText());
+}
+@arg_id : {
+    if (!firstArg) {
+        out.print(", ");
+    } else {
+        firstArg = false;
+    }
+    out.print("$" + #IDENTIFIER.getText());
+}
+@arglist_end : {
+    out.println(") {");
+    out.incLevel();
+}
+@glob_init : {
+    boolean firstGlobal = true;
+    out.print("global ");
+    hasGlobals = true;
+}
+@id_glob : {
+    if (!firstGlobal) {
+        out.print(", ");
+    } else {
+        firstGlobal = false;
+    }
+    out.print("$" + #IDENTIFIER.getText());
+}
+@func_end : {
+    if (hasGlobals) {
+        out.println(";");
+    }
+}
+@nhead : {
+    out.print("/*Unsupported Header*/\""
+    + #NON_APPLICABLE_HEADER.getText() + "\"");
+}
+@inv_obj : {
+    out.print("/*Uknown object*/\""
+    + #INVALID_OBJECT.getText() + "\"");
+}
+@const : { out.print(#CONSTANT.getText()); }
+@lp : { out.print('('); }
+@lp_end : { out.print(')'); }
+
+
+@end : { out.end();}

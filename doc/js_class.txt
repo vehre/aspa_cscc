@@ -1,0 +1,15 @@
+function getX() {
+    return this.x;
+}
+
+
+function setX(x) {
+    this.x = x;
+}
+
+
+function Point() {
+    this.x = 10;
+    this.getX = getX;
+    this.setX = setX;
+}

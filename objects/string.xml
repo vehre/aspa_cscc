@@ -1,0 +1,428 @@
+<!--
+    This file is part of Aspa.
+
+    Aspa is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    Aspa is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Aspa; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+-->
+<class name="String" standalone="true">
+    <constructor>
+        <ast name="DSTRING" text="" />
+    </constructor>
+
+    <constructor>
+        <arg type="DSTRING" />
+        <ast name="TRANSLATE_ROOT">
+            <arg index="1" />
+        </ast>
+    </constructor>
+
+    <property name="length" type="DINT">
+        <arg type="DINT" />
+        <read>
+            <ast name="METHOD_CALL" text="strlen">
+                <ast name="ARGLIST_VALUES">
+                    <this />
+                </ast>
+            </ast>
+        </read>
+        <write>
+            <ast name="EXPR">
+                <ast name="ASSIGN">
+                    <this />
+                    <ast name="METHOD_CALL" text="substr">
+                        <ast name="ARGLIST_VALUES">
+                            <this />
+                            <ast name="DINT" text="0" />
+                            <arg index="1" />
+                        </ast>
+                    </ast>
+                </ast>
+            </ast>
+        </write>
+    </property>
+
+    <method name="anchor" type="DSTRING">
+        <arg type="DSTRING" />
+        <ast name="CONCAT">
+            <ast name="DSTRING" text="&lt;A NAME=&quot;" />
+            <ast name="CONCAT">
+                <arg index="1" />
+                <ast name="CONCAT">
+                    <ast name="DSTRING" text="&quot;&gt;" />
+                    <ast name="CONCAT">
+                        <this />
+                        <ast name="DSTRING" text="&lt;/A&gt;" />
+                    </ast>
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <method name="big" type="DSTRING">
+        <ast name="CONCAT">
+            <ast name="DSTRING" text="&lt;BIG&gt;" />
+            <ast name="CONCAT">
+                <this />
+                <ast name="DSTRING" text="&lt;/BIG&gt;" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="blink" type="DSTRING">
+        <ast name="CONCAT">
+            <ast name="DSTRING" text="&lt;BLINK&gt;" />
+            <ast name="CONCAT">
+                <this />
+                <ast name="DSTRING" text="&lt;/BLINK&gt;" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="bold" type="DSTRING">
+        <ast name="CONCAT">
+            <ast name="DSTRING" text="&lt;B&gt;" />
+            <ast name="CONCAT">
+                <this />
+                <ast name="DSTRING" text="&lt;/B&gt;" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="charAt" type="DSTRING">
+        <!-- s.charAt(2) ~~ s{2} -->
+        <arg type="DINT" />
+        <ast name="LCURLY">
+            <this />
+            <arg index="1" />
+        </ast>
+    </method>
+
+    <method name="charCodeAt" type="DINT">
+        <!-- s.charCodeAt(2) ~~ ord($s{2}) -->
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="ord">
+            <ast name="ARGLIST_VALUES">
+                <ast name="LCURLY">
+                    <this />
+                    <arg index="1" />
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <method name="concat" type="DSTRING">
+        <args />
+        <ast name="METHOD_CALL" text="implode">
+            <ast name="ARGLIST_VALUES">
+                <ast name="DSTRING" text="" />
+                <ast name="METHOD_CALL" text="array">
+                    <ast name="ARGLIST_VALUES">
+                        <this />
+                        <args />
+                    </ast>
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <method name="fixed" type="DSTRING">
+        <ast name="CONCAT">
+            <ast name="DSTRING" text="&lt;TT&gt;" />
+            <ast name="CONCAT">
+                <this />
+                <ast name="DSTRING" text="&lt;/TT&gt;" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="fontcolor" type="DSTRING">
+        <arg type="DSTRING" />
+        <ast name="CONCAT">
+            <ast name="DSTRING" text="&lt;FONT COLOR=&quot;" />
+            <ast name="CONCAT">
+                <arg index="1" />
+                <ast name="CONCAT">
+                    <ast name="DSTRING" text="&quot;&gt;" />
+                    <ast name="CONCAT">
+                        <this />
+                        <ast name="DSTRING" text="&lt;/FONT&gt;" />
+                    </ast>
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <method name="fontsize" type="DSTRING">
+        <arg type="DINT" />
+        <ast name="CONCAT">
+            <ast name="DSTRING" text="&lt;FONT SIZE=&quot;" />
+            <ast name="CONCAT">
+                <arg index="1" />
+                <ast name="CONCAT">
+                    <ast name="DSTRING" text="&quot;&gt;" />
+                    <ast name="CONCAT">
+                        <this />
+                        <ast name="DSTRING" text="&lt;/FONT&gt;" />
+                    </ast>
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <method name="fromCharCode" type="DSTRING">
+        <ast name="DSTRING" text="" />
+    </method>
+
+    <method name="fromCharCode" type="DSTRING">
+        <args />
+        <ast name="METHOD_CALL" text="sprintf">
+            <ast name="ARGLIST_VALUES">
+                <ast name="DSTRING" text="%c" />
+                <args />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="indexOf" type="DINT">
+        <arg type="DSTRING" />
+        <ast name="CONDITIONAL">
+            <ast name="EQ">
+                <ast name="METHOD_CALL" text="strpos">
+                    <ast name="ARGLIST_VALUES">
+                        <this />
+                        <arg index="1"/>
+                    </ast>
+                </ast>
+                <ast name="FALSE" />
+            </ast>
+            <ast name="DINT" text="-1" />
+            <ast name="METHOD_CALL" text="strpos">
+                <ast name="ARGLIST_VALUES">
+                    <this />
+                    <arg index="1"/>
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <method name="indexOf" type="DINT">
+        <arg type="DSTRING" />
+        <arg type="DINT" />
+        <ast name="CONDITIONAL">
+            <ast name="EQ">
+                <ast name="METHOD_CALL" text="strpos">
+                    <ast name="ARGLIST_VALUES">
+                        <this />
+                        <arg index="1"/>
+                        <arg index="2"/>
+                    </ast>
+                </ast>
+                <ast name="FALSE" />
+            </ast>
+            <ast name="DINT" text="-1" />
+            <ast name="METHOD_CALL" text="strpos">
+                <ast name="ARGLIST_VALUES">
+                    <this />
+                    <arg index="1"/>
+                    <arg index="2"/>
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <method name="italics" type="DSTRING">
+        <ast name="CONCAT">
+            <ast name="DSTRING" text="&lt;I&gt;" />
+            <ast name="CONCAT">
+                <this />
+                <ast name="DSTRING" text="&lt;/I&gt;" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="lastIndexOf" type="DINT">
+        <args />
+        <ast name="UNSUPORTED" text="lastIndexOf" />
+    </method>
+
+    <method name="link" type="DSTRING">
+        <arg type="DSTRING" />
+        <ast name="CONCAT">
+            <ast name="DSTRING" text="&lt;A HREF=&quot;" />
+            <ast name="CONCAT">
+                <arg index="1" />
+                <ast name="CONCAT">
+                    <ast name="DSTRING" text="&quot;&gt;" />
+                    <ast name="CONCAT">
+                        <this />
+                        <ast name="DSTRING" text="&lt;/A&gt;" />
+                    </ast>
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <method name="match" type="LBRACK">
+        <arg type="REG_EXP" />
+        <ast name="UNSUPORTED" text="match" />
+    </method>
+
+    <method name="replace" type="DSTRING">
+        <arg type="REG_EXP" />
+        <arg type="DSTRING" />
+        <ast name="UNSUPORTED" text="replace" />
+    </method>
+
+    <method name="search" type="DINT">
+        <arg type="REG_EXP" />
+        <ast name="UNSUPORTED" text="search" />
+        <!--
+        <arg type="REG_EXP" />
+        <ast name="GT">
+            <ast name="METHOD_CALL" text="preg_match">
+                <ast name="ARGLIST_VALUES">
+                    <arg index="1" />
+                    <this />
+                </ast>
+            </ast>
+            <ast name="DINT" text="0" />
+        </ast>
+        -->
+    </method>
+
+    <method name="slice" type="DSTRING">
+        <arg type="DINT" />
+        <args />
+        <ast name="METHOD_CALL" text="substr">
+            <ast name="ARGLIST_VALUES">
+                <this />
+                <args />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="small" type="DSTRING">
+        <ast name="CONCAT">
+            <ast name="DSTRING" text="&lt;SMALL&gt;" />
+            <ast name="CONCAT">
+                <this />
+                <ast name="DSTRING" text="&lt;/SMALL&gt;" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="split" type="LBRACK">
+        <arg type="DSTRING" />
+        <args />
+        <ast name="METHOD_CALL" text="explode">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+                <this />
+                <args />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="split" type="LBRACK">
+        <arg type="REG_EXP" />
+        <args />
+        <ast name="METHOD_CALL" text="preg_split">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+                <this />
+                <args />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="strike" type="DSTRING">
+        <ast name="CONCAT">
+            <ast name="DSTRING" text="&lt;STRIKE&gt;" />
+            <ast name="CONCAT">
+                <this />
+                <ast name="DSTRING" text="&lt;/STRIKE&gt;" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="sub" type="DSTRING">
+        <ast name="CONCAT">
+            <ast name="DSTRING" text="&lt;SUB&gt;" />
+            <ast name="CONCAT">
+                <this />
+                <ast name="DSTRING" text="&lt;/SUB&gt;" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="substr" type="DSTRING">
+        <arg type="DINT" />
+        <args />
+        <ast name="METHOD_CALL" text="substr">
+            <ast name="ARGLIST_VALUES">
+                <this />
+                <args />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="substring" type="DSTRING">
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="substr">
+            <ast name="ARGLIST_VALUES">
+                <this />
+                <arg index="1" />
+                <ast name="PLUS">
+                    <arg index="1" />
+                    <arg index="2" />
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <method name="sup" type="DSTRING">
+        <ast name="CONCAT">
+            <ast name="DSTRING" text="&lt;SUP&gt;" />
+            <ast name="CONCAT">
+                <this />
+                <ast name="DSTRING" text="&lt;/SUP&gt;" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="toLowerCase" type="DSTRING">
+        <ast name="METHOD_CALL" text="strtolower">
+            <ast name="ARGLIST_VALUES">
+                <this />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="toUpperCase" type="DSTRING">
+        <ast name="METHOD_CALL" text="strtoupper">
+            <ast name="ARGLIST_VALUES">
+                <this />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="toString" type="DSTRING">
+        <this />
+    </method>
+
+    <method name="valueOf" type="DSTRING">
+        <this />
+    </method>
+</class>

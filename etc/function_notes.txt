@@ -1,0 +1,48 @@
+Function Notes
+
+
+1)A variable not declared with var is accessible in global scope after the function is called
+for the first time.
+Testcase:js_function_note_1.asp
+
+2)A function assigned into a variable will remain uknown to code
+outsite the function scope if the variable is declared with "var" but
+is accessible outside the function if was not declared with var after the function
+is called for the first time.
+Testcase:js_function_note_2.asp
+
+3)Local variables declared outside a nested function are visible to the nested one.
+Testcase:js_function_note_3.asp
+
+4)Variables declared inside a function(no matter how nested it is) is visible globaly
+after the function that instanciats the variable has been called
+if the variable is not declared with the "var" keyword.
+Testcase:js_function_note_4.asp
+
+5)If a nested function which initilizes a global variable is called conditionaly
+the parser will behave like the condition allways evaluates to true.
+The reason for this is that the condition can not genarally be evaluated during
+the parsing fase.
+Testcase:js_function_note_5.asp
+
+6)A function can be declared inside an other function.The inner function is not visible
+outside the outer function.
+Local variables of the outer function are visible in the inner function
+Testcase:js_function_note_6.asp
+
+7)Code can reference a function which is defined after the statement referencing
+the function
+Testcase:js_function_note_7.asp
+Testcase:js_function_note_7_2.asp
+
+8)Every identifier which is not a local variable should be included in the
+GLOBAL section of the method
+Testcase:js_function_note_8.asp
+Testcase:js_function_note_8_2.asp
+
+9)If a method accepts [n] parameters but is called with [k] parameters where k < n then
+n - k arguments are added to the call for that function which equal to NULL.
+This is concistent with JavaScript because if a parameter is not provided is concidered to be "undefined"
+If is called with [k] arguments where k > n then k - n parameters are ommited.
+Testcase:js_function_note_9.asp
+

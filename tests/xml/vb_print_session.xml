@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="ISO-8859-7"?>
+
+<asp>
+  <vb>
+    <original>
+      <ast name="HTML" text="Session value is:"/>
+      <ast name="SUB_CALL" text="Sub Call">
+        <ast name="DOT" text=".">
+          <ast name="IDENTIFIER" text="Response"/>
+          <ast name="IDENTIFIER" text="write"/>
+        </ast>
+        <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+          <ast name="METHOD_CALL" text="(">
+            <ast name="IDENTIFIER" text="session"/>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="value"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="HTML"><![CDATA[
+Session value is:]]></ast>
+      <ast name="EQ_HTML" text="=">
+        <ast name="EXPR" text="EXPR">
+          <ast name="METHOD_CALL" text="(">
+            <ast name="IDENTIFIER" text="session"/>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="value"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="HTML" text="Session value is:"/>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="print">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="INDEX_OP" text="INDEX_OP">
+              <ast name="IDENTIFIER" text="_SESSION"/>
+              <ast name="DSTRING" text="value"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="HTML"><![CDATA[
+Session value is:]]></ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="print">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="INDEX_OP" text="INDEX_OP">
+              <ast name="IDENTIFIER" text="_SESSION"/>
+              <ast name="DSTRING" text="value"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </vb>
+</asp>

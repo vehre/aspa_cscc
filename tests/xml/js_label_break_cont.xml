@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <js>
+    <original>
+      <ast name="VAR" text="var">
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="NEW" text="new">
+              <ast name="ARRAY" text="Array"/>
+              <ast name="ELIST" text="ELIST"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="VAR" text="var">
+        <ast name="IDENTIFIER" text="i"/>
+        <ast name="IDENTIFIER" text="j"/>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="s"/>
+            <ast name="STRING_LITERAL" text=""/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="s1"/>
+            <ast name="STRING_LITERAL" text=""/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="LABELED_STAT" text=":">
+        <ast name="IDENTIFIER" text="Outer"/>
+        <ast name="FOR" text="for">
+          <ast name="FOR_INIT" text="FOR_INIT">
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="ASSIGN" text="=">
+                  <ast name="IDENTIFIER" text="i"/>
+                  <ast name="NUM_INT" text="0"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="FOR_CONDITION" text="FOR_CONDITION">
+            <ast name="EXPR" text="EXPR">
+              <ast name="LT" text="&lt;">
+                <ast name="IDENTIFIER" text="i"/>
+                <ast name="NUM_INT" text="5"/>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="FOR_ITERATOR" text="FOR_ITERATOR">
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="POST_INC" text="++">
+                  <ast name="IDENTIFIER" text="i"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="SLIST" text="{">
+            <ast name="LABELED_STAT" text=":">
+              <ast name="IDENTIFIER" text="Inner"/>
+              <ast name="FOR" text="for">
+                <ast name="FOR_INIT" text="FOR_INIT">
+                  <ast name="ELIST" text="ELIST">
+                    <ast name="EXPR" text="EXPR">
+                      <ast name="ASSIGN" text="=">
+                        <ast name="IDENTIFIER" text="j"/>
+                        <ast name="NUM_INT" text="0"/>
+                      </ast>
+                    </ast>
+                  </ast>
+                </ast>
+                <ast name="FOR_CONDITION" text="FOR_CONDITION">
+                  <ast name="EXPR" text="EXPR">
+                    <ast name="LT" text="&lt;">
+                      <ast name="IDENTIFIER" text="j"/>
+                      <ast name="NUM_INT" text="5"/>
+                    </ast>
+                  </ast>
+                </ast>
+                <ast name="FOR_ITERATOR" text="FOR_ITERATOR">
+                  <ast name="ELIST" text="ELIST">
+                    <ast name="EXPR" text="EXPR">
+                      <ast name="POST_INC" text="++">
+                        <ast name="IDENTIFIER" text="j"/>
+                      </ast>
+                    </ast>
+                  </ast>
+                </ast>
+                <ast name="SLIST" text="{">
+                  <ast name="IF" text="if">
+                    <ast name="EXPR" text="EXPR">
+                      <ast name="EQUAL" text="==">
+                        <ast name="IDENTIFIER" text="j"/>
+                        <ast name="NUM_INT" text="2"/>
+                      </ast>
+                    </ast>
+                    <ast name="CONTINUE" text="continue">
+                      <ast name="IDENTIFIER" text="Inner"/>
+                    </ast>
+                    <ast name="ELSE" text="else">
+                      <ast name="SLIST" text="{">
+                        <ast name="EXPR" text="EXPR">
+                          <ast name="ASSIGN" text="=">
+                            <ast name="INDEX_OP" text="[">
+                              <ast name="IDENTIFIER" text="a"/>
+                              <ast name="ELIST" text="ELIST">
+                                <ast name="EXPR" text="EXPR">
+                                  <ast name="IDENTIFIER" text="i"/>
+                                </ast>
+                                <ast name="EXPR" text="EXPR">
+                                  <ast name="IDENTIFIER" text="j"/>
+                                </ast>
+                              </ast>
+                            </ast>
+                            <ast name="PLUS" text="+">
+                              <ast name="IDENTIFIER" text="j"/>
+                              <ast name="NUM_INT" text="1"/>
+                            </ast>
+                          </ast>
+                        </ast>
+                        <ast name="SEMI" text=";"/>
+                        <ast name="BREAK" text="break">
+                          <ast name="IDENTIFIER" text="Outer"/>
+                        </ast>
+                      </ast>
+                    </ast>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="array"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="s"/>
+          <ast name="STRING_LITERAL" text=""/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="s1"/>
+          <ast name="STRING_LITERAL" text=""/>
+        </ast>
+      </ast>
+      <ast name="FOR" text="for">
+        <ast name="FOR_INIT" text="FOR_INIT">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="i"/>
+              <ast name="NUM_INT" text="0"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="FOR_CONDITION" text="FOR_CONDITION">
+          <ast name="EXPR" text="EXPR">
+            <ast name="LT" text="&lt;">
+              <ast name="IDENTIFIER" text="i"/>
+              <ast name="NUM_INT" text="5"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="FOR_ITERATOR" text="FOR_ITERATOR">
+          <ast name="EXPR" text="EXPR">
+            <ast name="POST_INC" text="++">
+              <ast name="IDENTIFIER" text="i"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="SLIST" text="{">
+          <ast name="FOR" text="for">
+            <ast name="FOR_INIT" text="FOR_INIT">
+              <ast name="EXPR" text="EXPR">
+                <ast name="ASSIGN" text="=">
+                  <ast name="IDENTIFIER" text="j"/>
+                  <ast name="NUM_INT" text="0"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="FOR_CONDITION" text="FOR_CONDITION">
+              <ast name="EXPR" text="EXPR">
+                <ast name="LT" text="&lt;">
+                  <ast name="IDENTIFIER" text="j"/>
+                  <ast name="NUM_INT" text="5"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="FOR_ITERATOR" text="FOR_ITERATOR">
+              <ast name="EXPR" text="EXPR">
+                <ast name="POST_INC" text="++">
+                  <ast name="IDENTIFIER" text="j"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="SLIST" text="{">
+              <ast name="IF_ELSE" text="IF_ELSE">
+                <ast name="IF" text="if">
+                  <ast name="EXPR" text="EXPR">
+                    <ast name="EQUAL" text="==">
+                      <ast name="IDENTIFIER" text="j"/>
+                      <ast name="NUM_INT" text="2"/>
+                    </ast>
+                  </ast>
+                  <ast name="CONTINUE" text="continue"/>
+                </ast>
+                <ast name="ELSE" text="else">
+                  <ast name="SLIST" text="{">
+                    <ast name="EXPR" text="EXPR">
+                      <ast name="ASSIGN" text="=">
+                        <ast name="INDEX_OP" text="[">
+                          <ast name="IDENTIFIER" text="a"/>
+                          <ast name="IDENTIFIER" text="i"/>
+                          <ast name="IDENTIFIER" text="j"/>
+                        </ast>
+                        <ast name="PLUS" text="+">
+                          <ast name="IDENTIFIER" text="j"/>
+                          <ast name="NUM_INT" text="1"/>
+                        </ast>
+                      </ast>
+                    </ast>
+                    <ast name="SEMI" text=";"/>
+                    <ast name="BREAK" text="break">
+                      <ast name="NUM_INT" text="2"/>
+                    </ast>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </js>
+</asp>

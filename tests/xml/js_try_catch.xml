@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <js>
+    <original>
+      <ast name="TRY" text="try">
+        <ast name="SLIST" text="{">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="PLUS" text="+">
+                <ast name="IDENTIFIER" text="a"/>
+                <ast name="NUM_INT" text="1"/>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="TRY" text="try">
+            <ast name="SLIST" text="{">
+              <ast name="EXPR" text="EXPR">
+                <ast name="ASSIGN" text="=">
+                  <ast name="IDENTIFIER" text="a"/>
+                  <ast name="PLUS" text="+">
+                    <ast name="IDENTIFIER" text="a"/>
+                    <ast name="NUM_INT" text="2"/>
+                  </ast>
+                </ast>
+              </ast>
+              <ast name="THROW" text="throw">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="STRING_LITERAL" text="Error"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="CATCH" text="catch">
+              <ast name="IDENTIFIER" text="e"/>
+              <ast name="SLIST" text="{">
+                <ast name="THROW" text="throw">
+                  <ast name="EXPR" text="EXPR">
+                    <ast name="PLUS" text="+">
+                      <ast name="IDENTIFIER" text="e"/>
+                      <ast name="STRING_LITERAL" text=" rethrown"/>
+                    </ast>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="FINALLY" text="finally">
+              <ast name="SLIST" text="{">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="ASSIGN" text="=">
+                    <ast name="IDENTIFIER" text="b"/>
+                    <ast name="NUM_INT" text="0"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="CATCH" text="catch">
+          <ast name="IDENTIFIER" text="e"/>
+          <ast name="SLIST" text="{">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="a"/>
+                <ast name="NUM_INT" text="20"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="FINALLY" text="finally">
+          <ast name="SLIST" text="{">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="b"/>
+                <ast name="NUM_INT" text="1"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="TRY" text="try">
+        <ast name="SLIST" text="{">
+          <ast name="EXPR" text="EXPR">
+            <ast name="PLUS_ASSIGN" text="+=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="NUM_INT" text="1"/>
+            </ast>
+          </ast>
+          <ast name="TRY" text="try">
+            <ast name="SLIST" text="{">
+              <ast name="EXPR" text="EXPR">
+                <ast name="PLUS_ASSIGN" text="+=">
+                  <ast name="IDENTIFIER" text="a"/>
+                  <ast name="NUM_INT" text="2"/>
+                </ast>
+              </ast>
+              <ast name="THROW" text="throw">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="STRING_LITERAL" text="Error"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="CATCH" text="catch">
+              <ast name="IDENTIFIER" text="e"/>
+              <ast name="SLIST" text="{">
+                <ast name="THROW" text="throw">
+                  <ast name="EXPR" text="EXPR">
+                    <ast name="CONCAT" text=".">
+                      <ast name="IDENTIFIER" text="e"/>
+                      <ast name="STRING_LITERAL" text=" rethrown"/>
+                    </ast>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="FINALLY" text="finally">
+              <ast name="SLIST" text="{">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="ASSIGN" text="=">
+                    <ast name="IDENTIFIER" text="b"/>
+                    <ast name="NUM_INT" text="0"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="CATCH" text="catch">
+          <ast name="IDENTIFIER" text="e"/>
+          <ast name="SLIST" text="{">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="a"/>
+                <ast name="NUM_INT" text="20"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="FINALLY" text="finally">
+          <ast name="SLIST" text="{">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="b"/>
+                <ast name="NUM_INT" text="1"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </js>
+</asp>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <js>
+    <original>
+      <ast name="WITH" text="with">
+        <ast name="EXPR" text="EXPR">
+          <ast name="IDENTIFIER" text="Request"/>
+        </ast>
+        <ast name="SLIST" text="{">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="Cookies"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="b"/>
+              <ast name="METHOD_CALL" text="(">
+                <ast name="IDENTIFIER" text="Cookies"/>
+                <ast name="ELIST" text="ELIST">
+                  <ast name="EXPR" text="EXPR">
+                    <ast name="STRING_LITERAL" text="a"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="IF" text="if">
+            <ast name="EXPR" text="EXPR">
+              <ast name="DOT" text=".">
+                <ast name="METHOD_CALL" text="(">
+                  <ast name="IDENTIFIER" text="Cookies"/>
+                  <ast name="ELIST" text="ELIST">
+                    <ast name="EXPR" text="EXPR">
+                      <ast name="STRING_LITERAL" text="a"/>
+                    </ast>
+                  </ast>
+                </ast>
+                <ast name="IDENTIFIER" text="hasKeys"/>
+              </ast>
+            </ast>
+            <ast name="SLIST" text="{">
+              <ast name="EXPR" text="EXPR">
+                <ast name="ASSIGN" text="=">
+                  <ast name="IDENTIFIER" text="d"/>
+                  <ast name="METHOD_CALL" text="(">
+                    <ast name="METHOD_CALL" text="(">
+                      <ast name="IDENTIFIER" text="Cookies"/>
+                      <ast name="ELIST" text="ELIST">
+                        <ast name="EXPR" text="EXPR">
+                          <ast name="STRING_LITERAL" text="a"/>
+                        </ast>
+                      </ast>
+                    </ast>
+                    <ast name="ELIST" text="ELIST">
+                      <ast name="EXPR" text="EXPR">
+                        <ast name="STRING_LITERAL" text="b"/>
+                      </ast>
+                    </ast>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="h"/>
+              <ast name="PLUS" text="+">
+                <ast name="PLUS" text="+">
+                  <ast name="IDENTIFIER" text="Cookies"/>
+                  <ast name="STRING_LITERAL" text="Hello"/>
+                </ast>
+                <ast name="METHOD_CALL" text="(">
+                  <ast name="IDENTIFIER" text="Cookies"/>
+                  <ast name="ELIST" text="ELIST">
+                    <ast name="EXPR" text="EXPR">
+                      <ast name="STRING_LITERAL" text="a"/>
+                    </ast>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="INDEX_OP" text="INDEX_OP">
+            <ast name="IDENTIFIER" text="_SERVER"/>
+            <ast name="STRING_LITERAL" text="HTTP_COOKIE"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="INDEX_OP" text="INDEX_OP">
+            <ast name="IDENTIFIER" text="HTTP_COOKIE_VARS"/>
+            <ast name="STRING_LITERAL" text="a"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="IF_ELSE" text="IF_ELSE">
+        <ast name="IF" text="if">
+          <ast name="EXPR" text="EXPR">
+            <ast name="NOT_EQUAL" text="NEQ">
+              <ast name="METHOD_CALL" text="strpos">
+                <ast name="ELIST" text="ARGLIST_VALUES">
+                  <ast name="INDEX_OP" text="INDEX_OP">
+                    <ast name="IDENTIFIER" text="HTTP_COOKIE_VARS"/>
+                    <ast name="STRING_LITERAL" text="a"/>
+                  </ast>
+                  <ast name="STRING_LITERAL" text="&amp;"/>
+                </ast>
+              </ast>
+              <ast name="NUM_INT" text="0"/>
+            </ast>
+          </ast>
+          <ast name="SLIST" text="{">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="d"/>
+                <ast name="METHOD_CALL" text="getSubCookie">
+                  <ast name="ELIST" text="ARGLIST_VALUES">
+                    <ast name="STRING_LITERAL" text="a"/>
+                    <ast name="STRING_LITERAL" text="b"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="h"/>
+          <ast name="CONCAT" text=".">
+            <ast name="CONCAT" text=".">
+              <ast name="INDEX_OP" text="INDEX_OP">
+                <ast name="IDENTIFIER" text="_SERVER"/>
+                <ast name="STRING_LITERAL" text="HTTP_COOKIE"/>
+              </ast>
+              <ast name="STRING_LITERAL" text="Hello"/>
+            </ast>
+            <ast name="INDEX_OP" text="INDEX_OP">
+              <ast name="IDENTIFIER" text="HTTP_COOKIE_VARS"/>
+              <ast name="STRING_LITERAL" text="a"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </js>
+</asp>

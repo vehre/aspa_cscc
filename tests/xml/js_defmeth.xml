@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="ISO-8859-7"?>
+
+<asp>
+  <js>
+    <original>
+      <ast name="VAR" text="var">
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="objConn"/>
+            <ast name="METHOD_CALL" text="(">
+              <ast name="DOT" text=".">
+                <ast name="IDENTIFIER" text="Server"/>
+                <ast name="IDENTIFIER" text="CreateObject"/>
+              </ast>
+              <ast name="ELIST" text="ELIST">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="STRING_LITERAL" text="ADODB.Connection"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="objConn"/>
+            <ast name="IDENTIFIER" text="Open"/>
+          </ast>
+          <ast name="ELIST" text="ELIST">
+            <ast name="EXPR" text="EXPR">
+              <ast name="IDENTIFIER" text="adConnStr"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="VAR" text="var">
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="rs"/>
+            <ast name="METHOD_CALL" text="(">
+              <ast name="DOT" text=".">
+                <ast name="IDENTIFIER" text="objConn"/>
+                <ast name="IDENTIFIER" text="Execute"/>
+              </ast>
+              <ast name="ELIST" text="ELIST">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="STRING_LITERAL" text="GET_OLD_SPONSORSHIPS"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="Response"/>
+            <ast name="IDENTIFIER" text="write"/>
+          </ast>
+          <ast name="ELIST" text="ELIST">
+            <ast name="EXPR" text="EXPR">
+              <ast name="PLUS" text="+">
+                <ast name="PLUS" text="+">
+                  <ast name="METHOD_CALL" text="(">
+                    <ast name="IDENTIFIER" text="rs"/>
+                    <ast name="ELIST" text="ELIST">
+                      <ast name="EXPR" text="EXPR">
+                        <ast name="STRING_LITERAL" text="spID"/>
+                      </ast>
+                    </ast>
+                  </ast>
+                  <ast name="METHOD_CALL" text="(">
+                    <ast name="IDENTIFIER" text="rs"/>
+                    <ast name="ELIST" text="ELIST">
+                      <ast name="EXPR" text="EXPR">
+                        <ast name="STRING_LITERAL" text="Title"/>
+                      </ast>
+                    </ast>
+                  </ast>
+                </ast>
+                <ast name="DOT" text=".">
+                  <ast name="METHOD_CALL" text="(">
+                    <ast name="IDENTIFIER" text="rs"/>
+                    <ast name="ELIST" text="ELIST">
+                      <ast name="EXPR" text="EXPR">
+                        <ast name="STRING_LITERAL" text="Title"/>
+                      </ast>
+                    </ast>
+                  </ast>
+                  <ast name="IDENTIFIER" text="value"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="rs"/>
+            <ast name="IDENTIFIER" text="close"/>
+          </ast>
+          <ast name="ELIST" text="ELIST"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="objConn"/>
+            <ast name="IDENTIFIER" text="close"/>
+          </ast>
+          <ast name="ELIST" text="ELIST"/>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="ASSIGN">
+          <ast name="IDENTIFIER" text="objConn"/>
+          <ast name="METHOD_CALL" text="initConnection">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="adConnStr"/>
+              <ast name="NULL" text="NULL"/>
+              <ast name="NULL" text="NULL"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="print">
+          <ast name="ELIST" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text=".">
+              <ast name="CONCAT" text=".">
+                <ast name="DOT" text="DOT">
+                  <ast name="IDENTIFIER" text="rs"/>
+                  <ast name="METHOD_CALL" text="Fields">
+                    <ast name="ELIST" text="ARGLIST_VALUES">
+                      <ast name="STRING_LITERAL" text="spID"/>
+                    </ast>
+                  </ast>
+                </ast>
+                <ast name="DOT" text="DOT">
+                  <ast name="IDENTIFIER" text="rs"/>
+                  <ast name="METHOD_CALL" text="Fields">
+                    <ast name="ELIST" text="ARGLIST_VALUES">
+                      <ast name="STRING_LITERAL" text="Title"/>
+                    </ast>
+                  </ast>
+                </ast>
+              </ast>
+              <ast name="DOT" text="DOT">
+                <ast name="IDENTIFIER" text="rs"/>
+                <ast name="METHOD_CALL" text="Fields">
+                  <ast name="ELIST" text="ARGLIST_VALUES">
+                    <ast name="STRING_LITERAL" text="Title"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="DOT" text="DOT">
+          <ast name="IDENTIFIER" text="rs"/>
+          <ast name="METHOD_CALL" text="Close"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="DOT" text="DOT">
+          <ast name="IDENTIFIER" text="objConn"/>
+          <ast name="METHOD_CALL" text="Close"/>
+        </ast>
+      </ast>
+    </translated>
+  </js>
+</asp>

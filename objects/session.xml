@@ -1,0 +1,121 @@
+<!--
+    This file is part of Aspa.
+
+    Aspa is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    Aspa is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Aspa; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+-->
+<class name="Session">
+  <class name="SessionCollection" dependant="true">
+      <property name="CollectionDefault" default="true" type="DSTRING">
+          <!--
+            arg neaded in case of Collection(key) = argValue
+            read does not requires the argument
+          -->
+          <arg type="DSTRING" />
+          <read>
+              <ast name="INDEX_OP">
+                  <ast name="IDENTIFIER" text="_SESSION" />
+                  <arg index="1" />
+              </ast>
+          </read>
+          <write>
+              <!-- $_SESSION[key] = arg -->
+              <ast name="ASSIGN">
+                  <ast name="INDEX_OP">
+                      <ast name="IDENTIFIER" text="_SESSION" />
+                      <arg index="1" />
+                  </ast>
+                  <arg index="2" />
+              </ast>
+          </write>
+      </property>
+
+      <method name="Remove" type="VOID">
+          <arg type="DSTRING" />
+          <ast name="METHOD_CALL" text="unset">
+              <ast name="ARGLIST_VALUES">
+                  <ast name="INDEX_OP">
+                      <ast name="IDENTIFIER" text="_SESSION" />
+                      <arg index="1" />
+                  </ast>
+              </ast>
+          </ast>
+      </method>
+
+      <method name="RemoveAll" type="VOID">
+          <ast name="EXPR">
+              <ast name="ASSIGN">
+                  <ast name="INDEX_OP">
+                      <ast name="IDENTIFIER" text="_SESSION" />
+                  </ast>
+                  <ast name="METHOD_CALL" text="array">
+                  </ast>
+              </ast>
+          </ast>
+      </method>
+  </class>
+
+  <!--
+  ISSUE
+  <property name="CodePage" type="DSTRING">
+  </property>
+
+  <property name="LCID" type="DSTRING">
+  </property>
+  -->
+
+  <property name="SessionID" type="DINT">
+      <read>
+          <ast name="METHOD_CALL" text="session_id">
+          </ast>
+      </read>
+  </property>
+
+  <property name="Timeout" type="DINT">
+      <arg type="DINT" />
+      <read>
+          <ast name="METHOD_CALL" text="session_cache_expire">
+          </ast>
+      </read>
+      <write>
+          <ast name="METHOD_CALL" text="session_cache_expire">
+              <ast name="ARGLIST_VALUES">
+                  <arg index="1" />
+              </ast>
+          </ast>
+      </write>
+  </property>
+
+  <method name="Abandon" type="VOID">
+      <!-- Clear global vars -->
+      <ast name="ASSIGN">
+          <ast name="IDENTIFIER" text="_SESSION" />
+          <ast name="METHOD_CALL" text="array" />
+      </ast>
+      <!-- Destroy the session -->
+      <ast name="METHOD_CALL" text="session_destroy" />
+  </method>
+
+  <!--
+  Session.Contents(key) = value
+  expr = Session.Contents(key)
+  -->
+  <method name="Contents" type="OBJECT" use="SessionCollection" />
+  <!--
+  Session(key) = value
+  value = Session(key)
+  -->
+  <method name="ContentsCollection" default="true" use="SessionCollection"
+  type="OBJECT" />
+</class>

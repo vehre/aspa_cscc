@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <vb>
+    <original>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="con"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Server"/>
+              <ast name="IDENTIFIER" text="CreateObject"/>
+            </ast>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="ADODB.Connection"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="SUB_CALL" text="Sub Call">
+        <ast name="DOT" text=".">
+          <ast name="IDENTIFIER" text="con"/>
+          <ast name="IDENTIFIER" text="open"/>
+        </ast>
+        <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+          <ast name="IDENTIFIER" text="conStr"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="DOT" text=".">
+          <ast name="IDENTIFIER" text="con"/>
+          <ast name="IDENTIFIER" text="close"/>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="ASSIGN">
+          <ast name="IDENTIFIER" text="con"/>
+          <ast name="METHOD_CALL" text="initConnection">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="conStr"/>
+              <ast name="NULL" text="NULL"/>
+              <ast name="NULL" text="NULL"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="DOT" text="DOT">
+          <ast name="IDENTIFIER" text="con"/>
+          <ast name="METHOD_CALL" text="Close"/>
+        </ast>
+      </ast>
+    </translated>
+  </vb>
+</asp>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <vb>
+    <original>
+      <ast name="DIM" text="dim">
+        <ast name="IDENTIFIER" text="a"/>
+        <ast name="IDENTIFIER" text="b">
+          <ast name="DINT" text="34"/>
+          <ast name="DINT" text="12"/>
+        </ast>
+        <ast name="IDENTIFIER" text="c"/>
+      </ast>
+      <ast name="REDIM" text="redim">
+        <ast name="IDENTIFIER" text="b">
+          <ast name="DINT" text="2"/>
+          <ast name="DINT" text="5"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="DINT" text="40"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="METHOD_CALL" text="(">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DINT" text="2"/>
+            </ast>
+          </ast>
+          <ast name="DINT" text="40"/>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="DINT" text="40"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="UKNOWN_METHOD" text="a">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DINT" text="2"/>
+            </ast>
+          </ast>
+          <ast name="DINT" text="40"/>
+        </ast>
+      </ast>
+    </translated>
+  </vb>
+</asp>

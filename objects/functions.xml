@@ -1,0 +1,641 @@
+<!--
+    This file is part of Aspa.
+
+    Aspa is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    Aspa is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Aspa; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+-->
+<functions>
+    <!-- just convert name case -->
+    <method name="abs" type="DINT">
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="abs">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="asc" type="DINT">
+        <arg type="DSTRING" />
+        <ast name="METHOD_CALL" text="ord">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="atn" type="DINT">
+        <arg type="DSTRING" />
+        <ast name="METHOD_CALL" text="atn">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="cbool" type="DBOOL">
+        <arg type="DSTRING" />
+        <ast name="CAST" text="bool">
+            <arg index="1" />
+        </ast>
+    </method>
+
+    <method name="cbyte" type="DINT">
+        <arg type="DSTRING" />
+        <ast name="CAST" text="int">
+            <arg index="1" />
+        </ast>
+    </method>
+
+    <method name="ccur" type="DFLOAT">
+        <arg type="DSTRING" />
+        <ast name="CAST" text="float">
+            <arg index="1" />
+        </ast>
+    </method>
+
+    <!--
+    <method name="cdate" type="DBOOL">
+        <arg type="DSTRING" />
+        <ast name="CAST">
+            <ast name="IDENTIFIER" text="bool" />
+            <arg index="1" />
+        </ast>
+    </method>
+    -->
+
+    <method name="cdbl" type="DFLOAT">
+        <arg type="DSTRING" />
+        <ast name="CAST" text="float">
+            <arg index="1" />
+        </ast>
+    </method>
+
+    <method name="chr" type="DSTRING">
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="chr">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="cint" type="DINT">
+        <arg type="DSTRING" />
+        <ast name="CAST" text="int">
+            <arg index="1" />
+        </ast>
+    </method>
+
+    <method name="clng" type="DINT">
+        <arg type="DSTRING" />
+        <ast name="CAST" text="int">
+            <arg index="1" />
+        </ast>
+    </method>
+
+    <method name="cos" type="DINT">
+        <arg type="DSTRING" />
+        <ast name="METHOD_CALL" text="cos">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="csng" type="DFLOAT">
+        <arg type="DSTRING" />
+        <ast name="CAST" text="float">
+            <arg index="1" />
+        </ast>
+    </method>
+
+    <method name="cstr" type="DSTRING">
+        <arg type="DSTRING" />
+        <ast name="CAST" text="string">
+            <arg index="1" />
+        </ast>
+    </method>
+
+    <method name="date" type="DINT">
+        <ast name="METHOD_CALL" text="time">
+        </ast>
+    </method>
+
+    <!--
+    <method name="DateAdd"  type="DINT" />
+    <method name="DateDiff" type="DINT" />
+    <method name="DatePart" type="DINT" />
+    -->
+
+    <method name="DateSerial" type="DINT">
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="mktime">
+            <ast name="ARGLIST_VALUES">
+                <ast name="DINT" text="0" />
+                <ast name="DINT" text="0" />
+                <ast name="DINT" text="0" />
+                <arg index="2" /> <!-- month -->
+                <arg index="3" /> <!-- day -->
+                <arg index="1" /> <!-- year -->
+            </ast>
+        </ast>
+    </method>
+
+    <!--
+    <method name="DateValue" type="DINT" />
+    <method name="Day" type="DINT" />
+    -->
+
+    <method name="Exp" type="DINT">
+        <arg type="DSTRING" />
+        <ast name="METHOD_CALL" text="exp">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <!--
+    <method name="Filter" type="INDEX_OP" />
+
+    Some thought needed for variable argument length functions
+    <method name="FormatDateTime" type="DSTRING" />
+    <method name="FormatNumber"   type="DSTRING" />
+    <method name="FormatPercent"  type="DSTRING" />
+    <method name="GetLocal"       type="DINT" />
+    -->
+
+    <!--
+        The IncludeLeadingDigit, UseParensForNegativeNumbers and GroupDigits
+        optional tristate parameters are hard to be implemented
+    -->
+    <method name="FormatCurrency" type="DSTRING">
+        <arg type="DFLOAT" />
+        <ast name="METHOD_CALL" text="money_format">
+            <ast name="ARGLIST_VALUES">
+                <ast name="DSTRING" text="%i" />
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+    <method name="FormatCurrency" type="DSTRING">
+        <arg type="DFLOAT" />
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="money_format">
+            <ast name="ARGLIST_VALUES">
+                <ast name="CONCAT">
+                    <ast name="CONCAT">
+                        <ast name="DSTRING" text="%." />
+                        <arg index="2" />
+                    </ast>
+                    <ast name="DSTRING" text="i" />
+                </ast>
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="hex" type="DSTRING">
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="dechex">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <!--
+    hour, InStr, InStrRev, time
+    -->
+    <method name="int" type="DINT">
+        <arg type="DFLOAT" />
+        <ast name="METHOD_CALL" text="floor">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="fix" type="DINT">
+        <arg type="DFLOAT" />
+        <!-- floor(abs(arg)) * arg > 0 ? 1 : -1 -->
+        <ast name="ASTERISK">
+            <ast name="METHOD_CALL" text="floor">
+                <ast name="ARGLIST_VALUES">
+                    <ast name="METHOD_CALL" text="abs">
+                        <ast name="ARGLIST_VALUES">
+                            <arg index="1" />
+                        </ast>
+                    </ast>
+                </ast>
+            </ast>
+            <ast name="CONDITIONAL">
+                <ast name="GT">
+                    <arg index="1" />
+                    <ast name="DINT" text="0" />
+                </ast>
+                <ast name="DINT" text="1" />
+                <ast name="DINT" text="-1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="isArray" type="DBOOL">
+        <arg type="ANY" />
+        <ast name="METHOD_CALL" text="is_array">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <!-- a better translation needed for this -->
+    <method name="isDate" type="DBOOL">
+        <arg type="ANY" />
+        <ast name="METHOD_CALL" text="is_long">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="isEmpty" type="DBOOL">
+        <arg type="ANY" />
+        <ast name="METHOD_CALL" text="isset">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="isNull" type="DBOOL">
+        <arg type="ANY" />
+        <ast name="METHOD_CALL" text="is_null">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="isNumeric" type="DBOOL">
+        <arg type="ANY" />
+        <ast name="METHOD_CALL" text="is_numeric">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="isObject" type="DBOOL">
+        <arg type="ANY" />
+        <ast name="METHOD_CALL" text="is_object">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="join" type="DSTRING">
+        <arg type="DSTRING" />
+        <arg type="DSTRING" />
+        <ast name="METHOD_CALL" text="implode">
+            <ast name="ARGLIST_VALUES">
+                <arg index="2" />
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+    <!-- LBound -->
+
+    <method name="LCase" type="DSTRING">
+        <arg type="DSTRING" />
+        <ast name="METHOD_CALL" text="strtolower">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="left" type="DSTRING">
+        <arg type="DSTRING" />
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="substr">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+                <arg index="2" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="len" type="DINT">
+        <arg type="DSTRING" />
+        <ast name="METHOD_CALL" text="strlen">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="log" type="DINT">
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="log">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="LTrim" type="DSTRING">
+        <arg type="DSTRING" />
+        <ast name="METHOD_CALL" text="ltrim">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="RTrim" type="DSTRING">
+        <arg type="DSTRING" />
+        <ast name="METHOD_CALL" text="rtrim">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="Trim" type="DSTRING">
+        <arg type="DSTRING" />
+        <ast name="METHOD_CALL" text="trim">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="Mid" type="DSTRING">
+        <arg type="DSTRING" />
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="substr">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+                <arg index="2" />
+                <arg index="3" />
+            </ast>
+        </ast>
+    </method>
+
+    <!-- Minute, Month, MonthName -->
+    <method name="Now" type="DINT">
+        <ast name="METHOD_CALL" text="time">
+        </ast>
+    </method>
+
+    <method name="oct" type="DSTRING">
+        <arg type="DFLOAT" />
+        <ast name="METHOD_CALL" text="decoct">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <!-- Replace, RGB -->
+    <method name="Right" type="DSTRING">
+        <arg type="DSTRING" />
+        <arg type="DINT" />
+        <!-- substr(str, -length) -->
+        <ast name="METHOD_CALL" text="substr">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+                <ast name="UMINUS">
+                    <arg index="2" />
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+
+    <!-- mt_round() / MAX_RAND -->
+    <method name="Rnd" type="DFLOAT">
+        <ast name="DIVIDE">
+            <ast name="METHOD_CALL" text="mt_rand">
+            </ast>
+            <ast name="CONSTANT" text="RAND_MAX" />
+        </ast>
+    </method>
+    <method name="Rnd" type="DFLOAT">
+        <arg type="DINT" />
+        <ast name="DIVIDE">
+            <ast name="METHOD_CALL" text="mt_rand">
+            </ast>
+            <ast name="CONSTANT" text="RAND_MAX" />
+        </ast>
+    </method>
+
+    <method name="Round" type="DFLOAT">
+        <arg type="DFLOAT" />
+        <ast name="METHOD_CALL" text="round">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+    <method name="Round" type="DFLOAT">
+        <arg type="DFLOAT" />
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="round">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+                <arg index="2" />
+            </ast>
+        </ast>
+    </method>
+
+    <!-- Second SetLocale-->
+    <method name="Sgn" type="DINT">
+        <arg type="DFLOAT" />
+        <ast name="CONDITIONAL">
+            <ast name="GE">
+                <arg index="1" />
+                <ast name="DINT" text="0" />
+            </ast>
+            <ast name="CONDITIONAL">
+                <ast name="GT">
+                    <arg index="1" />
+                    <ast name="DINT" text="0" />
+                </ast>
+                <ast name="DINT" text="1" />
+                <ast name="DINT" text="0" />
+            </ast>
+            <ast name="DINT" text="-1" />
+        </ast>
+    </method>
+
+    <method name="Sin" type="DFLOAT">
+        <arg type="DFLOAT" />
+        <ast name="METHOD_CALL" text="sin">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="Space" type="DSTRING">
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="str_pad">
+            <ast name="ARGLIST_VALUES">
+                <ast name="DSTRING" text="" />
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="Split" type="INDEX_OP">
+        <arg type="DSTRING" />
+        <ast name="METHOD_CALL" text="explode">
+            <ast name="ARGLIST_VALUES">
+                <ast name="DSTRING" text=" " />
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+    <method name="Split" type="INDEX_OP">
+        <arg type="DSTRING" />
+        <arg type="DSTRING" />
+        <ast name="METHOD_CALL" text="explode">
+            <ast name="ARGLIST_VALUES">
+                <arg index="2" />
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+    <method name="Split" type="INDEX_OP">
+        <arg type="DSTRING" />
+        <arg type="DSTRING" />
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="explode">
+            <ast name="ARGLIST_VALUES">
+                <arg index="2" />
+                <arg index="1" />
+                <arg index="3" />
+            </ast>
+        </ast>
+    </method>
+    <method name="Split" type="INDEX_OP">
+        <arg type="DSTRING" />
+        <arg type="DSTRING" />
+        <arg type="DINT" />
+        <arg type="DSTRING" /> <!-- Ignore vbBinaryCompare, vbTextCompare -->
+        <ast name="METHOD_CALL" text="explode">
+            <ast name="ARGLIST_VALUES">
+                <arg index="2" />
+                <arg index="1" />
+                <arg index="3" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="Sqr" type="DFLOAT">
+        <arg type="DFLOAT" />
+        <ast name="METHOD_CALL" text="sqrt">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="StrComp" type="DINT">
+        <arg type="DSTRING" />
+        <arg type="DSTRING" />
+        <ast name="METHOD_CALL" text="strcomp">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+                <arg index="2" />
+            </ast>
+        </ast>
+    </method>
+    <method name="StrComp" type="DINT">
+        <arg type="DSTRING" />
+        <arg type="DSTRING" />
+        <arg type="DSTRING" /> <!-- vbBinaryCompare vbTextCompare -->
+        <ast name="METHOD_CALL" text="strcomp">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+                <arg index="2" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="String" type="DSTRING">
+        <arg type="DINT" />
+        <arg type="DSTRING" />
+        <!--
+            A possible problem here is the case of String(2, "ABC")
+            which will return ABCABC when in VB would return AA
+        -->
+        <ast name="METHOD_CALL" text="str_repeat">
+            <ast name="ARGLIST_VALUES">
+                <arg index="2" />
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="StrReverse" type="DSTRING">
+        <arg type="DSTRING" />
+        <ast name="METHOD_CALL" text="strrev">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="Tan" type="DFLOAT">
+        <arg type="DFLOAT" />
+        <ast name="METHOD_CALL" text="tan">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="Time" type="DINT">
+        <ast name="METHOD_CALL" text="time">
+        </ast>
+    </method>
+
+    <!-- Timer, TimeSerial, TimeValue, UBound-->
+    <method name="UCase" type="DSTRING">
+        <arg type="DSTRING" />
+        <ast name="METHOD_CALL" text="strtoupper">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+    <!-- WeekDay, WeekDayName, Year -->
+
+    <method name="Array" type="ARRAY">
+        <args />
+        <ast name="METHOD_CALL" text="array">
+            <ast name="ARGLIST_VALUES">
+                <args />
+            </ast>
+        </ast>
+    </method>
+</functions>

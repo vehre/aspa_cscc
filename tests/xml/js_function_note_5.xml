@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <js>
+    <original>
+      <ast name="FUNCTION" text="func">
+        <ast name="SLIST" text="{">
+          <ast name="FUNCTION" text="$$$$0">
+            <ast name="SLIST" text="{">
+              <ast name="FUNCTION" text="$$$$1">
+                <ast name="SLIST" text="{">
+                  <ast name="FUNCTION" text="$$$$2">
+                    <ast name="SLIST" text="{">
+                      <ast name="EXPR" text="EXPR">
+                        <ast name="ASSIGN" text="=">
+                          <ast name="IDENTIFIER" text="b"/>
+                          <ast name="STRING_LITERAL" text="Hello"/>
+                        </ast>
+                      </ast>
+                    </ast>
+                  </ast>
+                  <ast name="EXPR" text="EXPR">
+                    <ast name="METHOD_CALL" text="(">
+                      <ast name="IDENTIFIER" text="func_inner3"/>
+                      <ast name="ELIST" text="ELIST"/>
+                    </ast>
+                  </ast>
+                </ast>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="METHOD_CALL" text="(">
+                  <ast name="IDENTIFIER" text="func_inner2"/>
+                  <ast name="ELIST" text="ELIST"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="IF" text="if">
+            <ast name="EXPR" text="EXPR">
+              <ast name="FALSE" text="false"/>
+            </ast>
+            <ast name="SLIST" text="{">
+              <ast name="EXPR" text="EXPR">
+                <ast name="METHOD_CALL" text="(">
+                  <ast name="IDENTIFIER" text="func_inner"/>
+                  <ast name="ELIST" text="ELIST"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="IDENTIFIER" text="func"/>
+          <ast name="ELIST" text="ELIST"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="z"/>
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="b"/>
+            <ast name="IDENTIFIER" text="length"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="NULL" text="null"/>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="func2">
+        <ast name="SLIST" text="{">
+          <ast name="FUNCTION" text="$$$$3">
+            <ast name="SLIST" text="{">
+              <ast name="FUNCTION" text="$$$$4">
+                <ast name="SLIST" text="{">
+                  <ast name="FUNCTION" text="$$$$5">
+                    <ast name="SLIST" text="{">
+                      <ast name="EXPR" text="EXPR">
+                        <ast name="ASSIGN" text="=">
+                          <ast name="IDENTIFIER" text="b"/>
+                          <ast name="STRING_LITERAL" text="Hello"/>
+                        </ast>
+                      </ast>
+                    </ast>
+                  </ast>
+                  <ast name="EXPR" text="EXPR">
+                    <ast name="METHOD_CALL" text="(">
+                      <ast name="IDENTIFIER" text="func_inner3"/>
+                      <ast name="ELIST" text="ELIST"/>
+                    </ast>
+                  </ast>
+                </ast>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="METHOD_CALL" text="(">
+                  <ast name="IDENTIFIER" text="func_inner2"/>
+                  <ast name="ELIST" text="ELIST"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="IF" text="if">
+            <ast name="EXPR" text="EXPR">
+              <ast name="NOT_EQUAL" text="!=">
+                <ast name="DOT" text=".">
+                  <ast name="METHOD_CALL" text="(">
+                    <ast name="DOT" text=".">
+                      <ast name="IDENTIFIER" text="Request"/>
+                      <ast name="IDENTIFIER" text="QueryString"/>
+                    </ast>
+                    <ast name="ELIST" text="ELIST">
+                      <ast name="EXPR" text="EXPR">
+                        <ast name="STRING_LITERAL" text="some_param"/>
+                      </ast>
+                    </ast>
+                  </ast>
+                  <ast name="IDENTIFIER" text="Count"/>
+                </ast>
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+            <ast name="SLIST" text="{">
+              <ast name="EXPR" text="EXPR">
+                <ast name="METHOD_CALL" text="(">
+                  <ast name="IDENTIFIER" text="func_inner"/>
+                  <ast name="ELIST" text="ELIST"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="IDENTIFIER" text="func2"/>
+          <ast name="ELIST" text="ELIST"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="z"/>
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="b"/>
+            <ast name="IDENTIFIER" text="length"/>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="FUNCTION" text="func">
+        <ast name="SLIST" text="{">
+          <ast name="FUNCTION" text="func_inner">
+            <ast name="SLIST" text="{">
+              <ast name="FUNCTION" text="func_inner2">
+                <ast name="SLIST" text="{">
+                  <ast name="FUNCTION" text="func_inner3">
+                    <ast name="GLOBAL" text="GLOBAL">
+                      <ast name="IDENTIFIER" text="b"/>
+                    </ast>
+                    <ast name="SLIST" text="{">
+                      <ast name="EXPR" text="EXPR">
+                        <ast name="ASSIGN" text="=">
+                          <ast name="IDENTIFIER" text="b"/>
+                          <ast name="STRING_LITERAL" text="Hello"/>
+                        </ast>
+                      </ast>
+                    </ast>
+                  </ast>
+                  <ast name="EXPR" text="EXPR">
+                    <ast name="METHOD_CALL" text="func_inner3"/>
+                  </ast>
+                </ast>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="METHOD_CALL" text="func_inner2"/>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="IF_ELSE" text="IF_ELSE">
+            <ast name="IF" text="if">
+              <ast name="EXPR" text="EXPR">
+                <ast name="FALSE" text="false"/>
+              </ast>
+              <ast name="SLIST" text="{">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="METHOD_CALL" text="func_inner"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="func"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="z"/>
+          <ast name="METHOD_CALL" text="strlen">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="b"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="NULL" text="null"/>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="func2">
+        <ast name="SLIST" text="{">
+          <ast name="FUNCTION" text="func_inner">
+            <ast name="SLIST" text="{">
+              <ast name="FUNCTION" text="func_inner2">
+                <ast name="SLIST" text="{">
+                  <ast name="FUNCTION" text="func_inner3">
+                    <ast name="GLOBAL" text="GLOBAL">
+                      <ast name="IDENTIFIER" text="b"/>
+                    </ast>
+                    <ast name="SLIST" text="{">
+                      <ast name="EXPR" text="EXPR">
+                        <ast name="ASSIGN" text="=">
+                          <ast name="IDENTIFIER" text="b"/>
+                          <ast name="STRING_LITERAL" text="Hello"/>
+                        </ast>
+                      </ast>
+                    </ast>
+                  </ast>
+                  <ast name="EXPR" text="EXPR">
+                    <ast name="METHOD_CALL" text="func_inner3"/>
+                  </ast>
+                </ast>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="METHOD_CALL" text="func_inner2"/>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="IF_ELSE" text="IF_ELSE">
+            <ast name="IF" text="if">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NOT_EQUAL" text="!=">
+                  <ast name="METHOD_CALL" text="substr_count">
+                    <ast name="ELIST" text="ARGLIST_VALUES">
+                      <ast name="INDEX_OP" text="INDEX_OP">
+                        <ast name="IDENTIFIER" text="HTTP_GET_VARS"/>
+                        <ast name="STRING_LITERAL" text="some_param"/>
+                      </ast>
+                      <ast name="STRING_LITERAL" text="&amp;"/>
+                    </ast>
+                  </ast>
+                  <ast name="NUM_INT" text="0"/>
+                </ast>
+              </ast>
+              <ast name="SLIST" text="{">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="METHOD_CALL" text="func_inner"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="func2"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="z"/>
+          <ast name="METHOD_CALL" text="strlen">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="b"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </js>
+</asp>

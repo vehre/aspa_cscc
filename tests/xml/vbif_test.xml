@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <vb>
+    <original>
+      <ast name="IF_ELSE" text="IfThenElse">
+        <ast name="IF" text="if">
+          <ast name="EXPR" text="EXPR">
+            <ast name="GT" text="&gt;">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="0"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="20"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="IF_ELSE" text="IfThenElse">
+        <ast name="IF" text="if">
+          <ast name="EXPR" text="EXPR">
+            <ast name="GT" text="&gt;">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="0"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="IF_ELSE" text="IfThenElse">
+        <ast name="IF" text="if">
+          <ast name="EXPR" text="EXPR">
+            <ast name="GT" text="&gt;">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="0"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="20"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="IF_ELSE" text="IfThenElse">
+        <ast name="IF" text="if">
+          <ast name="EXPR" text="EXPR">
+            <ast name="GT" text="&gt;">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="0"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="20"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="ELSE" text="else">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="30"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="IF_ELSE" text="IfThenElse">
+        <ast name="IF" text="if">
+          <ast name="EXPR" text="EXPR">
+            <ast name="GT" text="&gt;">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="0"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="20"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="ELSE" text="else">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="30"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="IF_ELSE" text="IfThenElse">
+        <ast name="IF" text="if">
+          <ast name="EXPR" text="EXPR">
+            <ast name="GT" text="&gt;">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="0"/>
+            </ast>
+          </ast>
+          <ast name="IF_ELSE" text="IfThenElse">
+            <ast name="IF" text="if">
+              <ast name="EXPR" text="EXPR">
+                <ast name="EQ" text="=">
+                  <ast name="IDENTIFIER" text="a"/>
+                  <ast name="DINT" text="30"/>
+                </ast>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="ASSIGN" text="=">
+                  <ast name="IDENTIFIER" text="a"/>
+                  <ast name="DINT" text="50"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="ELSE" text="else">
+              <ast name="EXPR" text="EXPR">
+                <ast name="ASSIGN" text="=">
+                  <ast name="IDENTIFIER" text="a"/>
+                  <ast name="DINT" text="100"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="IF_ELSE" text="IfThenElse">
+            <ast name="IF" text="if">
+              <ast name="EXPR" text="EXPR">
+                <ast name="EQ" text="=">
+                  <ast name="IDENTIFIER" text="b"/>
+                  <ast name="UNARY_MINUS" text="-">
+                    <ast name="DINT" text="1"/>
+                  </ast>
+                </ast>
+              </ast>
+              <ast name="SUB_CALL" text="Sub Call">
+                <ast name="DOT" text=".">
+                  <ast name="IDENTIFIER" text="Response"/>
+                  <ast name="IDENTIFIER" text="write"/>
+                </ast>
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="DSTRING" text="b is -1"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="ELSEIF" text="elseif">
+          <ast name="EXPR" text="EXPR">
+            <ast name="EQ" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="UNARY_MINUS" text="-">
+                <ast name="DINT" text="10"/>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="SUB_CALL" text="Sub Call">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Response"/>
+              <ast name="IDENTIFIER" text="write"/>
+            </ast>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="a is -10"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="ELSEIF" text="elseif">
+          <ast name="EXPR" text="EXPR">
+            <ast name="EQ" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="UNARY_MINUS" text="-">
+                <ast name="DINT" text="20"/>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="SUB_CALL" text="Sub Call">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Response"/>
+              <ast name="IDENTIFIER" text="write"/>
+            </ast>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="a is -10"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="ELSEIF" text="elseif">
+          <ast name="EXPR" text="EXPR">
+            <ast name="EQ" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="UNARY_MINUS" text="-">
+                <ast name="DINT" text="30"/>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="SUB_CALL" text="Sub Call">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Response"/>
+              <ast name="IDENTIFIER" text="write"/>
+            </ast>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="a is -10"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="ELSE" text="else">
+          <ast name="IF_ELSE" text="IfThenElse">
+            <ast name="IF" text="if">
+              <ast name="EXPR" text="EXPR">
+                <ast name="LT" text="&lt;">
+                  <ast name="IDENTIFIER" text="a"/>
+                  <ast name="UNARY_MINUS" text="-">
+                    <ast name="DINT" text="1000"/>
+                  </ast>
+                </ast>
+              </ast>
+              <ast name="SUB_CALL" text="Sub Call">
+                <ast name="DOT" text=".">
+                  <ast name="IDENTIFIER" text="Response"/>
+                  <ast name="IDENTIFIER" text="write"/>
+                </ast>
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="DSTRING" text="a less then -1000"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="ELSE" text="else">
+              <ast name="SUB_CALL" text="Sub Call">
+                <ast name="DOT" text=".">
+                  <ast name="IDENTIFIER" text="Response"/>
+                  <ast name="IDENTIFIER" text="write"/>
+                </ast>
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="DSTRING" text="a more then -1000"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="IF_ELSE" text="IfThenElse">
+        <ast name="IF" text="if">
+          <ast name="EXPR" text="EXPR">
+            <ast name="GT" text="GT">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="0"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="20"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="IF_ELSE" text="IfThenElse">
+        <ast name="IF" text="if">
+          <ast name="EXPR" text="EXPR">
+            <ast name="GT" text="GT">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="0"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="IF_ELSE" text="IfThenElse">
+        <ast name="IF" text="if">
+          <ast name="EXPR" text="EXPR">
+            <ast name="GT" text="GT">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="0"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="20"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="IF_ELSE" text="IfThenElse">
+        <ast name="IF" text="if">
+          <ast name="EXPR" text="EXPR">
+            <ast name="GT" text="GT">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="0"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="20"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="ELSE" text="else">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="30"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="IF_ELSE" text="IfThenElse">
+        <ast name="IF" text="if">
+          <ast name="EXPR" text="EXPR">
+            <ast name="GT" text="GT">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="0"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="20"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="ELSE" text="else">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="30"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="IF_ELSE" text="IfThenElse">
+        <ast name="IF" text="if">
+          <ast name="EXPR" text="EXPR">
+            <ast name="GT" text="GT">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="0"/>
+            </ast>
+          </ast>
+          <ast name="IF_ELSE" text="IfThenElse">
+            <ast name="IF" text="if">
+              <ast name="EXPR" text="EXPR">
+                <ast name="EQ" text="=">
+                  <ast name="IDENTIFIER" text="a"/>
+                  <ast name="DINT" text="30"/>
+                </ast>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="ASSIGN" text="=">
+                  <ast name="IDENTIFIER" text="a"/>
+                  <ast name="DINT" text="50"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="ELSE" text="else">
+              <ast name="EXPR" text="EXPR">
+                <ast name="ASSIGN" text="=">
+                  <ast name="IDENTIFIER" text="a"/>
+                  <ast name="DINT" text="100"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="IF_ELSE" text="IfThenElse">
+            <ast name="IF" text="if">
+              <ast name="EXPR" text="EXPR">
+                <ast name="EQ" text="=">
+                  <ast name="IDENTIFIER" text="b"/>
+                  <ast name="UNARY_MINUS" text="-">
+                    <ast name="DINT" text="1"/>
+                  </ast>
+                </ast>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="METHOD_CALL" text="print">
+                  <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                    <ast name="DSTRING" text="b is -1"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="ELSEIF" text="elseif">
+          <ast name="EXPR" text="EXPR">
+            <ast name="EQ" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="UNARY_MINUS" text="-">
+                <ast name="DINT" text="10"/>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="METHOD_CALL" text="print">
+              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                <ast name="DSTRING" text="a is -10"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="ELSEIF" text="elseif">
+          <ast name="EXPR" text="EXPR">
+            <ast name="EQ" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="UNARY_MINUS" text="-">
+                <ast name="DINT" text="20"/>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="METHOD_CALL" text="print">
+              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                <ast name="DSTRING" text="a is -10"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="ELSEIF" text="elseif">
+          <ast name="EXPR" text="EXPR">
+            <ast name="EQ" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="UNARY_MINUS" text="-">
+                <ast name="DINT" text="30"/>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="METHOD_CALL" text="print">
+              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                <ast name="DSTRING" text="a is -10"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="ELSE" text="else">
+          <ast name="IF_ELSE" text="IfThenElse">
+            <ast name="IF" text="if">
+              <ast name="EXPR" text="EXPR">
+                <ast name="LT" text="LT">
+                  <ast name="IDENTIFIER" text="a"/>
+                  <ast name="UNARY_MINUS" text="-">
+                    <ast name="DINT" text="1000"/>
+                  </ast>
+                </ast>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="METHOD_CALL" text="print">
+                  <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                    <ast name="DSTRING" text="a less then -1000"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="ELSE" text="else">
+              <ast name="EXPR" text="EXPR">
+                <ast name="METHOD_CALL" text="print">
+                  <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                    <ast name="DSTRING" text="a more then -1000"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </vb>
+</asp>

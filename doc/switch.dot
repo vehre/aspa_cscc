@@ -1,0 +1,18 @@
+digraph L0 {
+        size = "5,3";
+        ordering=out;
+        node [shape = plaintext];
+        EXPR [label=EXPR];
+        CEXPR [label=EXPR];
+        CEXPR2 [label=EXPR];
+        CASE [label=case];
+        CASE2 [label=case]
+        CSTAT [label=statements];
+        CASEG [label=CASE_GROUP];
+        CASEG2 [label=CASE_GROUP];
+        switch -> {EXPR CASEG CASEG2};
+        CASEG -> {CASE CASE2 CSTAT};
+        CASE -> {CEXPR};
+        CASE2 -> {CEXPR2};
+        CASEG2 -> {default statements};
+}

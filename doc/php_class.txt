@@ -1,0 +1,19 @@
+class Point {
+  var $x;
+
+
+  function Point() {
+    $this->x = 10;
+  }
+
+
+  function setX($x) {
+    $this->x = $x;
+  }
+
+
+  function getX() {
+    return $this->x;
+  }
+}
+

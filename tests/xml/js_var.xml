@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <js>
+    <original>
+      <ast name="VAR" text="var">
+        <ast name="IDENTIFIER" text="a"/>
+        <ast name="IDENTIFIER" text="b"/>
+        <ast name="IDENTIFIER" text="c"/>
+      </ast>
+      <ast name="VAR" text="var">
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="d"/>
+            <ast name="STRING_LITERAL" text="Hello"/>
+          </ast>
+        </ast>
+        <ast name="IDENTIFIER" text="l"/>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="m"/>
+            <ast name="NEW" text="new">
+              <ast name="DATE" text="Date"/>
+              <ast name="ELIST" text="ELIST"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="IDENTIFIER" text="f"/>
+        <ast name="IDENTIFIER" text="g"/>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="h"/>
+            <ast name="LBRACK" text="[">
+              <ast name="ELIST" text="ELIST">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="NUM_INT" text="1"/>
+                </ast>
+                <ast name="EXPR" text="EXPR">
+                  <ast name="NUM_INT" text="2"/>
+                </ast>
+                <ast name="EXPR" text="EXPR">
+                  <ast name="NUM_INT" text="3"/>
+                </ast>
+                <ast name="EXPR" text="EXPR">
+                  <ast name="NUM_INT" text="4"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="d"/>
+          <ast name="STRING_LITERAL" text="Hello"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="m"/>
+          <ast name="METHOD_CALL" text="getdate"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="h"/>
+          <ast name="METHOD_CALL" text="array">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="NUM_INT" text="1"/>
+              <ast name="NUM_INT" text="2"/>
+              <ast name="NUM_INT" text="3"/>
+              <ast name="NUM_INT" text="4"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </js>
+</asp>

@@ -1,0 +1,32 @@
+digraph classes {
+    ranksep=0.75; size="6.8, 10"; ratio=0.8;
+    node[shape=box];
+    subgraph interfaces {
+        node[shape=ellipse, style=bold]
+        ASPObject; ASPClass; ASPDependantClass;
+        Member; Property; Method;
+    }
+
+
+    ASPDependantClass->ASPClass;
+    Method->Member;
+    Property->Member;
+    ASPClass->ASPObject;
+    Member->ASPObject;
+
+    BaseObject->ASPObject;
+    GenericClass-> {BaseObject ASPClass};
+    XmlASPClass->GenericClass;
+    XmlDependantASPClass-> {ASPDependantClass XmlASPClass};
+    BaseMember-> {BaseObject Member};
+    BaseMemberWrapper->BaseMember;
+    ASPMethodWrapper-> {BaseMemberWrapper Method}; 
+    ASPPRopertyWrapper-> {BaseMemberWrapper Property};
+    GenericASPProperty-> {BaseMember Property};
+    JsUserDefinedProperty-> {BaseMember Property};
+    GenericMethod-> {BaseMember; Method};
+    ASPMethodMap->GenericMethod;
+    UserDefinedMethod->GenericMethod;
+    JsUserDefinedMethod->UserDefinedMethod;
+    VbUserDefinedMethod->UserDefinedMethod;
+}

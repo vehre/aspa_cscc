@@ -1,0 +1,106 @@
+<!--
+    This file is part of Aspa.
+
+    Aspa is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    Aspa is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Aspa; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+-->
+<class name="Server" dependant="true">
+  <property name="ScriptTimeout" type="DINT">
+    <read>
+      <ast name="CAST">
+        <ast name="DINT" />
+        <ast name="METHOD_CALL" text="ini_get">
+          <ast name="ARGLIST_VALUES">
+              <ast name="DSTRING" text="max_execution_time" />
+          </ast>
+        </ast>
+      </ast>
+    </read>
+    <write>
+      <arg type="DINT" />
+      <ast name="METHOD_CALL" text="set_time_limit">
+        <ast name="ARGLIST_VALUES">
+            <arg index="1" />
+        </ast>
+      </ast>
+    </write>
+  </property>
+
+  <!-- Executes an asp file -->
+  <method name="Execute" type="VOID">
+    <arg type="DSTRING" />
+    <ast name="METHOD_CALL" text="include">
+      <ast name="ARGLIST_VALUES">
+          <arg index="1" />
+      </ast>
+    </ast>
+  </method>
+
+  <!--
+  Returns an ASPError object which describes the last error
+  <method name="GetLastError" type="ASPError" />
+  -->
+
+  <!-- Applies HTML encoding to the string -->
+  <method name="HTMLEncode" type="DSTRING">
+    <arg type="DSTRING" />
+    <ast name="METHOD_CALL" text="htmlspecialchars">
+      <ast name="ARGLIST_VALUES">
+        <arg index="1" />
+      </ast>
+    </ast>
+  </method>
+
+  <!-- Transforms a virtual path to a real absolute path
+  <method name="MapPath" type="DSTRING">
+    <arg type="DSTRING" />
+  </method>
+-->
+
+  <!-- Transfers the execution of the script to an other one -->
+  <method name="Transfer" type="VOID">
+    <arg type="DSTRING" />
+    <ast name="METHOD_CALL" text="include">
+      <ast name="ARGLIST_VALUES">
+          <arg index="1" />
+      </ast>
+    </ast>
+    <ast name="METHOD_CALL" text="exit">
+    </ast>
+  </method>
+
+  <!-- Applies URL encoding on the string -->
+  <method name="URLEncode" type="DSTRING">
+      <arg type="DSTRING" />
+      <ast name="METHOD_CALL" text="urlencode">
+        <ast name="ARGLIST_VALUES">
+          <arg index="1" />
+        </ast>
+      </ast>
+  </method>
+
+  <method name="CreateObject" type="OBJECT">
+  	<arg type="DSTRING" />
+    <map>
+        <key value="ADODB.Connection" use="ADOConnection" />
+        <key value="ADODB.Recordset" use="ADORecordset" />
+        <!--
+        <key value="ADODB.Command" use="ADOCommand" />
+        -->
+        <key>
+            <ast name="INVALID_OBJECT" />
+        </key>
+    </map>
+  </method>
+</class>

@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is part of Aspa.
+
+    Aspa is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    Aspa is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Aspa; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+-->
+
+<class name="Request">
+  <class name="RequestCookies" dependant="true">
+    <class name="RequestCookieMethod">
+      <property name="CookieValueProp" type="DSTRING" default="true">
+        <read>
+          <ast name="INDEX_OP">
+            <ast name="IDENTIFIER" text="HTTP_COOKIE_VARS"/>
+            <arg index="1"/>
+          </ast>
+        </read>
+      </property>
+      <property name="HasKeys" type="DSTRING">
+        <read>
+          <ast name="NEQ">
+            <ast name="METHOD_CALL" text="strpos">
+              <ast name="ARGLIST_VALUES">
+                <ast name="INDEX_OP">
+                  <ast name="IDENTIFIER" text="HTTP_COOKIE_VARS"/>
+                  <arg index="1"/>
+                </ast>
+                <ast name="DSTRING" text="&amp;"/>
+              </ast>
+            </ast>
+            <ast name="DINT" text="0"/>
+          </ast>
+        </read>
+      </property>
+      <method type="DSTRING" name="SubCookieValue" default="true"
+      requires="translator/runtime.php">
+        <arg type="DSTRING"/>
+        <ast name="METHOD_CALL" text="getSubCookie">
+          <ast name="ARGLIST_VALUES">
+            <arg index="1"/>
+            <arg index="2"/>
+          </ast>
+        </ast>
+      </method>
+    </class>
+    <property type="DSTRING" name="RAWCookies" default="true">
+      <read>
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER"/>
+          <ast name="DSTRING" text="HTTP_COOKIE"/>
+        </ast>
+      </read>
+    </property>
+    <method type="OBJECT" name="CookieValue" default="true" 
+    use="RequestCookieMethod"/>
+  </class>
+  <class name="RequestForm" dependant="true">
+    <class name="RequestFormMethod">
+      <property name="FormValueProp" type="DSTRING" default="true">
+        <read>
+          <ast name="INDEX_OP">
+            <ast name="IDENTIFIER" text="HTTP_POST_VARS"/>
+            <arg index="1"/>
+          </ast>
+        </read>
+      </property>
+      <property name="Count" type="DINT">
+        <read>
+          <ast name="METHOD_CALL" text="substr_count">
+            <ast name="ARGLIST_VALUES">
+              <ast name="INDEX_OP">
+                <ast name="IDENTIFIER" text="HTTP_POST_VARS"/>
+                <arg index="1"/>
+              </ast>
+              <ast name="DSTRING" text="&amp;"/>
+            </ast>
+          </ast>
+        </read>
+      </property>
+      <method type="DSTRING" name="SubFormValue" default="true"
+      requires="translator/runtime.php">
+        <arg type="DSTRING"/>
+        <ast name="METHOD_CALL" text="getSubForm">
+          <ast name="ARGLIST_VALUES">
+            <arg index="1"/>
+            <arg index="2"/>
+          </ast>
+        </ast>
+      </method>
+    </class>
+    <property type="DSTRING" name="RAWForm" default="true">
+      <read>
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER"/>
+          <ast name="DSTRING" text="HTTP_POST_VARS"/>
+        </ast>
+      </read>
+    </property>
+    <method type="OBJECT" name="FormValue" default="true"
+    use="RequestFormMethod"/>
+  </class>
+  <class name="RequestQueryForm" dependant="true">
+    <property name="Count" type="DINT">
+      <read>
+        <ast name="METHOD_CALL" text="substr_count">
+          <ast name="ARGLIST_VALUES">
+            <ast name="CONDITIONAL">
+              <ast name="EQ">
+                <ast name="INDEX_OP">
+                  <ast name="IDENTIFIER" text="_SERVER"/>
+                  <ast name="DSTRING" text="REQUEST_METHOD"/>
+                </ast>
+                <ast name="DSTRING" text="POST"/>
+              </ast>
+              <ast name="INDEX_OP">
+                <ast name="IDENTIFIER" text="HTTP_POST_VARS"/>
+                <arg index="1"/>
+              </ast>
+              <ast name="INDEX_OP">
+                <ast name="IDENTIFIER" text="HTTP_GET_VARS"/>
+                <arg index="1"/>
+              </ast>
+            </ast>
+            <ast name="DSTRING" text="&amp;"/>
+          </ast>
+        </ast>
+      </read>
+    </property>
+    <property name="ParamValue" type="DSTRING" default="true">
+        <read>
+          <ast name="CONDITIONAL">
+              <ast name="EQ">
+                <ast name="INDEX_OP">
+                  <ast name="IDENTIFIER" text="_SERVER"/>
+                  <ast name="DSTRING" text="REQUEST_METHOD"/>
+                </ast>
+                <ast name="DSTRING" text="POST"/>
+              </ast>
+              <ast name="INDEX_OP">
+                <ast name="IDENTIFIER" text="HTTP_POST_VARS"/>
+                <arg index="1"/>
+              </ast>
+              <ast name="INDEX_OP">
+                <ast name="IDENTIFIER" text="HTTP_GET_VARS"/>
+                <arg index="1"/>
+              </ast>
+          </ast>
+        </read>
+    </property>
+    <method type="DSTRING" name="SubFormValue" default="true"
+    requires="translator/runtime.php">
+      <arg type="DSTRING"/>
+      <ast name="CONDITIONAL">
+        <ast name="EQ">
+          <ast name="INDEX_OP">
+            <ast name="IDENTIFIER" text="_SERVER"/>
+            <ast name="DSTRING" text="REQUEST_METHOD"/>
+          </ast>
+          <ast name="DSTRING" text="POST"/>
+        </ast>
+        <ast name="METHOD_CALL" text="getSubForm">
+          <ast name="ARGLIST_VALUES">
+            <arg index="1"/>
+            <arg index="2"/>
+          </ast>
+        </ast>
+        <ast name="METHOD_CALL" text="getSubQueryString">
+          <ast name="ARGLIST_VALUES">
+            <arg index="1"/>
+            <arg index="2"/>
+          </ast>
+        </ast>
+      </ast>
+    </method>
+  </class>
+  <class name="RequestQueryString" dependant="true">
+    <class name="RequestQueryStringMethod">
+      <property name="QueryStringValueProp" type="DSTRING" default="true">
+        <read>
+          <ast name="INDEX_OP">
+            <ast name="IDENTIFIER" text="HTTP_GET_VARS"/>
+            <arg index="1"/>
+          </ast>
+        </read>
+      </property>
+      <property name="Count" type="DINT">
+        <read>
+          <ast name="METHOD_CALL" text="substr_count">
+            <ast name="ARGLIST_VALUES">
+              <ast name="INDEX_OP">
+                <ast name="IDENTIFIER" text="HTTP_GET_VARS"/>
+                <arg index="1"/>
+              </ast>
+              <ast name="DSTRING" text="&amp;"/>
+            </ast>
+          </ast>
+        </read>
+      </property>
+      <method type="DSTRING" name="SubQueryStringValue" default="true">
+        <arg type="DSTRING"/>
+        <ast name="METHOD_CALL" text="getSubQueryString">
+          <ast name="ARGLIST_VALUES">
+            <arg index="1"/>
+            <arg index="2"/>
+          </ast>
+        </ast>
+      </method>
+    </class>
+    <property type="DSTRING" name="RAWQueryString" default="true">
+      <read>
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER"/>
+          <ast name="DSTRING" text="QUERY_STRING"/>
+        </ast>
+      </read>
+    </property>
+    <method type="OBJECT" name="QueryStringValue" default="true"
+    use="RequestQueryStringMethod"/>
+  </class>
+  <property name="TotalBytes" type="DINT">
+    <read>
+      <ast name="INDEX_OP">
+        <ast name="IDENTIFIER" text="_SERVER"/>
+        <ast name="DSTRING" text="CONTENT_LENGTH"/>
+      </ast>
+    </read>
+  </property>
+  <!--
+  Don't know how to do those
+
+  <method name="BinaryRead" type="DSTRING">
+  </method>
+
+
+  <method name="ClientCertificate" type="DSTRING">
+      <arg type="DSTRING" />
+      <translate>
+        <map>
+          <key value="Certificate" />
+          <key value="Flags" />
+          <key value="Issuer" />
+          <key value="IssuerC" />
+          <key value="IssuerGN" />
+          <key value="IssuerI" />
+          <key value="IssuerL" />
+          <key value="IssuerO" />
+          <key value="IssuerOU" />
+          <key value="IssuerS" />
+          <key value="IssuerT" />
+          <key value="SerialNumber" />
+          <key value="Subject" />
+          <key value="SubjectC" />
+          <key value="SubjectCN" />
+          <key value="SubjectGN" />
+          <key value="SubjectI" />
+          <key value="SubjectL" />
+          <key value="SubjectO" />
+          <key value="SubjectOU" />
+          <key value="SubjectS" />
+          <key value="SubjectT" />
+        </map>
+      </translate>
+  </method>
+  -->
+
+  <property name="Cookies" use="RequestCookies"/>
+  <property name="Form" use="RequestForm"/>
+  <property name="QueryString" use="RequestQueryString"/>
+  <!-- Used when Request("param") is called -->
+
+  <method name="FormOrQuerystring" type="OBJECT" use="RequestQueryForm"
+  default="true"/>
+  <method name="ServerVariables" type="DSTRING">
+    <arg type="DSTRING"/>
+    <map>
+      <!-- These are vars with no php equivalent -->
+
+      <key value="ALL_HTTP">
+        <ast name="NON_APPLICABLE_HEADER" text="ALL_HTTP"/>
+      </key>
+      <key value="ALL_RAW">
+        <ast name="NON_APPLICABLE_HEADER" text="ALL_RAW"/>
+      </key>
+      <key value="APPL_MD_PATH">
+        <ast name="NON_APPLICABLE_HEADER" text="APPL_MD_PATH"/>
+      </key>
+      <key value="APPL_PHYSICAL_PATH">
+        <ast name="NON_APPLICABLE_HEADER" text="APPL_PHYSICAL_PATH"/>
+      </key>
+      <key value="HTTPS">
+        <ast name="NON_APPLICABLE_HEADER" text="HTTPS"/>
+      </key>
+      <key value="INSTANCE_ID">
+        <ast name="NON_APPLICABLE_HEADER" text="INSTANCE_ID"/>
+      </key>
+      <key value="INSTANCE_META_PATH">
+        <ast name="NON_APPLICABLE_HEADER" text="INSTANCE_META_PATH"/>
+      </key>
+      <key value="SERVER_PORT_SECURE">
+        <ast name="NON_APPLICABLE_HEADER" text="SERVER_PORT_SECURE"/>
+      </key>
+      <key value="URL">
+        <ast name="NON_APPLICABLE_HEADER" text="URL"/>
+      </key>
+      <key value="CERTHTTP_COOKIE_VARS">
+        <ast name="NON_APPLICABLE_HEADER" text="CERTHTTP_COOKIE_VARS"/>
+      </key>
+      <key value="CERT_FLAGS">
+        <ast name="NON_APPLICABLE_HEADER" text="CERT_FLAGS"/>
+      </key>
+      <key value="CERT_ISSUER">
+        <ast name="NON_APPLICABLE_HEADER" text="CERT_ISSUER"/>
+      </key>
+      <key value="CERT_KEYSIZE">
+        <ast name="NON_APPLICABLE_HEADER" text="CERT_KEYSIZE"/>
+      </key>
+      <key value="CERT_SECRETKEYSIZE">
+        <ast name="NON_APPLICABLE_HEADER" text="CERT_SECRETKEYSIZE"/>
+      </key>
+      <key value="CERT_SERIALNUMBER">
+        <ast name="NON_APPLICABLE_HEADER" text="CERT_SERIALNUMBER"/>
+      </key>
+      <key value="CERT_SERVER_ISSUER">
+        <ast name="NON_APPLICABLE_HEADER" text="CERT_SERVER_ISSUER"/>
+      </key>
+      <key value="CERT_SERVER_SUBJECT">
+        <ast name="NON_APPLICABLE_HEADER" text="CERT_SERVER_SUBJECT"/>
+      </key>
+      <key value="HTTPS_KEYSIZE">
+        <ast name="NON_APPLICABLE_HEADER" text="HTTPS_KEYSIZE"/>
+      </key>
+      <key value="HTTPS_SECRETKEYSIZE">
+        <ast name="NON_APPLICABLE_HEADER" text="HTTPS_SECRETKEYSIZE"/>
+      </key>
+      <key value="HTTPS_SERVER_ISSUER">
+        <ast name="NON_APPLICABLE_HEADER" text="HTTPS_SERVER_ISSUER"/>
+      </key>
+      <key value="HTTPS_SERVER_SUBJECT">
+        <ast name="NON_APPLICABLE_HEADER" text="HTTPS_SERVER_SUBJECT"/>
+      </key>
+      <key value="LOGON_USER">
+        <ast name="NON_APPLICABLE_HEADER" text="HTTPS_SERVER_SUBJECT"/>
+      </key>
+      <!-- For these there is an equivalent -->
+
+      <key value="AUTH_PASSWORD">
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER"/>
+          <ast name="DSTRING" text="PHP_AUTH_PW"/>
+        </ast>
+      </key>
+      <key value="AUTH_TYPE">
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER"/>
+          <ast name="DSTRING" text="PHP_AUTH_TYPE"/>
+        </ast>
+      </key>
+      <key value="AUTH_USER">
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER"/>
+          <ast name="DSTRING" text="PHP_AUTH_USER"/>
+        </ast>
+      </key>
+      <key value="CONTENT_LENGTH">
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER"/>
+          <ast name="DSTRING" text="CONTENT_LENGTH"/>
+        </ast>
+      </key>
+      <key value="CONTENT_TYPE">
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER"/>
+          <ast name="DSTRING" text="CONTENT_TYPE"/>
+        </ast>
+      </key>
+      <key value="GATEWAY_INTEFACE">
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER"/>
+          <ast name="DSTRING" text="GATEWAY_INTEFACE"/>
+        </ast>
+      </key>
+      <key value="HTTP_ACCEPT">
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER"/>
+          <ast name="DSTRING" text="HTTP_ACCEPT"/>
+        </ast>
+      </key>
+      <key value="HTTP_ACCEPT_LANGUAGE">
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER"/>
+          <ast name="DSTRING" text="HTTP_ACCEPT_LANGUAGE"/>
+        </ast>
+      </key>
+      <key value="HTTP_USER_AGENT">
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER"/>
+          <ast name="DSTRING" text="HTTP_USER_AGENT"/>
+        </ast>
+      </key>
+      <key value="HTTP_REFERER">
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER"/>
+          <ast name="DSTRING" text="HTTP_REFERER"/>
+        </ast>
+      </key>
+      <key value="LOCAL_ADDR">
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER"/>
+          <ast name="DSTRING" text="SERVER_ADDRESS"/>
+        </ast>
+      </key>
+      <key value="PATH_INFO">
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER"/>
+          <ast name="DSTRING" text="PATH_INFO"/>
+        </ast>
+      </key>
+      <key value="PATH_TRANSLATED">
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER"/>
+          <ast name="DSTRING" text="PATH_TRANSLATED"/>
+        </ast>
+      </key>
+      <key value="QUERY_STRING">
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER"/>
+          <ast name="DSTRING" text="QUERY_STRING"/>
+        </ast>
+      </key>
+      <key value="REMOTE_ADDR">
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER"/>
+          <ast name="DSTRING" text="REMOTE_ADDR"/>
+        </ast>
+      </key>
+      <key value="REMOTE_HOST">
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER"/>
+          <ast name="DSTRING" text="REMOTE_HOST"/>
+        </ast>
+      </key>
+      <key value="REMOTE_USER">
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER"/>
+          <ast name="DSTRING" text="REMOTE_USER"/>
+        </ast>
+      </key>
+      <key value="REQUEST_METHOD">
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER"/>
+          <ast name="DSTRING" text="REQUEST_METHOD"/>
+        </ast>
+      </key>
+      <key value="SCRIPT_NAME">
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER"/>
+          <ast name="DSTRING" text="SCRIPT_NAME"/>
+        </ast>
+      </key>
+      <key value="SERVER_NAME">
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER"/>
+          <ast name="DSTRING" text="SERVER_NAME"/>
+        </ast>
+      </key>
+      <key value="SERVER_PORT">
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER"/>
+          <ast name="DSTRING" text="SERVER_PORT"/>
+        </ast>
+      </key>
+      <key value="SERVER_PROTOCOL">
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER"/>
+          <ast name="DSTRING" text="SERVER_PROTOCOL"/>
+        </ast>
+      </key>
+      <key value="SERVER_SOFTWARE">
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER"/>
+          <ast name="DSTRING" text="SERVER_SOFTWARE"/>
+        </ast>
+      </key>
+      <key>
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER"/>
+          <ast name="METHOD_CALL" text="formatHeader">
+            <ast name="ARGLIST_VALUES">
+              <arg index="1"/>
+            </ast>
+          </ast>
+        </ast>
+      </key>
+      <key nstr="true">
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER"/>
+          <arg index="1"/>
+        </ast>
+      </key>
+    </map>
+  </method>
+</class>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="ISO-8859-7"?>
+
+<asp>
+  <vb>
+    <original>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="DINT" text="30"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="DINT" text="20"/>
+        </ast>
+      </ast>
+      <ast name="HTML"><![CDATA[
+<!--
+  This is a comment and here I print ]]></ast>
+      <ast name="EQ_HTML" text="=">
+        <ast name="EXPR" text="EXPR">
+          <ast name="IDENTIFIER" text="a"/>
+        </ast>
+      </ast>
+      <ast name="HTML"><![CDATA[<br>
+  This is a comment and here I print ]]></ast>
+      <ast name="EQ_HTML" text="=">
+        <ast name="EXPR" text="EXPR">
+          <ast name="IDENTIFIER" text="b"/>
+        </ast>
+      </ast>
+      <ast name="HTML"><![CDATA[<br>
+  This is a comment and here I print nothing ]]></ast>
+      <ast name="HTML"><![CDATA[<br>
+-->
+]]></ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="DINT" text="30"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="DINT" text="20"/>
+        </ast>
+      </ast>
+      <ast name="HTML"><![CDATA[
+<!--
+  This is a comment and here I print ]]></ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="print">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="IDENTIFIER" text="a"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="HTML"><![CDATA[<br>
+  This is a comment and here I print ]]></ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="print">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="IDENTIFIER" text="b"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="HTML"><![CDATA[<br>
+  This is a comment and here I print nothing ]]></ast>
+      <ast name="HTML"><![CDATA[<br>
+-->
+]]></ast>
+    </translated>
+  </vb>
+</asp>

@@ -1,0 +1,547 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <vb>
+    <original>
+      <ast name="FOR" text="for">
+        <ast name="FOR_INIT" text="for_init">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="METHOD_CALL" text="(">
+                <ast name="IDENTIFIER" text="abs"/>
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="DINT" text="50"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="TO" text="to">
+            <ast name="EXPR" text="EXPR">
+              <ast name="POW" text="^">
+                <ast name="DINT" text="2"/>
+                <ast name="DINT" text="100"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="b"/>
+            <ast name="PLUS" text="+">
+              <ast name="IDENTIFIER" text="b"/>
+              <ast name="DINT" text="1"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FOR" text="for">
+        <ast name="FOR_INIT" text="for_init">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="50"/>
+            </ast>
+          </ast>
+          <ast name="TO" text="to">
+            <ast name="EXPR" text="EXPR">
+              <ast name="PLUS" text="+">
+                <ast name="ASTERISK" text="*">
+                  <ast name="DINT" text="100"/>
+                  <ast name="DINT" text="2"/>
+                </ast>
+                <ast name="DINT" text="67"/>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="STEP" text="step">
+            <ast name="EXPR" text="EXPR">
+              <ast name="DINT" text="1"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="b"/>
+            <ast name="PLUS" text="+">
+              <ast name="IDENTIFIER" text="b"/>
+              <ast name="DINT" text="1"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FOR" text="for">
+        <ast name="FOR_INIT" text="for_init">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="50"/>
+            </ast>
+          </ast>
+          <ast name="TO" text="to">
+            <ast name="EXPR" text="EXPR">
+              <ast name="DINT" text="100"/>
+            </ast>
+          </ast>
+          <ast name="STEP" text="step">
+            <ast name="EXPR" text="EXPR">
+              <ast name="UNARY_PLUS" text="+">
+                <ast name="DINT" text="10"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="b"/>
+            <ast name="PLUS" text="+">
+              <ast name="IDENTIFIER" text="b"/>
+              <ast name="DINT" text="1"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FOR" text="for">
+        <ast name="FOR_INIT" text="for_init">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="50"/>
+            </ast>
+          </ast>
+          <ast name="TO" text="to">
+            <ast name="EXPR" text="EXPR">
+              <ast name="DINT" text="100"/>
+            </ast>
+          </ast>
+          <ast name="STEP" text="step">
+            <ast name="EXPR" text="EXPR">
+              <ast name="UNARY_MINUS" text="-">
+                <ast name="DINT" text="1"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="b"/>
+            <ast name="PLUS" text="+">
+              <ast name="IDENTIFIER" text="b"/>
+              <ast name="DINT" text="1"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FOR" text="for">
+        <ast name="FOR_INIT" text="for_init">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="METHOD_CALL" text="(">
+                <ast name="IDENTIFIER" text="getInit"/>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="TO" text="to">
+            <ast name="EXPR" text="EXPR">
+              <ast name="IDENTIFIER" text="getMax"/>
+            </ast>
+          </ast>
+          <ast name="STEP" text="step">
+            <ast name="EXPR" text="EXPR">
+              <ast name="POW" text="^">
+                <ast name="DINT" text="2"/>
+                <ast name="METHOD_CALL" text="(">
+                  <ast name="IDENTIFIER" text="getStep"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="b"/>
+            <ast name="PLUS" text="+">
+              <ast name="IDENTIFIER" text="b"/>
+              <ast name="DINT" text="1"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="while_step"/>
+          <ast name="POW" text="^">
+            <ast name="DINT" text="2"/>
+            <ast name="METHOD_CALL" text="(">
+              <ast name="IDENTIFIER" text="getStep"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="while_lim"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="IDENTIFIER" text="getInit"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="DO" text="do">
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="b"/>
+            <ast name="PLUS" text="+">
+              <ast name="IDENTIFIER" text="b"/>
+              <ast name="DINT" text="1"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="PLUS" text="+">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="while_step"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="WHILE" text="while">
+          <ast name="EXPR" text="EXPR">
+            <ast name="NEQ" text="&lt;&gt;">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="while_lim"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FOR" text="for">
+        <ast name="IN" text="in">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="EXPR" text="EXPR">
+            <ast name="IDENTIFIER" text="someArray"/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="b"/>
+            <ast name="PLUS" text="+">
+              <ast name="IDENTIFIER" text="b"/>
+              <ast name="IDENTIFIER" text="a"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="someArray"/>
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="Request"/>
+            <ast name="IDENTIFIER" text="Cookies"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FOR" text="for">
+        <ast name="IN" text="in">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="EXPR" text="EXPR">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Request"/>
+              <ast name="IDENTIFIER" text="Cookies"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="b"/>
+            <ast name="PLUS" text="+">
+              <ast name="IDENTIFIER" text="b"/>
+              <ast name="IDENTIFIER" text="a"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FOR" text="for">
+        <ast name="IN" text="in">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="EXPR" text="EXPR">
+            <ast name="IDENTIFIER" text="someArray"/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="b"/>
+            <ast name="PLUS" text="+">
+              <ast name="IDENTIFIER" text="b"/>
+              <ast name="IDENTIFIER" text="a"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="FOR" text="for">
+        <ast name="FOR_INIT" text="for_init">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="METHOD_CALL" text="abs">
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="DINT" text="50"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="LE" text="LE">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="METHOD_CALL" text="pow">
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="DINT" text="2"/>
+                  <ast name="DINT" text="100"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="POST_PLUS" text="++">
+              <ast name="IDENTIFIER" text="a"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="PLUS_ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="b"/>
+            <ast name="DINT" text="1"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FOR" text="for">
+        <ast name="FOR_INIT" text="for_init">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="50"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="LE" text="LE">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="PLUS" text="PLUS">
+                <ast name="ASTERISK" text="ASTERISK">
+                  <ast name="DINT" text="100"/>
+                  <ast name="DINT" text="2"/>
+                </ast>
+                <ast name="DINT" text="67"/>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="POST_PLUS" text="++">
+              <ast name="IDENTIFIER" text="a"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="PLUS_ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="b"/>
+            <ast name="DINT" text="1"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FOR" text="for">
+        <ast name="FOR_INIT" text="for_init">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="50"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="LE" text="LE">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="100"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="PLUS_ASSIGN" text="+=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="10"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="PLUS_ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="b"/>
+            <ast name="DINT" text="1"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FOR" text="for">
+        <ast name="FOR_INIT" text="for_init">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="50"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="GE" text="GE">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="100"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="POST_MINUS" text="--">
+              <ast name="IDENTIFIER" text="a"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="PLUS_ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="b"/>
+            <ast name="DINT" text="1"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="while_step1"/>
+          <ast name="METHOD_CALL" text="pow">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DINT" text="2"/>
+              <ast name="UKNOWN_METHOD" text="getStep"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="while_lim1"/>
+          <ast name="IDENTIFIER" text="getMax"/>
+        </ast>
+      </ast>
+      <ast name="DO" text="Do">
+        <ast name="EXPR" text="EXPR">
+          <ast name="PLUS_ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="b"/>
+            <ast name="DINT" text="1"/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="PLUS_ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="IDENTIFIER" text="while_step1"/>
+          </ast>
+        </ast>
+        <ast name="DO_END" text="while">
+          <ast name="EXPR" text="EXPR">
+            <ast name="NEQ" text="&lt;&gt;">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="while_lim1"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="while_step"/>
+          <ast name="METHOD_CALL" text="pow">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DINT" text="2"/>
+              <ast name="UKNOWN_METHOD" text="getStep"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="while_lim"/>
+          <ast name="UKNOWN_METHOD" text="getInit"/>
+        </ast>
+      </ast>
+      <ast name="DO" text="do">
+        <ast name="EXPR" text="EXPR">
+          <ast name="PLUS_ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="b"/>
+            <ast name="DINT" text="1"/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="PLUS_ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="IDENTIFIER" text="while_step"/>
+          </ast>
+        </ast>
+        <ast name="DO_END" text="while">
+          <ast name="EXPR" text="EXPR">
+            <ast name="NEQ" text="NEQ">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="while_lim"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FOR_EACH" text="forach">
+        <ast name="FOR_INIT" text="for_init">
+          <ast name="EXPR" text="EXPR">
+            <ast name="IDENTIFIER" text="someArray"/>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="IDENTIFIER" text="a"/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="PLUS_ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="b"/>
+            <ast name="IDENTIFIER" text="a"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="someArray"/>
+          <ast name="INDEX_OP" text="INDEX_OP">
+            <ast name="IDENTIFIER" text="_SERVER"/>
+            <ast name="DSTRING" text="HTTP_COOKIE"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FOR_EACH" text="forach">
+        <ast name="FOR_INIT" text="for_init">
+          <ast name="EXPR" text="EXPR">
+            <ast name="INDEX_OP" text="INDEX_OP">
+              <ast name="IDENTIFIER" text="_SERVER"/>
+              <ast name="DSTRING" text="HTTP_COOKIE"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="IDENTIFIER" text="a"/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="PLUS_ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="b"/>
+            <ast name="IDENTIFIER" text="a"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FOR_EACH" text="forach">
+        <ast name="FOR_INIT" text="for_init">
+          <ast name="EXPR" text="EXPR">
+            <ast name="IDENTIFIER" text="someArray"/>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="IDENTIFIER" text="a"/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="PLUS_ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="b"/>
+            <ast name="IDENTIFIER" text="a"/>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </vb>
+</asp>

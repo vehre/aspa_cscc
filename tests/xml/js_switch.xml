@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <js>
+    <original>
+      <ast name="SWITCH" text="switch">
+        <ast name="EXPR" text="EXPR">
+          <ast name="IDENTIFIER" text="a"/>
+        </ast>
+        <ast name="CASE_GROUP" text="CASE_GROUP">
+          <ast name="CASE" text="case">
+            <ast name="EXPR" text="EXPR">
+              <ast name="NUM_INT" text="0"/>
+            </ast>
+          </ast>
+          <ast name="CASE" text="case">
+            <ast name="EXPR" text="EXPR">
+              <ast name="NUM_INT" text="1"/>
+            </ast>
+          </ast>
+          <ast name="SLIST" text="SLIST">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="b"/>
+                <ast name="NUM_INT" text="10"/>
+              </ast>
+            </ast>
+            <ast name="BREAK" text="break"/>
+          </ast>
+        </ast>
+        <ast name="CASE_GROUP" text="CASE_GROUP">
+          <ast name="CASE" text="case">
+            <ast name="EXPR" text="EXPR">
+              <ast name="NUM_INT" text="2"/>
+            </ast>
+          </ast>
+          <ast name="CASE" text="case">
+            <ast name="EXPR" text="EXPR">
+              <ast name="NUM_INT" text="3"/>
+            </ast>
+          </ast>
+          <ast name="CASE" text="case">
+            <ast name="EXPR" text="EXPR">
+              <ast name="NUM_INT" text="4"/>
+            </ast>
+          </ast>
+          <ast name="SLIST" text="SLIST">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="b"/>
+                <ast name="NUM_INT" text="20"/>
+              </ast>
+            </ast>
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="z"/>
+                <ast name="NUM_INT" text="30"/>
+              </ast>
+            </ast>
+            <ast name="BREAK" text="break"/>
+          </ast>
+        </ast>
+        <ast name="CASE_GROUP" text="CASE_GROUP">
+          <ast name="CASE" text="case">
+            <ast name="EXPR" text="EXPR">
+              <ast name="NUM_INT" text="5"/>
+            </ast>
+          </ast>
+          <ast name="SLIST" text="SLIST">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="b"/>
+                <ast name="NUM_INT" text="12"/>
+              </ast>
+            </ast>
+            <ast name="BREAK" text="break"/>
+          </ast>
+        </ast>
+        <ast name="CASE_GROUP" text="CASE_GROUP">
+          <ast name="DEFAULT" text="default"/>
+          <ast name="SLIST" text="SLIST">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="b"/>
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="z"/>
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+            <ast name="BREAK" text="break"/>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="SWITCH" text="switch">
+        <ast name="EXPR" text="EXPR">
+          <ast name="IDENTIFIER" text="a"/>
+        </ast>
+        <ast name="CASE_GROUP" text="CASE_GROUP">
+          <ast name="CASE" text="case">
+            <ast name="EXPR" text="EXPR">
+              <ast name="NUM_INT" text="0"/>
+            </ast>
+          </ast>
+          <ast name="CASE" text="case">
+            <ast name="EXPR" text="EXPR">
+              <ast name="NUM_INT" text="1"/>
+            </ast>
+          </ast>
+          <ast name="SLIST" text="SLIST">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="b"/>
+                <ast name="NUM_INT" text="10"/>
+              </ast>
+            </ast>
+            <ast name="BREAK" text="break"/>
+          </ast>
+        </ast>
+        <ast name="CASE_GROUP" text="CASE_GROUP">
+          <ast name="CASE" text="case">
+            <ast name="EXPR" text="EXPR">
+              <ast name="NUM_INT" text="2"/>
+            </ast>
+          </ast>
+          <ast name="CASE" text="case">
+            <ast name="EXPR" text="EXPR">
+              <ast name="NUM_INT" text="3"/>
+            </ast>
+          </ast>
+          <ast name="CASE" text="case">
+            <ast name="EXPR" text="EXPR">
+              <ast name="NUM_INT" text="4"/>
+            </ast>
+          </ast>
+          <ast name="SLIST" text="SLIST">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="b"/>
+                <ast name="NUM_INT" text="20"/>
+              </ast>
+            </ast>
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="z"/>
+                <ast name="NUM_INT" text="30"/>
+              </ast>
+            </ast>
+            <ast name="BREAK" text="break"/>
+          </ast>
+        </ast>
+        <ast name="CASE_GROUP" text="CASE_GROUP">
+          <ast name="CASE" text="case">
+            <ast name="EXPR" text="EXPR">
+              <ast name="NUM_INT" text="5"/>
+            </ast>
+          </ast>
+          <ast name="SLIST" text="SLIST">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="b"/>
+                <ast name="NUM_INT" text="12"/>
+              </ast>
+            </ast>
+            <ast name="BREAK" text="break"/>
+          </ast>
+        </ast>
+        <ast name="CASE_GROUP" text="CASE_GROUP">
+          <ast name="DEFAULT" text="default"/>
+          <ast name="SLIST" text="SLIST">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="b"/>
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="z"/>
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+            <ast name="BREAK" text="break"/>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </js>
+</asp>

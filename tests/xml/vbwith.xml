@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <vb>
+    <original>
+      <ast name="WITH" text="with">
+        <ast name="EXPR" text="EXPR">
+          <ast name="IDENTIFIER" text="Response"/>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="WITH_DOT" text=".">
+              <ast name="IDENTIFIER" text="expires"/>
+            </ast>
+            <ast name="DINT" text="40"/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Response"/>
+              <ast name="IDENTIFIER" text="expires"/>
+            </ast>
+            <ast name="DINT" text="40"/>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="header">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="DSTRING" text="Expires: "/>
+              <ast name="CONCAT" text="CONCAT">
+                <ast name="METHOD_CALL" text="gmdate">
+                  <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                    <ast name="DSTRING" text="D, d M Y H:i:s"/>
+                    <ast name="PLUS" text="PLUS">
+                      <ast name="METHOD_CALL" text="time"/>
+                      <ast name="DINT" text="40"/>
+                    </ast>
+                  </ast>
+                </ast>
+                <ast name="DSTRING" text="GMT"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="header">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="DSTRING" text="Expires: "/>
+              <ast name="CONCAT" text="CONCAT">
+                <ast name="METHOD_CALL" text="gmdate">
+                  <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                    <ast name="DSTRING" text="D, d M Y H:i:s"/>
+                    <ast name="PLUS" text="PLUS">
+                      <ast name="METHOD_CALL" text="time"/>
+                      <ast name="DINT" text="40"/>
+                    </ast>
+                  </ast>
+                </ast>
+                <ast name="DSTRING" text="GMT"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </vb>
+</asp>

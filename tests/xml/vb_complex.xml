@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <vb>
+    <original>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="IDENTIFIER" text="b"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="Response"/>
+            <ast name="IDENTIFIER" text="Redirect"/>
+          </ast>
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text="&amp;">
+              <ast name="CONCAT" text="&amp;">
+                <ast name="DSTRING" text="http://"/>
+                <ast name="IDENTIFIER" text="host"/>
+              </ast>
+              <ast name="DSTRING" text="/index.html"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="PLUS" text="+">
+            <ast name="PLUS" text="+">
+              <ast name="METHOD_CALL" text="(">
+                <ast name="IDENTIFIER" text="abs"/>
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="ASTERISK" text="*">
+                    <ast name="ASTERISK" text="*">
+                      <ast name="DINT" text="30"/>
+                      <ast name="DINT" text="3"/>
+                    </ast>
+                    <ast name="UNARY_MINUS" text="-">
+                      <ast name="DINT" text="1"/>
+                    </ast>
+                  </ast>
+                </ast>
+              </ast>
+              <ast name="METHOD_CALL" text="(">
+                <ast name="IDENTIFIER" text="round"/>
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="DFLOAT" text="45.567"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="ASTERISK" text="*">
+              <ast name="METHOD_CALL" text="(">
+                <ast name="IDENTIFIER" text="round"/>
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="DFLOAT" text="45.567"/>
+                  <ast name="DINT" text="1"/>
+                </ast>
+              </ast>
+              <ast name="METHOD_CALL" text="(">
+                <ast name="IDENTIFIER" text="fix"/>
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="DFLOAT" text="23.456"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="IDENTIFIER" text="Formatcurrency"/>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DFLOAT" text="2345.56"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="Response"/>
+            <ast name="IDENTIFIER" text="write"/>
+          </ast>
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="METHOD_CALL" text="(">
+              <ast name="DOT" text=".">
+                <ast name="IDENTIFIER" text="Request"/>
+                <ast name="IDENTIFIER" text="Form"/>
+              </ast>
+              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                <ast name="DSTRING" text="a"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="IDENTIFIER" text="abs"/>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="METHOD_CALL" text="(">
+                <ast name="IDENTIFIER" text="fix"/>
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="DFLOAT" text="23.456"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="SUB_CALL" text="Sub Call">
+        <ast name="DOT" text=".">
+          <ast name="IDENTIFIER" text="Response"/>
+          <ast name="IDENTIFIER" text="write"/>
+        </ast>
+        <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+          <ast name="DSTRING" text="Hello There"/>
+        </ast>
+      </ast>
+      <ast name="SUB_CALL" text="Sub Call">
+        <ast name="DOT" text=".">
+          <ast name="IDENTIFIER" text="Response"/>
+          <ast name="IDENTIFIER" text="write"/>
+        </ast>
+        <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+          <ast name="CONCAT" text="&amp;">
+            <ast name="CONCAT" text="&amp;">
+              <ast name="CONCAT" text="&amp;">
+                <ast name="CONCAT" text="&amp;">
+                  <ast name="DSTRING" text="Formats:["/>
+                  <ast name="METHOD_CALL" text="(">
+                    <ast name="IDENTIFIER" text="Formatcurrency"/>
+                    <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                      <ast name="DFLOAT" text="2345.56"/>
+                    </ast>
+                  </ast>
+                </ast>
+                <ast name="DSTRING" text=", "/>
+              </ast>
+              <ast name="METHOD_CALL" text="(">
+                <ast name="IDENTIFIER" text="Formatcurrency"/>
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="DFLOAT" text="2345.56"/>
+                  <ast name="DINT" text="1"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="DSTRING" text="]&lt;br&gt;"/>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="IDENTIFIER" text="b"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="header">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="DSTRING" text="Location: "/>
+              <ast name="CONCAT" text="CONCAT">
+                <ast name="CONCAT" text="CONCAT">
+                  <ast name="DSTRING" text="http://"/>
+                  <ast name="IDENTIFIER" text="host"/>
+                </ast>
+                <ast name="DSTRING" text="/index.html"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="PLUS" text="PLUS">
+            <ast name="PLUS" text="PLUS">
+              <ast name="METHOD_CALL" text="abs">
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="ASTERISK" text="ASTERISK">
+                    <ast name="ASTERISK" text="ASTERISK">
+                      <ast name="DINT" text="30"/>
+                      <ast name="DINT" text="3"/>
+                    </ast>
+                    <ast name="UNARY_MINUS" text="-">
+                      <ast name="DINT" text="1"/>
+                    </ast>
+                  </ast>
+                </ast>
+              </ast>
+              <ast name="METHOD_CALL" text="round">
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="DFLOAT" text="45.567"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="ASTERISK" text="ASTERISK">
+              <ast name="METHOD_CALL" text="round">
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="DFLOAT" text="45.567"/>
+                  <ast name="DINT" text="1"/>
+                </ast>
+              </ast>
+              <ast name="ASTERISK" text="ASTERISK">
+                <ast name="METHOD_CALL" text="floor">
+                  <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                    <ast name="METHOD_CALL" text="abs">
+                      <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                        <ast name="DFLOAT" text="23.456"/>
+                      </ast>
+                    </ast>
+                  </ast>
+                </ast>
+                <ast name="CONDITIONAL" text="CONDITIONAL">
+                  <ast name="GT" text="GT">
+                    <ast name="DFLOAT" text="23.456"/>
+                    <ast name="DINT" text="0"/>
+                  </ast>
+                  <ast name="DINT" text="1"/>
+                  <ast name="DINT" text="-1"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="METHOD_CALL" text="money_format">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="%i"/>
+              <ast name="DFLOAT" text="2345.56"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="print">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="INDEX_OP" text="INDEX_OP">
+              <ast name="IDENTIFIER" text="HTTP_POST_VARS"/>
+              <ast name="DSTRING" text="a"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="abs">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="ASTERISK" text="ASTERISK">
+                <ast name="METHOD_CALL" text="floor">
+                  <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                    <ast name="METHOD_CALL" text="abs">
+                      <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                        <ast name="DFLOAT" text="23.456"/>
+                      </ast>
+                    </ast>
+                  </ast>
+                </ast>
+                <ast name="CONDITIONAL" text="CONDITIONAL">
+                  <ast name="GT" text="GT">
+                    <ast name="DFLOAT" text="23.456"/>
+                    <ast name="DINT" text="0"/>
+                  </ast>
+                  <ast name="DINT" text="1"/>
+                  <ast name="DINT" text="-1"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="print">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="DSTRING" text="Hello There"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="print">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="CONCAT" text="CONCAT">
+                <ast name="CONCAT" text="CONCAT">
+                  <ast name="CONCAT" text="CONCAT">
+                    <ast name="DSTRING" text="Formats:["/>
+                    <ast name="METHOD_CALL" text="money_format">
+                      <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                        <ast name="DSTRING" text="%i"/>
+                        <ast name="DFLOAT" text="2345.56"/>
+                      </ast>
+                    </ast>
+                  </ast>
+                  <ast name="DSTRING" text=", "/>
+                </ast>
+                <ast name="METHOD_CALL" text="money_format">
+                  <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                    <ast name="CONCAT" text="CONCAT">
+                      <ast name="CONCAT" text="CONCAT">
+                        <ast name="DSTRING" text="%."/>
+                        <ast name="DINT" text="1"/>
+                      </ast>
+                      <ast name="DSTRING" text="i"/>
+                    </ast>
+                    <ast name="DFLOAT" text="2345.56"/>
+                  </ast>
+                </ast>
+              </ast>
+              <ast name="DSTRING" text="]&lt;br&gt;"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </vb>
+</asp>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="ISO-8859-7"?>
+
+<asp>
+  <vb>
+    <original>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="objConn"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Server"/>
+              <ast name="IDENTIFIER" text="CreateObject"/>
+            </ast>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="ADODB.Connection"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="objConn"/>
+            <ast name="IDENTIFIER" text="Open"/>
+          </ast>
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="IDENTIFIER" text="adConnStr"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="rs"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="objConn"/>
+              <ast name="IDENTIFIER" text="Execute"/>
+            </ast>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="GET_OLD_SPONSORSHIPS"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="SUB_CALL" text="Sub Call">
+        <ast name="DOT" text=".">
+          <ast name="IDENTIFIER" text="Response"/>
+          <ast name="IDENTIFIER" text="write"/>
+        </ast>
+        <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+          <ast name="CONCAT" text="&amp;">
+            <ast name="CONCAT" text="&amp;">
+              <ast name="METHOD_CALL" text="(">
+                <ast name="IDENTIFIER" text="rs"/>
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="DSTRING" text="spID"/>
+                </ast>
+              </ast>
+              <ast name="METHOD_CALL" text="(">
+                <ast name="IDENTIFIER" text="rs"/>
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="DSTRING" text="Title"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="DOT" text=".">
+              <ast name="METHOD_CALL" text="(">
+                <ast name="IDENTIFIER" text="rs"/>
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="DSTRING" text="Title"/>
+                </ast>
+              </ast>
+              <ast name="IDENTIFIER" text="value"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="DOT" text=".">
+          <ast name="IDENTIFIER" text="rs"/>
+          <ast name="IDENTIFIER" text="close"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="DOT" text=".">
+          <ast name="IDENTIFIER" text="objConn"/>
+          <ast name="IDENTIFIER" text="close"/>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="ASSIGN">
+          <ast name="IDENTIFIER" text="objConn"/>
+          <ast name="METHOD_CALL" text="initConnection">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="adConnStr"/>
+              <ast name="NULL" text="NULL"/>
+              <ast name="NULL" text="NULL"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="print">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="CONCAT" text="CONCAT">
+                <ast name="DOT" text="DOT">
+                  <ast name="IDENTIFIER" text="rs"/>
+                  <ast name="METHOD_CALL" text="Fields">
+                    <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                      <ast name="DSTRING" text="spID"/>
+                    </ast>
+                  </ast>
+                </ast>
+                <ast name="DOT" text="DOT">
+                  <ast name="IDENTIFIER" text="rs"/>
+                  <ast name="METHOD_CALL" text="Fields">
+                    <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                      <ast name="DSTRING" text="Title"/>
+                    </ast>
+                  </ast>
+                </ast>
+              </ast>
+              <ast name="DOT" text="DOT">
+                <ast name="IDENTIFIER" text="rs"/>
+                <ast name="METHOD_CALL" text="Fields">
+                  <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                    <ast name="DSTRING" text="Title"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="DOT" text="DOT">
+          <ast name="IDENTIFIER" text="rs"/>
+          <ast name="METHOD_CALL" text="Close"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="DOT" text="DOT">
+          <ast name="IDENTIFIER" text="objConn"/>
+          <ast name="METHOD_CALL" text="Close"/>
+        </ast>
+      </ast>
+    </translated>
+  </vb>
+</asp>

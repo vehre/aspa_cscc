@@ -1,0 +1,10 @@
+digraph L0 {
+        size = "4,3";
+        ordering=out;
+        node [shape = plaintext];
+        REDIM -> {array1 array2};
+        array1[label=IDENTIFIER];
+        array1 -> {2 5};
+        array2[label=IDENTIFIER];
+        array2 -> {10 20};
+}

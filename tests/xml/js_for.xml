@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <js>
+    <original>
+      <ast name="FOR" text="for">
+        <ast name="FOR_INIT" text="FOR_INIT">
+          <ast name="ELIST" text="ELIST">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="a"/>
+                <ast name="NUM_INT" text="1"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="FOR_CONDITION" text="FOR_CONDITION">
+          <ast name="EXPR" text="EXPR">
+            <ast name="LT" text="&lt;">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="NUM_INT" text="100"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="FOR_ITERATOR" text="FOR_ITERATOR">
+          <ast name="ELIST" text="ELIST">
+            <ast name="EXPR" text="EXPR">
+              <ast name="POST_INC" text="++">
+                <ast name="IDENTIFIER" text="a"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="SLIST" text="{"/>
+      </ast>
+      <ast name="FOR" text="for">
+        <ast name="FOR_INIT" text="FOR_INIT">
+          <ast name="VAR" text="var">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="a"/>
+                <ast name="NUM_INT" text="20"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="FOR_CONDITION" text="FOR_CONDITION">
+          <ast name="EXPR" text="EXPR">
+            <ast name="NOT_EQUAL" text="!=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="NUM_INT" text="100"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="FOR_ITERATOR" text="FOR_ITERATOR">
+          <ast name="ELIST" text="ELIST">
+            <ast name="EXPR" text="EXPR">
+              <ast name="PLUS_ASSIGN" text="+=">
+                <ast name="IDENTIFIER" text="a"/>
+                <ast name="NUM_INT" text="20"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="SLIST" text="{"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="LBRACK" text="[">
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="1"/>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="2"/>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="3"/>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="4"/>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="5"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FOR" text="for">
+        <ast name="IN" text="in">
+          <ast name="EXPR" text="EXPR">
+            <ast name="IDENTIFIER" text="a"/>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="IDENTIFIER" text="b"/>
+          </ast>
+        </ast>
+        <ast name="SEMI" text=";"/>
+      </ast>
+      <ast name="FOR" text="for">
+        <ast name="FOR_INIT" text="FOR_INIT"/>
+        <ast name="FOR_CONDITION" text="FOR_CONDITION">
+          <ast name="EXPR" text="EXPR">
+            <ast name="LT" text="&lt;">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="NUM_INT" text="100"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="FOR_ITERATOR" text="FOR_ITERATOR">
+          <ast name="ELIST" text="ELIST">
+            <ast name="EXPR" text="EXPR">
+              <ast name="POST_INC" text="++">
+                <ast name="IDENTIFIER" text="a"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="SEMI" text=";"/>
+      </ast>
+      <ast name="FOR" text="for">
+        <ast name="FOR_INIT" text="FOR_INIT"/>
+        <ast name="FOR_CONDITION" text="FOR_CONDITION"/>
+        <ast name="FOR_ITERATOR" text="FOR_ITERATOR">
+          <ast name="ELIST" text="ELIST">
+            <ast name="EXPR" text="EXPR">
+              <ast name="POST_INC" text="++">
+                <ast name="IDENTIFIER" text="a"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="SEMI" text=";"/>
+      </ast>
+      <ast name="FOR" text="for">
+        <ast name="FOR_INIT" text="FOR_INIT"/>
+        <ast name="FOR_CONDITION" text="FOR_CONDITION"/>
+        <ast name="FOR_ITERATOR" text="FOR_ITERATOR"/>
+        <ast name="SEMI" text=";"/>
+      </ast>
+    </original>
+    <translated>
+      <ast name="FOR" text="for">
+        <ast name="FOR_INIT" text="FOR_INIT">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="NUM_INT" text="1"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="FOR_CONDITION" text="FOR_CONDITION">
+          <ast name="EXPR" text="EXPR">
+            <ast name="LT" text="&lt;">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="NUM_INT" text="100"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="FOR_ITERATOR" text="FOR_ITERATOR">
+          <ast name="EXPR" text="EXPR">
+            <ast name="POST_INC" text="++">
+              <ast name="IDENTIFIER" text="a"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="SLIST" text="{"/>
+      </ast>
+      <ast name="FOR" text="for">
+        <ast name="FOR_INIT" text="FOR_INIT">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="NUM_INT" text="20"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="FOR_CONDITION" text="FOR_CONDITION">
+          <ast name="EXPR" text="EXPR">
+            <ast name="NOT_EQUAL" text="!=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="NUM_INT" text="100"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="FOR_ITERATOR" text="FOR_ITERATOR">
+          <ast name="EXPR" text="EXPR">
+            <ast name="PLUS_ASSIGN" text="+=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="NUM_INT" text="20"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="SLIST" text="{"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="METHOD_CALL" text="array">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="NUM_INT" text="1"/>
+              <ast name="NUM_INT" text="2"/>
+              <ast name="NUM_INT" text="3"/>
+              <ast name="NUM_INT" text="4"/>
+              <ast name="NUM_INT" text="5"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FOR" text="for">
+        <ast name="IN" text="in">
+          <ast name="EXPR" text="EXPR">
+            <ast name="IDENTIFIER" text="a"/>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="IDENTIFIER" text="b"/>
+          </ast>
+        </ast>
+        <ast name="SEMI" text=";"/>
+      </ast>
+      <ast name="FOR" text="for">
+        <ast name="FOR_INIT" text="FOR_INIT"/>
+        <ast name="FOR_CONDITION" text="FOR_CONDITION">
+          <ast name="EXPR" text="EXPR">
+            <ast name="LT" text="&lt;">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="NUM_INT" text="100"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="FOR_ITERATOR" text="FOR_ITERATOR">
+          <ast name="EXPR" text="EXPR">
+            <ast name="POST_INC" text="++">
+              <ast name="IDENTIFIER" text="a"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="SEMI" text=";"/>
+      </ast>
+      <ast name="FOR" text="for">
+        <ast name="FOR_INIT" text="FOR_INIT"/>
+        <ast name="FOR_CONDITION" text="FOR_CONDITION"/>
+        <ast name="FOR_ITERATOR" text="FOR_ITERATOR">
+          <ast name="EXPR" text="EXPR">
+            <ast name="POST_INC" text="++">
+              <ast name="IDENTIFIER" text="a"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="SEMI" text=";"/>
+      </ast>
+      <ast name="FOR" text="for">
+        <ast name="FOR_INIT" text="FOR_INIT"/>
+        <ast name="FOR_CONDITION" text="FOR_CONDITION"/>
+        <ast name="FOR_ITERATOR" text="FOR_ITERATOR"/>
+        <ast name="SEMI" text=";"/>
+      </ast>
+    </translated>
+  </js>
+</asp>

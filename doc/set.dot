@@ -1,0 +1,8 @@
+digraph L0 {
+        size = "3,2.5";
+        ordering=out;
+        node [shape = plaintext];
+        EXPR -> assign;
+        assign[label=ASSIGN];
+        assign -> {IDENTIFIER objectExpression};
+}

@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <vb>
+    <original>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="DINT" text="0"/>
+        </ast>
+      </ast>
+      <ast name="DO_UNTIL" text="do_until">
+        <ast name="EXPR" text="EXPR">
+          <ast name="GT" text="&gt;">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="DINT" text="30"/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="PLUS" text="+">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="1"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="DINT" text="0"/>
+        </ast>
+      </ast>
+      <ast name="DO_WHILE" text="do_while">
+        <ast name="EXPR" text="EXPR">
+          <ast name="LT" text="&lt;">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="DINT" text="30"/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="PLUS" text="+">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="1"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="DINT" text="0"/>
+        </ast>
+      </ast>
+      <ast name="DO" text="do">
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="PLUS" text="+">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="1"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="UNTIL" text="until">
+          <ast name="EXPR" text="EXPR">
+            <ast name="EQ" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="30"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="DINT" text="0"/>
+        </ast>
+      </ast>
+      <ast name="DO" text="do">
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="PLUS" text="+">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="1"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="WHILE" text="while">
+          <ast name="EXPR" text="EXPR">
+            <ast name="LT" text="&lt;">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="30"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="DINT" text="0"/>
+        </ast>
+      </ast>
+      <ast name="DO" text="do">
+        <ast name="DO_WHILE" text="do_while">
+          <ast name="EXPR" text="EXPR">
+            <ast name="LT" text="&lt;">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="30"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="b"/>
+              <ast name="PLUS" text="+">
+                <ast name="IDENTIFIER" text="b"/>
+                <ast name="DINT" text="1"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="PLUS" text="+">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="1"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="UNTIL" text="until">
+          <ast name="EXPR" text="EXPR">
+            <ast name="EQ" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="30"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="DO" text="do">
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="b"/>
+            <ast name="PLUS" text="+">
+              <ast name="IDENTIFIER" text="b"/>
+              <ast name="DINT" text="1"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="IF_ELSE" text="IfThenElse">
+          <ast name="IF" text="if">
+            <ast name="EXPR" text="EXPR">
+              <ast name="GT" text="&gt;">
+                <ast name="IDENTIFIER" text="b"/>
+                <ast name="DINT" text="100"/>
+              </ast>
+            </ast>
+            <ast name="EXIT" text="exit">
+              <ast name="DO" text="do"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="DO_UNTIL" text="do_until">
+        <ast name="EXPR" text="EXPR">
+          <ast name="EQ" text="=">
+            <ast name="IDENTIFIER" text="DefResp"/>
+            <ast name="IDENTIFIER" text="vbNo"/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="MyNum"/>
+            <ast name="METHOD_CALL" text="(">
+              <ast name="IDENTIFIER" text="Int"/>
+              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                <ast name="PLUS" text="+">
+                  <ast name="ASTERISK" text="*">
+                    <ast name="DINT" text="6"/>
+                    <ast name="IDENTIFIER" text="Rnd"/>
+                  </ast>
+                  <ast name="DINT" text="1"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="DefResp"/>
+            <ast name="METHOD_CALL" text="(">
+              <ast name="IDENTIFIER" text="MsgBox"/>
+              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                <ast name="CONCAT" text="&amp;">
+                  <ast name="IDENTIFIER" text="MyNum"/>
+                  <ast name="DSTRING" text=" Do you want another number?"/>
+                </ast>
+                <ast name="IDENTIFIER" text="vbYesNo"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="DIM" text="Dim">
+        <ast name="IDENTIFIER" text="Check"/>
+        <ast name="IDENTIFIER" text="Counter"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="Check"/>
+          <ast name="TRUE" text="True"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="Counter"/>
+          <ast name="DINT" text="0"/>
+        </ast>
+      </ast>
+      <ast name="DO" text="Do">
+        <ast name="DO_WHILE" text="do_while">
+          <ast name="EXPR" text="EXPR">
+            <ast name="LT" text="&lt;">
+              <ast name="IDENTIFIER" text="Counter"/>
+              <ast name="DINT" text="20"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="Counter"/>
+              <ast name="PLUS" text="+">
+                <ast name="IDENTIFIER" text="Counter"/>
+                <ast name="DINT" text="1"/>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="IF_ELSE" text="IfThenElse">
+            <ast name="IF" text="If">
+              <ast name="EXPR" text="EXPR">
+                <ast name="EQ" text="=">
+                  <ast name="IDENTIFIER" text="Counter"/>
+                  <ast name="DINT" text="10"/>
+                </ast>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="ASSIGN" text="=">
+                  <ast name="IDENTIFIER" text="Check"/>
+                  <ast name="FALSE" text="False"/>
+                </ast>
+              </ast>
+              <ast name="EXIT" text="Exit">
+                <ast name="DO" text="Do"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="UNTIL" text="Until">
+          <ast name="EXPR" text="EXPR">
+            <ast name="EQ" text="=">
+              <ast name="IDENTIFIER" text="Check"/>
+              <ast name="FALSE" text="False"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="DIM" text="Dim">
+        <ast name="IDENTIFIER" text="Counter"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="Counter"/>
+          <ast name="DINT" text="0"/>
+        </ast>
+      </ast>
+      <ast name="WHILE_WEND" text="While">
+        <ast name="EXPR" text="EXPR">
+          <ast name="LT" text="&lt;">
+            <ast name="IDENTIFIER" text="Counter"/>
+            <ast name="DINT" text="20"/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="Counter"/>
+            <ast name="PLUS" text="+">
+              <ast name="IDENTIFIER" text="Counter"/>
+              <ast name="DINT" text="1"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="SUB_CALL" text="Sub Call">
+          <ast name="IDENTIFIER" text="Alert"/>
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="IDENTIFIER" text="Counter"/>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="DINT" text="0"/>
+        </ast>
+      </ast>
+      <ast name="WHILE" text="while">
+        <ast name="EXPR" text="EXPR">
+          <ast name="LE" text="LE">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="DINT" text="30"/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="PLUS_ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="DINT" text="1"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="DINT" text="0"/>
+        </ast>
+      </ast>
+      <ast name="WHILE" text="while">
+        <ast name="EXPR" text="EXPR">
+          <ast name="LT" text="LT">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="DINT" text="30"/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="PLUS_ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="DINT" text="1"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="DINT" text="0"/>
+        </ast>
+      </ast>
+      <ast name="DO" text="do">
+        <ast name="EXPR" text="EXPR">
+          <ast name="PLUS_ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="DINT" text="1"/>
+          </ast>
+        </ast>
+        <ast name="DO_END" text="while">
+          <ast name="EXPR" text="EXPR">
+            <ast name="NEQ" text="NEQ">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="30"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="DINT" text="0"/>
+        </ast>
+      </ast>
+      <ast name="DO" text="do">
+        <ast name="EXPR" text="EXPR">
+          <ast name="PLUS_ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="DINT" text="1"/>
+          </ast>
+        </ast>
+        <ast name="DO_END" text="while">
+          <ast name="EXPR" text="EXPR">
+            <ast name="LT" text="LT">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="30"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="DINT" text="0"/>
+        </ast>
+      </ast>
+      <ast name="DO" text="do">
+        <ast name="WHILE" text="while">
+          <ast name="EXPR" text="EXPR">
+            <ast name="LT" text="LT">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="30"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="PLUS_ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="b"/>
+              <ast name="DINT" text="1"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="PLUS_ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="DINT" text="1"/>
+          </ast>
+        </ast>
+        <ast name="DO_END" text="while">
+          <ast name="EXPR" text="EXPR">
+            <ast name="NEQ" text="NEQ">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="30"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="DO" text="do">
+        <ast name="EXPR" text="EXPR">
+          <ast name="PLUS_ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="b"/>
+            <ast name="DINT" text="1"/>
+          </ast>
+        </ast>
+        <ast name="IF_ELSE" text="IfThenElse">
+          <ast name="IF" text="if">
+            <ast name="EXPR" text="EXPR">
+              <ast name="GT" text="GT">
+                <ast name="IDENTIFIER" text="b"/>
+                <ast name="DINT" text="100"/>
+              </ast>
+            </ast>
+            <ast name="BREAK" text="break"/>
+          </ast>
+        </ast>
+        <ast name="DO_END" text="while">
+          <ast name="EXPR" text="EXPR">
+            <ast name="TRUE" text="true"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="WHILE" text="while">
+        <ast name="EXPR" text="EXPR">
+          <ast name="NEQ" text="NEQ">
+            <ast name="IDENTIFIER" text="DefResp"/>
+            <ast name="IDENTIFIER" text="vbNo"/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="MyNum"/>
+            <ast name="METHOD_CALL" text="floor">
+              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                <ast name="PLUS" text="PLUS">
+                  <ast name="ASTERISK" text="ASTERISK">
+                    <ast name="DINT" text="6"/>
+                    <ast name="IDENTIFIER" text="Rnd"/>
+                  </ast>
+                  <ast name="DINT" text="1"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="DefResp"/>
+            <ast name="UKNOWN_METHOD" text="MsgBox">
+              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                <ast name="CONCAT" text="CONCAT">
+                  <ast name="IDENTIFIER" text="MyNum"/>
+                  <ast name="DSTRING" text=" Do you want another number?"/>
+                </ast>
+                <ast name="IDENTIFIER" text="vbYesNo"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="Check"/>
+          <ast name="TRUE" text="True"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="Counter"/>
+          <ast name="DINT" text="0"/>
+        </ast>
+      </ast>
+      <ast name="DO" text="do">
+        <ast name="WHILE" text="while">
+          <ast name="EXPR" text="EXPR">
+            <ast name="LT" text="LT">
+              <ast name="IDENTIFIER" text="Counter"/>
+              <ast name="DINT" text="20"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="PLUS_ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="Counter"/>
+              <ast name="DINT" text="1"/>
+            </ast>
+          </ast>
+          <ast name="IF_ELSE" text="IfThenElse">
+            <ast name="IF" text="If">
+              <ast name="EXPR" text="EXPR">
+                <ast name="EQ" text="=">
+                  <ast name="IDENTIFIER" text="Counter"/>
+                  <ast name="DINT" text="10"/>
+                </ast>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="ASSIGN" text="=">
+                  <ast name="IDENTIFIER" text="Check"/>
+                  <ast name="FALSE" text="False"/>
+                </ast>
+              </ast>
+              <ast name="BREAK" text="break"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="DO_END" text="while">
+          <ast name="EXPR" text="EXPR">
+            <ast name="NEQ" text="NEQ">
+              <ast name="IDENTIFIER" text="Check"/>
+              <ast name="FALSE" text="False"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="Counter"/>
+          <ast name="DINT" text="0"/>
+        </ast>
+      </ast>
+      <ast name="WHILE" text="While">
+        <ast name="EXPR" text="EXPR">
+          <ast name="LT" text="LT">
+            <ast name="IDENTIFIER" text="Counter"/>
+            <ast name="DINT" text="20"/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="PLUS_ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="Counter"/>
+            <ast name="DINT" text="1"/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="UKNOWN_METHOD" text="Alert">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="Counter"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </vb>
+</asp>

@@ -1,0 +1,273 @@
+<!--
+    This file is part of Aspa.
+
+    Aspa is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    Aspa is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Aspa; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+-->
+<class name="Response">
+  <class name="ResponseCokie" dependant="true">
+    <class name="ResponseCokieSubValue" dependant="true">
+        <property name="AsignSubCookie" default="true" type="VOID">
+            <arg type="DSTRING" />
+            <write>
+                <ast name="METHOD_CALL" text="set_cookie">
+                    <ast name="ARGLIST_VALUES">
+                        <ast name="CONCAT">
+                            <arg index="1"/>
+                            <ast name="CONCAT">
+                                <ast name="DSTRING" text="[" />
+                                <ast name="CONCAT">
+                                    <arg index="2" />
+                                    <ast name="DSTRING" text="]" />
+                                </ast>
+                            </ast>
+                        </ast>
+                        <arg index="3" />
+                    </ast>
+                </ast>
+            </write>
+        </property>
+    </class>
+    <method name="SubCookie" type="OBJECT" default="true"
+    use="ResponseCokieSubValue" />
+    <property name="AsignCookie" default="true" type="VOID">
+        <arg type="DSTRING" />
+        <write>
+            <ast name="METHOD_CALL" text="set_cookie">
+                <ast name="ARGLIST_VALUES">
+                    <arg index="1"/>
+                    <arg index="2" />
+                </ast>
+            </ast>
+        </write>
+    </property>
+    <!--
+    Here would go other properties like
+    Domain, Expires, HasKeys, Path, Secure
+
+    For this to work, I should add a notation of incomplete translations.
+    The idea is to translate an expression like Response.Cookies(a) = b when
+    found but afterwords if an expression like
+    Response.Cookies(a).Path = somePath is found, I should delete the first
+    tarnslation and use this property in the setcookie method.
+    Things get more complicated when Response.Cookies(a).Path = somePath
+    is in a conditional block.
+    This requires more thought.
+    -->
+  </class>
+
+
+  <property name="Buffer" type="DBOOL">
+    <arg type="DBOOL" />
+    <write>
+        <ast name="METHOD_CALL" text="ob_start" />
+    </write>
+  </property>
+
+  <!-- Check w3 for header name -->
+  <property name="CacheControl" type="DSTRING">
+    <arg type="DSTRING" />
+    <read>
+      <ast name="METHOD_CALL" text="session_cache_limiter" />
+    </read>
+    <write>
+      <ast name="METHOD_CALL" text="session_cache_limiter">
+          <ast name="ARGLIST_VALUES">
+              <arg index="1" />
+          </ast>
+      </ast>
+    </write>
+  </property>
+
+  <property name="ContentType" type="DSTRING">
+    <arg type="DSTRING" />
+    <read>
+        <ast name="INDEX_OP">
+          <ast name="IDENTIFIER" text="_SERVER" />
+          <ast name="DSTRING"    text="CONTENT_TYPE" />
+      </ast>
+    </read>
+    <write>
+        <ast name="METHOD_CALL" text="header">
+            <ast name="ARGLIST_VALUES">
+                <ast name="CONCAT">
+                    <ast name="DSTRING" text="Content-type: "/>
+                    <arg index="1" />
+                </ast>
+            </ast>
+        </ast>
+    </write>
+  </property>
+
+  <property name="IsClientConnected" type="DBOOL">
+      <read>
+          <ast name="EQ">
+              <ast name="METHOD_CALL" text="connection_status" />
+              <ast name="DINT" text="0" />
+          </ast>
+      </read>
+  </property>
+
+  <property name="Status" type="DSTRING">
+    <arg type="DSTRING" />
+    <write>
+        <ast name="METHOD_CALL" text="header">
+            <ast name="ARGLIST_VALUES">
+                <ast name="CONCAT">
+                    <ast name="DSTRING" text="Status: "/>
+                    <arg index="1" />
+                </ast>
+            </ast>
+        </ast>
+    </write>
+  </property>
+
+  <property name="Pics" type="DSTRING">
+    <arg type="DSTRING" />
+    <write>
+        <ast name="METHOD_CALL" text="header">
+            <ast name="ARGLIST_VALUES">
+                <ast name="CONCAT">
+                    <ast name="DSTRING" text="pics-label: "/>
+                    <arg index="1" />
+                </ast>
+            </ast>
+        </ast>
+    </write>
+  </property>
+
+  <property name="Expires" type="DSTRING">
+    <arg type="DSTRING" />
+    <write>
+        <ast name="METHOD_CALL" text="header">
+            <!-- header("Expires: " . gmdate("D, d M Y H:i:s", time() + arg) . "GMT") -->
+            <ast name="ARGLIST_VALUES">
+                <ast name="CONCAT">
+                    <ast name="DSTRING" text="Expires: " />
+                    <ast name="CONCAT">
+                        <ast name="METHOD_CALL" text="gmdate">
+                            <ast name="ARGLIST_VALUES">
+                                <ast name="DSTRING" text="D, d M Y H:i:s" />
+                                <ast name="PLUS">
+                                    <ast name="METHOD_CALL" text="time" />
+                                    <arg index="1" />
+                                </ast>
+                            </ast>
+                        </ast>
+                        <ast name="DSTRING" text="GMT" />
+                    </ast>
+                </ast>
+            </ast>
+        </ast>
+    </write>
+  </property>
+
+  <!--
+  ISSUE
+  <property name="Charset" type="DSTRING">
+    <arg type="DSTRING" />
+    <write>
+        <ast name="METHOD_CALL" text="header">
+            <ast name="ARGLIST_VALUES">
+                <ast name="CONCAT">
+                    <ast name="DSTRING" text="Expires: " />
+                    <arg index="1" />
+                </ast>
+            </ast>
+        </ast>
+    </write>
+  </property>
+
+
+  <method name="BinaryWrite" type="VOID">
+      <arg type="DSTRING" />
+  </method>
+  -->
+
+  <property name="ExpiresAbsolute" type="DSTRING">
+    <arg type="DSTRING" />
+    <write>
+        <ast name="METHOD_CALL" text="header">
+            <ast name="ARGLIST_VALUES">
+                <ast name="CONCAT">
+                    <ast name="DSTRING" text="Expires: " />
+                    <arg index="1" />
+                </ast>
+            </ast>
+        </ast>
+    </write>
+  </property>
+
+  <method name="AddHeader" type="VOID">
+    <arg type="DSTRING" />
+    <arg type="DSTRING" />
+    <ast name="METHOD_CALL" text="header">
+        <ast name="ARGLIST_VALUES">
+            <ast name="CONCAT">
+                <ast name="CONCAT">
+                    <arg index="1" />
+                    <ast name="DSTRING" text=": "/>
+                </ast>
+                <arg index="2" />
+            </ast>
+        </ast>
+    </ast>
+  </method>
+
+  <method name="AppendToLog" type="VOID">
+    <arg type="DSTRING" />
+    <ast name="METHOD_CALL" text="error_log">
+        <ast name="ARGLIST_VALUES">
+            <arg index="1" />
+        </ast>
+    </ast>
+  </method>
+
+  <method name="Clear" type="VOID">
+    <ast name="METHOD_CALL" text="ob_clean" />
+  </method>
+
+  <method name="End" type="VOID">
+    <ast name="METHOD_CALL" text="ob_flush_end" />
+    <ast name="METHOD_CALL" text="exit" />
+  </method>
+
+  <method name="Flush" type="VOID">
+    <ast name="METHOD_CALL" text="ob_flush" />
+  </method>
+
+  <method name="Redirect" type="VOID">
+    <arg type="DSTRING" />
+    <ast name="METHOD_CALL" text="header">
+        <ast name="ARGLIST_VALUES">
+            <ast name="CONCAT">
+                <ast name="DSTRING" text="Location: " />
+                <arg index="1" />
+            </ast>
+        </ast>
+    </ast>
+  </method>
+
+  <method name="Write" type="VOID">
+    <arg type="DSTRING" />
+    <ast name="METHOD_CALL" text="print">
+        <ast name="ARGLIST_VALUES">
+            <arg index="1" />
+        </ast>
+    </ast>
+  </method>
+
+
+  <method name="Cookies" type="OBJECT" use="ResponseCokie" />
+</class>

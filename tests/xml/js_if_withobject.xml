@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <js>
+    <original>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="NOT_EQUAL" text="!=">
+            <ast name="DOT" text=".">
+              <ast name="METHOD_CALL" text="(">
+                <ast name="DOT" text=".">
+                  <ast name="IDENTIFIER" text="Request"/>
+                  <ast name="IDENTIFIER" text="QueryString"/>
+                </ast>
+                <ast name="ELIST" text="ELIST">
+                  <ast name="EXPR" text="EXPR">
+                    <ast name="STRING_LITERAL" text="some_param"/>
+                  </ast>
+                </ast>
+              </ast>
+              <ast name="IDENTIFIER" text="Count"/>
+            </ast>
+            <ast name="NUM_INT" text="0"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="IF" text="if">
+        <ast name="EXPR" text="EXPR">
+          <ast name="NOT_EQUAL" text="!=">
+            <ast name="DOT" text=".">
+              <ast name="METHOD_CALL" text="(">
+                <ast name="DOT" text=".">
+                  <ast name="IDENTIFIER" text="Request"/>
+                  <ast name="IDENTIFIER" text="QueryString"/>
+                </ast>
+                <ast name="ELIST" text="ELIST">
+                  <ast name="EXPR" text="EXPR">
+                    <ast name="STRING_LITERAL" text="some_param"/>
+                  </ast>
+                </ast>
+              </ast>
+              <ast name="IDENTIFIER" text="Count"/>
+            </ast>
+            <ast name="NUM_INT" text="0"/>
+          </ast>
+        </ast>
+        <ast name="SLIST" text="{">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="NUM_INT" text="20"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="ELSE" text="else">
+          <ast name="SLIST" text="{">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="a"/>
+                <ast name="NUM_INT" text="30"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="NOT_EQUAL" text="!=">
+            <ast name="METHOD_CALL" text="substr_count">
+              <ast name="ELIST" text="ARGLIST_VALUES">
+                <ast name="INDEX_OP" text="INDEX_OP">
+                  <ast name="IDENTIFIER" text="HTTP_GET_VARS"/>
+                  <ast name="STRING_LITERAL" text="some_param"/>
+                </ast>
+                <ast name="STRING_LITERAL" text="&amp;"/>
+              </ast>
+            </ast>
+            <ast name="NUM_INT" text="0"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="IF_ELSE" text="IF_ELSE">
+        <ast name="IF" text="if">
+          <ast name="EXPR" text="EXPR">
+            <ast name="NOT_EQUAL" text="!=">
+              <ast name="METHOD_CALL" text="substr_count">
+                <ast name="ELIST" text="ARGLIST_VALUES">
+                  <ast name="INDEX_OP" text="INDEX_OP">
+                    <ast name="IDENTIFIER" text="HTTP_GET_VARS"/>
+                    <ast name="STRING_LITERAL" text="some_param"/>
+                  </ast>
+                  <ast name="STRING_LITERAL" text="&amp;"/>
+                </ast>
+              </ast>
+              <ast name="NUM_INT" text="0"/>
+            </ast>
+          </ast>
+          <ast name="SLIST" text="{">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="a"/>
+                <ast name="NUM_INT" text="20"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="ELSE" text="else">
+          <ast name="SLIST" text="{">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="a"/>
+                <ast name="NUM_INT" text="30"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </js>
+</asp>

@@ -1,0 +1,345 @@
+ActiveConnection Property
+
+Indicates to which Connection object the specified Command, Recordset, or Record object currently belongs.
+Settings and Return Values
+
+Sets or returns a String value that contains a definition for a connection if the connection is closed, or a Variant containing the current Connection object if the connection is open. Default is a null object reference. See the ConnectionString property.
+Remarks
+
+Use the ActiveConnection property to determine the Connection object over which the specified Command object will execute or the specified Recordset will be opened.
+
+Command
+
+For Command objects, the ActiveConnection property is read/write.
+
+If you attempt to call the Execute method on a Command object before setting this property to an open Connection object or valid connection string, an error occurs.
+
+If a Connection object is assigned to the ActiveConnection property, the object must be opened. Assigning a closed Connection object causes an error.
+
+    Microsoft Visual Basic   Setting the ActiveConnection property to Nothing disassociates the Command object from the current Connection and causes the provider to release any associated resources on the data source. You can then associate the Command object with the same or another Connection object. Some providers allow you to change the property setting from one Connection to another, without having to first set the property to Nothing.
+
+    If the Parameters collection of the Command object contains parameters supplied by the provider, the collection is cleared if you set the ActiveConnection property to Nothing or to another Connection object. If you manually create Parameter objects and use them to fill the Parameters collection of the Command object, setting the ActiveConnection property to Nothing or to another Connection object leaves the Parameters collection intact.
+
+    Closing the Connection object with which a Command object is associated sets the ActiveConnection property to Nothing. Setting this property to a closed Connection object generates an error.
+
+Recordset
+
+For open Recordset objects or for Recordset objects whose Source property is set to a valid Command object, the ActiveConnection property is read-only. Otherwise, it is read/write.
+
+You can set this property to a valid Connection object or to a valid connection string. In this case, the provider creates a new Connection object using this definition and opens the connection. Additionally, the provider may set this property to the new Connection object to give you a way to access the Connection object for extended error information or to execute other commands.
+
+If you use the ActiveConnection argument of the Open method to open a Recordset object, the ActiveConnection property will inherit the value of the argument.
+
+If you set the Source property of the Recordset object to a valid Command object variable, the ActiveConnection property of the Recordset inherits the setting of the Command object's ActiveConnection property.
+
+    Remote Data Service Usage   When used on a client-side Recordset object, this property can be set only to a connection string or (in Microsoft Visual Basic or Visual Basic, Scripting Edition) to Nothing.
+
+Record
+
+This property is read/write when the Record object is closed, and may contain a connection string or reference to an open Connection object. This property is read-only when the Record object is open, and contains a reference to an open Connection object.
+
+A Connection object is created implicitly when the Record object is opened from a URL. Open the Record with an existing, open Connection object by assigning the Connection object to this property, or using the Connection object as a parameter in the Open method call. If the Record is opened from an existing Record or Recordset, then it is automatically associated with that Record or Recordset object's Connection object.
+
+    Note   URLs using the http scheme will automatically invoke the Microsoft OLE DB Provider for Internet Publishing. For more information, see Absolute and Relative URLs.
+
+
+
+CommandStream Property
+
+Indicates the stream used as the input for a Command object.
+Settings and Return Values
+
+Sets or returns the stream used as the input for a Command object. The format for this stream is provider-specific, see your provider's documentation for details. This property is similar to the CommandText property, used to specify a string for the input of a Command.
+Remarks
+
+CommandStream and CommandText are mutually exclusive. When the user sets the CommandStream property, the CommandText property will be set to the empty string (""). If the user sets the CommandText property, the CommandStream property will be set to Nothing.
+
+The behaviors of the Command.Parameters.Refresh and Command.Prepare methods are defined by the provider. The values of parameters in a stream may not be refreshed.
+
+The input stream is not available to other ADO objects that return the source of a Command. For example, if the Source property of a Recordset is set to a Command object that has a stream as its input, Recordset.Source continues to return the CommandText property, which contains an empty string (""), instead of the stream contents of the CommandStream property.
+
+When using a command stream (as specified by CommandStream), the only valid CommandTypeEnum values for the CommandType property are adCmdText and adCmdUnknown. Any other value causes an error.
+
+
+
+CommandText Property
+
+Indicates the text of a command to be issued against a provider.
+Settings and Return Values
+
+Sets or returns a String value that contains a provider command, such as an SQL statement, a table name, a relative URL, or a stored procedure call. Default is "" (zero-length string).
+Remarks
+
+Use the CommandText property to set or return the text of a command represented by a Command object. Usually this will be an SQL statement, but can also be any other type of command statement recognized by the provider, such as a stored procedure call. An SQL statement must be of the particular dialect or version supported by the provider's query processor.
+
+If the Prepared property of the Command object is set to True and the Command object is bound to an open connection when you set the CommandText property, ADO prepares the query (that is, a compiled form of the query that is stored by the provider) when you call the Execute or Open methods.
+
+Depending on the CommandType property setting, ADO may alter the CommandText property. You can read the CommandText property at any time to see the actual command text that ADO will use during execution.
+
+Use the CommandText property to set or return a relative URL that specifies a resource, such as a file or directory. The resource is relative to a location specified explicitly by an absolute URL, or implicitly by an open Connection object.
+
+    Note   URLs using the http scheme will automatically invoke the Microsoft OLE DB Provider for Internet Publishing. For more information, see Absolute and Relative URLs.
+
+
+
+
+CommandTimeout Property
+
+Indicates how long to wait while executing a command before terminating the attempt and generating an error.
+Settings and Return Values
+
+Sets or returns a Long value that indicates, in seconds, how long to wait for a command to execute. Default is 30.
+Remarks
+
+Use the CommandTimeout property on a Connection object or Command object to allow the cancellation of an Execute method call, due to delays from network traffic or heavy server use. If the interval set in the CommandTimeout property elapses before the command completes execution, an error occurs and ADO cancels the command. If you set the property to zero, ADO will wait indefinitely until the execution is complete. Make sure the provider and data source to which you are writing code support the CommandTimeout functionality.
+
+The CommandTimeout setting on a Connection object has no effect on the CommandTimeout setting on a Command object on the same Connection; that is, the Command object's CommandTimeout property does not inherit the value of the Connection object's CommandTimeout value.
+
+On a Connection object, the CommandTimeout property remains read/write after the Connection is opened.
+
+
+
+CommandType Property
+
+Indicates the type of a Command object.
+Settings and Return Values
+
+Sets or returns one or more CommandTypeEnum values.
+
+    Note   Do not use the CommandTypeEnum values of adCmdFile or adCmdTableDirect with CommandType. These values can only be used as options with the Open and Requery methods of a Recordset.
+
+Remarks
+
+Use the CommandType property to optimize evaluation of the CommandText property.
+
+If the CommandType property value equals adCmdUnknown (the default value), you may experience diminished performance because ADO must make calls to the provider to determine if the CommandText property is an SQL statement, a stored procedure, or a table name. If you know what type of command you're using, setting the CommandType property instructs ADO to go directly to the relevant code. If the CommandType property does not match the type of command in the CommandText property, an error occurs when you call the Execute method.
+
+
+
+Dialect Property
+
+Indicates the dialect of the CommandText or CommandStream properties. The dialect defines the syntax and general rules that the provider uses to parse the string or stream.
+Settings and Return Values
+
+The Dialect property contains a valid GUID that represents the dialect of the command text or stream. The default value for this property is {C8B521FB-5CF3-11CE-ADE5-00AA0044773D}, which indicates that the provider should choose how to interpret the command text or stream.
+Remarks
+
+ADO does not query the provider when the user reads the value of this property; it returns a string representation of the value currently stored in the Command object.
+
+When the user sets the Dialect property, ADO validates the GUID and raises an error if the value supplied is not a valid GUID. See the documentation for your provider to determine the GUID values supported by the Dialect property.
+
+
+
+Name Property
+
+Indicates the name of an object.
+Settings and Return Values
+
+Sets or returns a String value that indicates the name of an object.
+Remarks
+
+Use the Name property to assign a name to or retrieve the name of a Command, Property, Field, or Parameter object.
+
+The value is read/write on a Command object and read-only on a Property object.
+
+For a Field object, Name is normally read-only. However, for new Field objects that have been appended to the Fields collection of a Record, Name is read/write only after the Value property for the Field has been specified and the data provider has successfully added the new Field by calling the Update method of the Fields collection.
+
+For Parameter objects not yet appended to the Parameters collection, the Name property is read/write. For appended Parameter objects and all other objects, the Name property is read-only. Names do not have to be unique within a collection.
+
+You can retrieve the Name property of an object by an ordinal reference, after which you can refer to the object directly by name. For example, if rstMain.Properties(20).Name yields Updatability, you can subsequently refer to this property as rstMain.Properties("Updatability")
+
+
+NamedParameters Property
+
+Indicates whether parameter names should be passed to the provider.
+Remarks
+
+When this property is true, ADO passes the value of the Name property of each parameter in the Commands Parameter collection. The provider uses a parameter name to match parameters in the CommandText or CommandStream properties. If this property is false (the default), parameter names are ignored and the provider uses the order of parameters to match values to parameters in the CommandText or CommandStream properties.
+
+
+Parameters Collection
+
+Contains all the Parameter objects of a Command object.
+
+
+Remarks
+
+A Command object has a Parameters collection made up of Parameter objects.
+
+Using the Refresh method on a Command object's Parameters collection retrieves provider parameter information for the stored procedure or parameterized query specified in the Command object. Some providers do not support stored procedure calls or parameterized queries; calling the Refresh method on the Parameters collection when using such a provider will return an error.
+
+If you have not defined your own Parameter objects and you access the Parameters collection before calling the Refresh method, ADO will automatically call the method and populate the collection for you.
+
+You can minimize calls to the provider to improve performance if you know the properties of the parameters associated with the stored procedure or parameterized query you wish to call. Use the CreateParameter method to create Parameter objects with the appropriate property settings and use the Append method to add them to the Parameters collection. This lets you set and return parameter values without having to call the provider for the parameter information. If you are writing to a provider that does not supply parameter information, you must manually populate the Parameters collection using this method to be able to use parameters at all. Use the Delete method to remove Parameter objects from the Parameters collection if necessary.
+
+The objects in the Parameters collection of a Recordset go out of scope (therefore becoming unavailable) when the Recordset is closed.
+
+This section contains the following topics.
+
+    * Parameters Collection Properties, Methods, and Events
+
+
+
+Prepared Property
+
+Indicates whether to save a compiled version of a command before execution.
+Settings and Return Values
+
+Sets or returns a Boolean value that, if set to True, indicates that the command should be prepared.
+Remarks
+
+Use the Prepared property to have the provider save a prepared (or compiled) version of the query specified in the CommandText property before a Command object's first execution. This may slow a command's first execution, but once the provider compiles a command, the provider will use the compiled version of the command for any subsequent executions, which will result in improved performance.
+
+If the property is False, the provider will execute the Command object directly without creating a compiled version.
+
+If the provider does not support command preparation, it may return an error as soon as this property is set to True. If it does not return an error, it simply ignores the request to prepare the command and sets the Prepared property to False.
+
+
+
+Properties Collection
+
+Contains all the Property objects for a specific instance of an object.
+
+
+
+
+
+Remarks
+
+Some ADO objects have a Properties collection made up of Property objects. Each Property object corresponds to a characteristic of the ADO object specific to the provider.
+
+    Note   See the Property object topic for a more detailed explanation of how to use Property objects.
+
+The Dynamic Properties of the Recordset object go out of scope (become unavailable) when the Recordset is closed.
+
+This section contains the following topics.
+
+    * Properties Collection Properties, Methods, and Events
+
+
+
+
+State Property
+
+Indicates for all applicable objects whether the state of the object is open or closed.
+
+Indicates for all applicable objects executing an asynchronous method, whether the current state of the object is connecting, executing, or retrieving.
+Return Value
+
+Returns a Long value that can be an ObjectStateEnum value. The default value is adStateClosed.
+Remarks
+
+You can use the State property to determine the current state of a given object at any time.
+
+The object's State property can have a combination of values. For example, if a statement is executing, this property will have a combined value of adStateOpen and adStateExecuting.
+
+The State property is read-only.
+
+
+
+Cancel Method
+
+Cancels execution of a pending, asynchronous method call.
+Syntax
+
+object.Cancel
+
+Remarks
+
+Use the Cancel method to terminate execution of an asynchronous method call (that is, a method invoked with the adAsyncConnect, adAsyncExecute, or adAsyncFetch option).
+
+The following table shows what task is terminated when you use the Cancel method on a particular type of object.
+
+If object is a 	The last asynchronous call to this method is terminated
+Command 	Execute
+Connection 	Execute or Open
+Record 	CopyRecord, DeleteRecord, MoveRecord, or Open
+Recordset 	Open
+Stream 	Open
+
+
+
+CreateParameter Method
+
+Creates a new Parameter object with the specified properties.
+Syntax
+
+Set parameter = command.CreateParameter (Name, Type, Direction, Size, Value)
+
+Return Value
+
+Returns a Parameter object.
+Parameters
+
+Name
+    Optional. A String value that contains the name of the Parameter object.
+Type
+    Optional. A DataTypeEnum value that specifies the data type of the Parameter object.
+Direction
+    Optional. A ParameterDirectionEnum value that specifies the type of Parameter object.
+Size
+    Optional. A Long value that specifies the maximum length for the parameter value in characters or bytes.
+Value
+    Optional. A Variant that specifies the value for the Parameter object.
+
+Remarks
+
+Use the CreateParameter method to create a new Parameter object with a specified name, type, direction, size, and value. Any values you pass in the arguments are written to the corresponding Parameter properties.
+
+This method does not automatically append the Parameter object to the Parameters collection of a Command object. This lets you set additional properties whose values ADO will validate when you append the Parameter object to the collection.
+
+If you specify a variable-length data type in the Type argument, you must either pass a Size argument or set the Size property of the Parameter object before appending it to the Parameters collection; otherwise, an error occurs.
+
+If you specify a numeric data type (adNumeric or adDecimal) in the Type argument, then you must also set the NumericScale and Precision properties.
+
+
+
+Execute Method (ADO Command)
+
+Executes the query, SQL statement, or stored procedure specified in the CommandText or CommandStream property.
+Syntax
+
+For a Recordset-returning Command:
+
+Set recordset = command.Execute( RecordsAffected, Parameters, Options )
+
+For a non-recordset-returning Command:
+
+command.Execute RecordsAffected, Parameters, Options
+
+Return Value
+
+Returns a Recordset object reference, a stream, or Nothing.
+Parameters
+
+RecordsAffected
+    Optional. A Long variable to which the provider returns the number of records that the operation affected. The RecordsAffected parameter applies only for action queries or stored procedures. RecordsAffected does not return the number of records returned by a result-returning query or stored procedure. To obtain this information, use the RecordCount property. The Execute method will not return the correct information when used with adAsyncExecute, simply because when a command is executed asynchronously, the number of records affected may not yet be known at the time the method returns.
+Parameters
+    Optional. A Variant array of parameter values used in conjunction with the input string or stream specified in CommandText or CommandStream. (Output parameters will not return correct values when passed in this argument.)
+Options
+    Optional. A Long value that indicates how the provider should evaluate the CommandText or the CommandStream property of the Command object. Can be a bitmask value made using CommandTypeEnum and/or ExecuteOptionEnum values. For example, you could use adCmdText and adExecuteNoRecords in combination if you want to have ADO evaluate the value of the CommandText property as text, and indicate that the command should discard and not return any records that might be generated when the command text executes.
+
+    Notes   Use the ExecuteOptionEnum value adExecuteNoRecords to improve performance by minimizing internal processing.
+
+    If adExecuteStream was specified, the options adAsyncFetch and adAsynchFetchNonBlocking are ignored.
+
+    Do not use the CommandTypeEnum values of adCmdFile or adCmdTableDirect with Execute. These values can only be used as options with the Open and Requery methods of a Recordset.
+
+Remarks
+
+Using the Execute method on a Command object executes the query specified in the CommandText property or CommandStream property of the object.
+
+Results are returned in a Recordset (by default) or as a stream of binary information. To obtain a binary stream, specify adExecuteStream in Options, then supply a stream by setting Command.Properties("Output Stream"). An ADO Stream object can be specified to receive the results, or another stream object such as the IIS Response object can be specified. If no stream was specified before calling Execute with adExecuteStream, an error occurs. The position of the stream on return from Execute is provider specific.
+
+If the command is not intended to return results (for example, an SQL UPDATE query) the provider returns Nothing as long as the option adExecuteNoRecords is specified; otherwise Execute returns a closed Recordset. Some application languages allow you to ignore this return value if no Recordset is desired.
+
+Execute raises an error if the user specifies a value for CommandStream when the CommandType is adCmdStoredProc, adCmdTable, or adCmdTableDirect.
+
+If the query has parameters, the current values for the Command object's parameters are used unless you override these with parameter values passed with the Execute call. You can override a subset of the parameters by omitting new values for some of the parameters when calling the Execute method. The order in which you specify the parameters is the same order in which the method passes them. For example, if there were four (or more) parameters and you wanted to pass new values for only the first and fourth parameters, you would pass Array(var1,,,var4) as the Parameters argument.
+
+    Note   Output parameters will not return correct values when passed in the Parameters argument.
+
+An ExecuteComplete event will be issued when this operation concludes.
+
+    Note   When issuing commands containing URLs, those using the http scheme will automatically invoke the Microsoft OLE DB Provider for Internet Publishing. For more information, see Absolute and Relative URLs.
+

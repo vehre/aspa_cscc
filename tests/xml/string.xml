@@ -1,0 +1,2016 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <js>
+    <original>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="STRING_LITERAL" text="Hello"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="NEW" text="new">
+            <ast name="STRING" text="String"/>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="STRING_LITERAL" text="Hello"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="c"/>
+          <ast name="NEW" text="new">
+            <ast name="STRING" text="String"/>
+            <ast name="ELIST" text="ELIST"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="c"/>
+            <ast name="IDENTIFIER" text="length"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="STAR" text="*">
+            <ast name="STAR" text="*">
+              <ast name="LPAREN" text="(">
+                <ast name="PLUS" text="+">
+                  <ast name="DOT" text=".">
+                    <ast name="IDENTIFIER" text="a"/>
+                    <ast name="IDENTIFIER" text="length"/>
+                  </ast>
+                  <ast name="DOT" text=".">
+                    <ast name="IDENTIFIER" text="b"/>
+                    <ast name="IDENTIFIER" text="length"/>
+                  </ast>
+                </ast>
+              </ast>
+              <ast name="DOT" text=".">
+                <ast name="IDENTIFIER" text="c"/>
+                <ast name="IDENTIFIER" text="length"/>
+              </ast>
+            </ast>
+            <ast name="DOT" text=".">
+              <ast name="STRING_LITERAL" text="one"/>
+              <ast name="IDENTIFIER" text="length"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="b"/>
+            <ast name="IDENTIFIER" text="length"/>
+          </ast>
+          <ast name="NUM_INT" text="4"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="IDENTIFIER" text="length"/>
+          </ast>
+          <ast name="NUM_INT" text="3"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="c"/>
+            <ast name="IDENTIFIER" text="length"/>
+          </ast>
+          <ast name="NUM_INT" text="2"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="Response"/>
+            <ast name="IDENTIFIER" text="write"/>
+          </ast>
+          <ast name="ELIST" text="ELIST">
+            <ast name="EXPR" text="EXPR">
+              <ast name="METHOD_CALL" text="(">
+                <ast name="DOT" text=".">
+                  <ast name="IDENTIFIER" text="a"/>
+                  <ast name="IDENTIFIER" text="anchor"/>
+                </ast>
+                <ast name="ELIST" text="ELIST">
+                  <ast name="EXPR" text="EXPR">
+                    <ast name="STRING_LITERAL" text="Anchor"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EQ_HTML" text="=">
+        <ast name="EXPR" text="EXPR">
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="b"/>
+              <ast name="IDENTIFIER" text="anchor"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="STRING_LITERAL" text="Anchor 2"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="big"/>
+            </ast>
+            <ast name="ELIST" text="ELIST"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="PLUS" text="+">
+            <ast name="PLUS" text="+">
+              <ast name="STRING_LITERAL" text="&lt;font&gt;"/>
+              <ast name="METHOD_CALL" text="(">
+                <ast name="DOT" text=".">
+                  <ast name="IDENTIFIER" text="b"/>
+                  <ast name="IDENTIFIER" text="blink"/>
+                </ast>
+                <ast name="ELIST" text="ELIST"/>
+              </ast>
+            </ast>
+            <ast name="STRING_LITERAL" text=" &lt;/font&gt;"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="b"/>
+              <ast name="IDENTIFIER" text="bold"/>
+            </ast>
+            <ast name="ELIST" text="ELIST"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="PLUS_ASSIGN" text="+=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="PLUS" text="+">
+            <ast name="STRING_LITERAL" text="Hello"/>
+            <ast name="METHOD_CALL" text="(">
+              <ast name="DOT" text=".">
+                <ast name="STRING_LITERAL" text=" there"/>
+                <ast name="IDENTIFIER" text="bold"/>
+              </ast>
+              <ast name="ELIST" text="ELIST"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="charAt"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="2"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="charCodeAt"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="2"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="PLUS" text="+">
+            <ast name="METHOD_CALL" text="(">
+              <ast name="DOT" text=".">
+                <ast name="METHOD_CALL" text="(">
+                  <ast name="DOT" text=".">
+                    <ast name="IDENTIFIER" text="a"/>
+                    <ast name="IDENTIFIER" text="big"/>
+                  </ast>
+                  <ast name="ELIST" text="ELIST"/>
+                </ast>
+                <ast name="IDENTIFIER" text="anchor"/>
+              </ast>
+              <ast name="ELIST" text="ELIST">
+                <ast name="EXPR" text="EXPR">
+                  <ast name="STRING_LITERAL" text="Visit Me"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="STRING_LITERAL" text="&lt;br&gt;"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="concat"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="IDENTIFIER" text="c"/>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="STRING_LITERAL" text="Plus"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="METHOD_CALL" text="(">
+                <ast name="DOT" text=".">
+                  <ast name="METHOD_CALL" text="(">
+                    <ast name="DOT" text=".">
+                      <ast name="IDENTIFIER" text="a"/>
+                      <ast name="IDENTIFIER" text="concat"/>
+                    </ast>
+                    <ast name="ELIST" text="ELIST">
+                      <ast name="EXPR" text="EXPR">
+                        <ast name="IDENTIFIER" text="c"/>
+                      </ast>
+                      <ast name="EXPR" text="EXPR">
+                        <ast name="STRING_LITERAL" text="Plus"/>
+                      </ast>
+                    </ast>
+                  </ast>
+                  <ast name="IDENTIFIER" text="concat"/>
+                </ast>
+                <ast name="ELIST" text="ELIST">
+                  <ast name="EXPR" text="EXPR">
+                    <ast name="STRING_LITERAL" text="Hello"/>
+                  </ast>
+                  <ast name="EXPR" text="EXPR">
+                    <ast name="IDENTIFIER" text="a"/>
+                  </ast>
+                  <ast name="EXPR" text="EXPR">
+                    <ast name="STRING_LITERAL" text="There"/>
+                  </ast>
+                </ast>
+              </ast>
+              <ast name="IDENTIFIER" text="anchor"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="STRING_LITERAL" text="Visit Me"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="test"/>
+              <ast name="IDENTIFIER" text="charAt"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="3"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="fixed"/>
+            </ast>
+            <ast name="ELIST" text="ELIST"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="test"/>
+              <ast name="IDENTIFIER" text="charCodeAt"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="2"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="fontcolor"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="STRING_LITERAL" text="red"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="test"/>
+              <ast name="IDENTIFIER" text="charCodeAt"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="2"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="fontsize"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="3"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="test"/>
+              <ast name="IDENTIFIER" text="charCodeAt"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="2"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="fromCharCode"/>
+            </ast>
+            <ast name="ELIST" text="ELIST"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="test"/>
+              <ast name="IDENTIFIER" text="charCodeAt"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="2"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="fromCharCode"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="72"/>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="101"/>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="108"/>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="108"/>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="111"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="test"/>
+              <ast name="IDENTIFIER" text="charCodeAt"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="2"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="indexOf"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="STRING_LITERAL" text="e"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="indexOf"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="STRING_LITERAL" text="l"/>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="3"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="italics"/>
+            </ast>
+            <ast name="ELIST" text="ELIST"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="test"/>
+              <ast name="IDENTIFIER" text="lastIndexOf"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="STRING_LITERAL" text="a"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="link"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="STRING_LITERAL" text="This is a link"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="match"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="REG_EXP" text="/\w+/"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="replace"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="REG_EXP" text="/\W+/"/>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="STRING_LITERAL" text="123"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="search"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="REG_EXP" text="/ll/"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="slice"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="4"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="test"/>
+              <ast name="IDENTIFIER" text="charCodeAt"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="2"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="slice"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="4"/>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="7"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="test"/>
+              <ast name="IDENTIFIER" text="charCodeAt"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="2"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="small"/>
+            </ast>
+            <ast name="ELIST" text="ELIST"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="test"/>
+              <ast name="IDENTIFIER" text="charCodeAt"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="2"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="split"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="STRING_LITERAL" text="l"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="INDEX_OP" text="[">
+            <ast name="IDENTIFIER" text="test"/>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="test"/>
+            <ast name="IDENTIFIER" text="length"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="split"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="STRING_LITERAL" text="l"/>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="1"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="INDEX_OP" text="[">
+            <ast name="IDENTIFIER" text="test"/>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="test"/>
+            <ast name="IDENTIFIER" text="length"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="strike"/>
+            </ast>
+            <ast name="ELIST" text="ELIST"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="test"/>
+              <ast name="IDENTIFIER" text="charCodeAt"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="sub"/>
+            </ast>
+            <ast name="ELIST" text="ELIST"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="test"/>
+              <ast name="IDENTIFIER" text="charCodeAt"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="substr"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="3"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="test"/>
+              <ast name="IDENTIFIER" text="charCodeAt"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="substr"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="3"/>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="5"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="test"/>
+              <ast name="IDENTIFIER" text="charCodeAt"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="substring"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="3"/>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="5"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="test"/>
+              <ast name="IDENTIFIER" text="charCodeAt"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="sup"/>
+            </ast>
+            <ast name="ELIST" text="ELIST"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="test"/>
+              <ast name="IDENTIFIER" text="charCodeAt"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="toLowerCase"/>
+            </ast>
+            <ast name="ELIST" text="ELIST"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="test"/>
+              <ast name="IDENTIFIER" text="charCodeAt"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="toUpperCase"/>
+            </ast>
+            <ast name="ELIST" text="ELIST"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="test"/>
+              <ast name="IDENTIFIER" text="charCodeAt"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="toString"/>
+            </ast>
+            <ast name="ELIST" text="ELIST"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="test"/>
+              <ast name="IDENTIFIER" text="charCodeAt"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="valueOf"/>
+            </ast>
+            <ast name="ELIST" text="ELIST"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="test"/>
+              <ast name="IDENTIFIER" text="charCodeAt"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="STRING_LITERAL" text="Hello"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="STRING_LITERAL" text="Hello"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="c"/>
+          <ast name="STRING_LITERAL" text=""/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="strlen">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="c"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="STAR" text="*">
+            <ast name="STAR" text="*">
+              <ast name="LPAREN" text="(">
+                <ast name="PLUS" text="+">
+                  <ast name="METHOD_CALL" text="strlen">
+                    <ast name="ELIST" text="ARGLIST_VALUES">
+                      <ast name="IDENTIFIER" text="a"/>
+                    </ast>
+                  </ast>
+                  <ast name="METHOD_CALL" text="strlen">
+                    <ast name="ELIST" text="ARGLIST_VALUES">
+                      <ast name="IDENTIFIER" text="b"/>
+                    </ast>
+                  </ast>
+                </ast>
+              </ast>
+              <ast name="METHOD_CALL" text="strlen">
+                <ast name="ELIST" text="ARGLIST_VALUES">
+                  <ast name="IDENTIFIER" text="c"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="METHOD_CALL" text="strlen">
+              <ast name="ELIST" text="ARGLIST_VALUES">
+                <ast name="STRING_LITERAL" text="one"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="ASSIGN">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="METHOD_CALL" text="substr">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="b"/>
+              <ast name="NUM_INT" text="0"/>
+              <ast name="NUM_INT" text="4"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="ASSIGN">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="substr">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="NUM_INT" text="0"/>
+              <ast name="NUM_INT" text="3"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="ASSIGN">
+          <ast name="IDENTIFIER" text="c"/>
+          <ast name="METHOD_CALL" text="substr">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="c"/>
+              <ast name="NUM_INT" text="0"/>
+              <ast name="NUM_INT" text="2"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="print">
+          <ast name="ELIST" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="STRING_LITERAL" text="&lt;A NAME=&quot;"/>
+              <ast name="CONCAT" text="CONCAT">
+                <ast name="STRING_LITERAL" text="Anchor"/>
+                <ast name="CONCAT" text="CONCAT">
+                  <ast name="STRING_LITERAL" text="&quot;&gt;"/>
+                  <ast name="CONCAT" text="CONCAT">
+                    <ast name="IDENTIFIER" text="a"/>
+                    <ast name="STRING_LITERAL" text="&lt;/A&gt;"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EQ_HTML" text="=">
+        <ast name="EXPR" text="EXPR">
+          <ast name="CONCAT" text="CONCAT">
+            <ast name="STRING_LITERAL" text="&lt;A NAME=&quot;"/>
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="STRING_LITERAL" text="Anchor 2"/>
+              <ast name="CONCAT" text="CONCAT">
+                <ast name="STRING_LITERAL" text="&quot;&gt;"/>
+                <ast name="CONCAT" text="CONCAT">
+                  <ast name="IDENTIFIER" text="b"/>
+                  <ast name="STRING_LITERAL" text="&lt;/A&gt;"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="CONCAT" text="CONCAT">
+            <ast name="STRING_LITERAL" text="&lt;BIG&gt;"/>
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="STRING_LITERAL" text="&lt;/BIG&gt;"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="CONCAT" text=".">
+            <ast name="CONCAT" text=".">
+              <ast name="STRING_LITERAL" text="&lt;font&gt;"/>
+              <ast name="CONCAT" text="CONCAT">
+                <ast name="STRING_LITERAL" text="&lt;BLINK&gt;"/>
+                <ast name="CONCAT" text="CONCAT">
+                  <ast name="IDENTIFIER" text="b"/>
+                  <ast name="STRING_LITERAL" text="&lt;/BLINK&gt;"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="STRING_LITERAL" text=" &lt;/font&gt;"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="CONCAT" text="CONCAT">
+            <ast name="STRING_LITERAL" text="&lt;B&gt;"/>
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="IDENTIFIER" text="b"/>
+              <ast name="STRING_LITERAL" text="&lt;/B&gt;"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="PLUS_ASSIGN" text="+=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="CONCAT" text=".">
+            <ast name="STRING_LITERAL" text="Hello"/>
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="STRING_LITERAL" text="&lt;B&gt;"/>
+              <ast name="CONCAT" text="CONCAT">
+                <ast name="STRING_LITERAL" text=" there"/>
+                <ast name="STRING_LITERAL" text="&lt;/B&gt;"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="LCURLY" text="LCURLY">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="NUM_INT" text="2"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="ord">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="LCURLY" text="LCURLY">
+                <ast name="IDENTIFIER" text="a"/>
+                <ast name="NUM_INT" text="2"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="CONCAT" text=".">
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="STRING_LITERAL" text="&lt;A NAME=&quot;"/>
+              <ast name="CONCAT" text="CONCAT">
+                <ast name="STRING_LITERAL" text="Visit Me"/>
+                <ast name="CONCAT" text="CONCAT">
+                  <ast name="STRING_LITERAL" text="&quot;&gt;"/>
+                  <ast name="CONCAT" text="CONCAT">
+                    <ast name="CONCAT" text="CONCAT">
+                      <ast name="STRING_LITERAL" text="&lt;BIG&gt;"/>
+                      <ast name="CONCAT" text="CONCAT">
+                        <ast name="IDENTIFIER" text="a"/>
+                        <ast name="STRING_LITERAL" text="&lt;/BIG&gt;"/>
+                      </ast>
+                    </ast>
+                    <ast name="STRING_LITERAL" text="&lt;/A&gt;"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="STRING_LITERAL" text="&lt;br&gt;"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="implode">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="STRING_LITERAL" text=""/>
+              <ast name="METHOD_CALL" text="array">
+                <ast name="ELIST" text="ARGLIST_VALUES">
+                  <ast name="IDENTIFIER" text="a"/>
+                  <ast name="IDENTIFIER" text="c"/>
+                  <ast name="STRING_LITERAL" text="Plus"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="CONCAT" text="CONCAT">
+            <ast name="STRING_LITERAL" text="&lt;A NAME=&quot;"/>
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="STRING_LITERAL" text="Visit Me"/>
+              <ast name="CONCAT" text="CONCAT">
+                <ast name="STRING_LITERAL" text="&quot;&gt;"/>
+                <ast name="CONCAT" text="CONCAT">
+                  <ast name="METHOD_CALL" text="implode">
+                    <ast name="ELIST" text="ARGLIST_VALUES">
+                      <ast name="STRING_LITERAL" text=""/>
+                      <ast name="METHOD_CALL" text="array">
+                        <ast name="ELIST" text="ARGLIST_VALUES">
+                          <ast name="METHOD_CALL" text="implode">
+                            <ast name="ELIST" text="ARGLIST_VALUES">
+                              <ast name="STRING_LITERAL" text=""/>
+                              <ast name="METHOD_CALL" text="array">
+                                <ast name="ELIST" text="ARGLIST_VALUES">
+                                  <ast name="IDENTIFIER" text="a"/>
+                                  <ast name="IDENTIFIER" text="c"/>
+                                  <ast name="STRING_LITERAL" text="Plus"/>
+                                </ast>
+                              </ast>
+                            </ast>
+                          </ast>
+                          <ast name="STRING_LITERAL" text="Hello"/>
+                          <ast name="IDENTIFIER" text="a"/>
+                          <ast name="STRING_LITERAL" text="There"/>
+                        </ast>
+                      </ast>
+                    </ast>
+                  </ast>
+                  <ast name="STRING_LITERAL" text="&lt;/A&gt;"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="LCURLY" text="LCURLY">
+            <ast name="IDENTIFIER" text="test"/>
+            <ast name="NUM_INT" text="3"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="CONCAT" text="CONCAT">
+            <ast name="STRING_LITERAL" text="&lt;TT&gt;"/>
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="STRING_LITERAL" text="&lt;/TT&gt;"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="ord">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="LCURLY" text="LCURLY">
+                <ast name="IDENTIFIER" text="test"/>
+                <ast name="NUM_INT" text="2"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="CONCAT" text="CONCAT">
+            <ast name="STRING_LITERAL" text="&lt;FONT COLOR=&quot;"/>
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="STRING_LITERAL" text="red"/>
+              <ast name="CONCAT" text="CONCAT">
+                <ast name="STRING_LITERAL" text="&quot;&gt;"/>
+                <ast name="CONCAT" text="CONCAT">
+                  <ast name="IDENTIFIER" text="a"/>
+                  <ast name="STRING_LITERAL" text="&lt;/FONT&gt;"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="ord">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="LCURLY" text="LCURLY">
+                <ast name="IDENTIFIER" text="test"/>
+                <ast name="NUM_INT" text="2"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="CONCAT" text="CONCAT">
+            <ast name="STRING_LITERAL" text="&lt;FONT SIZE=&quot;"/>
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="NUM_INT" text="3"/>
+              <ast name="CONCAT" text="CONCAT">
+                <ast name="STRING_LITERAL" text="&quot;&gt;"/>
+                <ast name="CONCAT" text="CONCAT">
+                  <ast name="IDENTIFIER" text="a"/>
+                  <ast name="STRING_LITERAL" text="&lt;/FONT&gt;"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="ord">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="LCURLY" text="LCURLY">
+                <ast name="IDENTIFIER" text="test"/>
+                <ast name="NUM_INT" text="2"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="STRING_LITERAL" text=""/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="ord">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="LCURLY" text="LCURLY">
+                <ast name="IDENTIFIER" text="test"/>
+                <ast name="NUM_INT" text="2"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="sprintf">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="STRING_LITERAL" text="%c"/>
+              <ast name="NUM_INT" text="72"/>
+              <ast name="NUM_INT" text="101"/>
+              <ast name="NUM_INT" text="108"/>
+              <ast name="NUM_INT" text="108"/>
+              <ast name="NUM_INT" text="111"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="ord">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="LCURLY" text="LCURLY">
+                <ast name="IDENTIFIER" text="test"/>
+                <ast name="NUM_INT" text="2"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="QUESTION" text="CONDITIONAL">
+            <ast name="EQUAL" text="EQ">
+              <ast name="METHOD_CALL" text="strpos">
+                <ast name="ELIST" text="ARGLIST_VALUES">
+                  <ast name="IDENTIFIER" text="a"/>
+                  <ast name="STRING_LITERAL" text="e"/>
+                </ast>
+              </ast>
+              <ast name="FALSE" text="FALSE"/>
+            </ast>
+            <ast name="NUM_INT" text="-1"/>
+            <ast name="METHOD_CALL" text="strpos">
+              <ast name="ELIST" text="ARGLIST_VALUES">
+                <ast name="IDENTIFIER" text="a"/>
+                <ast name="STRING_LITERAL" text="e"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="QUESTION" text="CONDITIONAL">
+            <ast name="EQUAL" text="EQ">
+              <ast name="METHOD_CALL" text="strpos">
+                <ast name="ELIST" text="ARGLIST_VALUES">
+                  <ast name="IDENTIFIER" text="a"/>
+                  <ast name="STRING_LITERAL" text="l"/>
+                  <ast name="NUM_INT" text="3"/>
+                </ast>
+              </ast>
+              <ast name="FALSE" text="FALSE"/>
+            </ast>
+            <ast name="NUM_INT" text="-1"/>
+            <ast name="METHOD_CALL" text="strpos">
+              <ast name="ELIST" text="ARGLIST_VALUES">
+                <ast name="IDENTIFIER" text="a"/>
+                <ast name="STRING_LITERAL" text="l"/>
+                <ast name="NUM_INT" text="3"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="CONCAT" text="CONCAT">
+            <ast name="STRING_LITERAL" text="&lt;I&gt;"/>
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="STRING_LITERAL" text="&lt;/I&gt;"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="UNSUPORTED" text="lastIndexOf"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="CONCAT" text="CONCAT">
+            <ast name="STRING_LITERAL" text="&lt;A HREF=&quot;"/>
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="STRING_LITERAL" text="This is a link"/>
+              <ast name="CONCAT" text="CONCAT">
+                <ast name="STRING_LITERAL" text="&quot;&gt;"/>
+                <ast name="CONCAT" text="CONCAT">
+                  <ast name="IDENTIFIER" text="a"/>
+                  <ast name="STRING_LITERAL" text="&lt;/A&gt;"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="UNSUPORTED" text="match"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="UNSUPORTED" text="replace"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="UNSUPORTED" text="search"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="substr">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="NUM_INT" text="4"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="ord">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="LCURLY" text="LCURLY">
+                <ast name="IDENTIFIER" text="test"/>
+                <ast name="NUM_INT" text="2"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="substr">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="NUM_INT" text="4"/>
+              <ast name="NUM_INT" text="7"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="ord">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="LCURLY" text="LCURLY">
+                <ast name="IDENTIFIER" text="test"/>
+                <ast name="NUM_INT" text="2"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="CONCAT" text="CONCAT">
+            <ast name="STRING_LITERAL" text="&lt;SMALL&gt;"/>
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="STRING_LITERAL" text="&lt;/SMALL&gt;"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="ord">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="LCURLY" text="LCURLY">
+                <ast name="IDENTIFIER" text="test"/>
+                <ast name="NUM_INT" text="2"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="explode">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="STRING_LITERAL" text="l"/>
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="STRING_LITERAL" text="l"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="INDEX_OP" text="[">
+            <ast name="IDENTIFIER" text="test"/>
+            <ast name="NUM_INT" text="0"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="count">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="test"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="preg_split">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="STRING_LITERAL" text="l"/>
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="STRING_LITERAL" text="l"/>
+              <ast name="NUM_INT" text="1"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="INDEX_OP" text="[">
+            <ast name="IDENTIFIER" text="test"/>
+            <ast name="NUM_INT" text="0"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="count">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="test"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="CONCAT" text="CONCAT">
+            <ast name="STRING_LITERAL" text="&lt;STRIKE&gt;"/>
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="STRING_LITERAL" text="&lt;/STRIKE&gt;"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="ord">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="LCURLY" text="LCURLY">
+                <ast name="IDENTIFIER" text="test"/>
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="CONCAT" text="CONCAT">
+            <ast name="STRING_LITERAL" text="&lt;SUB&gt;"/>
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="STRING_LITERAL" text="&lt;/SUB&gt;"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="ord">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="LCURLY" text="LCURLY">
+                <ast name="IDENTIFIER" text="test"/>
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="substr">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="NUM_INT" text="3"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="ord">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="LCURLY" text="LCURLY">
+                <ast name="IDENTIFIER" text="test"/>
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="substr">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="NUM_INT" text="3"/>
+              <ast name="NUM_INT" text="5"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="ord">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="LCURLY" text="LCURLY">
+                <ast name="IDENTIFIER" text="test"/>
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="substr">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="NUM_INT" text="3"/>
+              <ast name="PLUS" text="PLUS">
+                <ast name="NUM_INT" text="3"/>
+                <ast name="NUM_INT" text="5"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="ord">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="LCURLY" text="LCURLY">
+                <ast name="IDENTIFIER" text="test"/>
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="CONCAT" text="CONCAT">
+            <ast name="STRING_LITERAL" text="&lt;SUP&gt;"/>
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="STRING_LITERAL" text="&lt;/SUP&gt;"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="ord">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="LCURLY" text="LCURLY">
+                <ast name="IDENTIFIER" text="test"/>
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="strtolower">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="a"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="ord">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="LCURLY" text="LCURLY">
+                <ast name="IDENTIFIER" text="test"/>
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="strtoupper">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="a"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="ord">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="LCURLY" text="LCURLY">
+                <ast name="IDENTIFIER" text="test"/>
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="IDENTIFIER" text="a"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="ord">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="LCURLY" text="LCURLY">
+                <ast name="IDENTIFIER" text="test"/>
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="IDENTIFIER" text="a"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test2"/>
+          <ast name="METHOD_CALL" text="ord">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="LCURLY" text="LCURLY">
+                <ast name="IDENTIFIER" text="test"/>
+                <ast name="NUM_INT" text="0"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </js>
+</asp>

@@ -1,0 +1,10 @@
+digraph L0 {
+        size = "5,3";
+        ordering=out;
+        node [shape = plaintext];
+        statement1 [label=statement];
+        statement3 [label=statement];
+        try -> {statement1 catch finally};
+        catch -> {id statement};
+        finally -> {statement3};
+}

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <js>
+    <original>
+      <ast name="FUNCTION" text="oddDeffinition">
+        <ast name="SLIST" text="{"/>
+      </ast>
+      <ast name="FUNCTION" text="oddDeffinitionWithParam">
+        <ast name="SLIST" text="{"/>
+      </ast>
+      <ast name="FUNCTION" text="oddDeffinitionWithParams">
+        <ast name="SLIST" text="{"/>
+      </ast>
+    </original>
+    <translated>
+      <ast name="FUNCTION" text="oddDeffinition">
+        <ast name="SLIST" text="{"/>
+      </ast>
+      <ast name="FUNCTION" text="oddDeffinitionWithParam">
+        <ast name="ELIST" text="ELIST">
+          <ast name="IDENTIFIER" text="a"/>
+        </ast>
+        <ast name="SLIST" text="{"/>
+      </ast>
+      <ast name="FUNCTION" text="oddDeffinitionWithParams">
+        <ast name="ELIST" text="ELIST">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="IDENTIFIER" text="c"/>
+        </ast>
+        <ast name="SLIST" text="{"/>
+      </ast>
+    </translated>
+  </js>
+</asp>

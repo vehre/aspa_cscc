@@ -1,0 +1,38 @@
+digraph flow {
+        size = "6.8,11";
+        ordering=out;
+        cmulty[label="Lexer Multyplexing"];
+        asp-> cmulty -> lexer -> {ASP_START RESPONSE DOT WRITE HWORLD ASP_END};
+        cmulty -> parser -> subcall -> dot -> {response write};
+        subcall -> arg_list -> hworld;
+        parser -> treeparser -> {expr codegen};
+        XML -> treeparser;
+        treeparser[label=TreeParser];
+        expr -> print ->arg_list2 -> hworld2;
+        codegen -> php;
+        codegen[label="Code Generator"];
+        php[label="<?php\nprint(\"Hello World\");\n?>", shape=box];
+        asp [label="<%\nResponse.write \"Hello World\"\n%>", shape=box,
+        fillcolor=gray, style=filled];
+        lexer[label=Lexer];
+        parser[label=Parser];
+        RESPONSE[label=Response, fillcolor=gray, style=filled, shape=box];
+        WRITE[label=Write, fillcolor=gray, style=filled, shape=box];
+        DOT[shape=egg];
+        HWORLD[label="Hello World", fillcolor=yellow, style=filled,
+        shape=box];
+        ASP_START[label="<%", fillcolor=red, style=filled, shape=box];
+        ASP_END[label="%>", fillcolor=red, style=filled, shape=box];
+        subcall[label=SubCall, shape=plaintext];
+        dot[label=DOT, shape=egg];
+        response[label=Response, fillcolor=gray, style=filled, shape=box];
+        write [label=Write, fillcolor=gray, style=filled, shape=box];
+        arg_list[label=ARGLIST_VALUES, shape=plaintext];
+        hworld[label="Hello World", fillcolor=yellow, style=filled,
+        shape=box];
+        expr[label=EXPR, shape=box];
+        print[style=filled, fillcolor=gray, shape=box];
+        arg_list2[label=ARGLIST_VALUES, shape=plaintext];
+        hworld2[label="Hello World", fillcolor=yellow, style=filled,
+        shape=box];
+}

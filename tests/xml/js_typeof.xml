@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <js>
+    <original>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="NUM_INT" text="12"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="TRUE" text="true"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="c"/>
+          <ast name="STRING_LITERAL" text="Hello"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="d"/>
+          <ast name="NEW" text="new">
+            <ast name="DATE" text="Date"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="$$$$0">
+        <ast name="SLIST" text="{"/>
+      </ast>
+      <ast name="FUNCTION" text="func">
+        <ast name="SLIST" text="{"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="at"/>
+          <ast name="TYPEOF" text="typeof">
+            <ast name="IDENTIFIER" text="a"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="bt"/>
+          <ast name="TYPEOF" text="typeof">
+            <ast name="IDENTIFIER" text="b"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="ct"/>
+          <ast name="TYPEOF" text="typeof">
+            <ast name="IDENTIFIER" text="c"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="dt"/>
+          <ast name="TYPEOF" text="typeof">
+            <ast name="IDENTIFIER" text="d"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="et"/>
+          <ast name="TYPEOF" text="typeof">
+            <ast name="IDENTIFIER" text="e"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="res"/>
+          <ast name="EQUAL" text="==">
+            <ast name="TYPEOF" text="typeof">
+              <ast name="IDENTIFIER" text="a"/>
+            </ast>
+            <ast name="STRING_LITERAL" text="number"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="res"/>
+          <ast name="EQUAL" text="==">
+            <ast name="TYPEOF" text="typeof">
+              <ast name="IDENTIFIER" text="b"/>
+            </ast>
+            <ast name="STRING_LITERAL" text="boolean"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="res"/>
+          <ast name="EQUAL" text="==">
+            <ast name="TYPEOF" text="typeof">
+              <ast name="IDENTIFIER" text="c"/>
+            </ast>
+            <ast name="STRING_LITERAL" text="string"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="res"/>
+          <ast name="EQUAL" text="==">
+            <ast name="TYPEOF" text="typeof">
+              <ast name="IDENTIFIER" text="d"/>
+            </ast>
+            <ast name="STRING_LITERAL" text="object"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="res"/>
+          <ast name="LOR" text="||">
+            <ast name="EQUAL" text="==">
+              <ast name="TYPEOF" text="typeof">
+                <ast name="IDENTIFIER" text="e"/>
+              </ast>
+              <ast name="STRING_LITERAL" text="function"/>
+            </ast>
+            <ast name="EQUAL" text="==">
+              <ast name="TYPEOF" text="typeof">
+                <ast name="IDENTIFIER" text="func"/>
+              </ast>
+              <ast name="STRING_LITERAL" text="function"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="f"/>
+          <ast name="STRING_LITERAL" text="string"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="res"/>
+          <ast name="EQUAL" text="==">
+            <ast name="TYPEOF" text="typeof">
+              <ast name="IDENTIFIER" text="c"/>
+            </ast>
+            <ast name="IDENTIFIER" text="f"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="res"/>
+          <ast name="NOT_EQUAL" text="!=">
+            <ast name="TYPEOF" text="typeof">
+              <ast name="IDENTIFIER" text="a"/>
+            </ast>
+            <ast name="STRING_LITERAL" text="number"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="res"/>
+          <ast name="NOT_EQUAL" text="!=">
+            <ast name="TYPEOF" text="typeof">
+              <ast name="IDENTIFIER" text="b"/>
+            </ast>
+            <ast name="STRING_LITERAL" text="boolean"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="res"/>
+          <ast name="NOT_EQUAL" text="!=">
+            <ast name="TYPEOF" text="typeof">
+              <ast name="IDENTIFIER" text="c"/>
+            </ast>
+            <ast name="STRING_LITERAL" text="string"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="res"/>
+          <ast name="NOT_EQUAL" text="!=">
+            <ast name="TYPEOF" text="typeof">
+              <ast name="IDENTIFIER" text="d"/>
+            </ast>
+            <ast name="STRING_LITERAL" text="object"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="res"/>
+          <ast name="LAND" text="&amp;&amp;">
+            <ast name="NOT_EQUAL" text="!=">
+              <ast name="TYPEOF" text="typeof">
+                <ast name="IDENTIFIER" text="e"/>
+              </ast>
+              <ast name="STRING_LITERAL" text="function"/>
+            </ast>
+            <ast name="EQUAL" text="==">
+              <ast name="TYPEOF" text="typeof">
+                <ast name="IDENTIFIER" text="func"/>
+              </ast>
+              <ast name="STRING_LITERAL" text="function"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="res"/>
+          <ast name="NOT_EQUAL" text="!=">
+            <ast name="TYPEOF" text="typeof">
+              <ast name="IDENTIFIER" text="c"/>
+            </ast>
+            <ast name="IDENTIFIER" text="f"/>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="NUM_INT" text="12"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="TRUE" text="true"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="c"/>
+          <ast name="STRING_LITERAL" text="Hello"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="d"/>
+          <ast name="METHOD_CALL" text="getdate"/>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="e">
+        <ast name="SLIST" text="{"/>
+      </ast>
+      <ast name="FUNCTION" text="func">
+        <ast name="ELIST" text="ELIST">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="IDENTIFIER" text="b"/>
+        </ast>
+        <ast name="SLIST" text="{"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="at"/>
+          <ast name="METHOD_CALL" text="gettype">
+            <ast name="ELIST" text="ELIST">
+              <ast name="IDENTIFIER" text="a"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="bt"/>
+          <ast name="METHOD_CALL" text="gettype">
+            <ast name="ELIST" text="ELIST">
+              <ast name="IDENTIFIER" text="b"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="ct"/>
+          <ast name="METHOD_CALL" text="gettype">
+            <ast name="ELIST" text="ELIST">
+              <ast name="IDENTIFIER" text="c"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="dt"/>
+          <ast name="METHOD_CALL" text="gettype">
+            <ast name="ELIST" text="ELIST">
+              <ast name="IDENTIFIER" text="d"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="et"/>
+          <ast name="METHOD_CALL" text="gettype">
+            <ast name="ELIST" text="ELIST">
+              <ast name="IDENTIFIER" text="e"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="res"/>
+          <ast name="LAND" text="&amp;&amp;">
+            <ast name="METHOD_CALL" text="is_numeric">
+              <ast name="ELIST" text="ELIST">
+                <ast name="IDENTIFIER" text="a"/>
+              </ast>
+            </ast>
+            <ast name="LNOT" text="!">
+              <ast name="METHOD_CALL" text="is_string">
+                <ast name="ELIST" text="ELIST">
+                  <ast name="IDENTIFIER" text="a"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="res"/>
+          <ast name="METHOD_CALL" text="is_bool">
+            <ast name="ELIST" text="ELIST">
+              <ast name="IDENTIFIER" text="b"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="res"/>
+          <ast name="METHOD_CALL" text="is_string">
+            <ast name="ELIST" text="ELIST">
+              <ast name="IDENTIFIER" text="c"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="res"/>
+          <ast name="METHOD_CALL" text="is_object">
+            <ast name="ELIST" text="ELIST">
+              <ast name="IDENTIFIER" text="d"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="res"/>
+          <ast name="LOR" text="||">
+            <ast name="METHOD_CALL" text="function_exists">
+              <ast name="ELIST" text="ELIST">
+                <ast name="STRING_LITERAL" text="e"/>
+              </ast>
+            </ast>
+            <ast name="METHOD_CALL" text="function_exists">
+              <ast name="ELIST" text="ELIST">
+                <ast name="STRING_LITERAL" text="func"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="f"/>
+          <ast name="STRING_LITERAL" text="string"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="res"/>
+          <ast name="EQUAL" text="==">
+            <ast name="METHOD_CALL" text="gettype">
+              <ast name="ELIST" text="ELIST">
+                <ast name="IDENTIFIER" text="c"/>
+              </ast>
+            </ast>
+            <ast name="IDENTIFIER" text="f"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="res"/>
+          <ast name="LNOT" text="!">
+            <ast name="LAND" text="&amp;&amp;">
+              <ast name="METHOD_CALL" text="is_numeric">
+                <ast name="ELIST" text="ELIST">
+                  <ast name="IDENTIFIER" text="a"/>
+                </ast>
+              </ast>
+              <ast name="LNOT" text="!">
+                <ast name="METHOD_CALL" text="is_string">
+                  <ast name="ELIST" text="ELIST">
+                    <ast name="IDENTIFIER" text="a"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="res"/>
+          <ast name="LNOT" text="!">
+            <ast name="METHOD_CALL" text="is_bool">
+              <ast name="ELIST" text="ELIST">
+                <ast name="IDENTIFIER" text="b"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="res"/>
+          <ast name="LNOT" text="!">
+            <ast name="METHOD_CALL" text="is_string">
+              <ast name="ELIST" text="ELIST">
+                <ast name="IDENTIFIER" text="c"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="res"/>
+          <ast name="LNOT" text="!">
+            <ast name="METHOD_CALL" text="is_object">
+              <ast name="ELIST" text="ELIST">
+                <ast name="IDENTIFIER" text="d"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="res"/>
+          <ast name="LAND" text="&amp;&amp;">
+            <ast name="LNOT" text="!">
+              <ast name="METHOD_CALL" text="function_exists">
+                <ast name="ELIST" text="ELIST">
+                  <ast name="STRING_LITERAL" text="e"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="METHOD_CALL" text="function_exists">
+              <ast name="ELIST" text="ELIST">
+                <ast name="STRING_LITERAL" text="func"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="res"/>
+          <ast name="NOT_EQUAL" text="!=">
+            <ast name="METHOD_CALL" text="gettype">
+              <ast name="ELIST" text="ELIST">
+                <ast name="IDENTIFIER" text="c"/>
+              </ast>
+            </ast>
+            <ast name="IDENTIFIER" text="f"/>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </js>
+</asp>

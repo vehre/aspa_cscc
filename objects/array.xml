@@ -1,0 +1,231 @@
+<!--
+    This file is part of Aspa.
+
+    Aspa is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    Aspa is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Aspa; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+-->
+<class name="Array" standalone="true">
+    <constructor>
+        <ast name="METHOD_CALL" text="array">
+        </ast>
+    </constructor>
+
+    <constructor>
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="array">
+        </ast>
+    </constructor>
+
+    <constructor>
+        <args />
+        <ast name="METHOD_CALL" text="array">
+            <ast name="ARGLIST_VALUES">
+                <args />
+            </ast>
+        </ast>
+    </constructor>
+
+    <method name="concat" type="LBRACK">
+        <ast name="TRANSLATE_ROOT">
+            <this />
+        </ast>
+    </method>
+
+    <method name="concat" type="LBRACK">
+        <args/>
+        <ast name="METHOD_CALL" text="array_merge">
+            <ast name="ARGLIST_VALUES">
+                <this />
+                <ast name="METHOD_CALL" text="array">
+                    <ast name="ARGLIST_VALUES">
+                        <args />
+                    </ast>
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <method name="join" type="DSTRING">
+        <arg type="DSTRING" />
+        <ast name="METHOD_CALL" text="implode">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+                <this />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="pop" type="ANY">
+        <ast name="METHOD_CALL" text="array_pop">
+            <ast name="ARGLIST_VALUES">
+                <this />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="push" type="DINT">
+        <args/>
+        <ast name="METHOD_CALL" text="array_push">
+            <ast name="ARGLIST_VALUES">
+                <this />
+                <args />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="reverse" type="LBRACK">
+        <ast name="METHOD_CALL" text="array_reverse">
+            <ast name="ARGLIST_VALUES">
+                <this />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="shift" type="ANY">
+        <ast name="METHOD_CALL" text="array_shift">
+            <ast name="ARGLIST_VALUES">
+                <this />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="slice" type="LBRACK">
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="array_slice">
+            <ast name="ARGLIST_VALUES">
+                <this />
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="slice" type="LBRACK">
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="array_slice">
+            <ast name="ARGLIST_VALUES">
+                <this />
+                <arg index="1" />
+                <ast name="MINUS">
+                    <arg index="2" />
+                    <arg index="1" />
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <method name="sort" type="LBRACK">
+        <ast name="METHOD_CALL" text="sort">
+            <ast name="ARGLIST_VALUES">
+                <this />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="sort" type="LBRACK">
+        <args />
+        <ast name="METHOD_CALL" text="usort">
+            <ast name="ARGLIST_VALUES">
+                <this />
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="splice" type="LBRACK">
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <ast name="METHOD_CALL" text="array_splice">
+            <ast name="ARGLIST_VALUES">
+                <this />
+                <arg index="1" />
+                <arg index="2" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="splice" type="LBRACK">
+        <arg type="DINT" />
+        <arg type="DINT" />
+        <args />
+        <ast name="METHOD_CALL" text="array_splice">
+            <ast name="ARGLIST_VALUES">
+                <this />
+                <arg index="1" />
+                <arg index="2" />
+                <ast name="METHOD_CALL" text="array">
+                    <ast name="ARGLIST_VALUES">
+                        <args mode="-1" />
+                    </ast>
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <method name="unshift" type="LBRACK">
+        <args/>
+        <ast name="EXPR">
+            <ast name="METHOD_CALL" text="array_unshift">
+                <ast name="ARGLIST_VALUES">
+                    <this />
+                    <args />
+                </ast>
+            </ast>
+        </ast>
+        <this />
+    </method>
+
+    <method name="toString" type="DSTRING">
+        <ast name="METHOD_CALL" text="implode">
+            <ast name="ARGLIST_VALUES">
+                <ast name="DSTRING" text="," />
+                <this />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="valueOf" type="DSTRING">
+        <ast name="METHOD_CALL" text="implode">
+            <ast name="ARGLIST_VALUES">
+                <ast name="DSTRING" text="," />
+                <this />
+            </ast>
+        </ast>
+    </method>
+
+    <property name="length" type="DINT">
+        <arg type="DINT" />
+        <read>
+            <ast name="METHOD_CALL" text="count">
+                <ast name="ARGLIST_VALUES">
+                    <this />
+                </ast>
+            </ast>
+        </read>
+        <write>
+            <ast name="EXPR">
+                <ast name="ASSIGN">
+                    <this />
+                    <ast name="METHOD_CALL" text="slice">
+                        <ast name="ARGLIST_VALUES">
+                            <this />
+                            <ast name="DINT" text="0" />
+                            <arg index="1" />
+                        </ast>
+                    </ast>
+                </ast>
+            </ast>
+        </write>
+    </property>
+</class>

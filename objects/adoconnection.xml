@@ -1,0 +1,288 @@
+<!--
+    This file is part of Aspa.
+
+    Aspa is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    Aspa is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Aspa; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+-->
+<class name="ADOConnection" dependant="true" requires="adodb/adodb.inc.php">
+    <property name="Attributes" type="DINT">
+        <arg type="DINT" />
+        <read>
+            <ast name="UNSUPPORTED" />
+        </read>
+        <write>
+            <ast name="UNSUPPORTED" />
+        </write>
+    </property>
+
+    <property name="CommandTimeout" type="DINT">
+        <arg type="DINT" />
+        <read>
+            <ast name="UNSUPPORTED" />
+        </read>
+        <write>
+            <ast name="UNSUPPORTED" />
+        </write>
+    </property>
+
+    <property name="ConnectionString" type="VOID">
+        <arg type="DSTRING" />
+        <write>
+            <state methodId="_open" index="1" />
+            <ast name="SKIP" />
+        </write>
+    </property>
+
+    <property name="ConnectionTimeout" type="DINT">
+        <arg type="DINT" />
+        <read>
+            <ast name="UNSUPPORTED" />
+        </read>
+        <write>
+            <ast name="UNSUPPORTED" />
+        </write>
+    </property>
+
+    <property name="CursorLocation" type="DINT">
+        <arg type="DINT" />
+        <read>
+            <ast name="UNSUPPORTED" />
+        </read>
+        <write>
+            <ast name="UNSUPPORTED" />
+        </write>
+    </property>
+
+    <property name="DefaultDatabase" type="DSTRING">
+        <arg type="DINT" />
+        <read>
+            <ast name="UNSUPPORTED" />
+        </read>
+        <write>
+            <ast name="UNSUPPORTED" />
+        </write>
+    </property>
+
+    <!--
+    <property name="Errors" />
+    -->
+    <property name="IsolationLevel" type="DINT">
+        <arg type="DINT" />
+        <read>
+            <ast name="UNSUPPORTED" />
+        </read>
+        <write>
+            <ast name="UNSUPPORTED" />
+        </write>
+    </property>
+
+    <property name="Mode" type="DINT">
+        <arg type="DINT" />
+        <read>
+            <ast name="UNSUPPORTED" />
+        </read>
+        <write>
+            <ast name="UNSUPPORTED" />
+        </write>
+    </property>
+
+    <!--
+    <property name="Properties" />
+    -->
+    <property name="Provider" type="DSTRING">
+        <arg type="DSTRING" />
+        <read>
+            <ast name="DOT">
+                <this />
+                <ast name="IDENTIFIER" text="dataProvider" />
+            </ast>
+        </read>
+        <write>
+            <ast name="EXPR">
+                <ast name="ASSIGN">
+                    <ast name="DOT">
+                        <this />
+                        <ast name="IDENTIFIER" text="dataProvider" />
+                    </ast>
+                    <arg index="1" />
+                </ast>
+            </ast>
+        </write>
+    </property>
+
+    <property name="State" type="DINT">
+        <read>
+            <ast name="UNSUPPORTED" />
+        </read>
+    </property>
+
+    <property name="Version" type="DSTRING">
+        <read>
+            <ast name="DOT">
+                <this />
+                <ast name="INDEX_OP">
+                    <ast name="METHOD_CALL" text="ServerInfo">
+                        <ast name="ARGLIST_VALUES">
+                            <ast name="DSTRING" text="" />
+                        </ast>
+                    </ast>
+                    <ast name="DSTRING" text="version" />
+                </ast>
+            </ast>
+        </read>
+    </property>
+
+    <method name="BeginTrans" type="DINT">
+        <ast name="DOT">
+            <this />
+            <ast name="METHOD_CALL" text="BeginTrans">
+            </ast>
+        </ast>
+    </method>
+
+    <method name="CommitTrans" type="VOID">
+        <ast name="DOT">
+            <this />
+            <ast name="METHOD_CALL" text="CommitTrans">
+            </ast>
+        </ast>
+    </method>
+
+    <method name="RollbackTrans" type="VOID">
+        <ast name="DOT">
+            <this />
+            <ast name="METHOD_CALL" text="RollbackTrans">
+            </ast>
+        </ast>
+    </method>
+
+
+    <method name="Cancel" type="VOID">
+        <ast name="SKIP" />
+    </method>
+
+    <method name="Close" type="VOID">
+        <ast name="DOT">
+            <this />
+            <ast name="METHOD_CALL" text="Close">
+            </ast>
+        </ast>
+    </method>
+
+    <method name="Execute" type="ADORecordset">
+        <arg type="DSTRING" />
+        <args />
+        <ast name="DOT">
+            <this />
+            <ast name="METHOD_CALL" text="Execute">
+                <arg index="1" />
+            </ast>
+        </ast>
+    </method>
+
+    <method name="Open" id="_open" type="VOID">
+        <!--
+        assumes that the connection string is set prior to this call
+        -->
+        <ast name="ASSIGN">
+            <this />
+            <ast name="METHOD_CALL" text="initConnection">
+                <ast name="ARGLIST_VALUES">
+                    <arg index="1" />
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <method name="Open" type="VOID">
+        <!-- If the ConnectionString was set is ignored -->
+        <arg type="DSTRING" />
+        <ast name="ASSIGN">
+            <this />
+            <ast name="METHOD_CALL" text="initConnection">
+                <ast name="ARGLIST_VALUES">
+                    <arg index="1" />
+                    <ast name="NULL" />
+                    <ast name="NULL" />
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <method name="Open" type="VOID">
+        <!-- If the ConnectionString was set is ignored -->
+        <arg type="DSTRING" />
+        <arg type="DSTRING" />
+        <ast name="ASSIGN">
+            <this />
+            <ast name="METHOD_CALL" text="initConnection">
+                <ast name="ARGLIST_VALUES">
+                    <arg index="1" />
+                    <arg index="2" />
+                    <ast name="NULL" />
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <method name="Open" type="VOID">
+        <!-- If the ConnectionString was set is ignored -->
+        <arg type="DSTRING" />
+        <arg type="DSTRING" />
+        <arg type="DSTRING" />
+        <ast name="ASSIGN">
+            <this />
+            <ast name="METHOD_CALL" text="initConnection">
+                <ast name="ARGLIST_VALUES">
+                    <arg index="1" />
+                    <arg index="2" />
+                    <arg index="3" />
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <method name="Open" type="VOID">
+        <!-- If the ConnectionString was set is ignored -->
+        <arg type="DSTRING" />
+        <arg type="DSTRING" />
+        <arg type="DSTRING" />
+        <!-- The options are ignored -->
+        <arg type="DINT" />
+        <ast name="ASSIGN">
+            <this />
+            <ast name="METHOD_CALL" text="initConnection">
+                <ast name="ARGLIST_VALUES">
+                    <arg index="1" />
+                    <arg index="2" />
+                    <arg index="3" />
+                </ast>
+            </ast>
+        </ast>
+    </method>
+
+    <!--
+    The enum arguments are not supported.
+    The result will be a Recordset with info about all views and tables
+    in the DB
+    -->
+    <method name="OpenSchema" type="ADORecordset">
+        <args />
+        <ast name="DOT">
+            <this />
+            <ast name="METHOD_CALL" text="MetaTables">
+            </ast>
+        </ast>
+    </method>
+</class>

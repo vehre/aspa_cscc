@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <js>
+    <original>
+      <ast name="FUNCTION" text="nested">
+        <ast name="SLIST" text="{">
+          <ast name="VAR" text="var">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="a"/>
+                <ast name="NUM_INT" text="20"/>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="VAR" text="var">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="b"/>
+                <ast name="STRING_LITERAL" text="Hello"/>
+              </ast>
+            </ast>
+          </ast>
+                <ast name="FUNCTION" text="$$$$0">
+                  <ast name="SLIST" text="{">
+                    <ast name="VAR" text="var">
+                      <ast name="EXPR" text="EXPR">
+                        <ast name="ASSIGN" text="=">
+                          <ast name="IDENTIFIER" text="z"/>
+                          <ast name="PLUS" text="+">
+                            <ast name="IDENTIFIER" text="a"/>
+                            <ast name="DOT" text=".">
+                              <ast name="IDENTIFIER" text="b"/>
+                              <ast name="IDENTIFIER" text="length"/>
+                            </ast>
+                          </ast>
+                        </ast>
+                      </ast>
+                    </ast>
+                  </ast>
+                </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="METHOD_CALL" text="(">
+              <ast name="IDENTIFIER" text="innerFunc"/>
+              <ast name="ELIST" text="ELIST"/>
+            </ast>
+          </ast>
+          <ast name="VAR" text="var">
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="h"/>
+                <ast name="IDENTIFIER" text="z"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="FUNCTION" text="nested">
+        <ast name="SLIST" text="{">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="NUM_INT" text="20"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="b"/>
+              <ast name="STRING_LITERAL" text="Hello"/>
+            </ast>
+          </ast>
+          <ast name="FUNCTION" text="innerFunc">
+            <ast name="SLIST" text="{">
+              <ast name="EXPR" text="EXPR">
+                <ast name="ASSIGN" text="=">
+                  <ast name="IDENTIFIER" text="z"/>
+                  <ast name="PLUS" text="+">
+                    <ast name="IDENTIFIER" text="a"/>
+                    <ast name="METHOD_CALL" text="strlen">
+                      <ast name="ELIST" text="ARGLIST_VALUES">
+                        <ast name="IDENTIFIER" text="b"/>
+                      </ast>
+                    </ast>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="METHOD_CALL" text="innerFunc"/>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="h"/>
+              <ast name="IDENTIFIER" text="z"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </js>
+</asp>

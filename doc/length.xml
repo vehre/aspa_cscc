@@ -1,0 +1,24 @@
+    <property name="length" type="DINT">
+        <arg type="DINT" />
+        <read>
+            <ast name="METHOD_CALL" text="strlen">
+                <ast name="ARGLIST_VALUES">
+                    <this />
+                </ast>
+            </ast>
+        </read>
+        <write>
+            <ast name="EXPR">
+                <ast name="ASSIGN">
+                    <this />
+                    <ast name="METHOD_CALL" text="substr">
+                        <ast name="ARGLIST_VALUES">
+                            <this />
+                            <ast name="DINT" text="0" />
+                            <arg index="1" />
+                        </ast>
+                    </ast>
+                </ast>
+            </ast>
+        </write>
+    </property>

@@ -1,0 +1,458 @@
+@header :
+/*
+    This file is part of Aspa.
+
+    Aspa is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    Aspa is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Aspa; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*/
+package gr.omadak.leviathan.asp;
+import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.ListIterator;
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Stack;
+import java.util.Map;
+import java.util.HashMap;
+import gr.omadak.leviathan.asp.objects.XmlASPClass;
+import gr.omadak.leviathan.asp.objects.JsUserDefinedMethod;
+import gr.omadak.leviathan.asp.objects.JsUserDefinedProperty;
+import gr.omadak.leviathan.asp.objects.ASPClass;
+import gr.omadak.leviathan.asp.objects.Member;
+import gr.omadak.leviathan.asp.objects.Property;
+import org.apache.log4j.Logger;
+
+@tokens:
+    ARRAY;BOOLEAN; DATE; NAN; NUMBER; OBJECT; STRING; BREAK;
+    CASE; CATCH; CONTINUE; DEFAULT; DELETE; ELSE;
+    FINALLY; FOR; FUNCTION; IF; IN; INSTANCEOF; NEW; NULL;
+    RETURN; SWITCH; THIS; THROW; TRY; TYPEOF;
+    UNDEFINED; VAR; VOID; WHILE; WITH; INCLUDE;
+
+
+    SLIST; ARRAY_DECLARATOR; INDEX_OP; POST_INC; POST_DEC; METHOD_CALL;
+    EXPR; UNARY_MINUS; UNARY_PLUS; CASE_GROUP; ELIST; FOR_INIT;
+    FOR_CONDITION;FOR_ITERATOR; EMPTY_STAT;LABELED_STAT;
+    FUNCTION_MEMBER; SKIP_EXPR;
+
+    HTML;JS_END;EQ_HTML;
+
+@init : {
+	private List functions;
+	private List anonymFunctions;
+    private List classes;
+	private Set obsoloteAnonymIndexes;
+    private int anonymCounter;
+	private JsUserDefinedMethod currentFunction;
+    private Stack anonymIndexes;
+    private Map memberFunctions;
+    private Map unresolvedProperties;
+
+    private static Logger LOG = Logger.getLogger(JsParser.class);
+
+    private static XmlASPClass STRING_CLASS;
+    private static XmlASPClass INT_CLASS;
+    private static XmlASPClass BOOLEAN_CLASS;
+    private static XmlASPClass DATE_CLASS;
+
+	public static void setInstrictClasses(XmlASPClass[] classes) {
+        DATE_CLASS = classes[1];
+        STRING_CLASS = classes[2];
+        BOOLEAN_CLASS = classes[3];
+        INT_CLASS = classes[4];
+    }
+
+
+    private List getArgs(AST argRoot) {
+		AST fArg = argRoot.getFirstChild();
+		List result;
+		if (fArg == null) {
+			result = Collections.EMPTY_LIST;
+		} else {
+			result = new ArrayList();
+			while (fArg != null) {
+				result.add(fArg.getFirstChild());
+				fArg = fArg.getNextSibling();
+			}
+		}
+		return result;
+	}
+
+
+	private JsUserDefinedMethod getNamedMethod(String name) {
+        JsUserDefinedMethod result = null;
+        int index = 0;
+        if (functions != null) {
+            for (Iterator it = functions.iterator(); it.hasNext();) {
+                JsUserDefinedMethod method = (JsUserDefinedMethod) it.next();
+                if (name.equals(method.getName())) {
+                    result = method;
+                    break;
+                }
+                index++;
+            }
+        }
+        if (result != null) {
+            functions.remove(index);
+        }
+        return result;
+    }
+
+
+    private void removeFunction(String name) {
+        for (ListIterator it = functions.listIterator(); it.hasNext();) {
+            JsUserDefinedMethod method = (JsUserDefinedMethod) it.next();
+            if (name.equals(method.getName())) {
+                it.remove();
+                break;
+            }
+        }
+    }
+
+
+	private AST makeFromList(List elements, AST root) {
+        AST result;
+        if (elements.isEmpty()) {
+            result = root;
+        } else {
+            for (Iterator it = elements.iterator(); it.hasNext();) {
+                AST elem = (AST) it.next();
+				elem.setNextSibling(null);
+            }
+            elements.add(0, root);
+            AST[] ast_array = (AST[]) elements.toArray(new AST[0]);
+            result = astFactory.make(ast_array);
+        }
+        return result;
+    }
+
+
+	private int getIndex(String text) {
+        return Integer.parseInt(text.substring(
+		CommonConstants.KEY_START.length()));
+    }
+
+
+    private JsUserDefinedMethod getMethod(String text) {
+		return (JsUserDefinedMethod) anonymFunctions.get(getIndex(text));
+	}
+
+
+	private void removeMethod(String text) {
+        if (obsoloteAnonymIndexes == null) {
+            obsoloteAnonymIndexes = new HashSet();
+        }
+        obsoloteAnonymIndexes.add(new Integer(getIndex(text)));
+    }
+
+
+    private void setFunction(JsUserDefinedMethod method) {
+        if (currentFunction != null) {
+			method.setParentFunction(currentFunction);
+		}
+		currentFunction = method;
+	}
+
+
+	private void restoreFunction() {
+		if (currentFunction != null) {
+			currentFunction = currentFunction.getParentFunction();
+		}
+	}
+
+
+    private ASPClass getCurrentClass() {
+        ASPClass result = currentFunction.getASPClass();
+        if (result == null) {
+            result = currentFunction.createClass();
+        }
+        return result;
+    }
+
+
+    private void addPrimitiveProperty(ASPClass clazz, String name, int type) {
+        addProperty(clazz, name, null).setReturnType(type);
+    }
+
+
+    private Property addProperty(ASPClass clazz, String name,
+    ASPClass clazzType) {
+        Member mem = clazz.getMemberObject(name);
+        Property prop;
+        if (mem instanceof Property) {
+            prop = (Property) mem;
+        } else if (mem == null) {
+            prop = new JsUserDefinedProperty(name);
+            clazz.addMember(prop);
+        } else {
+            LOG.error("Expected a property with name:"
+            + name + " but is a Method");
+            prop = null;
+        }
+        if (prop != null && clazzType != null) {
+            prop.setRetObjectClass(clazzType);
+        }
+        return prop;
+    }
+
+
+    public List getFunctions() {
+		return functions;
+	}
+
+
+    public List getAnonymousFunctions() {
+		return anonymFunctions;
+	}
+
+
+    public List getClasses() {
+        return classes;
+    }
+}
+
+@function_def : {
+    #IDENTIFIER.setType(FUNCTION);
+	if (functions == null) {
+		functions = new ArrayList();
+	}
+	JsUserDefinedMethod method = new JsUserDefinedMethod(#IDENTIFIER.getText(),
+	getArgs(#args), false);
+	functions.add(method);
+    setFunction(method);
+}
+
+
+@function_declend : {
+    if (memberFunctions != null
+    && memberFunctions.containsKey(#IDENTIFIER.getText())) {
+        Object[] val = (Object[]) memberFunctions.remove(#IDENTIFIER.getText());
+        AST assign = (AST) val[0];
+        ASPClass clazz = (ASPClass) val[1];
+        //( = ( . this name ) funcName )
+        String fName = assign.getFirstChild() //DOT
+        .getFirstChild() //THIS
+        .getNextSibling().getText();
+        currentFunction.setName(fName);
+        removeFunction(fName);
+        clazz.addMember(currentFunction);
+        assign.setFirstChild(null);
+        assign.setType(SKIP_EXPR);
+        #IDENTIFIER.setText(fName);
+    }
+	#statement = #(#IDENTIFIER, #stm);
+    restoreFunction();
+}
+
+@anonym_def : {
+    if (anonymIndexes == null) {
+        anonymIndexes = new Stack();
+    }
+    anonymIndexes.push(new Integer(anonymCounter++));
+    List arguments = getArgs(#args);
+    JsUserDefinedMethod method = new JsUserDefinedMethod(null, arguments, false);
+	method.setDefinedAsVar(true);
+	if (anonymFunctions == null) {
+        anonymFunctions = new ArrayList();
+    }
+    anonymFunctions.add(method);
+    setFunction(method);
+}
+
+@function_end : {
+	int type = FUNCTION;
+	String key = CommonConstants.KEY_START + anonymIndexes.pop();
+	#primaryExpression = #([type, key], #cs);
+    restoreFunction();
+}
+
+@assign : {
+	if (#a != null) {
+        if (#ax.getType() == FUNCTION) {
+            JsUserDefinedMethod method = getMethod(#ax.getText());
+            if (#c.getType() == IDENTIFIER) {
+                method.setName(#c.getText());
+            } else if (#c.getType() == DOT
+            && #c.getFirstChild().getType() == THIS) {
+                removeMethod(#ax.getText());
+                String funcName = #c.getFirstChild().getNextSibling().getText();
+                method.setName(funcName);
+                #ax.setText(funcName);
+                #ax.setType(FUNCTION_MEMBER);
+                getCurrentClass().addMember(method);
+            }
+            #assignmentExpression = #ax;
+        } else if (#c.getType() == DOT
+        && #c.getFirstChild().getType() == THIS
+        && #c.getFirstChild().getNextSibling().getType() == IDENTIFIER) {
+            AST attr = #c.getFirstChild().getNextSibling();
+            String valText = #ax.getText();
+            switch (#ax.getType()) {
+                case IDENTIFIER:
+                    if (currentFunction.hasArg(valText)) {
+                        addProperty(getCurrentClass(), attr.getText(), null);
+                    } else {
+                        JsUserDefinedMethod refMethod = getNamedMethod(valText);
+                        if (refMethod != null) {
+                            ASPClass clazz = getCurrentClass();
+                            clazz.addMember(refMethod);
+                            #assignmentExpression = null;
+                        } else {
+                            if (memberFunctions == null) {
+                                memberFunctions = new HashMap();
+                            }
+                            memberFunctions.put(valText,
+                            new Object[] {
+                            #assignmentExpression, getCurrentClass()
+                            });
+                        }
+                    }
+                break;
+                case STRING_LITERAL:
+                case NUM_INT:
+                case TRUE:
+                case FALSE:
+                case DATE:
+                    addPrimitiveProperty(getCurrentClass(), attr.getText(),
+                    #ax.getType());
+                    break;
+                case NEW:
+                    String className = #ax.getFirstChild().getText();
+                    JsUserDefinedMethod constr = getNamedMethod(className);
+                    if (constr != null) {
+                        addProperty(getCurrentClass(), attr.getText(),
+                        constr.getASPClass() == null
+                        ? constr.createClass()
+                        : constr.getASPClass());
+                    } else {
+                        if (unresolvedProperties == null) {
+                            unresolvedProperties = new HashMap();
+                        }
+                        Property prop = addProperty(getCurrentClass(),
+                        attr.getText(), null);
+                        if (unresolvedProperties.containsKey(className)) {
+                            Object obj = unresolvedProperties.get(className);
+                            if (obj instanceof List) {
+                                List list = (List) obj;
+                                if (!list.contains(prop)) {
+                                    list.add(prop);
+                                }
+                            } else {
+                                List occurences = new ArrayList();
+                                occurences.add(obj);
+                                occurences.add(prop);
+                            }
+                        } else {
+                            unresolvedProperties.put(className, prop);
+                        }
+                    }
+                    break;
+            }
+        }
+	}
+}
+
+@expression : {
+	if (#a != null && #a.getType() != FUNCTION
+    && #a.getType() != FUNCTION_MEMBER) {
+		#expression = #([EXPR,"EXPR"], #expression);
+	}
+}
+
+@var_init : {
+	List vars = new ArrayList();
+}
+@add_var : { vars.add(#v); }
+@add_var2 : { vars.add(#vn); }
+@var : {
+	int i = 0;
+	List funcs = new ArrayList();
+	while (i < vars.size()) {
+		AST elem = (AST) vars.get(i);
+		if (elem.getType() == FUNCTION) {
+			getMethod(elem.getText()).setDefinedInVar(true);
+			funcs.add(vars.remove(i));
+		} else {
+			i++;
+		}
+	}
+	if (vars.isEmpty()) {
+		#declaration = makeFromList(funcs, null);
+	} else {
+		int code = VAR;
+		AST children = makeFromList(vars, #[code, "var"]);
+		if (!funcs.isEmpty()) {
+			AST funcAST = makeFromList(funcs, null);
+			#declaration = astFactory.make(new AST[]{null, funcAST, children});
+		} else {
+			#declaration = children;
+		}
+	}
+}
+
+
+@end : {
+    if (obsoloteAnonymIndexes != null) {
+        int[] indexes = new int[obsoloteAnonymIndexes.size()];
+        int i = 0;
+        for (Iterator it = obsoloteAnonymIndexes.iterator(); it.hasNext();) {
+            Integer val = (Integer) it.next();
+            indexes[i++] = val.intValue();
+        }
+        Arrays.sort(indexes);
+        for (i = 0; i < indexes.length; i++) {
+            anonymFunctions.remove(indexes[i]  - i);
+        }
+    }
+    if (memberFunctions != null) {
+        memberFunctions.clear();
+    }
+    if (functions != null) {
+        for (Iterator it = functions.iterator(); it.hasNext();) {
+            JsUserDefinedMethod jsMethod = (JsUserDefinedMethod) it.next();
+            if (jsMethod.getASPClass() != null) {
+                if (classes == null) {
+                    classes = new ArrayList();
+                }
+                ASPClass clazz = jsMethod.getASPClass();
+                classes.add(clazz);
+            }
+        }
+        if (classes != null && unresolvedProperties != null) {
+            for (Iterator it = classes.iterator(); it.hasNext();) {
+                ASPClass clazz = (ASPClass) it.next();
+                if (unresolvedProperties.containsKey(clazz.getName())) {
+                    Object obj = unresolvedProperties.remove(clazz.getName());
+                    if (obj instanceof Property) {
+                        ((Property) obj).setRetObjectClass(clazz);
+                    } else {
+                        List unres = (List) obj;
+                        for (Iterator uIt = unres.iterator(); uIt.hasNext();) {
+                            ((Property) it.next()).setRetObjectClass(clazz);
+                        }
+                    }
+                }
+            }
+        }
+        if (unresolvedProperties != null && !unresolvedProperties.isEmpty()) {
+            for (Iterator it = unresolvedProperties.keySet().iterator();
+            it.hasNext();) {
+                LOG.warn("Failed to locate class:" + it.next());
+            }
+        }
+    }
+}

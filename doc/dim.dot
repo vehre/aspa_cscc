@@ -1,0 +1,9 @@
+digraph L0 {
+        size = "4,3";
+        ordering=out;
+        node [shape = plaintext];
+        DIM -> {id array};
+        id[label=IDENTIFIER];
+        array[label=IDENTIFIER];
+        array -> {2 5};
+}

@@ -1,0 +1,6 @@
+digraph L0 {
+        size = "3,2.5";
+        ordering=out;
+        node [shape = plaintext];
+        WHILE_WEND -> {logicalExpression statements};
+}

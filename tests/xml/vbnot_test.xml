@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <vb>
+    <original>
+      <ast name="IF_ELSE" text="IfThenElse">
+        <ast name="IF" text="If">
+          <ast name="EXPR" text="EXPR">
+            <ast name="NOT" text="not">
+              <ast name="LPAREN" text="(">
+                <ast name="OR" text="Or">
+                  <ast name="EQ" text="=">
+                    <ast name="IDENTIFIER" text="sServername"/>
+                    <ast name="DSTRING" text="localhost"/>
+                  </ast>
+                  <ast name="EQ" text="=">
+                    <ast name="IDENTIFIER" text="sServerIP"/>
+                    <ast name="IDENTIFIER" text="sRemoteIP"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="SUB_CALL" text="Sub Call">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Response"/>
+              <ast name="IDENTIFIER" text="Redirect"/>
+            </ast>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="iisstart.asp"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="ELSE" text="Else">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="sPath"/>
+              <ast name="CONCAT" text="&amp;">
+                <ast name="CONCAT" text="&amp;">
+                  <ast name="CONCAT" text="&amp;">
+                    <ast name="DSTRING" text="IIS://"/>
+                    <ast name="IDENTIFIER" text="sServername"/>
+                  </ast>
+                  <ast name="DSTRING" text="/W3SVC/"/>
+                </ast>
+                <ast name="IDENTIFIER" text="sServerinst"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="IF_ELSE" text="IfThenElse">
+        <ast name="IF" text="If">
+          <ast name="EXPR" text="EXPR">
+            <ast name="NOT" text="not">
+              <ast name="LPAREN" text="(">
+                <ast name="OR" text="OR">
+                  <ast name="EQ" text="=">
+                    <ast name="IDENTIFIER" text="sServername"/>
+                    <ast name="DSTRING" text="localhost"/>
+                  </ast>
+                  <ast name="EQ" text="=">
+                    <ast name="IDENTIFIER" text="sServerIP"/>
+                    <ast name="IDENTIFIER" text="sRemoteIP"/>
+                  </ast>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="METHOD_CALL" text="header">
+              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                <ast name="CONCAT" text="CONCAT">
+                  <ast name="DSTRING" text="Location: "/>
+                  <ast name="DSTRING" text="iisstart.asp"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="ELSE" text="Else">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="sPath"/>
+              <ast name="CONCAT" text="CONCAT">
+                <ast name="CONCAT" text="CONCAT">
+                  <ast name="CONCAT" text="CONCAT">
+                    <ast name="DSTRING" text="IIS://"/>
+                    <ast name="IDENTIFIER" text="sServername"/>
+                  </ast>
+                  <ast name="DSTRING" text="/W3SVC/"/>
+                </ast>
+                <ast name="IDENTIFIER" text="sServerinst"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </vb>
+</asp>

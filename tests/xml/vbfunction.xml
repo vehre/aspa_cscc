@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <vb>
+    <original>
+      <ast name="FUNCTION" text="f1"/>
+      <ast name="FUNCTION" text="f2">
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="f2"/>
+            <ast name="PLUS" text="+">
+              <ast name="IDENTIFIER" text="num"/>
+              <ast name="DINT" text="2"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="f3">
+        <ast name="IF_ELSE" text="IfThenElse">
+          <ast name="IF" text="if">
+            <ast name="EXPR" text="EXPR">
+              <ast name="GT" text="&gt;">
+                <ast name="IDENTIFIER" text="num"/>
+                <ast name="DINT" text="0"/>
+              </ast>
+            </ast>
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="f3"/>
+                <ast name="PLUS" text="+">
+                  <ast name="IDENTIFIER" text="num"/>
+                  <ast name="DINT" text="2"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="f4">
+        <ast name="IF_ELSE" text="IfThenElse">
+          <ast name="IF" text="if">
+            <ast name="EXPR" text="EXPR">
+              <ast name="GT" text="&gt;">
+                <ast name="IDENTIFIER" text="num"/>
+                <ast name="DINT" text="0"/>
+              </ast>
+            </ast>
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="f4"/>
+                <ast name="PLUS" text="+">
+                  <ast name="IDENTIFIER" text="num"/>
+                  <ast name="DINT" text="2"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="EXIT" text="exit">
+              <ast name="FUNCTION" text="function"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="FUNCTION" text="f1">
+        <ast name="RETURN" text="return">
+          <ast name="EXPR" text="EXPR">
+            <ast name="NULL" text="null"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="f2">
+        <ast name="ARGLIST" text="ARGLIST">
+          <ast name="IDENTIFIER" text="num"/>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="function_result"/>
+            <ast name="PLUS" text="PLUS">
+              <ast name="IDENTIFIER" text="num"/>
+              <ast name="DINT" text="2"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="RETURN" text="return">
+          <ast name="EXPR" text="EXPR">
+            <ast name="IDENTIFIER" text="function_result"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="f3">
+        <ast name="ARGLIST" text="ARGLIST">
+          <ast name="IDENTIFIER" text="num"/>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="function_result"/>
+            <ast name="NULL" text="null"/>
+          </ast>
+        </ast>
+        <ast name="IF_ELSE" text="IfThenElse">
+          <ast name="IF" text="if">
+            <ast name="EXPR" text="EXPR">
+              <ast name="GT" text="GT">
+                <ast name="IDENTIFIER" text="num"/>
+                <ast name="DINT" text="0"/>
+              </ast>
+            </ast>
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="function_result"/>
+                <ast name="PLUS" text="PLUS">
+                  <ast name="IDENTIFIER" text="num"/>
+                  <ast name="DINT" text="2"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="RETURN" text="return">
+          <ast name="EXPR" text="EXPR">
+            <ast name="IDENTIFIER" text="function_result"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="f4">
+        <ast name="ARGLIST" text="ARGLIST">
+          <ast name="IDENTIFIER" text="num"/>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="function_result"/>
+            <ast name="NULL" text="null"/>
+          </ast>
+        </ast>
+        <ast name="IF_ELSE" text="IfThenElse">
+          <ast name="IF" text="if">
+            <ast name="EXPR" text="EXPR">
+              <ast name="GT" text="GT">
+                <ast name="IDENTIFIER" text="num"/>
+                <ast name="DINT" text="0"/>
+              </ast>
+            </ast>
+            <ast name="EXPR" text="EXPR">
+              <ast name="ASSIGN" text="=">
+                <ast name="IDENTIFIER" text="function_result"/>
+                <ast name="PLUS" text="PLUS">
+                  <ast name="IDENTIFIER" text="num"/>
+                  <ast name="DINT" text="2"/>
+                </ast>
+              </ast>
+            </ast>
+            <ast name="RETURN" text="return">
+              <ast name="EXPR" text="EXPR">
+                <ast name="IDENTIFIER" text="function_result"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="RETURN" text="return">
+          <ast name="EXPR" text="EXPR">
+            <ast name="IDENTIFIER" text="function_result"/>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </vb>
+</asp>

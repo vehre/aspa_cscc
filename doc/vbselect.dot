@@ -1,0 +1,21 @@
+digraph L0 {
+        size = "5.5,4";
+        ordering=out;
+        node [shape = plaintext];
+        select -> {EXPR case1 case2 default};
+        case1 -> {clist1 stat1};
+        case2 -> {clist2 stat2};
+        default -> stat3;
+        clist1 -> { dint dstring };
+        clist2 -> { dint2 dstring2 dint3};
+        stat1[label=statemens];
+        stat2[label=statemens];
+        stat3[label=statemens];
+        clist1[label=CASE_LIST];
+        clist2[label=CASE_LIST];
+        dint[label=DITNT];
+        dint2[label=DITNT];
+        dint3[label=DITNT];
+        dstring[label=DSTRING];
+        dstring2[label=DSTRING];
+}

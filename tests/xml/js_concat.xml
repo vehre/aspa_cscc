@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<asp>
+  <js>
+    <original>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="PLUS" text="+">
+            <ast name="NUM_INT" text="20"/>
+            <ast name="NUM_INT" text="40"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="PLUS" text="+">
+            <ast name="NUM_INT" text="20"/>
+            <ast name="STRING_LITERAL" text="Hello"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="c"/>
+          <ast name="PLUS" text="+">
+            <ast name="PLUS" text="+">
+              <ast name="MINUS" text="-">
+                <ast name="PLUS" text="+">
+                  <ast name="NUM_INT" text="20"/>
+                  <ast name="STAR" text="*">
+                    <ast name="NUM_INT" text="40"/>
+                    <ast name="NUM_INT" text="4"/>
+                  </ast>
+                </ast>
+                <ast name="NUM_INT" text="100"/>
+              </ast>
+              <ast name="STRING_LITERAL" text="text"/>
+            </ast>
+            <ast name="NUM_INT" text="30"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="d"/>
+          <ast name="PLUS" text="+">
+            <ast name="PLUS" text="+">
+              <ast name="MINUS" text="-">
+                <ast name="PLUS" text="+">
+                  <ast name="NUM_INT" text="20"/>
+                  <ast name="STAR" text="*">
+                    <ast name="NUM_INT" text="40"/>
+                    <ast name="NUM_INT" text="4"/>
+                  </ast>
+                </ast>
+                <ast name="NUM_INT" text="100"/>
+              </ast>
+              <ast name="STRING_LITERAL" text="text"/>
+            </ast>
+            <ast name="DIV" text="/">
+              <ast name="LPAREN" text="(">
+                <ast name="STAR" text="*">
+                  <ast name="NUM_INT" text="30"/>
+                  <ast name="NUM_INT" text="2"/>
+                </ast>
+              </ast>
+              <ast name="NUM_INT" text="4"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="e"/>
+          <ast name="PLUS" text="+">
+            <ast name="PLUS" text="+">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="b"/>
+            </ast>
+            <ast name="IDENTIFIER" text="c"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="Response"/>
+            <ast name="IDENTIFIER" text="write"/>
+          </ast>
+          <ast name="ELIST" text="ELIST">
+            <ast name="EXPR" text="EXPR">
+              <ast name="PLUS" text="+">
+                <ast name="PLUS" text="+">
+                  <ast name="PLUS" text="+">
+                    <ast name="PLUS" text="+">
+                      <ast name="PLUS" text="+">
+                        <ast name="PLUS" text="+">
+                          <ast name="PLUS" text="+">
+                            <ast name="PLUS" text="+">
+                              <ast name="IDENTIFIER" text="a"/>
+                              <ast name="STRING_LITERAL" text="&lt;br&gt;"/>
+                            </ast>
+                            <ast name="IDENTIFIER" text="b"/>
+                          </ast>
+                          <ast name="STRING_LITERAL" text="&lt;br&gt;"/>
+                        </ast>
+                        <ast name="IDENTIFIER" text="c"/>
+                      </ast>
+                      <ast name="STRING_LITERAL" text="&lt;br&gt;"/>
+                    </ast>
+                    <ast name="IDENTIFIER" text="d"/>
+                  </ast>
+                  <ast name="STRING_LITERAL" text="&lt;br&gt;"/>
+                </ast>
+                <ast name="IDENTIFIER" text="e"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="PLUS" text="+">
+            <ast name="NUM_INT" text="20"/>
+            <ast name="NUM_INT" text="40"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="CONCAT" text=".">
+            <ast name="NUM_INT" text="20"/>
+            <ast name="STRING_LITERAL" text="Hello"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="c"/>
+          <ast name="CONCAT" text=".">
+            <ast name="CONCAT" text=".">
+              <ast name="MINUS" text="-">
+                <ast name="PLUS" text="+">
+                  <ast name="NUM_INT" text="20"/>
+                  <ast name="STAR" text="*">
+                    <ast name="NUM_INT" text="40"/>
+                    <ast name="NUM_INT" text="4"/>
+                  </ast>
+                </ast>
+                <ast name="NUM_INT" text="100"/>
+              </ast>
+              <ast name="STRING_LITERAL" text="text"/>
+            </ast>
+            <ast name="NUM_INT" text="30"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="d"/>
+          <ast name="CONCAT" text=".">
+            <ast name="CONCAT" text=".">
+              <ast name="MINUS" text="-">
+                <ast name="PLUS" text="+">
+                  <ast name="NUM_INT" text="20"/>
+                  <ast name="STAR" text="*">
+                    <ast name="NUM_INT" text="40"/>
+                    <ast name="NUM_INT" text="4"/>
+                  </ast>
+                </ast>
+                <ast name="NUM_INT" text="100"/>
+              </ast>
+              <ast name="STRING_LITERAL" text="text"/>
+            </ast>
+            <ast name="DIV" text="/">
+              <ast name="LPAREN" text="(">
+                <ast name="STAR" text="*">
+                  <ast name="NUM_INT" text="30"/>
+                  <ast name="NUM_INT" text="2"/>
+                </ast>
+              </ast>
+              <ast name="NUM_INT" text="4"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="e"/>
+          <ast name="CONCAT" text=".">
+            <ast name="CONCAT" text=".">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="b"/>
+            </ast>
+            <ast name="IDENTIFIER" text="c"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="print">
+          <ast name="ELIST" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text=".">
+              <ast name="CONCAT" text=".">
+                <ast name="CONCAT" text=".">
+                  <ast name="CONCAT" text=".">
+                    <ast name="CONCAT" text=".">
+                      <ast name="CONCAT" text=".">
+                        <ast name="CONCAT" text=".">
+                          <ast name="CONCAT" text=".">
+                            <ast name="IDENTIFIER" text="a"/>
+                            <ast name="STRING_LITERAL" text="&lt;br&gt;"/>
+                          </ast>
+                          <ast name="IDENTIFIER" text="b"/>
+                        </ast>
+                        <ast name="STRING_LITERAL" text="&lt;br&gt;"/>
+                      </ast>
+                      <ast name="IDENTIFIER" text="c"/>
+                    </ast>
+                    <ast name="STRING_LITERAL" text="&lt;br&gt;"/>
+                  </ast>
+                  <ast name="IDENTIFIER" text="d"/>
+                </ast>
+                <ast name="STRING_LITERAL" text="&lt;br&gt;"/>
+              </ast>
+              <ast name="IDENTIFIER" text="e"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </js>
+</asp>

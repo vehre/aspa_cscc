@@ -1,0 +1,8 @@
+position = new Object();
+position.x = 10;
+position.y = 30;
+position.getX = _getX;
+
+function _getX() {
+    return this.x;
+}

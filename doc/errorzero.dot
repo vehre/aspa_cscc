@@ -1,0 +1,7 @@
+digraph L0 {
+        size = "3,2";
+        ordering=out;
+        node [shape = plaintext];
+        ERROR -> ZERO;
+        ERROR -> statement;
+}
