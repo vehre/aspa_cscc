@@ -6,15 +6,23 @@
       <ast name="DIM" text="dim">
         <ast name="IDENTIFIER" text="a"/>
         <ast name="ARRAY" text="b">
-          <ast name="DINT" text="34"/>
-          <ast name="DINT" text="12"/>
+          <ast name="EXPR" text="EXPR">
+            <ast name="DINT" text="34"/>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="DINT" text="12"/>
+          </ast>
         </ast>
         <ast name="IDENTIFIER" text="c"/>
       </ast>
       <ast name="REDIM" text="redim">
         <ast name="ARRAY" text="b">
-          <ast name="DINT" text="2"/>
-          <ast name="DINT" text="5"/>
+          <ast name="EXPR" text="EXPR">
+            <ast name="DINT" text="2"/>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="DINT" text="5"/>
+          </ast>
         </ast>
       </ast>
       <ast name="EXPR" text="EXPR">
@@ -39,9 +47,28 @@
       <ast name="EXPR" text="EXPR">
         <ast name="ASSIGN" text="=">
           <ast name="IDENTIFIER" text="b"/>
-          <ast name="METHOD_CALL" text="array">
+          <ast name="METHOD_CALL" text="array_fill">
             <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DINT" text="0"/>
+              <ast name="DINT" text="35"/>
               <ast name="METHOD_CALL" text="array"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="METHOD_CALL" text="vb_redim">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="b"/>
+              <ast name="METHOD_CALL" text="array">
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="DINT" text="2"/>
+                  <ast name="DINT" text="5"/>
+                </ast>
+              </ast>
+              <ast name="DBOOL" text="false"/>
             </ast>
           </ast>
         </ast>

@@ -68,6 +68,8 @@ import org.apache.commons.collections.Transformer;
 	private Stack typeStack = new Stack();
 	private int lastType;
     private Logger log = Logger.getLogger(VbsTree.class);
+	//indicates if inside a redim preserve rule
+	private boolean redimp;
 
 
     private static Map OBJECT_CLASSES;
@@ -636,9 +638,6 @@ import org.apache.commons.collections.Transformer;
 			if (obj instanceof ASPObjectInstance) {
 				result = (ASPObjectInstance) variables.get(name);
 			}
-			if (result == null) {
-				log.debug(variables);
-			}
         }
         return result;
     }
@@ -1090,9 +1089,65 @@ import org.apache.commons.collections.Transformer;
 
 
 @tdim : !
-@tredim : !
-@tredimp : !
+@tredim : ! { AST redimRes = null; AST current = null;}
+@re_decl : { 
+	if (redimRes == null) {
+		redimRes = #re_decl;
+	} else {
+		current.setNextSibling(#re_decl);
+	}
+	current = #re_decl;
+}
+@redim_end : { ## = redimRes; }
 
+@tredimp : ! {redimp = true; }
+@redim_decl : {
+	List dimensions = new ArrayList();
+}
+@redim_inc : { 	dimensions.add(#ex.getFirstChild()); }
+@redim : {
+	String arrayName = #ARRAY.getText();
+	if (dimensions.size() == 1) {
+		AST argIndex = ((AST) dimensions.get(0));
+		if (argIndex.getType() == DINT) {
+			argIndex.setText(Integer.toString(
+							 Integer.parseInt(argIndex.getText()) + 1));
+		} else {
+			argIndex = #([PLUS, "+"], argIndex, [DINT, "1"]);
+		}
+        ## = #([EXPR, "EXPR"],
+          #([ASSIGN, "="], [IDENTIFIER, arrayName],
+            #([METHOD_CALL, "array_slice"],
+			  #([ARGLIST_VALUES, "ARGLIST_VALUES"],
+				[IDENTIFIER, arrayName],
+				[DINT, "0"],
+				 argIndex
+				)
+			  )
+			)
+		 );
+	} else {
+		if (dependencies == null) {
+			dependencies = new HashSet();
+		}
+		dependencies.add("translator/runtime.php");
+        ## = #([EXPR, "EXPR"],
+           #([ASSIGN, "="], [IDENTIFIER, arrayName],
+            #([METHOD_CALL, "vb_redim"],
+			  #([ARGLIST_VALUES, "ARGLIST_VALUES"],
+				[IDENTIFIER, arrayName],
+				#([METHOD_CALL, "array"],
+				  #([ARGLIST_VALUES, "ARGLIST_VALUES"],
+					makeFromList(dimensions, null)
+					)
+				  ),
+				#[DBOOL, Boolean.toString(redimp)]
+				)
+			  )
+		    )
+		  );
+	}
+}
 @start : { TokenMap.IS_JS = false; }
 
 
@@ -1576,7 +1631,7 @@ typeStack.push(new Integer(DINT));
 	typeStack.clear();
 }
 
-@init_stat : { int lastStackSize = 0;  }
+@init_stat : { int lastStackSize = 0; redimp = false; }
 @init_expr : { int lastStackSize = 0;  }
 
 @tmethod : !
@@ -1596,7 +1651,6 @@ typeStack.push(new Integer(DINT));
 
 @tsub : ! 
 @sub_call : {
-	log.debug(Boolean.toString(_t == null));
 	lastStackSize = argStack.size();
 	boolean isArray = #sub_name != null
 		&& #sub_name.getType() == IDENTIFIER
@@ -1676,18 +1730,30 @@ typeStack.push(new Integer(DINT));
     );
 }
 
-@tarray : ! { int dimCount = 0;}
-@inc_dim : { dimCount++; }
+@tarray : ! { List dims = new ArrayList();}
+@inc_dim : { dims.add(#ex.getFirstChild()); }
 @array_decl : {
-    String varName = #ARRAY.getText();
-    AST arrayCreate = #[METHOD_CALL, "array"];
-    AST current = arrayCreate;
-    for (int i = 1; i < dimCount; i++) {
-        AST create = #[METHOD_CALL, "array"];
-        current.addChild(#([ARGLIST_VALUES, "ARGLIST_VALUES"], create));
-        current = create;
-    }
-    ## = #([ASSIGN, "="], [IDENTIFIER, varName], arrayCreate);
+	String varName = #ARRAY.getText();
+	AST result;
+	if (dims.size() < 2) {
+		result = #[METHOD_CALL, "array"];
+	} else {
+		result = #[METHOD_CALL, "array"];
+		for (int i = dims.size() - 2; i > -1; i--) {
+			AST size = (AST) dims.get(i);
+			if (size.getType() == DINT) {
+				int intSize = Integer.parseInt(size.getText());
+				size.setText(Integer.toString(intSize + 1));
+			} else {
+				size = #([PLUS, "+"], size, [DINT, "1"]);
+			}
+			result = #([METHOD_CALL, "array_fill"],
+                       #([ARGLIST_VALUES, "ARGLIST_VALUES"],
+					   [DINT, "0"], size, result)
+					 );
+		}
+	}
+    ## = #([ASSIGN, "="], [IDENTIFIER, varName], result);
 }
 @dim_init : { List dimArrays = null; }
 @dim_decl : {

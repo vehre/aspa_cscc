@@ -40,6 +40,7 @@ vb_type_sub.asp:vb_type_sub.xml
 vb_command.asp:vb_command.xml:
 vb_hex.asp:vb_hex.xml:
 vb_method_call.asp:vb_method_call.xml:
+vb_array_with_exprlength.asp:vb_array_with_exprlength.xml:
 js_expression.asp:js_expression.xml
 js_request.asp:js_request.xml
 string.asp:string.xml
@@ -80,3 +81,5 @@ js_comment.asp:js_comment.xml
 js_defmeth.asp:js_defmeth.xml
 js_unassigned.asp:js_unassigned.xml
 js_command.asp:js_command.xml
+connection.asp:connection.xml
+js_cmd_param.asp:js_cmd_param.xml

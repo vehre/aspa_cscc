@@ -363,7 +363,7 @@
       return an array containing a subset of the fields.
       getSubsetRows(recordsetObject, mixed fields)
       -->
-      <method name="GetRows" type="LBRACK">
+      <method name="GetRows" type="LBRACK" requires="translator/runtime.php">
           <arg type="DINT" />
           <arg type="ANY" />
           <arg type="ANY" />
@@ -385,29 +385,7 @@
           </ast>
       </method>
 
-      <!--
-      Requires the implementation which will handle
-      the conversion of the RecordSet into a string.
-      toString($recordsetObject, $numRows, $columnDelimeter, $RowDelimeter,$nullExpr) {
-          $count = 0;
-          $result = "";
-          while(!$recordsetObject.EOF && ($count < $numRows || $numRows == -1)) {
-              for ($i = 0; $i < $recordsetObject.FieldCount(); $i++) {
-                  $val = $recordsetObject.fields[i];
-                  if ($val == NULL) {
-                      $val = $nullExpr;
-                  }
-                  $result .= $i == 0 ? "" : $columnDelimeter;
-                  $result .= $val;
-              }
-              $result .= $RowDelimeter;
-              $recordsetObject.MoveNext();
-              $count++;
-          }
-          return $result;
-      }
-      -->
-      <method name="GetString" type="DSTRING">
+      <method name="GetString" type="DSTRING" requires="translator/runtime.php">
           <arg type="DINT" />
           <ast name="METHOD_CALL" text="toString">
               <ast name="ARGLIST_VALUES">
@@ -434,7 +412,7 @@
           </ast>
       </method>
 
-      <method name="GetString" type="DSTRING">
+      <method name="GetString" type="DSTRING" requires="translator/runtime.php">
           <arg type="DINT" />
           <arg type="DINT" />
           <arg type="DSTRING" />
@@ -449,7 +427,7 @@
           </ast>
       </method>
 
-      <method name="GetString" type="DSTRING">
+      <method name="GetString" type="DSTRING" requires="translator/runtime.php">
           <arg type="DINT" />
           <arg type="DINT" />
           <arg type="DSTRING" />
@@ -465,7 +443,7 @@
           </ast>
       </method>
 
-      <method name="GetString" type="DSTRING">
+      <method name="GetString" type="DSTRING" requires="translator/runtime.php">
           <arg type="DINT" />
           <arg type="DINT" />
           <arg type="DSTRING" />

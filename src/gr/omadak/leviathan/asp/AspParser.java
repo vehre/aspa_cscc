@@ -292,7 +292,7 @@ public class AspParser {
                     }
                     vbParser.start_rule();
                     AST node = vbParser.getAST();
-                    //new antlr.DumpASTVisitor().visit(node);
+                   // new antlr.DumpASTVisitor().visit(node);
                     if (node != null) {
                         if (vbtree == null) {
                             vbtree = new VbsTree();

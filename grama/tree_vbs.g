@@ -67,8 +67,8 @@ statement
   |<tconst> #(CONST ci:IDENTIFIER cex:expression <const_end>)
   |<trand> #(RANDOMIZE (ex:expr)? <randomize>)
   |<tdim> #(DIM <dim_init> (decl:s_decl <dim_decl>)+ <dim_end>)
-  |<tredim> #(REDIM (s_decl)+)
-  |<tredimp> #(REDIM_PRESERVE (s_decl)+)
+  |<tredim> #(REDIM (re_decl:redim_decl <re_decl>)+) <redim_end>
+  |<tredimp> #(REDIM_PRESERVE (redim_decl)+)
   |<terase>#(ERASE ei:IDENTIFIER <erase>)
   | #(ERROR (RESUME | ZERO))
   |<texit> #(EXIT
@@ -172,12 +172,6 @@ case_stm
   ;
 
 
-case_cond
-  :
-  DINT | DFLOAT | DSTRING
-  ;
-
-
 case_else
   :<tcel>
   #(cel:CASE_ELSE st:statements <case_else_end>)
@@ -193,7 +187,14 @@ statements
 
 s_decl
   :
-  IDENTIFIER |<tarray> #(ARRAY (DINT <inc_dim>)*) <array_decl>
+  IDENTIFIER |<tarray> #(ARRAY (ex:expr <inc_dim>)*) <array_decl>
+  ;
+
+
+redim_decl
+  <redim_decl>
+  :
+  #(ARRAY (ex:expr <redim_inc>)+) <redim>
   ;
 
 

@@ -24,10 +24,9 @@ import gr.omadak.leviathan.asp.TreeJsTokenTypes;
 
 public class JsUserDefinedProperty extends BaseMember implements Property {
     private static AST INSTANCE_REF;
-    private static ASTFactory FACTORY;
+	private ASTFactory factory = new ASTFactory();
     static {
-        FACTORY = new ASTFactory();
-        INSTANCE_REF = FACTORY.make(new AST[] {
+		INSTANCE_REF = FACTORY.make(new AST[] {
         FACTORY.create(TreeJsTokenTypes.DOT, "DOT"),
         FACTORY.create(CommonConstants.INSTANCE, "inst"),
         FACTORY.create(TreeJsTokenTypes.IDENTIFIER)
@@ -35,7 +34,7 @@ public class JsUserDefinedProperty extends BaseMember implements Property {
     }
 
     private AST getRefAST() {
-        AST result = FACTORY.dupTree(INSTANCE_REF);
+		AST result = factory.dupTree(INSTANCE_REF);
         result.getFirstChild().getNextSibling().setText(name);
         return result;
     }
@@ -64,12 +63,12 @@ public class JsUserDefinedProperty extends BaseMember implements Property {
 
 
     public AST write(AST instance) {
-        AST assignAST = FACTORY.make(new AST[] {
-            FACTORY.create(TreeJsTokenTypes.ASSIGN, "="),
+        AST assignAST = factory.make(new AST[] {
+            factory.create(TreeJsTokenTypes.ASSIGN, "="),
             instance == null 
-            ? FACTORY.create(TreeJsTokenTypes.OBJECT_ATTRIBUTE, name)
+            ? factory.create(TreeJsTokenTypes.OBJECT_ATTRIBUTE, name)
             : getRefAST(),
-            FACTORY.create(CommonConstants.TEMPLATE, "1")
+            factory.create(CommonConstants.TEMPLATE, "1")
         });
         return cloneAST(assignAST, args, null);
     }

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="ISO-8859-7"?>
+
+<asp>
+  <js>
+    <original>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="conn"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Server"/>
+              <ast name="IDENTIFIER" text="CreateObject"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="STRING_LITERAL" text="ADODB.Connection"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="oCmd"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Server"/>
+              <ast name="IDENTIFIER" text="CreateObject"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="STRING_LITERAL" text="ADODB.Command"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="oCmd"/>
+            <ast name="IDENTIFIER" text="ActiveConnection"/>
+          </ast>
+          <ast name="IDENTIFIER" text="conn"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="oCmd"/>
+            <ast name="IDENTIFIER" text="CommandText"/>
+          </ast>
+          <ast name="STRING_LITERAL" text="FORUM_MESSAGE"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="oCmd"/>
+            <ast name="IDENTIFIER" text="CommandType"/>
+          </ast>
+          <ast name="NUM_INT" text="4"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="oParam"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="oCmd"/>
+              <ast name="IDENTIFIER" text="CreateParameter"/>
+            </ast>
+            <ast name="ELIST" text="ELIST">
+              <ast name="EXPR" text="EXPR">
+                <ast name="STRING_LITERAL" text="MESSAGEID"/>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="3"/>
+              </ast>
+              <ast name="EXPR" text="EXPR">
+                <ast name="NUM_INT" text="1"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="DOT" text="DOT">
+          <ast name="IDENTIFIER" text="oCmd"/>
+          <ast name="METHOD_CALL" text="setConnection">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="conn"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="DOT" text="DOT">
+          <ast name="IDENTIFIER" text="oCmd"/>
+          <ast name="METHOD_CALL" text="setCommandText">
+            <ast name="ELIST" text="ARGLIST_VALUES">
+              <ast name="STRING_LITERAL" text="FORUM_MESSAGE"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="oParam"/>
+          <ast name="DOT" text="DOT">
+            <ast name="IDENTIFIER" text="oCmd"/>
+            <ast name="METHOD_CALL" text="createParameter">
+              <ast name="ELIST" text="ARGLIST_VALUES">
+                <ast name="STRING_LITERAL" text="MESSAGEID"/>
+                <ast name="NUM_INT" text="3"/>
+                <ast name="NULL" text="NULL"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </js>
+</asp>

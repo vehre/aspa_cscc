@@ -5,7 +5,9 @@
     <original>
       <ast name="DIM" text="dim">
         <ast name="ARRAY" text="a">
-          <ast name="DINT" text="12"/>
+          <ast name="EXPR" text="EXPR">
+            <ast name="DINT" text="12"/>
+          </ast>
         </ast>
       </ast>
       <ast name="DIM" text="dim">
@@ -55,7 +57,9 @@
       <ast name="FUNCTION" text="f">
         <ast name="DIM" text="dim">
           <ast name="ARRAY" text="z">
-            <ast name="DINT" text="2"/>
+            <ast name="EXPR" text="EXPR">
+              <ast name="DINT" text="2"/>
+            </ast>
           </ast>
         </ast>
         <ast name="EXPR" text="EXPR">
@@ -114,7 +118,9 @@
       <ast name="SUB" text="s">
         <ast name="DIM" text="dim">
           <ast name="ARRAY" text="z">
-            <ast name="DINT" text="2"/>
+            <ast name="EXPR" text="EXPR">
+              <ast name="DINT" text="2"/>
+            </ast>
           </ast>
         </ast>
         <ast name="EXPR" text="EXPR">

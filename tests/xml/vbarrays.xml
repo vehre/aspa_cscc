@@ -5,11 +5,28 @@
     <original>
       <ast name="DIM" text="dim">
         <ast name="ARRAY" text="a">
-          <ast name="DINT" text="12"/>
-          <ast name="DINT" text="3"/>
+          <ast name="EXPR" text="EXPR">
+            <ast name="DINT" text="12"/>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="DINT" text="3"/>
+          </ast>
         </ast>
         <ast name="ARRAY" text="b">
-          <ast name="DINT" text="10"/>
+          <ast name="EXPR" text="EXPR">
+            <ast name="DINT" text="10"/>
+          </ast>
+        </ast>
+        <ast name="ARRAY" text="e">
+          <ast name="EXPR" text="EXPR">
+            <ast name="DINT" text="12"/>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="DINT" text="3"/>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="DINT" text="3"/>
+          </ast>
         </ast>
       </ast>
       <ast name="EXPR" text="EXPR">
@@ -195,9 +212,11 @@
       <ast name="EXPR" text="EXPR">
         <ast name="ASSIGN" text="=">
           <ast name="IDENTIFIER" text="a"/>
-          <ast name="METHOD_CALL" text="array">
+          <ast name="METHOD_CALL" text="array_fill">
             <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
-              <ast name="METHOD_CALL" text="array"/>
+              <ast name="DINT" text="0"/>
+			  <ast name="DINT" text="13" />
+			  <ast name="METHOD_CALL" text="array" />
             </ast>
           </ast>
         </ast>
@@ -206,6 +225,24 @@
         <ast name="ASSIGN" text="=">
           <ast name="IDENTIFIER" text="b"/>
           <ast name="METHOD_CALL" text="array"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="e"/>
+          <ast name="METHOD_CALL" text="array_fill">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DINT" text="0"/>
+			  <ast name="DINT" text="13" />
+			  <ast name="METHOD_CALL" text="array_fill">
+				<ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+				  <ast name="DINT" text="0" />
+				  <ast name="DINT" text="4" />
+				  <ast name="METHOD_CALL" text="array" />
+				</ast>
+			  </ast>
+            </ast>
+          </ast>
         </ast>
       </ast>
       <ast name="EXPR" text="EXPR">

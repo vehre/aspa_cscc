@@ -177,8 +177,8 @@ import org.apache.log4j.Logger;
     arrays.add(#id.getText());
 }
 
-@dimen_length_expr : {
-  ## =#(#[EXPR,"EXPR"],#exp);
+@dimen_length : {
+  ## =#(#[EXPR, "EXPR"], ##);
 }
 
 @expr_statement : { ## = #e; }

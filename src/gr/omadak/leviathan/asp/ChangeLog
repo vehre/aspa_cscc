@@ -1,3 +1,18 @@
+2005-01-23  anakreon  <e@localhost.localdomain>
+
+	* objects/ASPMethodMap.java (ASPMethodMap): Removed the member retClass
+	which showded an inheritted member with the same name and type
+	Renamed the local variable "name" of method setArgs into argName.
+	The local var would shadow the member "name" of the same type.
+
+	* objects/JsUserDefinedProperty.java (JsUserDefinedProperty):
+	Declared a private variable factory of type ASTFactory.
+	The emember is used instead of 	the static member ASPFactory
+	when the services of the ASPFactory are not neaded.
+
+	* HtmlLexerUtil.java (HtmlLexerUtil): Changed static methods into
+	normal ones 
+
 2005-01-22  anakreon  <e@localhost.localdomain>
 
 	* objects/VbUserDefinedMethod.java (VbUserDefinedMethod): Removed the static

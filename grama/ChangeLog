@@ -1,3 +1,21 @@
+2005-02-01  anakreon  <e@localhost.localdomain>
+
+	* tree_vbs_php.act: Translate declaration of multidimension
+	array using array_fill.
+	For example dim a(12, 3) will be $a = array_fill(0, 13, array())
+
+	* vbs.g: Modified rule dimension_length to allways produce a tree
+	like (EXPR ..). 
+
+	* tree_vbs.g: Removed obsolote rule case_cond
+
+2005-01-31  anakreon  <e@localhost.localdomain>
+
+	* tree_vbs.g: changed rule s_decl to accept an expression
+	instead of an int as dimension size
+	Added rule redim_decl which is similar to s_decl and is used
+	for the REDIM statement
+
 2005-01-21  anakreon  <e@localhost.localdomain>
 
 	* vbs.act: Changed the tree produced from SUB_CALL

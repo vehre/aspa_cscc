@@ -1,6 +1,9 @@
 <%@language="JScript"%>
 <%
 //example of empty params
+con = Server.CreateObject("ADODB.Connection");
+rs = Server.CreateObject("ADODB.Recordset");
+rs.ActiveConnection = con
 rs.addNew()
 rs(1) = "Hello";
 rs(2) = new Date();

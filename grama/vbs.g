@@ -58,15 +58,16 @@ onError
 
 s_decl
   :
-  id:IDENTIFIER^ (LPAREN! <add_array> (dimension_length (COMMA! dimension_length)*)? RPAREN!)?
+  id:IDENTIFIER^ (LPAREN! <add_array> (dimension_length
+                (COMMA! dimension_length)*)? RPAREN!)?
   ;
 
 dimension_length
   :
-
-  ((DINT ~(COMMA|RPAREN))|~DINT)=> exp:addSubExpression <dimen_length_expr>
-  |DINT
-
+(
+  ((DINT ~(COMMA|RPAREN))|~DINT)=> addSubExpression
+  | DINT
+) <dimen_length>
   ;
 
 

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="ISO-8859-7"?>
+
+<asp>
+  <vb>
+    <original>
+      <ast name="DIM" text="Dim">
+        <ast name="IDENTIFIER" text="len"/>
+      </ast>
+      <ast name="DIM" text="Dim">
+        <ast name="ARRAY" text="anyArray"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="len"/>
+          <ast name="DINT" text="2"/>
+        </ast>
+      </ast>
+      <ast name="REDIM" text="Redim">
+        <ast name="ARRAY" text="anyArray">
+          <ast name="EXPR" text="EXPR">
+            <ast name="MINUS" text="-">
+              <ast name="IDENTIFIER" text="len"/>
+              <ast name="DINT" text="1"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="anyArray"/>
+          <ast name="METHOD_CALL" text="array"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="len"/>
+          <ast name="DINT" text="2"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="anyArray"/>
+          <ast name="METHOD_CALL" text="array_slice">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="anyArray"/>
+              <ast name="DINT" text="0"/>
+              <ast name="PLUS" text="+">
+                <ast name="MINUS" text="MINUS">
+                  <ast name="IDENTIFIER" text="len"/>
+                  <ast name="DINT" text="1"/>
+                </ast>
+                <ast name="DINT" text="1"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </vb>
+</asp>

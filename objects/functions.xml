@@ -134,9 +134,10 @@
 	  <arg type="DINT" />
 	  <arg type="DINT" /> <!-- This is the date arg-->
 	  <!-- 
-		   It is easier to implement this in PHP instead of bulding the code every time
+		   It is easier to implement this in PHP instead of bulding
+		   the code every time
 	  -->
-	  <ast name="METHOD_CALL" text="DateAdd">
+	  <ast name="METHOD_CALL" text="dateAdd">
 		<ast name="ARGLIST_VALUES">
 		  <arg index="1" />
 		  <arg index="2" />
@@ -149,7 +150,7 @@
 	  <arg type="DSTRING" />
 	  <arg type="DINT" /> <!-- The first date arg -->
 	  <arg type="DINT" /> <!-- The second date arg -->
-	  <ast name="METHOD_CALL" text="DateDiff">
+	  <ast name="METHOD_CALL" text="dateDiff">
 		<ast name="ARGLIST_VALUES">
 		  <args />
 		</ast>
@@ -161,7 +162,7 @@
 	  <arg type="DINT" /> <!-- The first date arg -->
 	  <arg type="DINT" /> <!-- The second date arg -->
 	  <arg type="DINT" /> <!-- First day of week constant -->
-	  <ast name="METHOD_CALL" text="DateDiff">
+	  <ast name="METHOD_CALL" text="dateDiff">
 		<ast name="ARGLIST_VALUES">
 		  <args />
 		</ast>
@@ -174,7 +175,7 @@
 	  <arg type="DINT" /> <!-- The second date arg -->
 	  <arg type="DINT" /> <!-- First day of week constant -->
 	  <arg type="DINT" /> <!-- First week of year constant -->
-	  <ast name="METHOD_CALL" text="DateDiff">
+	  <ast name="METHOD_CALL" text="dateDiff">
 		<ast name="ARGLIST_VALUES">
 		  <args />
 		</ast>
@@ -184,7 +185,7 @@
     <method name="DatePart" type="DINT" requires="translator/runtime.php">
 	  <arg type="DSTRING" />
 	  <arg type="DINT" /> <!-- The date arg -->
-	  <ast name="METHOD_CALL" text="DatePart">
+	  <ast name="METHOD_CALL" text="datePart">
 		<ast name="ARGLIST_VALUES">
 		  <args />
 		</ast>
@@ -195,7 +196,7 @@
 	  <arg type="DSTRING" />
 	  <arg type="DINT" /> <!-- The date arg -->
 	  <arg type="DINT" /> <!-- First day of week constant -->
-	  <ast name="METHOD_CALL" text="DatePart">
+	  <ast name="METHOD_CALL" text="datePart">
 		<ast name="ARGLIST_VALUES">
 		  <args />
 		</ast>
@@ -207,7 +208,7 @@
 	  <arg type="DINT" /> <!-- The date arg -->
 	  <arg type="DINT" /> <!-- First day of week constant -->
 	  <arg type="DINT" /> <!-- First week of year constant -->
-	  <ast name="METHOD_CALL" text="DatePart">
+	  <ast name="METHOD_CALL" text="datePart">
 		<ast name="ARGLIST_VALUES">
 		  <args />
 		</ast>
@@ -232,7 +233,7 @@
 
     <method name="DateValue" type="DINT" requires="translator/runtime.php">
 	  <arg type="DINT" />
-	  <ast name="METHOD_CALL" text="DateValue">
+	  <ast name="METHOD_CALL" text="dateValue">
 		<ast name="ARGLIST_VALUES">
 		  <arg index="1" />
 		</ast>
@@ -260,7 +261,7 @@
     <method name="Filter" type="ARRAY" requires="translator/runtime.php">
 	  <arg type="DSTRING" />
 	  <arg type="DSTRING" />
-	  <ast name="METHOD_CALL" text="Filter">
+	  <ast name="METHOD_CALL" text="filter">
 		<ast name="ARGLIST_VALUES">
 		  <args />
 		</ast>
@@ -271,7 +272,7 @@
 	  <arg type="DSTRING" />
 	  <arg type="DSTRING" />
 	  <arg type="DBOOL" /> <!-- Include or exclude (default is include) -->
-	  <ast name="METHOD_CALL" text="Filter">
+	  <ast name="METHOD_CALL" text="filter">
 		<ast name="ARGLIST_VALUES">
 		  <args />
 		</ast>
@@ -283,7 +284,7 @@
 	  <arg type="DSTRING" />
 	  <arg type="DBOOL" /> <!-- Include or exclude (default is include) -->
 	  <arg type="DINT" /> <!--  vbBinaryCompare (0) or vbTextCompare(1) -->
-	  <ast name="METHOD_CALL" text="Filter">
+	  <ast name="METHOD_CALL" text="filter">
 		<ast name="ARGLIST_VALUES">
 		  <args />
 		</ast>
@@ -293,7 +294,7 @@
     <method name="FormatDateTime" type="DSTRING" requires="translator/runtime.php">
 	  <arg type="DINT" />
 	  <!--  Format the date using the vbGeneralDate -->
-	  <ast name="METHOD_CALL" text="FormatDateTime">
+	  <ast name="METHOD_CALL" text="formatDateTime">
 		<ast name="ARGLIST_VALUES">
 		  <args />
 		</ast>
@@ -303,7 +304,7 @@
     <method name="FormatDateTime" type="DSTRING" requires="translator/runtime.php">
 	  <arg type="DINT" />
 	  <arg type="DINT" /> <!-- Use the constant as the format --> 
-	  <ast name="METHOD_CALL" text="FormatDateTime">
+	  <ast name="METHOD_CALL" text="formatDateTime">
 		<ast name="ARGLIST_VALUES">
 		  <args />
 		</ast>

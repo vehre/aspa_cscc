@@ -33,7 +33,7 @@ public class ASPMethodMap extends GenericMethod {
     private boolean caseSensitive;
     private AST defaultCase;
     private AST nonStringCase;
-    private ASPClass retClass;
+	//private ASPClass retClass;
     private static Logger LOG = Logger.getLogger(ASPMethodMap.class);
 
     public ASPMethodMap(String name, int retType, List args) {
@@ -72,9 +72,9 @@ public class ASPMethodMap extends GenericMethod {
             AST arg = (AST) args.get(0);
             if (TokenMap.isSame(arg.getType(), TreeVbsTokenTypes.DSTRING,
             true)) {
-                String name = arg.getText();
-                name = caseSensitive ? name : name.toUpperCase();
-                Object val = cases.get(name);
+                String argName = arg.getText();
+                argName = caseSensitive ? argName : argName.toUpperCase();
+                Object val = cases.get(argName);
                 if (val instanceof ASPClass) {
                     retClass = (ASPClass) val;
                 }

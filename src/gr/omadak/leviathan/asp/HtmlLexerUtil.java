@@ -42,7 +42,7 @@ public class HtmlLexerUtil {
     private Object[] lastScript;
 
 
-    private static String clearQuotes(String str) {
+    private String clearQuotes(String str) {
         StringBuffer sb = new StringBuffer(str);
         int i = 0;
         while (i < sb.length()) {
@@ -84,7 +84,7 @@ public class HtmlLexerUtil {
     }
 
 
-    public static int getLangType(String lang) {
+    public int getLangType(String lang) {
         lang = clearQuotes(lang);
         int type;
         if (lang.equalsIgnoreCase("js")
