@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="ISO-8859-7"?>
+
+<asp>
+  <vb>
+    <original>
+      <ast name="CLASS" text="TestClass">
+        <ast name="IDENTIFIER" text="pubVar"/>
+        <ast name="IDENTIFIER" text="dimVar"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="NEW" text="new">
+            <ast name="IDENTIFIER" text="TestClass"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="test"/>
+            <ast name="IDENTIFIER" text="pubVar"/>
+          </ast>
+          <ast name="DINT" text="30"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="test"/>
+            <ast name="IDENTIFIER" text="dimVar"/>
+          </ast>
+          <ast name="DINT" text="20"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="PLUS" text="+">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="test"/>
+              <ast name="IDENTIFIER" text="pubVar"/>
+            </ast>
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="test"/>
+              <ast name="IDENTIFIER" text="dimVar"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="CLASS" text="TestClass">
+        <ast name="IDENTIFIER" text="pubVar"/>
+        <ast name="IDENTIFIER" text="dimVar"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="NEW" text="new">
+            <ast name="IDENTIFIER" text="TestClass"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="DOT" text="DOT">
+            <ast name="IDENTIFIER" text="test"/>
+            <ast name="IDENTIFIER" text="pubVar"/>
+          </ast>
+          <ast name="DINT" text="30"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="DOT" text="DOT">
+            <ast name="IDENTIFIER" text="test"/>
+            <ast name="IDENTIFIER" text="dimVar"/>
+          </ast>
+          <ast name="DINT" text="20"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="PLUS" text="PLUS">
+            <ast name="DOT" text="DOT">
+              <ast name="IDENTIFIER" text="test"/>
+              <ast name="IDENTIFIER" text="pubVar"/>
+            </ast>
+            <ast name="DOT" text="DOT">
+              <ast name="IDENTIFIER" text="test"/>
+              <ast name="IDENTIFIER" text="dimVar"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </vb>
+</asp>

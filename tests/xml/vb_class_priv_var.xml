@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="ISO-8859-7"?>
+
+<asp>
+  <vb>
+    <original>
+      <ast name="CLASS" text="TestClass">
+        <ast name="PRIVATE" text="private">
+          <ast name="IDENTIFIER" text="privVar"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="NEW" text="new">
+            <ast name="IDENTIFIER" text="TestClass"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="test"/>
+            <ast name="IDENTIFIER" text="privVar"/>
+          </ast>
+          <ast name="DINT" text="30"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="test"/>
+            <ast name="IDENTIFIER" text="privVar"/>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="CLASS" text="TestClass">
+        <ast name="IDENTIFIER" text="privVar"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="NEW" text="new">
+            <ast name="IDENTIFIER" text="TestClass"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="DOT" text="DOT">
+            <ast name="IDENTIFIER" text="test"/>
+            <ast name="IDENTIFIER" text="privVar"/>
+          </ast>
+          <ast name="DINT" text="30"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="DOT" text="DOT">
+            <ast name="IDENTIFIER" text="test"/>
+            <ast name="IDENTIFIER" text="privVar"/>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </vb>
+</asp>

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="ISO-8859-7"?>
+
+<asp>
+  <vb>
+    <original>
+      <ast name="CLASS" text="TestClass">
+        <ast name="SUB" text="setA">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="aVar"/>
+              <ast name="IDENTIFIER" text="val"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="PRIVATE" text="private">
+          <ast name="IDENTIFIER" text="aVar"/>
+        </ast>
+        <ast name="IDENTIFIER" text="bVar"/>
+        <ast name="IDENTIFIER" text="cVar"/>
+        <ast name="PROPERTY_LET" text="a">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="aVar"/>
+              <ast name="IDENTIFIER" text="val"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="PROPERTY_GET" text="a">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="IDENTIFIER" text="aVar"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="NEW" text="new">
+            <ast name="IDENTIFIER" text="TestClass"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="test"/>
+            <ast name="IDENTIFIER" text="a"/>
+          </ast>
+          <ast name="DINT" text="23"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="SUB_CALL" text="Sub Call">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="Response"/>
+            <ast name="IDENTIFIER" text="write"/>
+          </ast>
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text="&amp;">
+              <ast name="DOT" text=".">
+                <ast name="IDENTIFIER" text="test"/>
+                <ast name="IDENTIFIER" text="a"/>
+              </ast>
+              <ast name="DSTRING" text="&lt;br&gt;"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="(">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="test"/>
+            <ast name="IDENTIFIER" text="setA"/>
+          </ast>
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="DINT" text="43"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="SUB_CALL" text="Sub Call">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="Response"/>
+            <ast name="IDENTIFIER" text="write"/>
+          </ast>
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text="&amp;">
+              <ast name="DOT" text=".">
+                <ast name="IDENTIFIER" text="test"/>
+                <ast name="IDENTIFIER" text="a"/>
+              </ast>
+              <ast name="DSTRING" text="&lt;br&gt;"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="test"/>
+            <ast name="IDENTIFIER" text="a"/>
+          </ast>
+          <ast name="DSTRING" text="Hello"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="SUB_CALL" text="Sub Call">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="Response"/>
+            <ast name="IDENTIFIER" text="write"/>
+          </ast>
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text="&amp;">
+              <ast name="DOT" text=".">
+                <ast name="IDENTIFIER" text="test"/>
+                <ast name="IDENTIFIER" text="a"/>
+              </ast>
+              <ast name="DSTRING" text="&lt;br&gt;"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="CLASS" text="TestClass">
+        <ast name="IDENTIFIER" text="aVar"/>
+        <ast name="IDENTIFIER" text="bVar"/>
+        <ast name="IDENTIFIER" text="cVar"/>
+        <ast name="FUNCTION" text="setA">
+          <ast name="ARGLIST" text="ARGLIST">
+            <ast name="IDENTIFIER" text="val"/>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="aVar"/>
+              <ast name="IDENTIFIER" text="val"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="FUNCTION" text="getA">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="function_result"/>
+              <ast name="IDENTIFIER" text="aVar"/>
+            </ast>
+          </ast>
+          <ast name="RETURN" text="return">
+            <ast name="EXPR" text="EXPR">
+              <ast name="IDENTIFIER" text="function_result"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="FUNCTION" text="propLetA">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="aVar"/>
+              <ast name="IDENTIFIER" text="val"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="NEW" text="new">
+            <ast name="IDENTIFIER" text="TestClass"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="DOT" text="DOT">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="propLetA">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DINT" text="23"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="print">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="DOT" text="DOT">
+                <ast name="IDENTIFIER" text="test"/>
+                <ast name="METHOD_CALL" text="getA"/>
+              </ast>
+              <ast name="DSTRING" text="&lt;br&gt;"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="DOT" text="DOT">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="setA">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DINT" text="43"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="print">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="DOT" text="DOT">
+                <ast name="IDENTIFIER" text="test"/>
+                <ast name="METHOD_CALL" text="getA"/>
+              </ast>
+              <ast name="DSTRING" text="&lt;br&gt;"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="DOT" text="DOT">
+          <ast name="IDENTIFIER" text="test"/>
+          <ast name="METHOD_CALL" text="propLetA">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="Hello"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="print">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="CONCAT" text="CONCAT">
+              <ast name="DOT" text="DOT">
+                <ast name="IDENTIFIER" text="test"/>
+                <ast name="METHOD_CALL" text="getA"/>
+              </ast>
+              <ast name="DSTRING" text="&lt;br&gt;"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </vb>
+</asp>

@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="ISO-8859-7"?>
+
+<asp>
+  <vb>
+    <original>
+      <ast name="DIM" text="dim">
+        <ast name="ARRAY" text="a">
+          <ast name="DINT" text="12"/>
+        </ast>
+      </ast>
+      <ast name="DIM" text="dim">
+        <ast name="IDENTIFIER" text="b"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="INDEX_OP" text="(">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="INDEX_LIST" text="INDEXES">
+              <ast name="DINT" text="0"/>
+            </ast>
+          </ast>
+          <ast name="DINT" text="20"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="INDEX_OP" text="(">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="INDEX_LIST" text="INDEXES">
+              <ast name="DINT" text="1"/>
+            </ast>
+          </ast>
+          <ast name="DINT" text="30"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="PLUS" text="+">
+            <ast name="INDEX_OP" text="(">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="INDEX_LIST" text="INDEXES">
+                <ast name="DINT" text="0"/>
+              </ast>
+            </ast>
+            <ast name="INDEX_OP" text="(">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="INDEX_LIST" text="INDEXES">
+                <ast name="DINT" text="1"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="f">
+        <ast name="DIM" text="dim">
+          <ast name="ARRAY" text="z">
+            <ast name="DINT" text="2"/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="INDEX_OP" text="(">
+              <ast name="IDENTIFIER" text="z"/>
+              <ast name="INDEX_LIST" text="INDEXES">
+                <ast name="DINT" text="0"/>
+              </ast>
+            </ast>
+            <ast name="DINT" text="1"/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="INDEX_OP" text="(">
+              <ast name="IDENTIFIER" text="z"/>
+              <ast name="INDEX_LIST" text="INDEXES">
+                <ast name="DINT" text="1"/>
+              </ast>
+            </ast>
+            <ast name="DINT" text="2"/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="f"/>
+            <ast name="PLUS" text="+">
+              <ast name="INDEX_OP" text="(">
+                <ast name="IDENTIFIER" text="z"/>
+                <ast name="INDEX_LIST" text="INDEXES">
+                  <ast name="DINT" text="0"/>
+                </ast>
+              </ast>
+              <ast name="INDEX_OP" text="(">
+                <ast name="IDENTIFIER" text="z"/>
+                <ast name="INDEX_LIST" text="INDEXES">
+                  <ast name="DINT" text="1"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="METHOD_CALL" text="(">
+            <ast name="IDENTIFIER" text="z"/>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DINT" text="1"/>
+            </ast>
+          </ast>
+          <ast name="DINT" text="12"/>
+        </ast>
+      </ast>
+      <ast name="SUB" text="s">
+        <ast name="DIM" text="dim">
+          <ast name="ARRAY" text="z">
+            <ast name="DINT" text="2"/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="INDEX_OP" text="(">
+              <ast name="IDENTIFIER" text="z"/>
+              <ast name="INDEX_LIST" text="INDEXES">
+                <ast name="DINT" text="0"/>
+              </ast>
+            </ast>
+            <ast name="DINT" text="1"/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="INDEX_OP" text="(">
+              <ast name="IDENTIFIER" text="z"/>
+              <ast name="INDEX_LIST" text="INDEXES">
+                <ast name="DINT" text="1"/>
+              </ast>
+            </ast>
+            <ast name="DINT" text="2"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="METHOD_CALL" text="(">
+            <ast name="IDENTIFIER" text="z"/>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DINT" text="1"/>
+            </ast>
+          </ast>
+          <ast name="DINT" text="12"/>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="array"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="INDEX_OP" text="(">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="INDEX_LIST" text="INDEXES">
+              <ast name="DINT" text="0"/>
+            </ast>
+          </ast>
+          <ast name="DINT" text="20"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="INDEX_OP" text="(">
+            <ast name="IDENTIFIER" text="a"/>
+            <ast name="INDEX_LIST" text="INDEXES">
+              <ast name="DINT" text="1"/>
+            </ast>
+          </ast>
+          <ast name="DINT" text="30"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="b"/>
+          <ast name="PLUS" text="PLUS">
+            <ast name="INDEX_OP" text="(">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="INDEX_LIST" text="INDEXES">
+                <ast name="DINT" text="0"/>
+              </ast>
+            </ast>
+            <ast name="INDEX_OP" text="(">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="INDEX_LIST" text="INDEXES">
+                <ast name="DINT" text="1"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="f">
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="z"/>
+            <ast name="METHOD_CALL" text="array"/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="INDEX_OP" text="(">
+              <ast name="IDENTIFIER" text="z"/>
+              <ast name="INDEX_LIST" text="INDEXES">
+                <ast name="DINT" text="0"/>
+              </ast>
+            </ast>
+            <ast name="DINT" text="1"/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="INDEX_OP" text="(">
+              <ast name="IDENTIFIER" text="z"/>
+              <ast name="INDEX_LIST" text="INDEXES">
+                <ast name="DINT" text="1"/>
+              </ast>
+            </ast>
+            <ast name="DINT" text="2"/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="function_result"/>
+            <ast name="PLUS" text="PLUS">
+              <ast name="INDEX_OP" text="(">
+                <ast name="IDENTIFIER" text="z"/>
+                <ast name="INDEX_LIST" text="INDEXES">
+                  <ast name="DINT" text="0"/>
+                </ast>
+              </ast>
+              <ast name="INDEX_OP" text="(">
+                <ast name="IDENTIFIER" text="z"/>
+                <ast name="INDEX_LIST" text="INDEXES">
+                  <ast name="DINT" text="1"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="RETURN" text="return">
+          <ast name="EXPR" text="EXPR">
+            <ast name="IDENTIFIER" text="function_result"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="UKNOWN_METHOD" text="z">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DINT" text="1"/>
+            </ast>
+          </ast>
+          <ast name="DINT" text="12"/>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="s">
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="IDENTIFIER" text="z"/>
+            <ast name="METHOD_CALL" text="array"/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="INDEX_OP" text="(">
+              <ast name="IDENTIFIER" text="z"/>
+              <ast name="INDEX_LIST" text="INDEXES">
+                <ast name="DINT" text="0"/>
+              </ast>
+            </ast>
+            <ast name="DINT" text="1"/>
+          </ast>
+        </ast>
+        <ast name="EXPR" text="EXPR">
+          <ast name="ASSIGN" text="=">
+            <ast name="INDEX_OP" text="(">
+              <ast name="IDENTIFIER" text="z"/>
+              <ast name="INDEX_LIST" text="INDEXES">
+                <ast name="DINT" text="1"/>
+              </ast>
+            </ast>
+            <ast name="DINT" text="2"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="UKNOWN_METHOD" text="z">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DINT" text="1"/>
+            </ast>
+          </ast>
+          <ast name="DINT" text="12"/>
+        </ast>
+      </ast>
+    </translated>
+  </vb>
+</asp>

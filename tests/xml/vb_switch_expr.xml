@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="ISO-8859-7"?>
+
+<asp>
+  <vb>
+    <original>
+      <ast name="SELECT" text="select">
+        <ast name="EXPR" text="EXPR">
+          <ast name="DSTRING" text=""/>
+        </ast>
+        <ast name="CASE" text="case">
+          <ast name="CASE_LIST" text="CASE_LIST">
+            <ast name="EXPR" text="EXPR">
+              <ast name="METHOD_CALL" text="(">
+                <ast name="IDENTIFIER" text="request"/>
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="DSTRING" text="var1"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="SUB_CALL" text="Sub Call">
+              <ast name="DOT" text=".">
+                <ast name="IDENTIFIER" text="Response"/>
+                <ast name="IDENTIFIER" text="write"/>
+              </ast>
+              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                <ast name="DSTRING" text="var1"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="CASE" text="case">
+          <ast name="CASE_LIST" text="CASE_LIST">
+            <ast name="EXPR" text="EXPR">
+              <ast name="METHOD_CALL" text="(">
+                <ast name="IDENTIFIER" text="request"/>
+                <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                  <ast name="DSTRING" text="var2"/>
+                </ast>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="SUB_CALL" text="Sub Call">
+              <ast name="DOT" text=".">
+                <ast name="IDENTIFIER" text="Response"/>
+                <ast name="IDENTIFIER" text="write"/>
+              </ast>
+              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                <ast name="DSTRING" text="var2"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="CASE_ELSE" text="case">
+          <ast name="EXPR" text="EXPR">
+            <ast name="SUB_CALL" text="Sub Call">
+              <ast name="DOT" text=".">
+                <ast name="IDENTIFIER" text="Response"/>
+                <ast name="IDENTIFIER" text="write"/>
+              </ast>
+              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                <ast name="DSTRING" text="all vars are ok"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="SELECT" text="select">
+        <ast name="EXPR" text="EXPR">
+          <ast name="DSTRING" text=""/>
+        </ast>
+        <ast name="CASE" text="case">
+          <ast name="EXPR" text="EXPR">
+            <ast name="CONDITIONAL" text="CONDITIONAL">
+              <ast name="EQ" text="EQ">
+                <ast name="INDEX_OP" text="INDEX_OP">
+                  <ast name="IDENTIFIER" text="_SERVER"/>
+                  <ast name="DSTRING" text="REQUEST_METHOD"/>
+                </ast>
+                <ast name="DSTRING" text="POST"/>
+              </ast>
+              <ast name="INDEX_OP" text="INDEX_OP">
+                <ast name="IDENTIFIER" text="HTTP_POST_VARS"/>
+                <ast name="DSTRING" text="var1"/>
+              </ast>
+              <ast name="INDEX_OP" text="INDEX_OP">
+                <ast name="IDENTIFIER" text="HTTP_GET_VARS"/>
+                <ast name="DSTRING" text="var1"/>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="METHOD_CALL" text="print">
+              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                <ast name="DSTRING" text="var1"/>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="BREAK" text="break"/>
+        </ast>
+        <ast name="CASE" text="case">
+          <ast name="EXPR" text="EXPR">
+            <ast name="CONDITIONAL" text="CONDITIONAL">
+              <ast name="EQ" text="EQ">
+                <ast name="INDEX_OP" text="INDEX_OP">
+                  <ast name="IDENTIFIER" text="_SERVER"/>
+                  <ast name="DSTRING" text="REQUEST_METHOD"/>
+                </ast>
+                <ast name="DSTRING" text="POST"/>
+              </ast>
+              <ast name="INDEX_OP" text="INDEX_OP">
+                <ast name="IDENTIFIER" text="HTTP_POST_VARS"/>
+                <ast name="DSTRING" text="var2"/>
+              </ast>
+              <ast name="INDEX_OP" text="INDEX_OP">
+                <ast name="IDENTIFIER" text="HTTP_GET_VARS"/>
+                <ast name="DSTRING" text="var2"/>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="METHOD_CALL" text="print">
+              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                <ast name="DSTRING" text="var2"/>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="BREAK" text="break"/>
+        </ast>
+        <ast name="CASE_ELSE" text="defaut">
+          <ast name="EXPR" text="EXPR">
+            <ast name="METHOD_CALL" text="print">
+              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                <ast name="DSTRING" text="all vars are ok"/>
+              </ast>
+            </ast>
+          </ast>
+          <ast name="BREAK" text="break"/>
+        </ast>
+      </ast>
+    </translated>
+  </vb>
+</asp>

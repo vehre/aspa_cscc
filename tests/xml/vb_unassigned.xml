@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="ISO-8859-7"?>
+
+<asp>
+  <vb>
+    <original>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="con"/>
+          <ast name="METHOD_CALL" text="(">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Server"/>
+              <ast name="IDENTIFIER" text="CreateObject"/>
+            </ast>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="ADODB.Connection"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="SQL"/>
+          <ast name="DSTRING" text="UPDATE table"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="SUB_CALL" text="Sub Call">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="con"/>
+            <ast name="IDENTIFIER" text="open"/>
+          </ast>
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="DSTRING" text="tratata"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="SUB_CALL" text="Sub Call">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="con"/>
+            <ast name="IDENTIFIER" text="Execute"/>
+          </ast>
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="IDENTIFIER" text="SQL"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="SUB_CALL" text="Sub Call">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="con"/>
+              <ast name="IDENTIFIER" text="Execute"/>
+            </ast>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="SQL"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="DOT" text=".">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="IDENTIFIER" text="movenext"/>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="SQL"/>
+          <ast name="DSTRING" text="UPDATE table"/>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="ASSIGN">
+          <ast name="IDENTIFIER" text="con"/>
+          <ast name="METHOD_CALL" text="initConnection">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="tratata"/>
+              <ast name="NULL" text="NULL"/>
+              <ast name="NULL" text="NULL"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="DOT" text="DOT">
+          <ast name="IDENTIFIER" text="con"/>
+          <ast name="METHOD_CALL" text="Execute">
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="IDENTIFIER" text="SQL"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="DOT" text="DOT">
+            <ast name="IDENTIFIER" text="con"/>
+            <ast name="METHOD_CALL" text="Execute">
+              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+                <ast name="IDENTIFIER" text="SQL"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="DOT" text="DOT">
+          <ast name="IDENTIFIER" text="a"/>
+          <ast name="METHOD_CALL" text="MoveNext"/>
+        </ast>
+      </ast>
+    </translated>
+  </vb>
+</asp>

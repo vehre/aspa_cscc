@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="ISO-8859-7"?>
+
+<asp>
+  <vb>
+    <original>
+      <ast name="FOR" text="for">
+        <ast name="FOR_INIT" text="for_init">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="1"/>
+            </ast>
+          </ast>
+          <ast name="TO" text="to">
+            <ast name="EXPR" text="EXPR">
+              <ast name="DINT" text="30"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="IF_ELSE" text="IfThenElse">
+          <ast name="IF" text="if">
+            <ast name="EXPR" text="EXPR">
+              <ast name="GT" text="&gt;">
+                <ast name="IDENTIFIER" text="a"/>
+                <ast name="DINT" text="10"/>
+              </ast>
+            </ast>
+            <ast name="EXIT" text="exit">
+              <ast name="FOR" text="for"/>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+    </original>
+    <translated>
+      <ast name="FOR" text="for">
+        <ast name="FOR_INIT" text="for_init">
+          <ast name="EXPR" text="EXPR">
+            <ast name="ASSIGN" text="=">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="1"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="LE" text="LE">
+              <ast name="IDENTIFIER" text="a"/>
+              <ast name="DINT" text="30"/>
+            </ast>
+          </ast>
+          <ast name="EXPR" text="EXPR">
+            <ast name="POST_PLUS" text="++">
+              <ast name="IDENTIFIER" text="a"/>
+            </ast>
+          </ast>
+        </ast>
+        <ast name="IF_ELSE" text="IfThenElse">
+          <ast name="IF" text="if">
+            <ast name="EXPR" text="EXPR">
+              <ast name="GT" text="GT">
+                <ast name="IDENTIFIER" text="a"/>
+                <ast name="DINT" text="10"/>
+              </ast>
+            </ast>
+            <ast name="BREAK" text="break"/>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </vb>
+</asp>
