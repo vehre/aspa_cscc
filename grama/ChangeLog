@@ -1,0 +1,36 @@
+2004-11-01  anakreon  <e@localhost.localdomain>
+
+	* tree_vbs_php.act: handleIdObject would create an instance with wrong ASPClass
+
+2004-10-30  anakreon  <e@localhost.localdomain>
+
+	* vbs.g (GE): Added alias for GE (=>)
+	(LE): Added alias for LE (=<)
+
+2004-10-29  anakreon  <e@localhost.localdomain>
+
+	* vbs.g (CALL): store the last token so it is not overwritten by the IDENTIFIER 
+	If a Call statement was inside a with statement, the expression "call .someMethod" would fail
+	to parse.
+	(COMMENT): Comments can end with the token %> 
+
+	* vbs.act: lastType is now set by the overriden method makeToken of CharScaner.
+
+	* vbs.g: Added support for the preserve keyword in the redim statement
+	Changed the rule s_decl so it can accept any arithmetic expression as a subscript.
+	Before: a(12, 13)
+	Now: a(12, 39 + 1)
+	(COMMENT): The token type of the comment depends on the last token's type.
+	If the last token type is STATEMENT_END then it will be SKIP.
+	This will eliminate to Tokens of type STATEMENT_END in a row.
+
+2004-10-20  anakreon  <e@localhost.localdomain>
+
+	* tree_vbs_php.act: Added variable lastType which stores the last type
+	evalueated.
+	(DOT expr expr) will set type INVALID_OBJECT if it failed to resolve the
+	class from the first expr.
+	Added token types BXOR, BAND, BOR, BNOT
+	variables changed from HashMap to TreeMap for speed
+	Renamed method translateObjects(int, AST, AST) to createNode
+
