@@ -133,6 +133,7 @@ public class AspParser {
     private Map parsedAST;
     private boolean generateCode;
     private boolean preserveAST;
+	private String currentFileName;
 
     private static Logger LOG = Logger.getLogger(AspParser.class);
 
@@ -267,7 +268,7 @@ public class AspParser {
 			}
             result = Collections.EMPTY_LIST;
         } else {
-            LOG.info("Parsing file:" + file.getAbsolutePath());
+			currentFileName = file.getName();
             AspStreamSelector selector = new AspStreamSelector(file, baseDir,
             sTable == null);
             VbsParser vbParser = null;
@@ -363,7 +364,6 @@ public class AspParser {
             if (sTable != null) {
                 mergeSymbols(holder, sTable);
             }
-            LOG.info("Parsed file:" + file.getAbsolutePath());
         }
         return result;
     }
@@ -433,12 +433,12 @@ public class AspParser {
             holder.functions.addAll(exp.getFunctions());
             holder.classes.addAll(exp.getClasses());
         }
-        /*
+		/*
         LOG.debug("variables:" + holder.variables);
         LOG.debug("functions:" + holder.functions);
         LOG.debug("classes:" + holder.classes);
-        */
-    }
+		*/
+   }
 
 
     private void printIncludes(CodeGenerator generator, Set includes) {
@@ -480,6 +480,14 @@ public class AspParser {
         }
         return result;
     }
+
+
+	/**
+	 * Get the current file name
+	 * @return the name of the file being parsedcuurCurrentFileName value.	 */
+	public String getCurrentFileName() {
+		return currentFileName;
+	}
 
 
     public String parseInclude(String path, SymbolTableExposer sTable,

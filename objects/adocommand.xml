@@ -1,0 +1,258 @@
+<!--
+    This file is part of Aspa.
+
+    Aspa is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    Aspa is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Aspa; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+-->
+<class name="ADOCommand" dependant="true" requires="runtime/adocommand.php">
+  <class name="ADOCmdParams" dependant="true">
+	<method name="Append" type="VOID">
+	  <arg type="ADOParameter" />
+	  <ast name="DOT">
+		<this />
+		<ast name="METHOD_CALL" text="appendParam">
+		  <ast name="ARGLIST_VALUES">
+			<arg index="1" />
+		  </ast>
+		</ast>
+	  </ast>
+	</method>
+  </class>
+
+  <constructor>
+	<ast name="NEW">
+	  <ast name="IDENTIFIER" text="ADOCommand" />
+	</ast>
+  </constructor>
+  
+  <property name="ActiveConnection" type="ADOConnection">
+	<arg type="ADOConnection" />
+	<read>
+	  <ast name="DOT">
+		<this />
+		<ast name="METHOD_CALL" text="getConnection" />
+	  </ast>
+	</read>
+	<write>
+	  <ast name="DOT">
+		<this />
+		<ast name="METHOD_CALL" text="setConnection">
+		  <ast name="ARGLIST_VALUES">
+			<arg index="1" />
+		  </ast>
+		</ast>
+	  </ast>
+	</write>
+  </property>
+<!--
+  <property name="CommandStream" type="DSTRING">
+	<read />
+	<write />
+  </property>
+-->
+
+  <property name="CommandText" type="DSTRING">
+	<arg type="DSTRING" />
+	<read>
+	  <ast name="DOT">
+		<this />
+		<ast name="METHOD_CALL" text="getCommandText" />
+	  </ast>
+	</read>
+	<write>
+	  <ast name="DOT">
+		<this />
+		<ast name="METHOD_CALL" text="setCommandText">
+		  <ast name="ARGLIST_VALUES">
+			<arg index="1" />
+		  </ast>
+		</ast>
+	  </ast>
+	</write>
+  </property>
+
+  <property name="CommandTimeout" type="DINT">
+	<arg type="DINT" />
+	<read>
+	  <ast name="SKIP" />
+	</read>
+	<write>
+	  <ast name="SKIP" />
+	</write>
+  </property>
+
+  <property name="CommandType" type="DINT">
+	<arg type="DINT" />
+	<read>
+	  <ast name="SKIP" />
+	</read>
+	<write>
+	  <ast name="SKIP" />
+	</write>
+  </property>
+
+  <property name="Dialect" type="DSTRING">
+	<arg type="DINT" />
+	<read>
+	  <ast name="SKIP" />
+	</read>
+	<write>
+	  <ast name="SKIP" />
+	</write>
+  </property>
+
+  <property name="Name" type="DSTRING">
+	<arg type="DSTRING" />
+	<read>
+	  <ast name="DOT">
+		<this />
+		<ast name="METHOD_CALL" text="getName" />
+	  </ast>
+	</read>
+	<write>
+	  <ast name="DOT">
+		<this />
+		<ast name="METHOD_CALL" text="setName">
+		  <ast name="ARGLIST_VALUES">
+			<arg index="1" />
+		  </ast>
+		</ast>
+	  </ast>
+	</write>
+  </property>
+
+  <property name="Parameters" type="OBJECT" use="ADOCmdParams" />
+	
+<!-- Write: NamedParameters -->
+
+  <property name="Prepared" type="DBOOL">
+	<arg type="DBOOL" />
+	<read>
+	  <ast name="FALSE" text="false" />
+	</read>
+	<write>
+	  <ast name="SKIP" />
+	</write>
+  </property>
+<!-- 
+Properties Collection 
+
+  <property name="State" type="DINT">
+  </property>
+
+  <method name="Cancel" type="VOID">
+  </method>
+
+-->
+  <method name="CreateParameter" type="ADOParameter">
+	<ast name="DOT">
+	  <this/>
+	  <ast name="METHOD_CALL" text="createParameter">
+		<ast name="ARGLIST_VALUES">
+		  <ast name="NULL" />
+		  <ast name="NULL" />
+		  <ast name="NULL" />
+		</ast>
+	  </ast>
+	</ast>
+  </method>
+
+  <method name="CreateParameter" type="ADOParameter">
+	<arg type="DSTRING" />
+	<ast name="DOT">
+	  <this/>
+	  <ast name="METHOD_CALL" text="createParameter">
+		<ast name="ARGLIST_VALUES">
+		  <arg index="1" />
+		  <ast name="NULL" />
+		  <ast name="NULL" />
+		</ast>
+	  </ast>
+	</ast>
+  </method>
+
+  <method name="CreateParameter" type="ADOParameter">
+	<arg type="DSTRING" />
+	<arg type="DINT" />
+	<ast name="DOT">
+	  <this/>
+	  <ast name="METHOD_CALL" text="createParameter">
+		<ast name="ARGLIST_VALUES">
+		  <arg index="1" />
+		  <arg index="2" />
+		  <ast name="NULL" />
+		</ast>
+	  </ast>
+	</ast>
+  </method>
+  
+  <method name="CreateParameter" type="ADOParameter">
+	<arg type="DSTRING" />
+	<arg type="DINT" />
+	<arg type="ANY" />
+	<ast name="DOT">
+	  <this/>
+	  <ast name="METHOD_CALL" text="createParameter">
+		<ast name="ARGLIST_VALUES">
+		  <arg index="1" />
+		  <arg index="2" />
+		  <ast name="NULL" />
+		</ast>
+	  </ast>
+	</ast>
+  </method>
+
+  <method name="CreateParameter" type="ADOParameter">
+	<arg type="DSTRING" />
+	<arg type="DINT" />
+	<arg type="ANY" />
+	<arg type="ANY" />
+	<ast name="DOT">
+	  <this/>
+	  <ast name="METHOD_CALL" text="createParameter">
+		<ast name="ARGLIST_VALUES">
+		  <arg index="1" />
+		  <arg index="2" />
+		  <ast name="NULL" />
+		</ast>
+	  </ast>
+	</ast>
+  </method>
+
+  <method name="CreateParameter" type="ADOParameter">
+	<arg type="DSTRING" />
+	<arg type="DINT" />
+	<arg type="ANY" />
+	<arg type="ANY" />
+	<arg type="ANY" />
+	<ast name="DOT">
+	  <this/>
+	  <ast name="METHOD_CALL" text="createParameter">
+		<ast name="ARGLIST_VALUES">
+		  <arg index="1" />
+		  <arg index="2" />
+		  <arg index="5" />
+		</ast>
+	  </ast>
+	</ast>
+  </method>
+
+  <method name="Execute" type="ADORecordset">
+	<args />
+	<ast name="DOT">
+	  <this />
+	  <ast name="METHOD_CALL" text="Execute" />
+	</ast>
+  </method>
+</class>

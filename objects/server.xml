@@ -95,9 +95,7 @@
     <map>
         <key value="ADODB.Connection" use="ADOConnection" />
         <key value="ADODB.Recordset" use="ADORecordset" />
-        <!--
         <key value="ADODB.Command" use="ADOCommand" />
-        -->
         <key>
             <ast name="INVALID_OBJECT" />
         </key>

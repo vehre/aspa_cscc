@@ -1,0 +1,27 @@
+2004-11-01  anakreon  <e@localhost.localdomain>
+
+	* AspParser.java: added method getCurrentFileName. Now the log files
+	will contain the filename where an error or a warning occured 
+
+2004-10-30  anakreon  <e@localhost.localdomain>
+
+	* objects/ASPFactory.java: Modified method dup to use a switch instead of if
+
+	* objects/XmlObjectParser.java: Modifed the signature of method translate.
+	Now it takes one extra argument of type ASPClass.
+	When a store or stored Element is found the name is added to the ASPClass
+	stored properties names and an AST of type STORE or STORED respectively
+	is created
+	* CommonConstants.java: Made CommonConstants a final class
+	* Added fields 	STORE and STORED
+
+	* objects/GenericClass.java: Implemented methods addStoredPropertyName and getStoredPropertiesNames
+
+	* objects/ASPClass.java: Added method addStoredPropertyName and getStoredPropertiesNames
+
+2004-10-29  anakreon  <e@localhost.localdomain>
+
+	* VbsConstants.java: Added the constant for the GOTO keyword
+
+	* AspStreamSelector.java: Added a case in aspStart where the next token is ASP_END
+

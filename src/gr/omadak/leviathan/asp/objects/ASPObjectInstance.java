@@ -55,6 +55,9 @@ public class ASPObjectInstance {
 
     public void setInstance(AST instance) {
         this.instance = instance;
+		if (this.instance != null && this.instance.getType() < 0) {
+			this.instance = null;
+		}
     }
 
 

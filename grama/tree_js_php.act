@@ -47,7 +47,7 @@ import org.apache.commons.collections.Predicate;
 CAST; DBOOL; CONSTANT; UNSUPORTED; CONSTRUCTOR; ELSEIF;
 GLOBAL; UNRESOLVED_METHOD; UNRESOLVED_CLASS; PROTOTYPE;
 OBJECT_ATTRIBUTE; CLASS; UNRESOLVED_ATTRIBUTE; IF_ELSE;
-NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
+NON_APPLICABLE_HEADER;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
 
 @init : {
     //arguments Stack
@@ -75,12 +75,12 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
     private Stack withObjects = new Stack();
     private int lastWith;
     private Set dependencies;
+    private Logger log = Logger.getLogger(JsTree.class);
 
     //keeps the classes externally defined in xml
     private static Map OBJECT_CLASSES;
     //keeps the functions defined in xml
     private static Map FUNCTIONS;
-    private static Logger LOG = Logger.getLogger(JsTree.class);
     //the Array class
     private static XmlASPClass ARRAY_OBJ;
     //the Date class
@@ -136,6 +136,7 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
 
     public void setAspParser(AspParser parser) {
         this.parser = parser;
+		log = Logger.getLogger("TreeJs." + parser.getCurrentFileName().replace('.', '_'));
     }
 
 
@@ -291,13 +292,12 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
         if (ast instanceof ObjectAST) {
             ASPObjectInstance instance = ((ObjectAST) ast).getInstance();
             if (instance != null) {
-                AST instanceAST;
-                ASPClass clazz;
+                AST instanceAST = instance.getInstance();
                 Member mem = instance.getMember();
-                instanceAST = instance.getInstance();
+                ASPClass clazz;
                 if (mem != null) {
                     clazz = getMemberClass(mem);
-                    instanceAST = translateMember(mem, instanceAST);
+                    instanceAST = translateMember(mem, instance);
                 } else {
                     clazz = instance.getASPClass();
                 }
@@ -314,7 +314,7 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
                 } else if (objectExists(ast.getText())) {
                     result = getObjectInstance(ast.getText());
                 } else {
-                    LOG.error("No class found with name:" + className);
+                    log.error("No class found with name:" + className);
                     result = null;
                 }
                 break;
@@ -334,10 +334,10 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
                     result = new ASPObjectInstance(prop.getRetObjectClass());
                 } else {
                     if (prop == null) {
-                        LOG.warn("No property:" + ast.getText()
+                        log.warn("No property:" + ast.getText()
                         + " found from class:" + clazz.getName());
                     } else {
-                        LOG.warn("property:" + ast.getText()
+                        log.warn("property:" + ast.getText()
                         + " does not evaluate into an object");
                     }
                 }
@@ -374,7 +374,7 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
                 result = new ASPObjectInstance(instance, clazz);
                 Member member = clazz.getDefaultMethod();
                 if (member == null) {
-                    LOG.error("Class:" + obj.getName()
+                    log.error("Class:" + obj.getName()
                     + " returned [null] default method");
                 } else {
                     result.setMember(member);
@@ -382,13 +382,13 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
             } else if (obj instanceof Property) {
                 ASPClass clazz = ((Property) obj).getEvaluatedClass();
                 if (clazz == null) {
-                    LOG.error("Expected method but found property:"
+                    log.error("Expected method but found property:"
                     + obj.getName() + " wich does not evaluate to class" );
                 } else {
                     result = new ASPObjectInstance(instance, clazz);
                     Method method = clazz.getDefaultMethod();
                     if (method == null) {
-                        LOG.warn("Class:" + clazz.getName()
+                        log.warn("Class:" + clazz.getName()
                         + " evaluated from property:" + obj.getName()
                         + " has no default method");
                     } else {
@@ -462,7 +462,7 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
             ast.getText().toUpperCase());
             Method method = clazz.getDefaultMethod();
             if (method == null) {
-                LOG.warn("Class:" + ast.getText()
+                log.warn("Class:" + ast.getText()
                 + " has no default method");
             } else {
                 result = new ASPObjectInstance(clazz);
@@ -474,7 +474,7 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
                 result = new ASPObjectInstance();
                 result.setMember(method);
             } else {
-                LOG.warn(currentMethod.getName()
+                log.warn(currentMethod.getName()
                 + " knows no function with name:"
                 + ast.getText() + ". Can not find the function!");
             }
@@ -503,7 +503,7 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
                 }
             }
         } else {
-            LOG.error("Expected an IDENTIFIER or an ObjectAST but is:["
+            log.error("Expected an IDENTIFIER or an ObjectAST but is:["
             + ast.getType() + ", " + ast.getText() + "]");
         }
         if (result != null && result.getMember() != null) {
@@ -551,7 +551,7 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
             }
             break;
         default:
-            LOG.warn("More then 2 alternatives for method:"
+            log.warn("More then 2 alternatives for method:"
             + ((ASPObject) comply.get(0)).getName()
             + " for args:" + args);
             result = (Method) comply.get(0);
@@ -584,20 +584,20 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
     }
 
 
-    private AST translateMember(Member mem, AST instance) {
+    private AST translateMember(Member mem, ASPObjectInstance instance) {
         AST result;
         if (mem instanceof Property) {
             Property prop  = (Property) mem;
-            result = prop.read(instance);
+            result = prop.read(instance == null ? null : instance.getInstance());
         } else if (mem instanceof Method) {
             Method method  = (Method) mem;
-            result = method.translate(instance);
+            result = method.translate(instance == null ? null : instance.getInstance());
             if (method instanceof JsUserDefinedMethod) {
                 handleFunctionObjects((JsUserDefinedMethod) method);
             }
         } else {
             result = null;
-            LOG.error("Passed null for translateMember");
+            log.error("Passed null for translateMember");
         }
         if (result != null) {
             collectDependencies(mem);
@@ -619,7 +619,7 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
         }
         AST result;
         if (mem instanceof Member) {
-            result = translateMember(mem, inst.getInstance());
+            result = translateMember(mem, inst);
         } else { //is null
             result = null;
         }
@@ -678,7 +678,6 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
         int retType = -1;
         ASPObjectInstance aInst = obj.getInstance();
         ASPObject aspObj = aInst.getMember();
-        AST instance = aInst.getInstance();
         if (aspObj == null) {
             aspObj = aInst.getASPClass();
         }
@@ -687,19 +686,19 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
             if (!clazz.hasConstructor()) {
                 Property prop = clazz.getDefaultProperty();
                 if (prop != null) {
-                    transl = translateMember(prop, instance);
+                    transl = translateMember(prop, aInst);
                     retType = prop.getReturnType();
                 }
                 /*
                 else {
-                    LOG.info("Class:" + clazz.getName()
+                    log.info("Class:" + clazz.getName()
                     + " has no constructor and no default Property");
                 }
                 */
             } else {
                 Method constr = getConstructor(clazz, Collections.EMPTY_LIST);
                 if (constr != null) {
-                    transl = translateMember(constr, instance);
+                    transl = translateMember(constr, aInst);
                 }
             }
             if (retType == -1) {
@@ -723,7 +722,7 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
                     wasConstr = true;
                 }
             }
-            transl = translateMember(member, instance);
+            transl = translateMember(member, aInst);
             if (!wasConstr) {
                 ASPClass clazz;
                 switch (member.getReturnType()) {
@@ -757,13 +756,13 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
     }
 
 
-    private AST translateProperty(Property property, AST arg, AST instance) {
+    private AST translateProperty(Property property, AST arg, ASPObjectInstance instance) {
         if (arg instanceof ObjectAST
         || arg.getType() == CommonConstants.TRANSLATE_ROOT) {
             arg = translate(arg);
         }
         property.setArgs(createList(arg));
-        AST result = property.write(instance);
+        AST result = property.write(instance == null ? null : instance.getInstance());
         if (result != null) {
             collectDependencies(property);
             if (result.getType() == EXPR) {
@@ -825,7 +824,8 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
         AST nId = astFactory.dup(id);
         List args = createList(primitive);
         Method constructor = getConstructor(clazz, args);
-        placeObject(id.getText(), new ASPObjectInstance(nId, clazz));
+		ASPObjectInstance instance = new ASPObjectInstance(nId, clazz);
+        placeObject(id.getText(), instance);
         collectDependencies(constructor);
         return constructor.translate(nId);
     }
@@ -900,11 +900,10 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
 
 
     private AST handleNull(AST left, AST right, String label, int type) {
-        ASPObjectInstance i =
-        removeObject(left.getText());
+        ASPObjectInstance i = removeObject(left.getText());
         AST result = null;
         if (i == null) {
-            LOG.warn("Null for aspclass when args are:"
+            log.warn("Null for aspclass when args are:"
             + left.toStringList() + ", " + right.toStringList()
             + ", " + label + ", " + type);
             result = createAST(left, right, type, label);
@@ -945,7 +944,7 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
             labelName = label.getText();
             IntWrapper wrapper = (IntWrapper) labels.get(labelName);
             if (wrapper == null) {
-                LOG.error("Failed to resolve level for label:" + label
+                log.error("Failed to resolve level for label:" + label
                 + " in " + stmName + " statement");
             } else {
                 level = wrapper.getInt();
@@ -971,7 +970,7 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
                 By the whay, the code sample above is ruther bad practice.
                 Is a goto!!
             */
-                LOG.warn("Seems that:" + stmName
+                log.warn("Seems that:" + stmName
                 + " is used to interrupt a non looping"
                 + " statement for label:" + labelName
                 + ".Can't translate this!");
@@ -1181,31 +1180,30 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
 
     private AST handleAssignObject(AST left, AST right) {
         ObjectAST oAST = (ObjectAST) left;
-        ASPObjectInstance i = oAST.getInstance();
-        AST instance = i.getInstance();
+        ASPObjectInstance instance = oAST.getInstance();
         ASPObject obj;
-        if (i.getMember() != null) {
-            obj = i.getMember();
+        if (instance.getMember() != null) {
+            obj = instance.getMember();
         } else {
-            obj = i.getASPClass();
+            obj = instance.getASPClass();
         }
         Property property = null;
         if (obj instanceof ASPClass) {
             property = ((ASPClass) obj).getDefaultProperty();
             if (property == null) {
-                LOG.warn("Class:" + obj.getName() + " has no default property");
+                log.warn("Class:" + obj.getName() + " has no default property");
             }
         } else if (obj instanceof Property) {
             property = (Property) obj;
         } else if (obj instanceof Method) {
             ASPClass methClass = ((Method) obj).getEvaluatedClass();
             if (methClass == null) {
-                LOG.warn("Method:" + obj.getName() + " has no evaluated class"
+                log.warn("Method:" + obj.getName() + " has no evaluated class"
                 + " Unable to get Property for assignement");
             } else {
                 property = methClass.getDefaultProperty();
                 if (property == null) {
-                    LOG.warn("Unable to get default property from class:"
+                    log.warn("Unable to get default property from class:"
                     + methClass.getName() + " resolved from method:"
                     + obj.getName());
                 }
@@ -1220,8 +1218,7 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
     private AST handleObjectAttribute(AST attr, AST value) {
         if (value instanceof ObjectAST) {
             ASPObjectInstance aspInstance = ((ObjectAST) value).getInstance();
-            value = translateMember(aspInstance.getMember(),
-            aspInstance.getInstance());
+            value = translateMember(aspInstance.getMember(), aspInstance);
         }
         if (value.getType() == IDENTIFIER
         &&  !currentMethod.hasVar(value.getText())) {
@@ -1273,7 +1270,7 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
             } else if ("undefined".equals(txtName)) {
                 result = #([METHOD_CALL, "isset"], ([ELIST, "ELIST"], var));
             } else {
-                LOG.warn("Unexpected type comparassion value in typeof:"
+                log.warn("Unexpected type comparassion value in typeof:"
                 + txtName);
                 AST root = isEQ ? #[EQUAL, "=="] : #[NOT_EQUAL, "!="];
                 result = #(root,
@@ -1323,7 +1320,7 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
         ASPClass clazz = instance == null ? null : instance.getASPClass();
         if (instance != null) {
             if (clazz == null) {
-                LOG.error("Failed to resolve class from AST:["
+                log.error("Failed to resolve class from AST:["
                 + left.getType() +  ", " + left.getText() + "]");
             } else {
                 member = clazz.getMemberObject(right.getText());
@@ -1331,7 +1328,7 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
         }
         if (member == null) {
             int code = DOT;
-            LOG.error("Failed to resolve member:" + left.getText()
+            log.error("Failed to resolve member:" + left.getText()
             + " from class:"
             + (clazz != null ? clazz.getName() : "[null]"));
             result = #([code, "DOT"], left, right);
@@ -1726,7 +1723,7 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
             instance.setMember(constr);
         }
     } else {
-        LOG.warn("Uknow class for new with AST:" + #t);
+        log.warn("Uknow class for new with AST:" + #t);
     }
 }
 
@@ -1746,7 +1743,7 @@ NON_APPLICABLE_HEADER;UNSUPPORTED;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
     List args = (List) argStack.pop();
     ASPObjectInstance m = getMethod(#meth, args);
     if (m == null) {
-        LOG.warn("No method found with name:" + #meth.getText());
+        log.warn("No method found with name:" + #meth.getText());
         #meth.setType(UNRESOLVED_METHOD);
         AST argAST = makeFromList(args, #[ELIST, "ELIST"]);
         #expression = #(#meth, argAST);
@@ -2025,7 +2022,7 @@ BAND, "&"); }
         }
         #expression = getAST(#arr, makeFromList(indexes, null), INDEX_OP, "[");
     } else {
-        LOG.error("No indexes for array:" + #arr.toString());
+        log.error("No indexes for array:" + #arr.toString());
     }
 }
 
@@ -2178,7 +2175,7 @@ BAND, "&"); }
             }
         }
     } else {
-        LOG.error("Null expression in var!");
+        log.error("Null expression in var!");
     }
 }
 @fvar_end : {
@@ -2258,7 +2255,7 @@ BAND, "&"); }
         String text = parser.parseInclude(#include.getText(), this, false);
         #include.setText(text);
     } catch (ANTLRException ex) {
-        LOG.error("Failed to parse included file:" + #include.getText(), ex);
+        log.error("Failed to parse included file:" + #include.getText(), ex);
     }
 }
 
@@ -2284,7 +2281,7 @@ BAND, "&"); }
             Member mem = instance.getMember();
             withExpr = #([code, "EXPR"],
             ([ASSIGN, "="], astFactory.dup(id),
-            translateMember(mem, instance.getInstance())
+            translateMember(mem, instance)
             ));
             instance = new ASPObjectInstance(id, getMemberClass(mem));
         }

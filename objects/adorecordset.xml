@@ -113,40 +113,40 @@
       <property name="CacheSize" type="DINT">
         <arg type="DINT" />
         <read>
-            <ast name="UNSUPPORTED" />
+            <ast name="UNSUPORTED" />
         </read>
         <write>
-            <ast name="UNSUPPORTED" />
+            <ast name="UNSUPORTED" />
         </write>
       </property>
 
       <property name="CursorLocation" type="DINT">
         <arg type="DINT" />
         <read>
-            <ast name="UNSUPPORTED" />
+            <ast name="UNSUPORTED" />
         </read>
         <write>
-            <ast name="UNSUPPORTED" />
+            <ast name="UNSUPORTED" />
         </write>
       </property>
 
       <property name="CursorType" type="DINT">
         <arg type="DINT" />
         <read>
-            <ast name="UNSUPPORTED" />
+            <ast name="UNSUPORTED" />
         </read>
         <write>
-            <ast name="UNSUPPORTED" />
+            <ast name="UNSUPORTED" />
         </write>
       </property>
 
       <property name="DataMember" type="DSTRING">
         <arg type="DSTRING" />
         <read>
-            <ast name="UNSUPPORTED" />
+            <ast name="UNSUPORTED" />
         </read>
         <write>
-            <ast name="UNSUPPORTED" />
+            <ast name="UNSUPORTED" />
         </write>
       </property>
 
@@ -167,10 +167,10 @@
       <property name="Index" type="DSTRING">
         <arg type="DSTRING" />
         <read>
-            <ast name="UNSUPPORTED" />
+            <ast name="UNSUPORTED" />
         </read>
         <write>
-            <ast name="UNSUPPORTED" />
+            <ast name="UNSUPORTED" />
         </write>
       </property>
 
@@ -185,10 +185,10 @@
       <property name="MarshalOptions" type="DINT">
         <arg type="DINT" />
         <read>
-            <ast name="UNSUPPORTED" />
+            <ast name="UNSUPORTED" />
         </read>
         <write>
-            <ast name="UNSUPPORTED" />
+            <ast name="UNSUPORTED" />
         </write>
       </property>
 

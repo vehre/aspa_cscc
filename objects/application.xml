@@ -1,0 +1,79 @@
+<!--
+    This file is part of Aspa.
+
+    Aspa is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    Aspa is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Aspa; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+-->
+<class name="Application">
+<!--
+Implement in the translator/runtime.php file the methods:
+1) removeApplicationContent(int index) 
+Remove an entry from the stored values based on index
+2) removeApplicationContent(String key)
+Remove an entry from the stored values based on it's key
+3) clearApplicationContents() 
+Remove all variables
+4) getApplicationItem(int index)
+Fetch a value based on it's index
+5) getApplicationItem(String key)
+Fetch a value based on it's key
+6)setApplicationItem(String key, mixed value)
+Store a key=>value pair
+-->
+  <class name="ContentsCollection" dependant="true" requires="translator/runtime.php">
+	<method name="Remove" type="VOID">
+	  <arg type="ANY" />
+	  <ast name="METHOD_CALL" text="removeApplicationContent">
+		<ast name="ARGLIST_VALUES">
+		  <arg index="1" />
+		</ast>
+	  </ast>
+	</method>
+
+	<method name="RemoveAll" type="VOID">
+	  <ast name="METHOD_CALL" text="clearApplicationContents" />
+	</method>
+
+	<property name="item" default="true" type="ANY">
+	  <arg type="ANY" />
+	  <read>
+		<ast name="METHOD_CALL" text="getApplicationItem">
+		  <ast name="ARGLIST_VALUES">
+			<arg index="1" />
+		  </ast>
+		</ast>
+	  </read>
+	  <write>
+		<ast name="METHOD_CALL" text="setApplicationItem">
+		  <ast name="ARGLIST_VALUES">
+			<arg index="1" /> <!-- The Key -->
+			<arg index="2" /> <!-- The Value -->
+		  </ast>
+		</ast>
+	  </write>
+	</property>
+  </class>
+
+  <method name="Lock" type="VOID">
+	<ast name="SKIP" />
+  </method>
+
+  <method name="Unlock" type="VOID">
+	<ast name="SKIP" />
+  </method>
+
+  <property name="Contents"  use="ContentsCollection" />
+
+  <method name="AppContents"  type="OBJECT" default="true" use="ContentsCollection" />
+</class>

@@ -20,7 +20,7 @@ package gr.omadak.leviathan.asp;
 /**
     Declares Token types used by bouth parsers
 */
-public class CommonConstants {
+public final class CommonConstants {
     private CommonConstants() {}
 
 	/** The common prefix of all anonymous functions in JavaScript */
@@ -52,4 +52,13 @@ public class CommonConstants {
     /** Nodes which has this type, are the product of a Member translation
     which returns an Object*/ 
     public static final int OBJECT_RET = MIN_TOKEN + 12;
+	/** Command to store a property. The node will be removed from
+		the produced tree
+	*/
+	public static final int STORE = MIN_TOKEN + 13;
+	/** Placeholder for a stored property.
+		The node will be replaced with the value of the stored
+		property
+	*/
+	public static final int STORED = MIN_TOKEN + 14;
 }

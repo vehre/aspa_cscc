@@ -19,20 +19,20 @@
     <property name="Attributes" type="DINT">
         <arg type="DINT" />
         <read>
-            <ast name="UNSUPPORTED" />
+            <ast name="UNSUPORTED" />
         </read>
         <write>
-            <ast name="UNSUPPORTED" />
+            <ast name="UNSUPORTED" />
         </write>
     </property>
 
     <property name="CommandTimeout" type="DINT">
         <arg type="DINT" />
         <read>
-            <ast name="UNSUPPORTED" />
+            <ast name="UNSUPORTED" />
         </read>
         <write>
-            <ast name="UNSUPPORTED" />
+            <ast name="UNSUPORTED" />
         </write>
     </property>
 
@@ -47,30 +47,30 @@
     <property name="ConnectionTimeout" type="DINT">
         <arg type="DINT" />
         <read>
-            <ast name="UNSUPPORTED" />
+            <ast name="UNSUPORTED" />
         </read>
         <write>
-            <ast name="UNSUPPORTED" />
+            <ast name="UNSUPORTED" />
         </write>
     </property>
 
     <property name="CursorLocation" type="DINT">
         <arg type="DINT" />
         <read>
-            <ast name="UNSUPPORTED" />
+            <ast name="UNSUPORTED" />
         </read>
         <write>
-            <ast name="UNSUPPORTED" />
+            <ast name="UNSUPORTED" />
         </write>
     </property>
 
     <property name="DefaultDatabase" type="DSTRING">
         <arg type="DINT" />
         <read>
-            <ast name="UNSUPPORTED" />
+            <ast name="UNSUPORTED" />
         </read>
         <write>
-            <ast name="UNSUPPORTED" />
+            <ast name="UNSUPORTED" />
         </write>
     </property>
 
@@ -80,20 +80,20 @@
     <property name="IsolationLevel" type="DINT">
         <arg type="DINT" />
         <read>
-            <ast name="UNSUPPORTED" />
+            <ast name="UNSUPORTED" />
         </read>
         <write>
-            <ast name="UNSUPPORTED" />
+            <ast name="UNSUPORTED" />
         </write>
     </property>
 
     <property name="Mode" type="DINT">
         <arg type="DINT" />
         <read>
-            <ast name="UNSUPPORTED" />
+            <ast name="UNSUPORTED" />
         </read>
         <write>
-            <ast name="UNSUPPORTED" />
+            <ast name="UNSUPORTED" />
         </write>
     </property>
 
@@ -123,7 +123,7 @@
 
     <property name="State" type="DINT">
         <read>
-            <ast name="UNSUPPORTED" />
+            <ast name="UNSUPORTED" />
         </read>
     </property>
 
@@ -175,8 +175,7 @@
     <method name="Close" type="VOID">
         <ast name="DOT">
             <this />
-            <ast name="METHOD_CALL" text="Close">
-            </ast>
+            <ast name="METHOD_CALL" text="Close" />
         </ast>
     </method>
 

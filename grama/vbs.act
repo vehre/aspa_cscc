@@ -460,7 +460,7 @@ import org.apache.log4j.Logger;
 
 @with_dot : {#DOT.setType(WITH_DOT);}
 
-@array_init : { boolean isArray = false; }
+@array_init : { boolean isArray = false;}
 @array_lastid : { lastId = null; }
 @array_lparen : {
     isArray = lastId != null
@@ -469,6 +469,7 @@ import org.apache.log4j.Logger;
     && (arrays.contains(lastId) || globalArrays.contains(lastId)));
     #LPAREN.setType(isArray ? INDEX_OP : METHOD_CALL);
 }
+
 
 @index_list : {#indexList = #(#[INDEX_LIST,"INDEXES"], indexList);}
 
