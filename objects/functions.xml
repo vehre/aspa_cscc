@@ -65,15 +65,12 @@
         </ast>
     </method>
 
-    <!--
-    <method name="cdate" type="DBOOL">
-        <arg type="DSTRING" />
-        <ast name="CAST">
-            <ast name="IDENTIFIER" text="bool" />
-            <arg index="1" />
-        </ast>
+    <method name="cdate" type="DINT">
+        <arg type="DINT" />
+		<ast name="TRANSLATE_ROOT">
+		  <arg index="1" />
+		</ast>
     </method>
-    -->
 
     <method name="cdbl" type="DFLOAT">
         <arg type="DSTRING" />
@@ -129,15 +126,93 @@
     </method>
 
     <method name="date" type="DINT">
-        <ast name="METHOD_CALL" text="time">
-        </ast>
+        <ast name="METHOD_CALL" text="time" />
     </method>
 
-    <!--
-    <method name="DateAdd"  type="DINT" />
-    <method name="DateDiff" type="DINT" />
-    <method name="DatePart" type="DINT" />
-    -->
+    <method name="DateAdd"  type="DINT" requires="translator/runtime.php">
+	  <arg type="DSTRING" />
+	  <arg type="DINT" />
+	  <arg type="DINT" /> <!-- This is the date arg-->
+	  <!-- 
+		   It is easier to implement this in PHP instead of bulding the code every time
+	  -->
+	  <ast name="METHOD_CALL" text="DateAdd">
+		<ast name="ARGLIST_VALUES">
+		  <arg index="1" />
+		  <arg index="2" />
+		  <arg index="3" />
+		</ast>
+	  </ast>
+	</method>
+
+    <method name="DateDiff" type="DINT" requires="translator/runtime.php">
+	  <arg type="DSTRING" />
+	  <arg type="DINT" /> <!-- The first date arg -->
+	  <arg type="DINT" /> <!-- The second date arg -->
+	  <ast name="METHOD_CALL" text="DateDiff">
+		<ast name="ARGLIST_VALUES">
+		  <args />
+		</ast>
+	  </ast>
+	</method>
+
+    <method name="DateDiff" type="DINT" requires="translator/runtime.php">
+	  <arg type="DSTRING" />
+	  <arg type="DINT" /> <!-- The first date arg -->
+	  <arg type="DINT" /> <!-- The second date arg -->
+	  <arg type="DINT" /> <!-- First day of week constant -->
+	  <ast name="METHOD_CALL" text="DateDiff">
+		<ast name="ARGLIST_VALUES">
+		  <args />
+		</ast>
+	  </ast>
+	</method>
+
+    <method name="DateDiff" type="DINT" requires="translator/runtime.php">
+	  <arg type="DSTRING" />
+	  <arg type="DINT" /> <!-- The first date arg -->
+	  <arg type="DINT" /> <!-- The second date arg -->
+	  <arg type="DINT" /> <!-- First day of week constant -->
+	  <arg type="DINT" /> <!-- First week of year constant -->
+	  <ast name="METHOD_CALL" text="DateDiff">
+		<ast name="ARGLIST_VALUES">
+		  <args />
+		</ast>
+	  </ast>
+	</method>
+
+    <method name="DatePart" type="DINT" requires="translator/runtime.php">
+	  <arg type="DSTRING" />
+	  <arg type="DINT" /> <!-- The date arg -->
+	  <ast name="METHOD_CALL" text="DatePart">
+		<ast name="ARGLIST_VALUES">
+		  <args />
+		</ast>
+	  </ast>
+	</method>
+
+    <method name="DatePart" type="DINT" requires="translator/runtime.php">
+	  <arg type="DSTRING" />
+	  <arg type="DINT" /> <!-- The date arg -->
+	  <arg type="DINT" /> <!-- First day of week constant -->
+	  <ast name="METHOD_CALL" text="DatePart">
+		<ast name="ARGLIST_VALUES">
+		  <args />
+		</ast>
+	  </ast>
+	</method>
+
+    <method name="DatePart" type="DINT" requires="translator/runtime.php">
+	  <arg type="DSTRING" />
+	  <arg type="DINT" /> <!-- The date arg -->
+	  <arg type="DINT" /> <!-- First day of week constant -->
+	  <arg type="DINT" /> <!-- First week of year constant -->
+	  <ast name="METHOD_CALL" text="DatePart">
+		<ast name="ARGLIST_VALUES">
+		  <args />
+		</ast>
+	  </ast>
+	</method>
 
     <method name="DateSerial" type="DINT">
         <arg type="DINT" />
@@ -155,10 +230,23 @@
         </ast>
     </method>
 
-    <!--
-    <method name="DateValue" type="DINT" />
-    <method name="Day" type="DINT" />
-    -->
+    <method name="DateValue" type="DINT" requires="translator/runtime.php">
+	  <arg type="DINT" />
+	  <ast name="METHOD_CALL" text="DateValue">
+		<ast name="ARGLIST_VALUES">
+		  <arg index="1" />
+		</ast>
+	  </ast>
+	</method>
+
+    <method name="Day" type="DINT" requires="translator/runtime.php">
+	  <arg type="DINT" />
+	  <ast name="METHOD_CALL" text="Day">
+		<ast name="ARGLIST_VALUES">
+		  <arg index="1" />
+		</ast>
+	  </ast>
+	</method>
 
     <method name="Exp" type="DINT">
         <arg type="DSTRING" />
@@ -169,14 +257,110 @@
         </ast>
     </method>
 
-    <!--
-    <method name="Filter" type="INDEX_OP" />
+    <method name="Filter" type="ARRAY" requires="translator/runtime.php">
+	  <arg type="DSTRING" />
+	  <arg type="DSTRING" />
+	  <ast name="METHOD_CALL" text="Filter">
+		<ast name="ARGLIST_VALUES">
+		  <args />
+		</ast>
+	  </ast>
+	</method>
 
-    Some thought needed for variable argument length functions
-    <method name="FormatDateTime" type="DSTRING" />
-    <method name="FormatNumber"   type="DSTRING" />
-    <method name="FormatPercent"  type="DSTRING" />
-    <method name="GetLocal"       type="DINT" />
+    <method name="Filter" type="ARRAY" requires="translator/runtime.php">
+	  <arg type="DSTRING" />
+	  <arg type="DSTRING" />
+	  <arg type="DBOOL" /> <!-- Include or exclude (default is include) -->
+	  <ast name="METHOD_CALL" text="Filter">
+		<ast name="ARGLIST_VALUES">
+		  <args />
+		</ast>
+	  </ast>
+	</method>
+
+    <method name="Filter" type="ARRAY" requires="translator/runtime.php">
+	  <arg type="DSTRING" />
+	  <arg type="DSTRING" />
+	  <arg type="DBOOL" /> <!-- Include or exclude (default is include) -->
+	  <arg type="DINT" /> <!--  vbBinaryCompare (0) or vbTextCompare(1) -->
+	  <ast name="METHOD_CALL" text="Filter">
+		<ast name="ARGLIST_VALUES">
+		  <args />
+		</ast>
+	  </ast>
+	</method>
+
+    <method name="FormatDateTime" type="DSTRING" requires="translator/runtime.php">
+	  <arg type="DINT" />
+	  <!--  Format the date using the vbGeneralDate -->
+	  <ast name="METHOD_CALL" text="FormatDateTime">
+		<ast name="ARGLIST_VALUES">
+		  <args />
+		</ast>
+	  </ast>
+	</method>
+
+    <method name="FormatDateTime" type="DSTRING" requires="translator/runtime.php">
+	  <arg type="DINT" />
+	  <arg type="DINT" /> <!-- Use the constant as the format --> 
+	  <ast name="METHOD_CALL" text="FormatDateTime">
+		<ast name="ARGLIST_VALUES">
+		  <args />
+		</ast>
+	  </ast>
+	</method>
+
+    <method name="FormatNumber"   type="DSTRING">
+	  <arg type="ANY" /> <!-- The type should be a valid number expression -->
+	  <ast name="METHOD_CALL" text="number_format">
+		<ast name="ARGLIST_VALUES">
+		  <arg index="1" />
+		</ast>
+	  </ast>
+	</method>
+
+    <method name="FormatNumber"   type="DSTRING">
+	  <arg type="ANY" /> <!-- The type should be a valid number expression -->
+	  <arg type="DINT" /> <!--  Number of fractional digits -->
+	  <args /> <!--  Other settings ignored -->
+	  <ast name="METHOD_CALL" text="number_format">
+		<ast name="ARGLIST_VALUES">
+		  <arg index="1" />
+		  <arg index="2" />
+		</ast>
+	  </ast>
+	</method>
+
+    <method name="FormatPercent"  type="DSTRING">
+	  <arg type="ANY" /> <!-- The type should be a valid number expression -->
+	  <ast name="METHOD_CALL" text="number_format">
+		<ast name="ARGLIST_VALUES">
+		  <ast name="ASTERISK">
+			<ast name="DINT" text="100" />
+			<arg index="1" />
+		  </ast>
+		</ast>
+	  </ast>
+	</method>
+
+    <method name="FormatPercent"  type="DSTRING">
+	  <arg type="ANY" /> <!-- The type should be a valid number expression -->
+	  <arg type="DINT" />
+	  <args />
+	  <ast name="METHOD_CALL" text="number_format">
+		<ast name="ARGLIST_VALUES">
+		  <ast name="ASTERISK">
+			<ast name="DINT" text="100" />
+			<arg index="1" />
+		  </ast>
+		  <arg index="2" />
+		</ast>
+	  </ast>
+	</method>
+
+    <!--
+		Don't know a method which does this
+		<method name="GetLocal"       type="DINT" />
     -->
 
     <!--
@@ -681,7 +865,28 @@
         </ast>
     </method>
 
-    <!-- Timer, TimeSerial, TimeValue-->
+	<method name="Timer" type="DINT" requires="translator/runtime.php">
+	  <ast name="METHOD_CALL" text="getTime" />
+	</method>
+
+	<method name="TimeSerial" type="DINT">
+	  <arg type="DINT" />
+	  <arg type="DINT" />
+	  <arg type="DINT" />
+	  <ast name="METHOD_CALL" text="mktime">
+		<arg index="1" />
+		<arg index="2" />
+		<arg index="3" />
+	  </ast>
+	</method>
+
+	<method name="TimeValue" type="DINT">
+	  <arg type="DSTRING" />
+	  <ast name="METHOD_CALL" text="strotime">
+		<arg index="1"/>
+	  </ast>
+	</method>
+
     <method name="UBound" type="DINT">
         <arg type="ARRAY" />
         <ast name="METHOD_CALL" text="count">
@@ -722,4 +927,17 @@
             </ast>
         </ast>
     </method>
+<!--
+  <method name="CreateObject" type="OBJECT">
+  	<arg type="DSTRING" />
+    <map>
+        <key value="ADODB.Connection" use="ADOConnection" />
+        <key value="ADODB.Recordset" use="ADORecordset" />
+        <key value="ADODB.Command" use="ADOCommand" />
+        <key>
+            <ast name="INVALID_OBJECT" />
+        </key>
+    </map>
+  </method>
+-->
 </functions>

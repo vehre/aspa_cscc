@@ -37,7 +37,7 @@ tokens {
 start_rule
   <start>
   :
-  statements {/*LOG.debug(variables);*/}
+  statements
   ;
 
 
@@ -82,6 +82,9 @@ statement
   |<tml> #(EQ_HTML mlexpr:expr <eq_end>)
   | sub_func
   | #(PRIVATE sub_func)
+  |<tsub> #(SUB_CALL sub_name:expression <sub_call>
+            (argListValues)?
+      <sub_call_end>)
   | nested <nested_end>
   ;
 
@@ -239,8 +242,6 @@ expression
   |! #(WITH_DOT with_dotexpr:expression <with_dot_end>)
   | #(LPAREN expression)
   |<tnew> #(NEW IDENTIFIER <new>)
-  |<tsub> #(SUB_CALL sub_name:expression <func_call> argListValues
-      <sub_call_end>)
   | DINT
   | DFLOAT
   | IDENTIFIER <id>

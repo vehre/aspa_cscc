@@ -1,3 +1,15 @@
+2005-01-22  anakreon  <e@localhost.localdomain>
+
+	* objects/VbUserDefinedMethod.java (VbUserDefinedMethod): Removed the static
+	initilizer and placed it in the constructor. (Tian)
+
+	* objects/JsUserDefinedMethod.java (JsUserDefinedMethod): Removed the static
+	initilizer and placed it in the constructor. (Tian)
+
+	* objects/UserDefinedMethod.java (UserDefinedMethod): Static fields changed into
+	non static. Those fields where used by JsUserDefinedMethod and VbUserDefinedMethod
+	which would overwritte the value upon initilization. (Tian)
+
 2004-11-01  anakreon  <e@localhost.localdomain>
 
 	* AspParser.java: added method getCurrentFileName. Now the log files

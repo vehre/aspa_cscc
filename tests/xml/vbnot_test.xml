@@ -21,15 +21,13 @@
               </ast>
             </ast>
           </ast>
-          <ast name="EXPR" text="EXPR">
-            <ast name="SUB_CALL" text="Sub Call">
-              <ast name="DOT" text=".">
-                <ast name="IDENTIFIER" text="Response"/>
-                <ast name="IDENTIFIER" text="Redirect"/>
-              </ast>
-              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
-                <ast name="DSTRING" text="iisstart.asp"/>
-              </ast>
+          <ast name="SUB_CALL" text="Sub Call">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Response"/>
+              <ast name="IDENTIFIER" text="Redirect"/>
+            </ast>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="iisstart.asp"/>
             </ast>
           </ast>
         </ast>

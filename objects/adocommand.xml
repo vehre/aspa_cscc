@@ -15,7 +15,7 @@
     along with Aspa; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 -->
-<class name="ADOCommand" dependant="true" requires="runtime/adocommand.php">
+<class name="ADOCommand" dependant="true" requires="translator/adocommand.php">
   <class name="ADOCmdParams" dependant="true">
 	<method name="Append" type="VOID">
 	  <arg type="ADOParameter" />

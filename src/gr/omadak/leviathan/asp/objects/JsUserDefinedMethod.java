@@ -67,15 +67,7 @@ public class JsUserDefinedMethod extends UserDefinedMethod {
     private AST rootNode;
     private Set usedVars = new TreeSet();
 
-    static {
-        NULL = TreeJsTokenTypes.NULL;
-        METHOD_CALL = TreeJsTokenTypes.METHOD_CALL;
-        DOT = TreeJsTokenTypes.DOT;
-        ARGLIST_VALUES = TreeJsTokenTypes.ELIST;
-        NEW = TreeJsTokenTypes.NEW;
-    }
-
-    private void addLocalFunction(JsUserDefinedMethod child) {
+   private void addLocalFunction(JsUserDefinedMethod child) {
         if (localFunctions == null) {
             localFunctions = new HashSet();
         }
@@ -168,6 +160,11 @@ public class JsUserDefinedMethod extends UserDefinedMethod {
     public JsUserDefinedMethod(String name, List args, boolean inVar) {
         super(name, args);
         this.definedInVar = inVar;
+        NULL = TreeJsTokenTypes.NULL;
+        METHOD_CALL = TreeJsTokenTypes.METHOD_CALL;
+        DOT = TreeJsTokenTypes.DOT;
+        ARGLIST_VALUES = TreeJsTokenTypes.ELIST;
+        NEW = TreeJsTokenTypes.NEW;
     }
 
 

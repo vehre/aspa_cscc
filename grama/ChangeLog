@@ -1,3 +1,12 @@
+2005-01-21  anakreon  <e@localhost.localdomain>
+
+	* vbs.act: Changed the tree produced from SUB_CALL
+	into (SUB_CALL expression)
+	Replaced rules call_sub and call_obj with rule call_end
+	* vbs.act: Changed the tree produced from rule expr_statement_list
+	into (EXPR (ASSIGN expression (METHOD_CALL..)))
+	or (SUB_CALL ..)
+
 2004-11-01  anakreon  <e@localhost.localdomain>
 
 	* tree_vbs_php.act: handleIdObject would create an instance with wrong ASPClass

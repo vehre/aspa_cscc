@@ -13,15 +13,13 @@
               <ast name="DINT" text="12"/>
             </ast>
           </ast>
-          <ast name="EXPR" text="EXPR">
-            <ast name="SUB_CALL" text="Sub Call">
-              <ast name="DOT" text=".">
-                <ast name="IDENTIFIER" text="Response"/>
-                <ast name="IDENTIFIER" text="write"/>
-              </ast>
-              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
-                <ast name="DSTRING" text="is 12"/>
-              </ast>
+          <ast name="SUB_CALL" text="Sub Call">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Response"/>
+              <ast name="IDENTIFIER" text="write"/>
+            </ast>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="is 12"/>
             </ast>
           </ast>
         </ast>
@@ -37,15 +35,13 @@
               <ast name="DSTRING" text="#ffgh"/>
             </ast>
           </ast>
-          <ast name="EXPR" text="EXPR">
-            <ast name="SUB_CALL" text="Sub Call">
-              <ast name="DOT" text=".">
-                <ast name="IDENTIFIER" text="Response"/>
-                <ast name="IDENTIFIER" text="write"/>
-              </ast>
-              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
-                <ast name="DSTRING" text="red"/>
-              </ast>
+          <ast name="SUB_CALL" text="Sub Call">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Response"/>
+              <ast name="IDENTIFIER" text="write"/>
+            </ast>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="red"/>
             </ast>
           </ast>
         </ast>
@@ -55,15 +51,13 @@
               <ast name="DSTRING" text="green"/>
             </ast>
           </ast>
-          <ast name="EXPR" text="EXPR">
-            <ast name="SUB_CALL" text="Sub Call">
-              <ast name="DOT" text=".">
-                <ast name="IDENTIFIER" text="Response"/>
-                <ast name="IDENTIFIER" text="write"/>
-              </ast>
-              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
-                <ast name="DSTRING" text="green"/>
-              </ast>
+          <ast name="SUB_CALL" text="Sub Call">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Response"/>
+              <ast name="IDENTIFIER" text="write"/>
+            </ast>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="green"/>
             </ast>
           </ast>
         </ast>
@@ -73,15 +67,13 @@
               <ast name="DSTRING" text="blue"/>
             </ast>
           </ast>
-          <ast name="EXPR" text="EXPR">
-            <ast name="SUB_CALL" text="Sub Call">
-              <ast name="DOT" text=".">
-                <ast name="IDENTIFIER" text="Response"/>
-                <ast name="IDENTIFIER" text="write"/>
-              </ast>
-              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
-                <ast name="DSTRING" text="blue"/>
-              </ast>
+          <ast name="SUB_CALL" text="Sub Call">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Response"/>
+              <ast name="IDENTIFIER" text="write"/>
+            </ast>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="blue"/>
             </ast>
           </ast>
         </ast>
@@ -100,28 +92,24 @@
               <ast name="DINT" text="1234"/>
             </ast>
           </ast>
-          <ast name="EXPR" text="EXPR">
-            <ast name="SUB_CALL" text="Sub Call">
-              <ast name="DOT" text=".">
-                <ast name="IDENTIFIER" text="Response"/>
-                <ast name="IDENTIFIER" text="write"/>
-              </ast>
-              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
-                <ast name="DSTRING" text="Is number biger then 12"/>
-              </ast>
+          <ast name="SUB_CALL" text="Sub Call">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Response"/>
+              <ast name="IDENTIFIER" text="write"/>
+            </ast>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="Is number biger then 12"/>
             </ast>
           </ast>
         </ast>
         <ast name="CASE_ELSE" text="Case">
-          <ast name="EXPR" text="EXPR">
-            <ast name="SUB_CALL" text="Sub Call">
-              <ast name="DOT" text=".">
-                <ast name="IDENTIFIER" text="Response"/>
-                <ast name="IDENTIFIER" text="write"/>
-              </ast>
-              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
-                <ast name="DSTRING" text="pick another color"/>
-              </ast>
+          <ast name="SUB_CALL" text="Sub Call">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Response"/>
+              <ast name="IDENTIFIER" text="write"/>
+            </ast>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="pick another color"/>
             </ast>
           </ast>
         </ast>

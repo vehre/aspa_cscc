@@ -58,13 +58,21 @@ onError
 
 s_decl
   :
-  id:IDENTIFIER^ (LPAREN! <add_array> (addSubExpression (COMMA! addSubExpression)*)? RPAREN!)?
+  id:IDENTIFIER^ (LPAREN! <add_array> (dimension_length (COMMA! dimension_length)*)? RPAREN!)?
+  ;
+
+dimension_length
+  :
+
+  ((DINT ~(COMMA|RPAREN))|~DINT)=> exp:addSubExpression <dimen_length_expr>
+  |DINT
+
   ;
 
 
 expression_statement
   :!
-  e1:expression <expr_statement>
+  e:expression <expr_statement>
   (el:expressionList <expr_statement_list>)?
   ;
 
@@ -106,7 +114,10 @@ sub_func
 
 block_statement
   :
-  onError
+  ((!PRIVATE | PUBLIC) CONST)=> (!PRIVATE | PUBLIC) const_statement
+  | ((PRIVATE | PUBLIC) IDENTIFIER)=>
+        (PRIVATE | PUBLIC^) s_decl  (COMMA! s_decl)* statement_term
+  | onError
   | sub_func
   | class_statement
   | if_then_else_statement
@@ -115,7 +126,6 @@ block_statement
   | select_case_statement
   | for_statement
   | with_statement
-  | (!PRIVATE | PUBLIC) const_statement
   ;
 
 
@@ -124,12 +134,12 @@ simple_statement
   (DIM^ | r:REDIM^ (!PRESERVE <preserve>)?) s_decl (COMMA! s_decl)*
   |! OPTION EXPLICIT
   | ERASE^ IDENTIFIER
-  | CALL! ({inWith}? (| imw:IDENTIFIER <call_sub>) | im:IDENTIFIER <call_sub>)
-      (DOT^ in:IDENTIFIER <call_obj>)*
-      LPAREN! (expressionList)? RPAREN!
+  | CALL! ({inWith}? (| IDENTIFIER) | IDENTIFIER)
+      (DOT^ IDENTIFIER)*
+      LPAREN! (!exList:expressionList)? RPAREN! <call_end>
   | set_statement
   | RANDOMIZE^ (expression)?
-  | ex:expression_statement
+  | expression_statement
   | EQ_HTML^ expression
   | const_statement
   | EXIT^ (DO | SUB | FUNCTION | FOR)
@@ -596,7 +606,7 @@ postFixExpression
     end with
     On the other hand, expressions can have dot as well like "obj.height"
     It seems to work well.
-    2)LPAREN can apper inside expression like obj.method()
+    2)LPAREN can appear inside expression like obj.method()
     or as part of a nested expression like a * (b + c).
     This is handled correctly as well.
     */
@@ -650,7 +660,7 @@ class VbsLexer extends Lexer;
 options {
     exportVocab = Vbs;
     testLiterals = false;
-    k = 2;
+    k = 3;
     caseSensitive = false;
     caseSensitiveLiterals = false;
     filter = false;
@@ -680,7 +690,7 @@ INT_CONST
       )?
       | (DIGIT)+ <lexer_typeint> ('.' (DIGIT)+ (EXPONENT)? (FLT_SUFFIX)? <lexer_typefloat>)?
       | '&' <lexer_typeconcat> (
-        'h' (HEX_DIGIT)+ <lexer_typeint>
+        'h' (HEX_DIGIT)+ <lexer_typeint> (('&')?)!
         | 'o' ('0' .. '7')+ <lexer_typeint>
       )?
   )

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="ISO-8859-7"?>
+
+<asp>
+  <vb>
+    <original>
+      <ast name="SUB_CALL" text="Sub Call">
+        <ast name="IDENTIFIER" text="someMethod"/>
+      </ast>
+      <ast name="SUB_CALL" text="Sub Call">
+        <ast name="IDENTIFIER" text="someMethod1"/>
+        <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+          <ast name="DINT" text="1"/>
+          <ast name="DINT" text="2"/>
+          <ast name="DINT" text="3"/>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="someMethod"/>
+      <ast name="FUNCTION" text="someMethod1"/>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="someMethod"/>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="someMethod1">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="DINT" text="1"/>
+            <ast name="DINT" text="2"/>
+            <ast name="DINT" text="3"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="someMethod">
+        <ast name="RETURN" text="return">
+          <ast name="EXPR" text="EXPR">
+            <ast name="NULL" text="null"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="FUNCTION" text="someMethod1">
+        <ast name="ARGLIST" text="ARGLIST">
+          <ast name="IDENTIFIER" text="p1"/>
+          <ast name="IDENTIFIER" text="p2"/>
+          <ast name="IDENTIFIER" text="p3"/>
+        </ast>
+        <ast name="RETURN" text="return">
+          <ast name="EXPR" text="EXPR">
+            <ast name="NULL" text="null"/>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </vb>
+</asp>

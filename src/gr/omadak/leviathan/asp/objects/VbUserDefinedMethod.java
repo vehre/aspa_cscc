@@ -30,13 +30,6 @@ public class VbUserDefinedMethod extends UserDefinedMethod {
 
     private BitSet argMethod;
 
-    static {
-        NULL = TreeVbsTokenTypes.NULL;
-        METHOD_CALL = TreeVbsTokenTypes.METHOD_CALL;
-        DOT = TreeVbsTokenTypes.DOT;
-        ARGLIST_VALUES = TreeVbsTokenTypes.ARGLIST_VALUES;
-        NEW = TreeVbsTokenTypes.NEW;
-    }
 
     private void setByRef(int index) {
         if (argMethod == null) {
@@ -49,6 +42,11 @@ public class VbUserDefinedMethod extends UserDefinedMethod {
     public VbUserDefinedMethod(String name, List args, boolean isPrivate,
     boolean isDefault) {
         super(name, args);
+        NULL = TreeVbsTokenTypes.NULL;
+        METHOD_CALL = TreeVbsTokenTypes.METHOD_CALL;
+        DOT = TreeVbsTokenTypes.DOT;
+        ARGLIST_VALUES = TreeVbsTokenTypes.ARGLIST_VALUES;
+        NEW = TreeVbsTokenTypes.NEW;
         if (!args.isEmpty()) {
             int index = 0;
             for (Iterator it = args.iterator(); it.hasNext();) {

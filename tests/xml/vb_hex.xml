@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-7"?>
+
+<asp>
+  <vb>
+    <original>
+      <ast name="CONST" text="Const">
+        <ast name="IDENTIFIER" text="G_READONLY"/>
+        <ast name="DINT" text="&amp;H0&amp;"/>
+      </ast>
+      <ast name="CONST" text="Const">
+        <ast name="IDENTIFIER" text="G_WRITABLE"/>
+        <ast name="DINT" text="&amp;H1&amp;"/>
+      </ast>
+      <ast name="CONST" text="Const">
+        <ast name="IDENTIFIER" text="G_APPEND"/>
+        <ast name="DINT" text="&amp;H2&amp;"/>
+      </ast>
+    </original>
+    <translated>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="define">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="DSTRING" text="G_READONLY"/>
+            <ast name="DINT" text="&amp;H0&amp;"/>
+            <ast name="TRUE" text="true"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="define">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="DSTRING" text="G_WRITABLE"/>
+            <ast name="DINT" text="&amp;H1&amp;"/>
+            <ast name="TRUE" text="true"/>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
+        <ast name="METHOD_CALL" text="define">
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="DSTRING" text="G_APPEND"/>
+            <ast name="DINT" text="&amp;H2&amp;"/>
+            <ast name="TRUE" text="true"/>
+          </ast>
+        </ast>
+      </ast>
+    </translated>
+  </vb>
+</asp>

@@ -4,18 +4,16 @@
   <vb>
     <original>
       <ast name="HTML" text="Session value is:"/>
-      <ast name="EXPR" text="EXPR">
-        <ast name="SUB_CALL" text="Sub Call">
-          <ast name="DOT" text=".">
-            <ast name="IDENTIFIER" text="Response"/>
-            <ast name="IDENTIFIER" text="write"/>
-          </ast>
-          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
-            <ast name="METHOD_CALL" text="(">
-              <ast name="IDENTIFIER" text="session"/>
-              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
-                <ast name="DSTRING" text="value"/>
-              </ast>
+      <ast name="SUB_CALL" text="Sub Call">
+        <ast name="DOT" text=".">
+          <ast name="IDENTIFIER" text="Response"/>
+          <ast name="IDENTIFIER" text="write"/>
+        </ast>
+        <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+          <ast name="METHOD_CALL" text="(">
+            <ast name="IDENTIFIER" text="session"/>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="value"/>
             </ast>
           </ast>
         </ast>

@@ -50,7 +50,9 @@ import org.apache.log4j.Logger;
     SUB_NAME; CASE_ELSE; WHILE_WEND; CASE_LIST;
     HTML; EQ_HTML; PROPERTY_GET; PROPERTY_LET; PROPERTY_SET;
     WITH_DOT; ASP; INDEX_OP; INDEX_LIST; DO_UNTIL; DO_WHILE;
-    FOR_INIT; INCLUDE; EXIT_PROPERTY; ARRAY; REDIM_PRESERVE;
+    FOR_INIT; INCLUDE; EXIT_PROPERTY; ARRAY; GOTO;
+    DIMENSION_LENGTH; REDIM_PRESERVE;
+
 
 @init : {
     private boolean inWith;
@@ -175,33 +177,27 @@ import org.apache.log4j.Logger;
     arrays.add(#id.getText());
 }
 
-@expr_statement : { ## = #e1; }
+@dimen_length_expr : {
+  ## =#(#[EXPR,"EXPR"],#exp);
+}
+
+@expr_statement : { ## = #e; }
 @expr_statement_list : {
-    if (#e1.getFirstChild().getType() == ASSIGN) {
-        AST subCall = e1_AST.getFirstChild().getFirstChild().getNextSibling();
-        subCall = #([SUB_CALL, "Sub Call"], subCall, #el);
-        #e1.getFirstChild().getFirstChild().setNextSibling(subCall);
-        ## = #e1;
+    if (#e.getFirstChild().getType() == ASSIGN) {
+        AST mCall = e_AST.getFirstChild().getFirstChild().getNextSibling();
+        mCall = #([METHOD_CALL, "METHOD_CALL"], mCall, #el);
+        #e.getFirstChild().getFirstChild().setNextSibling(mCall);
+        ## = #e;
     } else {
-        ## = #([EXPR, "EXPR"],
-            #([SUB_CALL, "Sub Call"], e1_AST.getFirstChild(), #el)
-        );
+        ## = #([SUB_CALL, "Sub Call"], e_AST.getFirstChild(), #el);
     }
 }
-@call_sub : {
-	if (inWith) {
-        #imw.setType(SUB_CALL);
+@call_end : {
+	if (#exList != null) {
+		## = #([SUB_CALL, "Sub Call"], ##, #exList);
 	} else {
-		#im.setType(SUB_CALL);
+		## = #([SUB_CALL, "Sub Call"], ##);
 	}
-}
-@call_obj : {
-	if (inWith) {
-		#imw.setType(IDENTIFIER);
-	} else {
-        #im.setType(IDENTIFIER);
-	}
-    #in.setType(SUB_CALL);
 }
 
 @class_init: {List properties = new ArrayList();}

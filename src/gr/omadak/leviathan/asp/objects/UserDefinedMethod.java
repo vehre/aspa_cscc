@@ -34,11 +34,11 @@ public abstract class UserDefinedMethod extends GenericMethod {
     protected Map localObjects;
     /**keeps the global variables*/
     protected Map globalObjects;
-    protected static int NULL;
-    protected static int METHOD_CALL;
-    protected static int DOT;
-    protected static int ARGLIST_VALUES;
-    protected static int NEW;
+    protected int NULL;
+    protected int METHOD_CALL;
+    protected int DOT;
+    protected int ARGLIST_VALUES;
+    protected int NEW;
 	private static Logger LOG = Logger.getLogger(UserDefinedMethod.class);
 
 

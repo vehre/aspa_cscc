@@ -41,9 +41,9 @@ public abstract class BaseMember extends BaseObject implements Member {
             if (pclazz instanceof XmlDependantASPClass) {
                 collectParentArgs((XmlDependantASPClass) pclazz, list);
             }
-            List args = parent.getArgs();
-            if (args != null && !args.isEmpty()) {
-                list.addAll(args);
+            List pArgs = parent.getArgs();
+            if (pArgs != null) {
+                list.addAll(pArgs);
             }
             parent.resetState();
         }

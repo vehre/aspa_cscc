@@ -85,7 +85,6 @@ public class SourceBuffer {
     public void stopBuffering() {
         if (oldWriter != null) {
             out = oldWriter;
-            writer.getBuffer().setLength(0);
             writer = null;
             oldWriter = null;
         }

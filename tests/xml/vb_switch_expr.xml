@@ -18,15 +18,13 @@
               </ast>
             </ast>
           </ast>
-          <ast name="EXPR" text="EXPR">
-            <ast name="SUB_CALL" text="Sub Call">
-              <ast name="DOT" text=".">
-                <ast name="IDENTIFIER" text="Response"/>
-                <ast name="IDENTIFIER" text="write"/>
-              </ast>
-              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
-                <ast name="DSTRING" text="var1"/>
-              </ast>
+          <ast name="SUB_CALL" text="Sub Call">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Response"/>
+              <ast name="IDENTIFIER" text="write"/>
+            </ast>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="var1"/>
             </ast>
           </ast>
         </ast>
@@ -41,28 +39,24 @@
               </ast>
             </ast>
           </ast>
-          <ast name="EXPR" text="EXPR">
-            <ast name="SUB_CALL" text="Sub Call">
-              <ast name="DOT" text=".">
-                <ast name="IDENTIFIER" text="Response"/>
-                <ast name="IDENTIFIER" text="write"/>
-              </ast>
-              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
-                <ast name="DSTRING" text="var2"/>
-              </ast>
+          <ast name="SUB_CALL" text="Sub Call">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Response"/>
+              <ast name="IDENTIFIER" text="write"/>
+            </ast>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="var2"/>
             </ast>
           </ast>
         </ast>
         <ast name="CASE_ELSE" text="case">
-          <ast name="EXPR" text="EXPR">
-            <ast name="SUB_CALL" text="Sub Call">
-              <ast name="DOT" text=".">
-                <ast name="IDENTIFIER" text="Response"/>
-                <ast name="IDENTIFIER" text="write"/>
-              </ast>
-              <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
-                <ast name="DSTRING" text="all vars are ok"/>
-              </ast>
+          <ast name="SUB_CALL" text="Sub Call">
+            <ast name="DOT" text=".">
+              <ast name="IDENTIFIER" text="Response"/>
+              <ast name="IDENTIFIER" text="write"/>
+            </ast>
+            <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+              <ast name="DSTRING" text="all vars are ok"/>
             </ast>
           </ast>
         </ast>

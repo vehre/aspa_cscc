@@ -484,7 +484,8 @@ public class AspParser {
 
 	/**
 	 * Get the current file name
-	 * @return the name of the file being parsedcuurCurrentFileName value.	 */
+	 * @return the name of the file being parsedcuurCurrentFileName value.	 
+	*/
 	public String getCurrentFileName() {
 		return currentFileName;
 	}
@@ -535,14 +536,6 @@ public class AspParser {
                 }
             }
         }
-    }
-
-
-    /**
-    * Returns the value of generateCode.
-    */
-    public boolean getGenerateCode() {
-        return generateCode;
     }
 
 

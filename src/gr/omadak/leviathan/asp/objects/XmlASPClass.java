@@ -147,8 +147,7 @@ public class XmlASPClass extends GenericClass {
         }
         if (members != null) {
             for (Iterator it = members.keySet().iterator(); it.hasNext();) {
-                String name = (String) it.next();
-                Object value = members.get(name);
+               Object value = members.get((String) it.next());
                 if (value instanceof Member) {
                     memberToString(sb, (Member) value);
                 } else {

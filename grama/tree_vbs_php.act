@@ -117,7 +117,8 @@ import org.apache.commons.collections.Transformer;
 
     public void setAspParser(AspParser parser) {
         this.parser = parser;
-		log = Logger.getLogger("TreeVbs." + parser.getCurrentFileName().replace('.', '_'));
+		log = Logger.getLogger("gr.omadak.leviathan.asp.VbsTree."
+							   + parser.getCurrentFileName().replace('.', '_'));
     }
 
 
@@ -178,11 +179,16 @@ import org.apache.commons.collections.Transformer;
         if (ast instanceof ObjectAST) {
             ObjectAST oAST = (ObjectAST) ast;
             ASPObjectInstance inst = oAST.getInstance();
+			ASPClass clazz = inst.getASPClass();
 			if (inst.getMember() != null) {
-				log.error("BUG:I expected the member to be null");
+				Member mem = inst.getMember();
+				if (mem.getEvaluatedClass() != null) {
+					clazz = mem.getEvaluatedClass();
+				} else {
+					log.error("BUG:I expected the member to be null:" + inst);
+				}
 			}
-			result = new ASPObjectInstance(inst.getInstance(),
-										   (ASPClass) inst.getASPClass());
+			result = new ASPObjectInstance(inst.getInstance(), clazz);
         } else if (ast.getType() == IDENTIFIER) {
             String className = ast.getText();
             if (OBJECT_CLASSES.containsKey(className.toUpperCase())) {
@@ -839,7 +845,7 @@ import org.apache.commons.collections.Transformer;
                     method.setArgs(arguments);
                 } else {
                     log.warn("Instance:" + methodInstance + " has no method");
-                }
+				}
             }
             if (method != null) {
                 if (method.getReturnType() == CommonConstants.OBJECT) {
@@ -1095,17 +1101,18 @@ import org.apache.commons.collections.Transformer;
     if (#eq_ex1 == null || #eq_ex2 == null) {
         break; //this is a switch
     }
-    int this_type = -1;
     //check if can translate a = a operator expr into a operator= expr
     int eq2Type = #eq_ex2.getType();
-    String operator = "=";
+    int this_type;
+    String operator;
     switch (eq2Type) {
-        case CONCAT: this_type = CONCAT_ASSIGN; operator = "&"; break;
-        case PLUS: this_type = PLUS_ASSIGN; operator = "+"; break;
-        case MINUS: this_type = MINUS_ASSIGN; operator = "-"; break;
-        case MOD: this_type = MOD_ASSIGN; operator = "\\"; break;
-        case ASTERISK: this_type = STAR_ASSIGN; operator = "*"; break;
-        case DIVIDE: this_type = DIV_ASSIGN; operator = "/"; break;
+	case CONCAT: this_type = CONCAT_ASSIGN; operator = "&"; break;
+	case PLUS: this_type = PLUS_ASSIGN; operator = "+"; break;
+	case MINUS: this_type = MINUS_ASSIGN; operator = "-"; break;
+	case MOD: this_type = MOD_ASSIGN; operator = "\\"; break;
+	case ASTERISK: this_type = STAR_ASSIGN; operator = "*"; break;
+	case DIVIDE: this_type = DIV_ASSIGN; operator = "/"; break;
+	default: this_type = -1; operator = "="; break;
     }
     if (this_type != -1 && #eq_ex1.equalsTree(#eq_ex2.getFirstChild())) {
         //if a = a + ..
@@ -1569,8 +1576,8 @@ typeStack.push(new Integer(DINT));
 	typeStack.clear();
 }
 
-@init_stat : { int lastStackSize = 0; }
-@init_expr : { int lastStackSize = 0; }
+@init_stat : { int lastStackSize = 0;  }
+@init_expr : { int lastStackSize = 0;  }
 
 @tmethod : !
 @func_call : {
@@ -1580,15 +1587,31 @@ typeStack.push(new Integer(DINT));
 }
 @func_call_end : {
 	if (isArray) {
-		#expression = translateArray(#func, lastStackSize);
+		## = translateArray(#func, lastStackSize);
 	} else {
-        #expression = handleFunctionSubEnd(#func, lastStackSize); 
+        ## = handleFunctionSubEnd(#func, lastStackSize); 
 	}
 }
 
 
-@tsub : !
-@sub_call_end : { ## = handleFunctionSubEnd(#sub_name, lastStackSize); }
+@tsub : ! 
+@sub_call : {
+	log.debug(Boolean.toString(_t == null));
+	lastStackSize = argStack.size();
+	boolean isArray = #sub_name != null
+		&& #sub_name.getType() == IDENTIFIER
+		&& getIdentifierType(#sub_name.getText()) == ARRAY;
+}
+@sub_call_end : {
+	if (isArray) {
+		## = translateArray(#sub_name, lastStackSize);
+	} else {
+		## = handleFunctionSubEnd(#sub_name, lastStackSize); 
+	}
+	if (## != null) {
+		## = #([EXPR, "EXPR"], hardTranslate(##));
+	}
+}
 
 @trand : !
 @randomize : {

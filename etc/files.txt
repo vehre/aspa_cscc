@@ -34,9 +34,12 @@ vb_array.asp:vb_array.xml:
 vb_inline_if.asp:vb_inline_if.xml:
 vb_switch_expr.asp:vb_switch_expr.xml:
 vb_unassigned.asp:vb_unassigned.xml:
+vb_unassigned2.asp:vb_unassigned2.xml:
 vb_types.asp:vb_types.xml:
 vb_type_sub.asp:vb_type_sub.xml
 vb_command.asp:vb_command.xml:
+vb_hex.asp:vb_hex.xml:
+vb_method_call.asp:vb_method_call.xml:
 js_expression.asp:js_expression.xml
 js_request.asp:js_request.xml
 string.asp:string.xml

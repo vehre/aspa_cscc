@@ -136,7 +136,8 @@ NON_APPLICABLE_HEADER;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
 
     public void setAspParser(AspParser parser) {
         this.parser = parser;
-		log = Logger.getLogger("TreeJs." + parser.getCurrentFileName().replace('.', '_'));
+		log = Logger.getLogger("gr.omadak.leviathan.asp.JsTree."
+							   + parser.getCurrentFileName().replace('.', '_'));
     }
 
 
@@ -618,7 +619,7 @@ NON_APPLICABLE_HEADER;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
             }
         }
         AST result;
-        if (mem instanceof Member) {
+        if (mem != null) {
             result = translateMember(mem, inst);
         } else { //is null
             result = null;
@@ -1499,19 +1500,20 @@ NON_APPLICABLE_HEADER;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
 
     Check if we have expression = expression or expression = anonymFunction
     */
-    int type = -1;
-    String label = null;
+    int type;
+    String label;
     switch (#assign_expr2.getType()) {
-        case PLUS: type = PLUS_ASSIGN; label = "+="; break;
-        case MINUS: type = MINUS_ASSIGN; label = "-="; break;
-        case MOD: type = MOD_ASSIGN; label = "%="; break;
-        case STAR: type = STAR_ASSIGN; label = "*="; break;
-        case DIV: type = DIV_ASSIGN; label = "/="; break;
-        case SR: type = SR_ASSIGN; label = ">>="; break;
-        case SL: type = SL_ASSIGN; label = "<<="; break;
-        case BAND: type = BAND_ASSIGN; label = "&="; break;
-        case BOR: type = BOR_ASSIGN; label = "|="; break;
-        case BXOR: type = BXOR_ASSIGN; label = "^="; break;
+	case PLUS: type = PLUS_ASSIGN; label = "+="; break;
+	case MINUS: type = MINUS_ASSIGN; label = "-="; break;
+	case MOD: type = MOD_ASSIGN; label = "%="; break;
+	case STAR: type = STAR_ASSIGN; label = "*="; break;
+	case DIV: type = DIV_ASSIGN; label = "/="; break;
+	case SR: type = SR_ASSIGN; label = ">>="; break;
+	case SL: type = SL_ASSIGN; label = "<<="; break;
+	case BAND: type = BAND_ASSIGN; label = "&="; break;
+	case BOR: type = BOR_ASSIGN; label = "|="; break;
+	case BXOR: type = BXOR_ASSIGN; label = "^="; break;
+	default : type = -1; label = null;	
     }
     //check if can translate a = a operator expr into a operator= expr
     if (type != -1

@@ -17,15 +17,13 @@
           </ast>
         </ast>
       </ast>
-      <ast name="EXPR" text="EXPR">
-        <ast name="SUB_CALL" text="Sub Call">
-          <ast name="DOT" text=".">
-            <ast name="IDENTIFIER" text="con"/>
-            <ast name="IDENTIFIER" text="open"/>
-          </ast>
-          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
-            <ast name="IDENTIFIER" text="conStr"/>
-          </ast>
+      <ast name="SUB_CALL" text="Sub Call">
+        <ast name="DOT" text=".">
+          <ast name="IDENTIFIER" text="con"/>
+          <ast name="IDENTIFIER" text="open"/>
+        </ast>
+        <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+          <ast name="IDENTIFIER" text="conStr"/>
         </ast>
       </ast>
       <ast name="EXPR" text="EXPR">

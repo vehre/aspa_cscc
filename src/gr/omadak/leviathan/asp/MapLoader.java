@@ -66,7 +66,7 @@ public class MapLoader {
             }
             brRef.close();
         }
-        String errors = "";
+        StringBuffer errors = new StringBuffer();
         if (!ref.isEmpty()) {
             while ((line = brDesired.readLine()) != null) {
                 int eqIndex = line.indexOf('=');
@@ -81,7 +81,8 @@ public class MapLoader {
                 if (numValue != null) {
                     result.put(name, numValue);
                 } else {
-                    errors += "Token code not found for name:" + name + "\n";
+                    errors.append("Token code not found for name:").append(name)
+						.append('\n');
                 }
             }
             brDesired.close();
