@@ -33,6 +33,7 @@ vb_class_priv_var.asp:vb_class_priv_var.xml:
 vb_array.asp:vb_array.xml:
 vb_inline_if.asp:vb_inline_if.xml:
 vb_switch_expr.asp:vb_switch_expr.xml:
+vb_unassigned.asp:vb_unassigned.xml:
 js_expression.asp:js_expression.xml
 js_request.asp:js_request.xml
 string.asp:string.xml
@@ -71,3 +72,4 @@ js_concat.asp:js_concat.xml
 js_cookies.asp:js_cookies.xml
 js_comment.asp:js_comment.xml
 js_defmeth.asp:js_defmeth.xml
+js_unassigned.asp:js_unassigned.xml

@@ -128,6 +128,19 @@
         </ast>
       </ast>
       <ast name="EXPR" text="EXPR">
+        <ast name="ASSIGN" text="=">
+          <ast name="IDENTIFIER" text="rs"/>
+          <ast name="DOT" text="DOT">
+            <ast name="IDENTIFIER" text="objConn"/>
+            <ast name="METHOD_CALL" text="Execute">
+              <ast name="ELIST" text="ARGLIST_VALUES">
+                <ast name="STRING_LITERAL" text="GET_OLD_SPONSORSHIPS"/>
+              </ast>
+            </ast>
+          </ast>
+        </ast>
+      </ast>
+      <ast name="EXPR" text="EXPR">
         <ast name="METHOD_CALL" text="print">
           <ast name="ELIST" text="ARGLIST_VALUES">
             <ast name="CONCAT" text=".">

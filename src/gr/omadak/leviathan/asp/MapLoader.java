@@ -59,7 +59,8 @@ public class MapLoader {
                         Integer iValue = new Integer(value);
                         ref.put(name, iValue);
                     } catch (NumberFormatException nfe) {
-                        LOG.warn("Failed to parse a token from:" + tokensFile[i], nfe);
+                        LOG.warn("Failed to parse a token from:"
+                        + tokensFile[i], nfe);
                     }
                 }
             }

@@ -49,4 +49,14 @@ public class ASPPropertyWrapper extends BaseMemberWrapper implements Property {
     public void setIndicatedMethod(Method method, int index) {
         wrapped.getDefaultProperty().setIndicatedMethod(method, index);
     }
+
+
+    public boolean canRead() {
+        return wrapped.getDefaultProperty().canRead();
+    }
+
+
+    public boolean canWrite() {
+        return wrapped.getDefaultProperty().canWrite();
+    }
 }

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="ISO-8859-7"?>
 
 <asp>
   <vb>
@@ -17,13 +17,15 @@
           </ast>
         </ast>
       </ast>
-      <ast name="SUB_CALL" text="Sub Call">
-        <ast name="DOT" text=".">
-          <ast name="IDENTIFIER" text="con"/>
-          <ast name="IDENTIFIER" text="open"/>
-        </ast>
-        <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
-          <ast name="IDENTIFIER" text="conStr"/>
+      <ast name="EXPR" text="EXPR">
+        <ast name="SUB_CALL" text="Sub Call">
+          <ast name="DOT" text=".">
+            <ast name="IDENTIFIER" text="con"/>
+            <ast name="IDENTIFIER" text="open"/>
+          </ast>
+          <ast name="ARGLIST_VALUES" text="ARGLIST_VALUES">
+            <ast name="IDENTIFIER" text="conStr"/>
+          </ast>
         </ast>
       </ast>
       <ast name="EXPR" text="EXPR">

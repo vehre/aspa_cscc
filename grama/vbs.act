@@ -149,7 +149,7 @@ import org.apache.log4j.Logger;
 
 
     private void addDim(AST node) {
-        currentClass.addMember(#node.getFirstChild() == null 
+        currentClass.addMember(#node.getFirstChild() == null
         ? createIdProperty(#node.getText())
         : createArrayProperty(#node));
     }
@@ -178,9 +178,17 @@ import org.apache.log4j.Logger;
 
 @expr_statement : { ## = #e1; }
 @expr_statement_list : {
-## = #(#[SUB_CALL, "Sub Call"], e1_AST.getFirstChild(), #el);
+    if (#e1.getFirstChild().getType() == ASSIGN) {
+        AST subCall = e1_AST.getFirstChild().getFirstChild().getNextSibling();
+        subCall = #([SUB_CALL, "Sub Call"], subCall, #el);
+        #e1.getFirstChild().getFirstChild().setNextSibling(subCall);
+        ## = #e1;
+    } else {
+        ## = #([EXPR, "EXPR"],
+            #([SUB_CALL, "Sub Call"], e1_AST.getFirstChild(), #el)
+        );
+    }
 }
-
 @call_sub : {#im.setType(SUB_CALL);}
 @call_obj : {#im.setType(IDENTIFIER); #in.setType(SUB_CALL);}
 
@@ -217,7 +225,7 @@ import org.apache.log4j.Logger;
             }
             method = prop.getLet();
             if (method != null) {
-                if (prop.hasSet() 
+                if (prop.hasSet()
                 || currentClass.getMemberObject("set" + name) != null) {
                     method.setName("propLet" + name);
                 } else {
@@ -226,7 +234,7 @@ import org.apache.log4j.Logger;
             }
             method = prop.getSet();
             if (method != null) {
-                if (prop.hasLet() 
+                if (prop.hasLet()
                 || currentClass.getMemberObject("set" + name) != null) {
                     method.setName("propSet" + name);
                 } else {
@@ -271,7 +279,6 @@ import org.apache.log4j.Logger;
 	#IDENTIFIER.setType(PROPERTY_GET);
     List arguments = args == null ? Collections.EMPTY_LIST : args;
     args = null;
-	LOG.debug(#IDENTIFIER.getText() + "  " + arguments);
     VbUserDefinedMethod method = new VbUserDefinedMethod(#IDENTIFIER.getText(),
     arguments, false, false);
 	Member mem = currentClass.getMemberObject(#IDENTIFIER.getText());

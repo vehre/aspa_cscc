@@ -129,7 +129,7 @@ simple_statement
       LPAREN! (expressionList)? RPAREN!
   | set_statement
   | RANDOMIZE^ (expression)?
-  | expression_statement
+  | ex:expression_statement
   | EQ_HTML^ expression
   | const_statement
   | EXIT^ (DO | SUB | FUNCTION | FOR)

@@ -75,6 +75,16 @@ public class JsUserDefinedProperty extends BaseMember implements Property {
     }
 
 
+    public boolean canRead() {
+        return true;
+    }
+
+
+    public boolean canWrite() {
+        return true;
+    }
+
+
     public void setArgType(int type) {}
     public void setIndicatedMethod(Method method, int index) {}
 }

@@ -148,7 +148,7 @@
     </copy>
 
     <javac debug="${compile.debug}" deprecation="${compile.deprecation}"
-    destdir="${build_dir}/classes" optimize="${compile.optimize}" compiler="javac1.3">
+    destdir="${build_dir}/classes" optimize="${compile.optimize}">
         <src location="${src_dir}" />
         <src location="${build_dir}/src" />
         <classpath refid="classpath"/>
@@ -172,8 +172,7 @@ description="Compiles the tests">
         debug="${compile.debug}"
         deprecation="${compile.deprecation}"
         optimize="${compile.optimize}"
-        destdir="${build_dir}/classes"
-	compiler="javac1.3">
+        destdir="${build_dir}/classes">
         <classpath refid="classpath"/>
     </javac>
 </target>

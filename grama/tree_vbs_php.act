@@ -65,6 +65,7 @@ import org.apache.commons.collections.Transformer;
     private Property currentProperty;
     private Set identifiers;
     private Set dependencies;
+    private Set arrays;
 
     private static Logger LOG = Logger.getLogger(VbsTree.class);
     private static Map OBJECT_CLASSES;
@@ -479,11 +480,7 @@ import org.apache.commons.collections.Transformer;
         case 2:
             Method m1 = (Method) comply.get(0);
             Method m2 = (Method) comply.get(1);
-            if (m1.getArgTypes().contains(ALLARGS)) {
-                result = m2;
-            } else {
-                result = m1;
-            }
+            result = m1.getArgTypes().contains(ALLARGS) ? m2 : m1;
             break;
         default:
             LOG.warn("More then 2 alternatives for method:"
@@ -502,7 +499,7 @@ import org.apache.commons.collections.Transformer;
             ObjectAST oAST = (ObjectAST) ast;
             ASPObjectInstance instance = oAST.getInstance();
             if (instance != null) {
-                result = translateObject(instance);
+                result = translateObject(instance, ast.getType());
             } else {
                 LOG.error("ast:" + ast + " has no Class or Member");
             }
@@ -607,46 +604,51 @@ import org.apache.commons.collections.Transformer;
 
 
     private AST handleIdObject(AST id, ObjectAST obj) {
+        AST result;
         ASPObjectInstance aInst = obj.getInstance();
-        ASPObject aspObj = aInst.getMember();
-        AST instance = aInst.getInstance();
-        AST result = null;
         int retType = -1;
-        if (aspObj == null) {
-            aspObj = aInst.getASPClass();
-        }
-        if (aspObj instanceof ASPClass) {
-            ASPClass clazz = (ASPClass) aspObj;
-            if (!clazz.hasConstructor()) {
-                Property prop = clazz.getDefaultProperty();
-                if (prop != null) {
-                    result = translateMember(prop, instance);
-                    retType = prop.getReturnType();
+        if (obj.getType() == CommonConstants.OBJECT_RET) {
+            result = aInst.getInstance();
+            placeObject(id.getText(), new ASPObjectInstance(
+            astFactory.dup(id), aInst.getASPClass()));
+            retType = 0;
+        } else {
+            Member member = aInst.getMember();
+            if (member != null) {
+                if (member.getRetObjectClass() != null) {
+                    placeObject(id.getText(), new ASPObjectInstance(
+                    astFactory.dup(id), aInst.getASPClass()));
+                    retType = 0;
+                } else if (member instanceof Method) {
+                    Method method = (Method) member;
+                    if (method.isConstructor()) {
+                        placeObject(id.getText(), new ASPObjectInstance(
+                        astFactory.dup(id), method.getASPClass()));
+                        retType = 0;
+                    }
+                }
+                result = translateMember(member, aInst.getInstance());
+                retType = retType == 0 ? 0 : member.getReturnType();
+            } else {
+                ASPClass clazz = aInst.getASPClass();
+                if (!clazz.hasConstructor()) {
+                    Property prop = clazz.getDefaultProperty();
+                    if (prop != null) {
+                        result = translateMember(prop, aInst.getInstance());
+                        retType = prop.getReturnType();
+                    } else {
+                        LOG.error("handleIdObject found an ASPClass:"
+                        + clazz.getName() + " with no default property");
+                        result = null;
+                    }
                 } else {
                     placeObject(id.getText(), new ASPObjectInstance(
                     astFactory.dup(id), clazz));
                     retType = 0;
-                }
-            } else {
-                LOG.error("handleIdObject found an ASPClass:" + clazz.getName()
-                + " with no default property");
-            }
-        } else {
-            Member member = (Member) aspObj;
-            if (member instanceof Method) {
-                Method method = (Method) member;
-                if (method.isConstructor()
-                || method.getRetObjectClass() != null) {
-                    ASPClass clazz = method.isConstructor()
-                    ? method.getASPClass()
-                    : method.getRetObjectClass();
-                    placeObject(id.getText(), new ASPObjectInstance(
-                    astFactory.dup(id), clazz));
-                    retType = 0;
+                    result = translateMember(
+                    (Method) clazz.getConstructors().get(0), id);
                 }
             }
-            result = translateMember(member, instance);
-            retType = retType == 0 ? 0 : member.getReturnType();
         }
         if (retType > 0 || retType == -1) {
             removeObject(id.getText());
@@ -687,7 +689,7 @@ import org.apache.commons.collections.Transformer;
     }
 
 
-    private AST translateObject(ASPObjectInstance instance) {
+    private AST translateObject(ASPObjectInstance instance, int type) {
         AST result = null;
         Member mem = instance.getMember();
         if (mem != null) {
@@ -695,12 +697,16 @@ import org.apache.commons.collections.Transformer;
         } else {
             ASPClass clazz = instance.getASPClass();
             if (clazz != null) {
-                Property prop = clazz.getDefaultProperty();
-                if (prop != null) {
-                    result = translateMember(prop, instance.getInstance());
+                if (type == CommonConstants.OBJECT_RET) {
+                    result = instance.getInstance();
                 } else {
-                    LOG.error("class:" + clazz.getName()
-                    + " has no default property");
+                    Property prop = clazz.getDefaultProperty();
+                    if (prop != null) {
+                    result = translateMember(prop, instance.getInstance());
+                    } else {
+                        LOG.error("class:" + clazz.getName()
+                        + " has no default property");
+                    }
                 }
             } else {
                 LOG.error("no member and no class set");
@@ -724,7 +730,7 @@ import org.apache.commons.collections.Transformer;
         } else {
             instance = null;
         }
-        return instance == null ? ast : translateObject(instance);
+        return instance == null ? ast : translateObject(instance, ast.getType());
     }
 
 
@@ -769,20 +775,25 @@ import org.apache.commons.collections.Transformer;
                 }
             }
             if (method != null) {
-                if (method.getReturnType() == CommonConstants.OBJECT
-                && method.getEvaluatedClass() != null) {
-                    ASPClass clazz = method.getEvaluatedClass();
-                    result = createObjectAST(CommonConstants.OBJECT,
-                    clazz.getName(), new ASPObjectInstance(
-                    methodInstance.getInstance(), clazz));
-                } else {
-                    if (method.getReturnType() != CommonConstants.OBJECT) {
-                        result = translateMember(method,
+                if (method.getReturnType() == CommonConstants.OBJECT) {
+                    if (method.getEvaluatedClass() != null) {
+                        ASPClass clazz = method.getEvaluatedClass();
+                        result = createObjectAST(CommonConstants.OBJECT,
+                        clazz.getName(), new ASPObjectInstance(
+                        methodInstance.getInstance(), clazz));
+                    } else if (method.getRetObjectClass() != null) {
+                        ASPClass clazz = method.getRetObjectClass();
+                        AST trans = translateMember(method,
                         methodInstance.getInstance());
+                        result = createObjectAST(CommonConstants.OBJECT_RET,
+                        clazz.getName(), new ASPObjectInstance(trans, clazz));
                     } else {
                         result = createObjectAST(CommonConstants.OBJECT,
                         method.getName(), methodInstance);
                     }
+                } else {
+                    result = translateMember(method,
+                    methodInstance.getInstance());
                 }
             }
         } else {
@@ -1025,6 +1036,7 @@ import org.apache.commons.collections.Transformer;
         if (#eq_ex2.getType() != NOTHING) {
             #expression = #([this_type, "="], #eq_ex1, #eq_ex2);
         }
+        LOG.debug(#eq_ex1 + ":" + #eq_ex2);
     } else {
         if (!(#eq_ex1 instanceof ObjectAST)) {
             ObjectAST expr2 = (ObjectAST) #eq_ex2;
@@ -1381,7 +1393,7 @@ import org.apache.commons.collections.Transformer;
             }
             ## = makeFromList(expressions, null);
         } else {
-            #expr = #([type, "EXPR"], #e);
+            ## = #([type, "EXPR"], #e);
         }
     }
 }
@@ -1401,12 +1413,7 @@ import org.apache.commons.collections.Transformer;
 
 
 @tsub : !
-@sub_call_end : {
-    ## = handleFunctionSubEnd(#sub_name, lastStackSize);
-    if (## != null) {
-        ## = #([EXPR, "EXPR"], #statement);
-    }
-}
+@sub_call_end : { ## = handleFunctionSubEnd(#sub_name, lastStackSize); }
 
 @trand : !
 @randomize : {

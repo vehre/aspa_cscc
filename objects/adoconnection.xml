@@ -186,7 +186,9 @@
         <ast name="DOT">
             <this />
             <ast name="METHOD_CALL" text="Execute">
-                <arg index="1" />
+                <ast name="ARGLIST_VALUES">
+                    <arg index="1" />
+                </ast>
             </ast>
         </ast>
     </method>

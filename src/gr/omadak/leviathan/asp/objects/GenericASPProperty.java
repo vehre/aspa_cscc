@@ -66,6 +66,16 @@ public class GenericASPProperty extends BaseMember implements Property {
     }
 
 
+    public boolean canRead() {
+        return read_AST != null;
+    }
+
+
+    public boolean canWrite() {
+        return write_AST != null;
+    }
+
+
     public void setArgType(int type) {
         //argType = type;
     }

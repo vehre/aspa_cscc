@@ -70,8 +70,6 @@ statement
   |<tredim> #(REDIM (s_decl)+) //TODO: Handle this.Preserve previus values
   |<terase>#(ERASE ei:IDENTIFIER <erase>)
   | #(ERROR (RESUME | ZERO))
-  |<tsub> #(SUB_CALL sub_name:expression <func_call> list:argListValues
-      <sub_call_end>)
   |<texit> #(EXIT
       (
           DO <exit_do>
@@ -235,11 +233,13 @@ expression
   |<tuminus> #(UNARY_MINUS uminus:expression <unary_minus>)
   |<tnot> #(NOT not:expression <not>)
   |<tdot> #(DOT do1:expression do2:expression <dot_id_end>)
-  |<tmethod> #(METHOD_CALL func:expression <func_call> (list:argListValues)?
+  |<tmethod> #(METHOD_CALL func:expression <func_call> (argListValues)?
       <func_call_end>)
   |! #(WITH_DOT with_dotexpr:expression <with_dot_end>)
   | #(LPAREN expression)
   |<tnew> #(NEW IDENTIFIER <new>)
+  |<tsub> #(SUB_CALL sub_name:expression <func_call> argListValues
+      <sub_call_end>)
   | DINT
   | DFLOAT
   | IDENTIFIER <id>
@@ -260,7 +260,7 @@ indexes
 
 argListValues
   :
-  #(ARGLIST_VALUES <arg_val> (arg:expression <arg_val_end>)+)
+  !#(ARGLIST_VALUES <arg_val> (arg:expression <arg_val_end>)+)
   ;
 
 

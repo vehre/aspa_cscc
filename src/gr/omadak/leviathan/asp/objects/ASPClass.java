@@ -57,4 +57,10 @@ public interface ASPClass extends ASPObject {
     public Iterator getMethods();
     /** Provides access to all members of this class */
     public Iterator getMembers();
+    /** Sets the default method for the class */
+    public void setDefaultMethod(Method method);
+    /** Sets the default proprty for the class */
+    public void setDefaultProperty(Property property);
+    /** Sets the destructor translation for the class */
+    public void setDeleteAST(AST ast);
 }

@@ -162,17 +162,14 @@ public class XmlObjectParser {
         for (Iterator it = constructors.iterator(); it.hasNext();) {
             configureConstructor(clazz, (Element) it.next(), innerMap);
         }
-        if (clazz instanceof XmlASPClass)  {
-            XmlASPClass xmlClass = (XmlASPClass) clazz;
-            List delete = element.selectNodes("delete");
-            if (!delete.isEmpty()) {
-                if (delete.size() > 1) {
-                    LOG.warn("Only first delete node is used");
-                }
-                Element elDelete = (Element) delete.get(0);
-                AST deleteAST = translate(elDelete, null, false, 0);
-                xmlClass.setDeleteAST(deleteAST);
+        List delete = element.selectNodes("delete");
+        if (!delete.isEmpty()) {
+            if (delete.size() > 1) {
+                LOG.warn("Only first delete node is used");
             }
+            Element elDelete = (Element) delete.get(0);
+            AST deleteAST = translate(elDelete, null, false, 0);
+            clazz.setDeleteAST(deleteAST);
         }
         configureInclude(clazz, element);
     }
@@ -199,8 +196,6 @@ public class XmlObjectParser {
         use = use.trim().toUpperCase();
         Object val = registeredObjects.get(use);
         if (val == null) {
-            LOG.debug("Class:" + use
-            + " not found among the registered onjects");
             val = innerClasses.get(use);
             if (val == null) {
                 LOG.error("use attribute:" + use
@@ -230,50 +225,49 @@ public class XmlObjectParser {
     throws DocumentException {
         String methodName = methodEl.attributeValue("name");
         assertValue(methodName, "Name not specified for method");
-        String use = methodEl.attributeValue("use");
-        Method method = null;
         String type = methodEl.attributeValue("type");
         assertValue(type, "Method type not specified");
+        String use = methodEl.attributeValue("use");
+        Method method = null;
         int dType;
-        ASPClass retClass = null;
         try {
             dType = getType(type);
         } catch (DocumentException de) {
             dType = objectType;
-            retClass = getUseClass(type, innerClasses);
-            if (retClass == null) {
-                throw new DocumentException("type:" + type
-                + " is not recognized and is not a known class");
-            }
         }
-        if (use != null || methodEl.hasContent()) {
-            String id = methodEl.attributeValue("id");
-            if (use != null) {
-                ASPDependantClass aspClazz =
-                (ASPDependantClass) getUseClass(use, innerClasses);
-                if (aspClazz != null) {
-                    ASPMethodWrapper mWrapper = new ASPMethodWrapper(aspClazz);
-                    method = mWrapper;
-                    mWrapper.setName(methodName);
-                    mWrapper.setReturnType(dType);
-                }
-            } else {
-                List args = getArgs(methodEl);
-                Element map = methodEl.element("map");
-                if (map != null) {
-                    method = new ASPMethodMap(methodName, dType, args);
-                    configureMethodMap((ASPMethodMap) method, map,
-                    innerClasses);
-                } else {
-                    AST translation = translate(methodEl, null, false, 0);
-                    method = new GenericMethod(methodName, dType, args,
-                    translation);
-                    if (dType == objectType) {
-                        method.setEvaluatedClass(
-                        (ASPClass) registeredObjects.get(type.toUpperCase()));
+        if (use != null) {
+            ASPDependantClass aspClazz =
+            (ASPDependantClass) getUseClass(use, innerClasses);
+            if (aspClazz != null) {
+                ASPMethodWrapper mWrapper = new ASPMethodWrapper(aspClazz);
+                mWrapper.setName(methodName);
+                mWrapper.setReturnType(dType);
+                method = mWrapper;
+            }
+        } else {
+            ASPClass retClass = null;
+            if (!"OBJECT".equals(type)) {
+                if (dType == objectType) {
+                    retClass = getUseClass(type, innerClasses);
+                    if (retClass == null) {
+                        throw new DocumentException("in method:" + methodName
+                        + " type:" + type
+                        + " is not recognized and is not a known class");
                     }
                 }
             }
+            List args = getArgs(methodEl);
+            Element map = methodEl.element("map");
+            if (map != null) {
+                method = new ASPMethodMap(methodName, dType, args);
+                configureMethodMap((ASPMethodMap) method, map,
+                innerClasses);
+            } else {
+                AST translation = translate(methodEl, null, false, 0);
+                method = new GenericMethod(methodName, dType, args,
+                translation);
+            }
+            String id = methodEl.attributeValue("id");
             if (id != null) {
                 if (idMethods == null) {
                     idMethods = new HashMap();
@@ -301,12 +295,7 @@ public class XmlObjectParser {
             boolean isDefault = Boolean.valueOf(
             methodEl.attributeValue("default")).booleanValue();
             if (isDefault) {
-                if (clazz instanceof XmlASPClass) {
-                    ((XmlASPClass) clazz).setDefaultMethod(method);
-                } else {
-                    LOG.error(
-                    "Can not set default method for non XmlASPClass instances");
-                }
+                clazz.setDefaultMethod(method);
             } else {
                 clazz.addMember(method);
             }
@@ -437,6 +426,9 @@ public class XmlObjectParser {
             try {
                 dType = getType(type);
             } catch (DocumentException de) {
+                dType = -1;
+            }
+            if (dType == objectType || dType == -1) {
                 retClass = getUseClass(type, innerClasses);
                 if (retClass == null) {
                     throw new DocumentException("type:" + type
@@ -477,13 +469,7 @@ public class XmlObjectParser {
             }
             lastState = null;
             if (isDefault) {
-                if (clazz instanceof XmlASPClass) {
-                    ((XmlASPClass) clazz).setDefaultProperty(property);
-                } else {
-                    LOG.error(
-                    "Can not set default property for"
-                    + " non XmlASPClass instances");
-                }
+                clazz.setDefaultProperty(property);
             } else {
                 clazz.addMember(property);
             }

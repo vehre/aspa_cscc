@@ -24,24 +24,40 @@ import java.util.List;
 public class ASPMethodWrapper extends BaseMemberWrapper implements Method {
     public ASPMethodWrapper(ASPDependantClass wrapped) {
         setEvaluatedClass(wrapped);
+        if (wrapped.getDefaultMethod() == null
+        && wrapped.getDefaultProperty() == null) {
+            throw new NullPointerException(wrapped.getName() 
+            + " has no default method");
+        }
     }
 
 
 	public AST translate(AST instance) {
 		Method m = wrapped.getDefaultMethod();
-        setArgList(m);
-        AST result = m.translate(instance);
+        AST result;
+        if (m == null) {
+            Property prop = wrapped.getDefaultProperty();
+            setArgList(prop);
+            if ((args == null || args.isEmpty()) && prop.canRead()) {
+                result = prop.read(instance);
+            } else if (prop.canWrite()) {
+                result = prop.write(instance);
+            } else if (prop.canRead()) {
+                result = prop.read(instance);
+            } else {
+                result = null;
+            }
+        } else {
+            setArgList(m);
+            result = m.translate(instance);
+        }
         resetState();
         return result;
     }
 
 
     public List getArgTypes() {
-		Method m = wrapped.getDefaultMethod();
-        if (m != null) {
-            return m.getArgTypes();
-        }
-        return Collections.EMPTY_LIST;
+		return wrapped.getDefaultMethod().getArgTypes();
     }
 
 

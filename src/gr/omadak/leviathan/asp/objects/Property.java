@@ -24,11 +24,20 @@ public interface Property extends Member {
     public AST write(AST instance);
     public void setArgType(int type);
     /**
-    Sets the name of the method which it's arguments
-    are affected by an assignement to this property
-    @method is the method indicated by the propety
-    @param index is the argument's index in the method
+    * Sets the name of the method which it's arguments
+    * are affected by an assignement to this property
+    *@param method is the method indicated by the propety
+    *@param index is the argument's index in the method
     */
     public void setIndicatedMethod(Method method, int index);
+    
+    /**
+    * Returns true if the Property supports the read process
+    */
+    public boolean canRead();
+    /**
+    * Returns true if the Property supports the write process
+    */
+    public boolean canWrite();
 }
 

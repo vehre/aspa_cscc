@@ -41,6 +41,8 @@ import java.util.TreeMap;
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.log4j.Logger;
 
+//import gr.omadak.leviathan.asp.objects.*;
+
 public class AspParser {
     private static class DataHolder {
         Map variables;
@@ -48,6 +50,82 @@ public class AspParser {
         List classes;
         boolean isVb;
     }
+/*
+    private static void printClass(ASPClass clazz) {
+        LOG.debug(clazz.getName() + " standalone:" + Boolean.toString(
+        clazz.isStandalone()));
+        List constructors = clazz.getConstructors();
+        if (constructors != null && !constructors.isEmpty()) {
+            printMembers(constructors.iterator());
+        } else {
+            LOG.debug("No constructor");
+        }
+        Iterator methods = clazz.getMethods();
+        if (methods.hasNext()) {
+            printMembers(methods);
+        } else {
+            LOG.debug("No methods");
+        }
+        Iterator properties = clazz.getProperties();
+        if (properties.hasNext()) {
+            printMembers(properties);
+        } else {
+            LOG.debug("No properties");
+        }
+        Property defProp = clazz.getDefaultProperty();
+        if (defProp != null) {
+            printProperty(defProp);
+        } else {
+            LOG.debug("No default property");
+        }
+        Method defMethod = clazz.getDefaultMethod();
+        if (defMethod != null) {
+            printMethod(defMethod);
+        } else {
+            LOG.debug("No default method");
+        }
+        LOG.debug("");
+    }
+
+
+    private static void printMembers(Iterator members) {
+        while (members.hasNext()) {
+            Member mem = (Member) members.next();
+            if (mem instanceof Method) {
+                printMethod((Method) mem);
+            } else {
+                printProperty((Property) mem);
+            }
+        }
+    }
+
+
+    private static void printMember(Member mem) {
+        LOG.debug((mem instanceof Method ? "Method" : "Property") + " name:"
+        + mem.getName());
+        LOG.debug("return type:" + mem.getReturnType());
+        LOG.debug("evaluated class:" + (mem.getEvaluatedClass() == null ? "null"
+        : mem.getEvaluatedClass().getName()));
+        LOG.debug("return class:" + (mem.getRetObjectClass() == null ? "null"
+        : mem.getRetObjectClass().getName()));
+    }
+
+
+    private static void printProperty(Property prop) {
+        printMember(prop);
+        LOG.debug("canRead:" + Boolean.toString(prop.canRead()));
+        LOG.debug("canWrite:" + Boolean.toString(prop.canWrite()));
+    }
+
+
+    private static void printMethod(Method method) {
+        printMember(method);
+        try {
+            LOG.debug("arg types:" + method.getArgTypes());
+        } catch (NullPointerException npe) {}
+        LOG.debug("constructor:" + Boolean.toString(method.isConstructor()));
+    }
+*/
 
     private File baseDir;
     private File baseOutDir;
@@ -96,7 +174,12 @@ public class AspParser {
             JsParser.setInstrictClasses(instr_classes);
             JsTree.setClassesAndFunctions(instr_classes, objectClasses,
             functions);
-
+/*
+            for (Iterator it = objectClasses.values().iterator();
+            it.hasNext();) {
+                printClass((ASPClass) it.next());
+            }
+*/
             objectClasses = new HashMap();
             functions = new TreeMap();
             Map vbTypes = loader.loadMap(
@@ -108,6 +191,13 @@ public class AspParser {
             loader.loadObjects(
             AspParser.class.getResource("tokens/vbobjects.txt"),
             AspParser.class, objectClasses, functions, xmlParser);
+/*
+            LOG.debug("\nVB classes\n");
+            for (Iterator it = objectClasses.values().iterator();
+            it.hasNext();) {
+                printClass((ASPClass) it.next());
+            }
+*/
             VbsTree.setClassesAndFunctions(objectClasses, functions);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -261,7 +351,8 @@ public class AspParser {
             if (generateCode) {
                 try {
                     Writer writer = getWriter(file);
-                    produceCode(result, writer, includes);
+                    produceCode(result, writer, includes,
+                    file.getAbsolutePath());
                     writer.close();
                 } catch (IOException ioex) {
                     LOG.error("Failed to generate code", ioex);
@@ -276,7 +367,8 @@ public class AspParser {
     }
 
 
-    private void produceCode(List ast, Writer writer, Set includes) {
+    private void produceCode(List ast, Writer writer, Set includes,
+    String path) {
         VbsGenerator vbgenerator = null;
         JsGenerator jsgenerator = null;
         boolean isFirst = true;
@@ -308,7 +400,7 @@ public class AspParser {
                     generator.generate(phpTree);
                 } catch (ANTLRException an) {
                     LOG.error("Failed to produce code from "
-                    + (isVbTree ? "vb" : "js"), an);
+                    + (isVbTree ? "vb" : "js") + " : " + path, an);
                     try {
                         generator.getBuffer().end();
                         writer.flush();
@@ -499,7 +591,7 @@ public class AspParser {
                 if (oDir == null) {
                     System.err.println("Output directory is not defined");
                 } else {
-                    System.err.println("Output directory:" + oDir 
+                    System.err.println("Output directory:" + oDir
                     + " can not be used");
                 }
             }
@@ -507,7 +599,7 @@ public class AspParser {
                 if (bDir == null) {
                     System.err.println("Base directory is not defined");
                 } else {
-                    System.err.println("Base directory:" + bDir 
+                    System.err.println("Base directory:" + bDir
                     + " does not exist or is not a directory");
                 }
             }
