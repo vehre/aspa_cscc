@@ -1,0 +1,86 @@
+What is ASPA
+============
+ASPA attempts to automate the process of translating asp pages into php.
+The supported languages are JScript and VbScript.
+
+Design of ASPA
+==============
+ASPA is based on compiler technology.
+The source files are transformed into a stream of tokens and lexical analysis
+is performed during the process.
+A Parser (each language has it's own parser) uses the tokens in order
+to generate the Abstract Syntax Tree (AST) and performs syntax analysis.
+The AST is fed to a TreeParser (see http://antlr.org) and the information
+stored in the AST along with information stored in xml files are used
+to translate the original AST into an other AST which encodes php code.
+The xml files are used as templates for the translation of ActiveX components
+methods calls into method calls of php of equivalent functionallity.
+The user can modify the xml files or add new ones in order to support
+additional ActiveX components which are not currently supported.
+The final AST is transformed into php source code.
+
+ASPA is under development. Some features are not implemented and more
+descriptions of ActiveX components are required.
+Currently most of built-in functions of VbScript and the built-in objects
+of JScript are supported. Also, the Request, Response, Sever and Session 
+objects are partially suported since some of the included methods in these
+objects are missing.
+We anticipate that the missing features will be implemented soon with the help
+provided by the Free Software community.
+
+Dependencies
+============
+In order to use ASPA you should have a Java Virtual Machine.
+If you want to build the project, you'll also need ant (http://ant.apache.org).
+
+Libraries needed in runtime:
+antlr (http://www.antlr.org)
+log4j for logging(http://logging.apache.org/log4j)
+dom4j for xml parsing(http://dom4j.sourceforge.net)
+commons-collections (http://jakarta.apache.org/commons/collections)
+Libraries needed at compile time:
+Those referenced above together with annotation2 (in the file sharing section of antlr.org)
+The libraries are included in the lib directory.
+
+Building from sources
+=====================
+From the aspParser directory type "ant compile".
+The default compiler is jikes. If jikes is not available delete
+the line:
+build.compiler=jikes
+from the build.properties file.
+
+Run the program
+===============
+There are 2 shell scripts available to run ASPA.
+
+The first one is called run.sh and is intended for the development
+process. To invoke the program type ./run.sh file baseDir options.
+The file is the path of the asp page to be translated.
+The baseDir is used to resolve the full path of pages included from
+the asp page which is translated with the virtual method of include command.
+For example if baseDir is /home/anakreon/asps and the page  contains the statement:
+<!--#include virtual="/file2.asp" --> then the full path of the file2.asp will
+be /home/anakreon/asps/file2.asp. A similar process is used in Windows.
+The options are:
+-t : prints the tokens and exits (usefull when the Lexer failed to parse the file)
+-v : displays the AST of the file and the AST of the translated version in a JFrame.
+-x : produces a test case for the file in xml format.
+-s : generates source code in php.
+If none of the options is provided then the source is parsed and errors are reported
+but no output is produced.
+
+The other script, called parse.sh, is intended for the user of ASPA.
+You should modify the BASE_DIR variable in the script which
+should contain the full path of the aspParser directory.
+To invoke the program type ./parse.sh args where arguments are:
+-o : The output directory where the php pages will be stored
+-b : The base directory of the server. Used to resolve includes with the
+virtual command.
+-s : The directory which contains the asp pages to be translated.
+If the -s argument is not provided, then the directory provided with
+the -b argument is used instead.
+-ng : No sources will be generated. The translation is performed and errors
+are reported.  
+-js : if an asp page has not defined the language asume is js (default is vb)
+The program will translate the asp pages in that directory.
