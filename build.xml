@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="ASP_PARSER" default="compile" basedir=".">
+<project name="aspa_cscc" default="compile" basedir=".">
 
 <!-- PROJECT OPTIONS -->
 <property file="build.properties" />
@@ -129,10 +129,17 @@
         diagnostic="${antlr.diagnostic}"
     />
 </target>
-
+<!-- - - - - - - - - - - - - - - - - - 
+          target: postprocessgrammars                      
+         - - - - - - - - - - - - - - - - - -->
+    <target name="postprocessgrammars">
+    	<replaceregexp file="${build_dir}/src/gr/omadak/leviathan/asp/VbsTree.java" 
+    		match="extends[ \t]*antlr.TreeParser" 
+    		replace="extends VBSAbstractTreeParser"/>          
+    </target>
 
 <!--  COMPILE -->
-<target name="compile" depends="antlr,scompile" />
+<target name="compile" depends="antlr,postprocessgrammars,scompile" />
 
 <target name="scompile" depends="prepare" >
     <copy todir="${build_dir}/classes/gr/omadak/leviathan/asp" file="etc/log4j.properties" />

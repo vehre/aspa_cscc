@@ -273,7 +273,7 @@ public class AspParser {
             sTable == null);
             VbsParser vbParser = null;
             JsParser  jsParser = null;
-            VbsTree vbtree = null;
+            VBSAbstractTreeParser vbtree = null;
             JsTree jsTree = null;
             selector.setDefaultVb(isVb);
             result = new ArrayList();
@@ -294,6 +294,7 @@ public class AspParser {
                     AST node = vbParser.getAST();
                    // new antlr.DumpASTVisitor().visit(node);
                     if (node != null) {
+                    	/* TODO: Decide, if conversion to php or to javascript should be done. */
                         if (vbtree == null) {
                             vbtree = new VbsTree();
                             vbtree.setAspParser(this);
@@ -422,16 +423,16 @@ public class AspParser {
     }
 
 
-    private void fillHolder(SymbolTableExposer exp, DataHolder holder) {
+    private void fillHolder(SymbolTableExposer vbtree, DataHolder holder) {
         if (holder.variables == null) {
-            holder.variables = new HashMap(exp.getVariables());
-            holder.functions = new ArrayList(exp.getFunctions());
-            holder.classes = new ArrayList(exp.getClasses());
-            holder.isVb = exp instanceof VbsTree;
+            holder.variables = new HashMap(vbtree.getVariables());
+            holder.functions = new ArrayList(vbtree.getFunctions());
+            holder.classes = new ArrayList(vbtree.getClasses());
+            holder.isVb = vbtree instanceof VbsTree;
         } else {
-            holder.variables.putAll(exp.getVariables());
-            holder.functions.addAll(exp.getFunctions());
-            holder.classes.addAll(exp.getClasses());
+            holder.variables.putAll(vbtree.getVariables());
+            holder.functions.addAll(vbtree.getFunctions());
+            holder.classes.addAll(vbtree.getClasses());
         }
 		/*
         LOG.debug("variables:" + holder.variables);
