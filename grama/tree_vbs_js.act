@@ -50,7 +50,7 @@ import org.apache.commons.collections.Transformer;
     OBJECT_ATTRIBUTE; BXOR; BOR; BAND; BNOT; CONSTRUCTOR;
 @init :
 {
-     protected Logger log; // = Logger.getLogger(VbsPhpTreeParser.class);
+     protected Logger log;
 
      protected AST createNode(int type, AST left, AST right) {
         try {
@@ -318,7 +318,6 @@ import org.apache.commons.collections.Transformer;
 		if (dependencies == null) {
 			dependencies = new HashSet();
 		}
-		dependencies.add("translator/runtime.php");
         ## = #([EXPR, "EXPR"],
            #([ASSIGN, "="], [IDENTIFIER, arrayName],
             #([METHOD_CALL, "vb_redim"],
@@ -549,7 +548,7 @@ typeStack.push(new Integer(DBOOL));
 @pre_idiv : { #int_div1 = getDefault(#int_div1); }
 @post_idiv :   {
     #expression =
-    #([METHOD_CALL, "ceil"],
+    #([METHOD_CALL, "Math.ceil"],
         #([ARGLIST_VALUES,"ARGLIST_VALUES"],
             #([DIVIDE, "/"], #int_div1, getDefault(#int_div2))
         )
@@ -580,7 +579,7 @@ typeStack.push(new Integer(DINT));
 @pre_exp : { #exp1 = getDefault(#exp1); boolean leftDint = lastType == DINT;}
 @post_exp :          {
     #expression =
-    #([METHOD_CALL, "pow"],
+    #([METHOD_CALL, "Math.pow"],
         #([ARGLIST_VALUES,"ARGLIST_VALUES"],
             #exp1,  getDefault(#exp2)
         )
@@ -945,7 +944,7 @@ typeStack.push(new Integer(DINT));
 }
 @dim_init : { List dimArrays = null; }
 @dim_decl : {
-    if (#decl.getType() != IDENTIFIER) {
+    /*if (#decl.getType() != IDENTIFIER) {
         if (dimArrays == null) {
             dimArrays = new ArrayList();
         }
@@ -955,7 +954,8 @@ typeStack.push(new Integer(DINT));
         currentFunction.placeVar(
         #decl.getType() == IDENTIFIER ? #decl.getText()
         : #decl.getFirstChild().getText(), CommonConstants.UKNOWN_TYPE, true);
-    }
+    }*/
+    ## = #([VAR, "var"], #([EXPR, "EXPR"], #decl));
 }
 @dim_end : {
     if (dimArrays != null) {

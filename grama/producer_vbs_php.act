@@ -23,19 +23,11 @@ import java.util.Set;
 import java.util.HashSet;
 
 @init : {
-    private SourceBuffer out;
-    private Set ids = new HashSet();
-    private boolean inClass;
-    private static Logger LOG = Logger.getLogger(VbsGenerator.class);
-
-    public SourceBuffer getBuffer() {
-        return out;
-    }
-
-
-    public void setWriter(Writer writer) {
-        out = new SourceBuffer(new PrintWriter(writer));
-    }
+   	protected static Logger LOG = Logger.getLogger(VbsPhpGenerator.class);
+   
+	public void setWriter(Writer writer) {
+		out = new SourceBuffer(new PrintWriter(writer), true);
+   	}
 }
 
 

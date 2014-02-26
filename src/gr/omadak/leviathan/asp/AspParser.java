@@ -199,7 +199,7 @@ public class AspParser {
                 printClass((ASPClass) it.next());
             }
 */
-            VbsTree.setClassesAndFunctions(objectClasses, functions);
+            VbsAbstractTreeParser.setClassesAndFunctions(objectClasses, functions);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -226,7 +226,8 @@ public class AspParser {
             boolean hasMore = st.hasMoreTokens();
             if (!hasMore) {
                 if (pElem.endsWith(".asp")) {
-                    pElem = pElem.substring(0, pElem.lastIndexOf('.')) + ".php";
+                	// TODO: Implement switch on using ".html" and ".php"
+                    pElem = pElem.substring(0, pElem.lastIndexOf('.')) + (true ? ".html" : ".php");
                 }
             }
             out = new File(out == null ? baseOutDir : out, pElem);
@@ -273,7 +274,7 @@ public class AspParser {
             sTable == null);
             VbsParser vbParser = null;
             JsParser  jsParser = null;
-            VBSAbstractTreeParser vbtree = null;
+            VbsAbstractTreeParser vbtree = null;
             JsTree jsTree = null;
             selector.setDefaultVb(isVb);
             result = new ArrayList();
@@ -295,16 +296,28 @@ public class AspParser {
                    // new antlr.DumpASTVisitor().visit(node);
                     if (node != null) {
                     	/* TODO: Decide, if conversion to php or to javascript should be done. */
-                        if (vbtree == null) {
-                            vbtree = new VbsTree();
-                            vbtree.setAspParser(this);
-                            vbtree.setFunctions(vbParser.getFunctions());
-                            vbtree.setClasses(vbParser.getClasses());
-                            vbtree.setGlobalIds(vbParser.getGlobalIds());
-                            if (sTable != null) {
-                                mergeSymbols(holder, sTable);
-                            }
-                        }
+                    	if (vbtree == null || !(true /* node.isClientSideVbs() */ && vbtree instanceof VbsJsTree)) { 
+                        	/* NOTE: Currently always the client side Vbs to js converter is used. */ 
+	                        if (true /* node.isClientSideVbs() */) {
+	                            vbtree = new VbsJsTree();
+	                            vbtree.setAspParser(this);
+	                            vbtree.setFunctions(vbParser.getFunctions());
+	                            vbtree.setClasses(vbParser.getClasses());
+	                            vbtree.setGlobalIds(vbParser.getGlobalIds());
+	                            if (sTable != null) {
+	                                mergeSymbols(holder, sTable);
+	                            }
+	                        } else {
+	                            vbtree = new VbsPhpTree();
+	                            vbtree.setAspParser(this);
+	                            vbtree.setFunctions(vbParser.getFunctions());
+	                            vbtree.setClasses(vbParser.getClasses());
+	                            vbtree.setGlobalIds(vbParser.getGlobalIds());
+	                            if (sTable != null) {
+	                                mergeSymbols(holder, sTable);
+	                            }
+	                        }
+                    	}
                         vbtree.start_rule(node);
                         if (generateCode) {
                             includes.addAll(vbtree.getDependencies());
@@ -372,7 +385,7 @@ public class AspParser {
 
     private void produceCode(List ast, Writer writer, Set includes,
     String path) {
-        VbsGenerator vbgenerator = null;
+        CodeGenerator vbgenerator = null;
         JsGenerator jsgenerator = null;
         boolean isFirst = true;
         for (Iterator it = ast.iterator(); it.hasNext();) {
@@ -383,7 +396,8 @@ public class AspParser {
                 CodeGenerator generator;
                 if (isVbTree) {
                     if (vbgenerator == null) {
-                        vbgenerator = new VbsGenerator();
+                    	// TODO: Implement switching between php and js script generator depending on server / client side scripting
+                        vbgenerator = new VbsJsGenerator();
                         vbgenerator.setWriter(writer);
                     }
                     generator = vbgenerator;
@@ -428,7 +442,7 @@ public class AspParser {
             holder.variables = new HashMap(vbtree.getVariables());
             holder.functions = new ArrayList(vbtree.getFunctions());
             holder.classes = new ArrayList(vbtree.getClasses());
-            holder.isVb = vbtree instanceof VbsTree;
+            holder.isVb = vbtree instanceof VbsJsTree;
         } else {
             holder.variables.putAll(vbtree.getVariables());
             holder.functions.addAll(vbtree.getFunctions());

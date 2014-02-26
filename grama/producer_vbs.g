@@ -89,8 +89,8 @@ statement
   | #(ERROR (RESUME | DINT))
   | #(RETURN <return> (expr)?) <exp_end>
   | expr <exp_end>
+  | #(VAR <var_decl> expr) <exp_end>
   ;
-
 
 select_case
   :

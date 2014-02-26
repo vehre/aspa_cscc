@@ -23,18 +23,10 @@ import java.util.Set;
 import java.util.HashSet;
 
 @init : {
-    private SourceBuffer out;
-    private Set ids = new HashSet();
-    private boolean inClass;
-    private static Logger LOG = Logger.getLogger(VbsGenerator.class);
-
-    public SourceBuffer getBuffer() {
-        return out;
-    }
-
-
-    public void setWriter(Writer writer) {
-        out = new SourceBuffer(new PrintWriter(writer));
+	private static Logger LOG = Logger.getLogger(VbsJsGenerator.class);
+	
+	public void setWriter(Writer writer) {
+        out = new SourceBuffer(new PrintWriter(writer), false);
     }
 }
 
@@ -43,9 +35,9 @@ import java.util.HashSet;
 @float : { out.print(#DFLOAT.getText()); }
 @id : {
     if (inClass && ids.contains(#IDENTIFIER.getText())) {
-        out.print("$this->");
+        out.print("this->");
     }
-    out.print("$" + #IDENTIFIER.getText()); 
+    out.print(#IDENTIFIER.getText()); 
 }
 @string : { out.print(out.makeString(#DSTRING.getText())); }
 @true : { out.print("true"); }
@@ -64,7 +56,7 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
     }
 }
 
-
+@var_decl : { out.print("var "); } 
 @quest : { out.print(" ? "); }
 @alt : { out.print(" : "); }
 
@@ -122,11 +114,11 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
 
 
 @include : {
-    out.println("require '" + #INCLUDE.getText() + "';");
+    out.println("import '" + #INCLUDE.getText() + "';");
 }
 
 @eq_html : {
-    out.print("echo ");
+    out.print("document.write ");
 }
 
 @pre_index : { out.print('['); }
@@ -217,7 +209,7 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
     } else {
         firstArg = false;
     }
-    out.print("&$" + #BYREF.getText());
+    out.print("&" + #BYREF.getText());
 }
 @arg_id : {
     if (!firstArg) {
@@ -225,7 +217,7 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
     } else {
         firstArg = false;
     }
-    out.print("$" + #IDENTIFIER.getText());
+    out.print(#IDENTIFIER.getText());
 }
 @arglist_end : {
     out.println(") {");

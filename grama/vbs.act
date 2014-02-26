@@ -53,6 +53,7 @@ import org.apache.log4j.Logger;
     FOR_INIT; INCLUDE; EXIT_PROPERTY; ARRAY; GOTO;
     DIMENSION_LENGTH; REDIM_PRESERVE;
 
+	VAR;
 
 @init : {
     private boolean inWith;

@@ -50,7 +50,7 @@ import antlr.collections.AST;
 import antlr.collections.impl.ASTArray;
 import antlr.RecognitionException;
 
-public abstract class VBSAbstractTreeParser extends antlr.TreeParser implements TreeVbsTokenTypes, SymbolTableExposer {
+public abstract class VbsAbstractTreeParser extends antlr.TreeParser implements TreeVbsTokenTypes, SymbolTableExposer {
 	protected int lastForWhile = 1;
     protected Stack argStack = new Stack();
     protected Stack withObjects = new Stack();
@@ -68,10 +68,9 @@ public abstract class VBSAbstractTreeParser extends antlr.TreeParser implements 
     protected Set dependencies;
 	protected Stack typeStack = new Stack();
 	protected int lastType;
-    protected Logger log = Logger.getLogger(VbsTree.class);
 	//indicates if inside a redim preserve rule
 	protected boolean redimp;
-
+	protected Logger log;
 
     protected static Map OBJECT_CLASSES;
     protected static Map FUNCTIONS;
@@ -122,6 +121,7 @@ public abstract class VBSAbstractTreeParser extends antlr.TreeParser implements 
 
     public void setAspParser(AspParser parser) {
         this.parser = parser;
+    	log = Logger.getLogger(this.getClass()); 
 		log = Logger.getLogger("gr.omadak.leviathan.asp.VbsTree."
 							   + parser.getCurrentFileName().replace('.', '_'));
     }

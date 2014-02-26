@@ -124,7 +124,7 @@ public class Main2 {
                         rootName = "vb";
                         if (vbTokens == null) {
                             vbTokens = new HashMap();
-                            putTokens(new VbsTree(), vbTokens);
+                            putTokens(new VbsPhpTree(), vbTokens);
                         }
                         tokens = vbTokens;
                     } else {

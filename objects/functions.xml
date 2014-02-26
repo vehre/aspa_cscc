@@ -799,11 +799,16 @@
 
     <method name="Sqr" type="DFLOAT">
         <arg type="DFLOAT" />
-        <ast name="METHOD_CALL" text="sqrt">
+        <ast name="METHOD_CALL" text="Math.sqrt">
             <ast name="ARGLIST_VALUES">
                 <arg index="1" />
             </ast>
         </ast>
+<!--        <ast lang="php" name="METHOD_CALL" text="sqrt">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast> -->
     </method>
 
     <method name="StrComp" type="DINT">

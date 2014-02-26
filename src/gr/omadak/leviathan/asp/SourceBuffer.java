@@ -28,7 +28,8 @@ import java.io.StringWriter;
  */
 public class SourceBuffer {
     private PrintWriter out;
-    private boolean inPhp;
+    private boolean inCode;
+    private boolean emitPhp;
     private boolean lastWasLF;
     private int nestedLevel;
     private PrintWriter oldWriter;
@@ -37,21 +38,21 @@ public class SourceBuffer {
     private static String IDENTATION_UNIT = "  ";
 
 
-    private void printStartPhp() {
-        out.println("<?php");
-        inPhp = true;
+    private void printStartCode() {
+        out.println(emitPhp ? "<?php" : "<script type=\"text/javascript\">");
+        inCode = true;
     }
 
 
-    private void printEndPhp() {
-        out.println("?>");
-        inPhp = false;
+    private void printEndCode() {
+        out.println(emitPhp ? "?>" : "</script>");
+        inCode = false;
     }
 
 
     private void printIdent() {
-        if (!inPhp) {
-            printStartPhp();
+        if (!inCode) {
+            printStartCode();
         }
         if (lastWasLF) {
             StringBuffer sb = new StringBuffer();
@@ -70,6 +71,12 @@ public class SourceBuffer {
 	 */
 	public SourceBuffer(PrintWriter ps) {
         this.out = ps;
+        this.emitPhp = true;
+    }
+
+	public SourceBuffer(PrintWriter ps, boolean php) {
+        this.out = ps;
+        this.emitPhp = php;
     }
 
 
@@ -140,8 +147,8 @@ public class SourceBuffer {
 
 
     public void printHTML(String s) {
-        if (inPhp) {
-            printEndPhp();
+        if (inCode) {
+            printEndCode();
         }
         out.print(s);
     }
@@ -163,8 +170,8 @@ public class SourceBuffer {
 
 
     public void end() {
-        if (inPhp) {
-            printEndPhp();
+        if (inCode) {
+            printEndCode();
         }
     }
 }
