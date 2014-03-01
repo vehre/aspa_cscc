@@ -137,7 +137,7 @@ simple_statement
   | ERASE^ IDENTIFIER
   | CALL! ({inWith}? (| IDENTIFIER) | IDENTIFIER)
       (DOT^ IDENTIFIER)*
-      LPAREN! (!exList:expressionList)? RPAREN! <call_end>
+      (LPAREN! (!exList:expressionList)? RPAREN!)? <call_end>
   | set_statement
   | RANDOMIZE^ (expression)?
   | expression_statement
