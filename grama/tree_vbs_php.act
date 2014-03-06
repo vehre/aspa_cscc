@@ -50,8 +50,6 @@ import org.apache.commons.collections.Transformer;
     OBJECT_ATTRIBUTE; BXOR; BOR; BAND; BNOT; CONSTRUCTOR;
 @init :
 {
-     protected Logger log; // = Logger.getLogger(VbsPhpTreeParser.class);
-
      protected AST createNode(int type, AST left, AST right) {
         try {
 			String label = _tokenNames[type];

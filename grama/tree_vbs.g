@@ -64,7 +64,7 @@ statement
   HTML
   | include:INCLUDE <include>
   | expr
-  |<tconst> #(CONST ci:IDENTIFIER cex:expression <const_end>)
+  |<tconst> #(CONST <const_init> (ci:IDENTIFIER cex:expression <const_decl>)+ <const_end>)
   |<trand> #(RANDOMIZE (ex:expr)? <randomize>)
   |<tdim> #(DIM <dim_init> (decl:s_decl <dim_decl>)+ <dim_end>)
   |<tredim> #(REDIM (re_decl:redim_decl <re_decl>)+) <redim_end>
@@ -184,10 +184,14 @@ statements
   !(stm:statement <statement>)*
   ;
 
-
 s_decl
   :
-  IDENTIFIER |<tarray> #(ARRAY (ex:expr <inc_dim>)*) <array_decl>
+  #(ASSIGN sub_s_decl expr) | sub_s_decl
+  ;
+  
+sub_s_decl
+  :
+  IDENTIFIER |<tarray> #(ARRAY (ex:expr <inc_dim>)*) <array_decl> 
   ;
 
 
@@ -252,7 +256,7 @@ expression
   | FALSE
   | EMPTY
   | NULL
-  | NOTHING
+  |! NOTHING <nothing>
   ;
 
 indexes

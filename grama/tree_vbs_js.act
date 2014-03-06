@@ -50,9 +50,7 @@ import org.apache.commons.collections.Transformer;
     OBJECT_ATTRIBUTE; BXOR; BOR; BAND; BNOT; CONSTRUCTOR;
 @init :
 {
-     protected Logger log;
-
-     protected AST createNode(int type, AST left, AST right) {
+    protected AST createNode(int type, AST left, AST right) {
         try {
 			String label = _tokenNames[type];
             return #([type, label], left, right);
@@ -273,6 +271,34 @@ import org.apache.commons.collections.Transformer;
         setExit();
         return result;
     }
+    
+    private AST makeVarDeclsFromList(List elems) {
+		AST result = null;
+		if (! elems.isEmpty()) {
+			for (Iterator it = elems.iterator(); it.hasNext();) {
+				AST element = (AST) it.next();
+				element.setNextSibling(null);
+			}
+			elems.add(0, #([VAR, "var"]));
+			AST[] array = (AST[]) elems.toArray(new AST[0]);
+			result = astFactory.make(array);
+		}
+		return result;
+	}
+	
+	private AST makeConstDeclsFromList(List elems) {
+		AST result = null;
+		if (! elems.isEmpty()) {
+			for (Iterator it = elems.iterator(); it.hasNext();) {
+				AST element = (AST) it.next();
+				element.setNextSibling(null);
+			}
+			elems.add(0, #([CONST, "const"]));
+			AST[] array = (AST[]) elems.toArray(new AST[0]);
+			result = astFactory.make(array);
+		}
+		return result;
+	}
 }
 
 
@@ -496,8 +522,8 @@ import org.apache.commons.collections.Transformer;
     if (res != null) {
         #expression = res;
     } else {
-        log.warn("Unable to resolve Member:" + #do2.getText() + " from object:"
-        + #do1.getText());
+        log.warn("Unable to resolve Member:" + #do2.getText() + " from object:" + #do1.getText());
+        
         #expression = #(DOT, #do1, #do2);
     }
 }
@@ -869,21 +895,6 @@ typeStack.push(new Integer(DINT));
     }
 }
 
-
-@const_end : {
-    ## =
-    #([EXPR, "EXPR"],
-        #([METHOD_CALL, "define"],
-            #([ARGLIST_VALUES, "ARGLIST_VALUES"],
-                [DSTRING, #ci.getText()],
-                hardTranslate(cex),
-                [TRUE, "true"]
-            )
-        )
-    );
-}
-
-
 @terase : !
 @erase : {
     ## =
@@ -942,27 +953,29 @@ typeStack.push(new Integer(DINT));
 	}
     ## = #([ASSIGN, "="], [IDENTIFIER, varName], result);
 }
-@dim_init : { List dimArrays = null; }
+@dim_init : { List varDecls = new ArrayList(); }
 @dim_decl : {
-    /*if (#decl.getType() != IDENTIFIER) {
-        if (dimArrays == null) {
-            dimArrays = new ArrayList();
-        }
-        dimArrays.add(#([EXPR, "EXPR"], #decl));
-    }
+    varDecls.add(#decl.getType() != EXPR ? #([EXPR, "EXPR"], #decl) : #decl);
     if (currentFunction != null) {
         currentFunction.placeVar(
-        #decl.getType() == IDENTIFIER ? #decl.getText()
-        : #decl.getFirstChild().getText(), CommonConstants.UKNOWN_TYPE, true);
-    }*/
-    ## = #([VAR, "var"], #([EXPR, "EXPR"], #decl));
-}
-@dim_end : {
-    if (dimArrays != null) {
-        ##  = makeFromList(dimArrays, #[CommonConstants.TRANSLATE_ROOT]);
+        		#decl.getType() == IDENTIFIER ? #decl.getText()
+        			: (#decl.getFirstChild().getType() != IDENTIFIER ?
+        				#decl.getFirstChild().getFirstChild().getText() 
+        				: #decl.getFirstChild().getText()), CommonConstants.UKNOWN_TYPE, true);
     }
 }
+@dim_end : { ##  = makeVarDeclsFromList(varDecls); }
 
+/* Process constant declarations. */
+@const_init : { List constDecls = new ArrayList(); }
+@const_decl : {
+	constDecls.add(#([EXPR, "EXPR"], #([ASSIGN, "="], #ci, #cex))); 
+	if (currentFunction != null) {
+		/* For simplicity make constants local variables, too, */
+    	currentFunction.placeVar(#ci.getText(), CommonConstants.UKNOWN_TYPE, true);
+    }
+}
+@const_end : { ## = makeConstDeclsFromList(constDecls); }
 
 @tdw : !
 @do_while : { ## = #([WHILE, "while"], #do_while_expr, #dws); }
@@ -1352,3 +1365,6 @@ typeStack.push(new Integer(DINT));
 }
 
 @index : { typeStack.clear(); }
+
+@nothing : { ## = #([NULL, "null"]); }
+

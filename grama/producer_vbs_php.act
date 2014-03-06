@@ -246,7 +246,7 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
     + #NON_APPLICABLE_HEADER.getText() + "\"");
 }
 @inv_obj : {
-    out.print("/*Uknown object*/\""
+    out.print("/*Unknown object*/\""
     + #INVALID_OBJECT.getText() + "\"");
 }
 @const : { out.print(#CONSTANT.getText()); }

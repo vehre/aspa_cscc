@@ -124,7 +124,7 @@ public abstract class UserDefinedMethod extends GenericMethod {
 
 
     /**
-    * Initilizes or places a new variable initilized with instance.
+    * Initializes or places a new variable initialized with instance.
     * @param name is the name of the variable
     * @param instance is the Object reference
     * @param local indicates if it is a local object or a global one

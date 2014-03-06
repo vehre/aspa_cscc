@@ -89,7 +89,8 @@ statement
   | #(ERROR (RESUME | DINT))
   | #(RETURN <return> (expr)?) <exp_end>
   | expr <exp_end>
-  | #(VAR <var_decl> expr) <exp_end>
+  | #(VAR <var_decl> (<next_var> expr)+) <exp_end>
+  | #(CONST <const_decl> (<next_const> expr)+) <exp_end>
   ;
 
 select_case
@@ -126,7 +127,7 @@ expression
   | #(STAR_ASSIGN expression <sassign> expression)
   | #(DIV_ASSIGN expression <dassign> expression)
   | #(NEQ expression <neq> expression)
-  | #(IS expression expression) //check this
+  | #(IS expression <is> expression) //check this
   | #(CONCAT expression <concat> expression)
   | #(PLUS expression <plus> expression)
   | #(MINUS expression <minus> expression)

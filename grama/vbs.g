@@ -58,8 +58,9 @@ onError
 
 s_decl
   :
-  id:IDENTIFIER^ (LPAREN! <add_array> (dimension_length
-                (COMMA! dimension_length)*)? RPAREN!)?
+  (id:IDENTIFIER^ (LPAREN! <add_array> (dimension_length
+                (COMMA! dimension_length)*)? RPAREN!)?)
+                (ASSIGN^ relationalImpExpression)?
   ;
 
 dimension_length
@@ -91,7 +92,7 @@ left_set
 
 const_statement
   :
-  CONST^ IDENTIFIER ASSIGN! relationalImpExpression
+  CONST^ (IDENTIFIER ASSIGN! relationalImpExpression)+
   ;
 
 sub_func
@@ -132,10 +133,10 @@ block_statement
 
 simple_statement
   :
-  (DIM^ | r:REDIM^ (!PRESERVE <preserve>)?) s_decl (COMMA! s_decl)*
+  (DIM^ | r:REDIM^ (!PRESERVE <preserve>)?) (var1:s_decl <check4globalVar1>) (COMMA! varN:s_decl <check4globalVarN>)*
   |! OPTION EXPLICIT
   | ERASE^ IDENTIFIER
-  | CALL! ({inWith}? (| IDENTIFIER) | IDENTIFIER)
+  | CALL! ({inWith}? ( | IDENTIFIER) | IDENTIFIER)
       (DOT^ IDENTIFIER)*
       (LPAREN! (!exList:expressionList)? RPAREN!)? <call_end>
   | set_statement
@@ -168,10 +169,10 @@ pp
   PUBLIC! ({currentClass != null}? (DEFAULT)? |) | PRIVATE
   ;
 
-dim_stm
-  :
-  DIM^ s_decl (COMMA! s_decl)*
-  ;
+//dim_stm
+//  :
+//  DIM^ s_decl (COMMA! s_decl)*
+//  ;
 
 class_statement
     <class_init>

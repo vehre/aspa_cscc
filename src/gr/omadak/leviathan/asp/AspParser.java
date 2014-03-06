@@ -155,26 +155,24 @@ public class AspParser {
         try {
             MapLoader loader = new MapLoader();
             Map jsTypes = loader.loadMap(
-                AspParser.class.getResource("tokens/js.txt"), new URL[] {
-                AspParser.class.getResource("tokens/TreeJsTokenTypes.txt"),
-                AspParser.class.getResource("tokens/common.txt")});
+            		AspParser.class.getResource("tokens/js.txt"), new URL[] {
+            			AspParser.class.getResource("tokens/TreeJsTokenTypes.txt"),
+            			AspParser.class.getResource("tokens/common.txt")});
             Map objectClasses = new HashMap();
             Map functions = new TreeMap();
-            XmlObjectParser xmlParser = new XmlObjectParser(jsTypes,
-            objectClasses);
+            XmlObjectParser xmlParser = new XmlObjectParser(jsTypes, objectClasses);
             loader.loadObjects(
-            AspParser.class.getResource("tokens/jsobjects.txt"),
-            AspParser.class, objectClasses, functions, xmlParser);
+		            AspParser.class.getResource("tokens/jsobjects.txt"),
+		            AspParser.class, objectClasses, functions, xmlParser);
             XmlASPClass[] instr_classes = {
-            getInstrictObject("Array", objectClasses),
-            getInstrictObject("Date", objectClasses),
-            getInstrictObject("String", objectClasses),
-            getInstrictObject("Boolean", objectClasses),
-            getInstrictObject("Number", objectClasses)
+		            getInstrictObject("Array", objectClasses),
+		            getInstrictObject("Date", objectClasses),
+		            getInstrictObject("String", objectClasses),
+		            getInstrictObject("Boolean", objectClasses),
+		            getInstrictObject("Number", objectClasses)
             };
             JsParser.setInstrictClasses(instr_classes);
-            JsTree.setClassesAndFunctions(instr_classes, objectClasses,
-            functions);
+            JsTree.setClassesAndFunctions(instr_classes, objectClasses, functions);
 /*
             for (Iterator it = objectClasses.values().iterator();
             it.hasNext();) {
@@ -185,13 +183,12 @@ public class AspParser {
             functions = new TreeMap();
             Map vbTypes = loader.loadMap(
             AspParser.class.getResource("tokens/vbs.txt"), new URL[] {
-            AspParser.class.getResource("tokens/TreeVbsTokenTypes.txt"),
-            AspParser.class.getResource("tokens/common.txt")});
-            xmlParser = new XmlObjectParser(vbTypes,
-            objectClasses);
+            		AspParser.class.getResource("tokens/TreeVbsTokenTypes.txt"),
+            		AspParser.class.getResource("tokens/common.txt")});
+            xmlParser = new XmlObjectParser(vbTypes, objectClasses);
             loader.loadObjects(
-            AspParser.class.getResource("tokens/vbobjects.txt"),
-            AspParser.class, objectClasses, functions, xmlParser);
+            		AspParser.class.getResource("tokens/vbobjects.txt"),
+            		AspParser.class, objectClasses, functions, xmlParser);
 /*
             LOG.debug("\nVB classes\n");
             for (Iterator it = objectClasses.values().iterator();

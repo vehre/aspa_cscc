@@ -617,6 +617,16 @@
     <method name="Mid" type="DSTRING">
         <arg type="DSTRING" />
         <arg type="DINT" />
+        <ast name="METHOD_CALL" text="substr">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+                <arg index="2" />
+            </ast>
+        </ast>
+    </method>
+    <method name="Mid" type="DSTRING">
+        <arg type="DSTRING" />
+        <arg type="DINT" />
         <arg type="DINT" />
         <ast name="METHOD_CALL" text="substr">
             <ast name="ARGLIST_VALUES">
@@ -626,7 +636,7 @@
             </ast>
         </ast>
     </method>
-
+    
     <!-- Minute, Month, MonthName -->
     <method name="Now" type="DINT">
         <ast name="METHOD_CALL" text="time">

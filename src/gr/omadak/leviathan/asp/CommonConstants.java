@@ -18,7 +18,7 @@
 package gr.omadak.leviathan.asp;
 
 /**
-    Declares Token types used by bouth parsers
+    Declares Token types used by both parsers
 */
 public final class CommonConstants {
     private CommonConstants() {}
@@ -36,16 +36,16 @@ public final class CommonConstants {
     /** Template AST which is substituted with all the arguments a method
     received*/
     public static final int ALL_ARGS = MIN_TOKEN + 5;
-    /** The type for an uknown object */
+    /** The type for an unknown object */
     public static final int INVALID_OBJECT = MIN_TOKEN + 6;
     /** The type for headers which can not be translated */
     public static final int NON_APPLICABLE_HEADER = MIN_TOKEN + 7;
-    /** Indicates the begining of the Root node for a Template AST */
+    /** Indicates the beginning of the Root node for a Template AST */
     public static final int TRANSLATE_ROOT = MIN_TOKEN + 8;
     /** Indicates any type for an argument.
     Means that the type is indifferent */
     public static final int ANY = MIN_TOKEN + 9;
-    /** Inidcates an unsupported method or object */
+    /** Indicates an unsupported method or object */
     public static final int UNSUPPORTED = MIN_TOKEN + 10;
     /** The type could not be resolved */
     public static final int UKNOWN_TYPE = MIN_TOKEN + 11;

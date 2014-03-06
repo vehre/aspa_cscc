@@ -35,7 +35,7 @@ import java.util.HashSet;
 @float : { out.print(#DFLOAT.getText()); }
 @id : {
     if (inClass && ids.contains(#IDENTIFIER.getText())) {
-        out.print("this->");
+        out.print("this.");
     }
     out.print(#IDENTIFIER.getText()); 
 }
@@ -56,7 +56,11 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
     }
 }
 
-@var_decl : { out.print("var "); } 
+@var_decl : { out.print("var "); boolean firstVarSeen = false; }
+@next_var : { if(firstVarSeen){ out.print(", "); } firstVarSeen = true; } 
+@const_decl : { out.print("const "); boolean firstConstSeen = false; }
+@next_const : { if(firstConstSeen){ out.print(", "); } firstConstSeen = true; }
+ 
 @quest : { out.print(" ? "); }
 @alt : { out.print(" : "); }
 
@@ -81,7 +85,8 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
 @sassign : { out.print(" *= "); }
 @dassign : { out.print(" /= "); }
 @neq : { out.print(" != "); }
-@concat : { out.print(" . "); }
+@is : { out.print(" == "); }
+@concat : { out.print(" + "); }
 @plus : { out.print(" + "); }
 @minus : { out.print(" - "); }
 @mod : { out.print(" % "); }
@@ -96,7 +101,7 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
 @post_plus : { out.print("++"); }
 @post_minus : { out.print("--"); }
 @method : { out.print(#METHOD_CALL.getText()); }
-@dot : { out.print("->"); }
+@dot : { out.print("."); }
 @no_args : { out.print("()"); }
 @arg_init : { boolean isFirst = true; out.print('('); }
 @arg : {
@@ -143,7 +148,7 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
 }
 
 @uknown_method : {
-    out.print("/* Uknown method:" + #UKNOWN_METHOD.getText() + "*/ "
+    out.print("/* Unknown method:" + #UKNOWN_METHOD.getText() + "*/ "
     + #UKNOWN_METHOD.getText());
 }
 
@@ -156,7 +161,7 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
 }
 @elseif : {
     out.decLevel();
-    out.print("} elseif (");
+    out.print("} else if (");
 }
 @elseif_expr : {
     out.println(") {");
@@ -234,7 +239,7 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
     } else {
         firstGlobal = false;
     }
-    out.print("$" + #IDENTIFIER.getText());
+    out.print(#IDENTIFIER.getText());
 }
 @func_end : {
     if (hasGlobals) {
@@ -246,7 +251,7 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
     + #NON_APPLICABLE_HEADER.getText() + "\"");
 }
 @inv_obj : {
-    out.print("/*Uknown object*/\""
+    out.print("/*Unknown object*/\""
     + #INVALID_OBJECT.getText() + "\"");
 }
 @const : { out.print(#CONSTANT.getText()); }
