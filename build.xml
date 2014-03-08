@@ -76,7 +76,7 @@
     />
     <move file="${build_dir}/src/gr/omadak/leviathan/asp/VbsTree.java"
 	tofile="${build_dir}/src/gr/omadak/leviathan/asp/VbsPhpTree.java" 
-	overwrite="Yes" failonerror="No" quiet="Yes"/>
+	overwrite="Yes" failonerror="No" />
     <replaceregexp file="${build_dir}/src/gr/omadak/leviathan/asp/VbsPhpTree.java" 
     		match="extends[ \t]*antlr.TreeParser" 
     		replace="extends VbsAbstractTreeParser"/>
@@ -98,7 +98,7 @@
     />
     <move file="${build_dir}/src/gr/omadak/leviathan/asp/VbsTree.java"
 	tofile="${build_dir}/src/gr/omadak/leviathan/asp/VbsJsTree.java" 
-	overwrite="Yes" failonerror="No" quiet="Yes"/>
+	overwrite="Yes" failonerror="No" />
     <replaceregexp file="${build_dir}/src/gr/omadak/leviathan/asp/VbsJsTree.java" 
     		match="extends[ \t]*antlr.TreeParser" 
     		replace="extends VbsAbstractTreeParser"/>
@@ -121,7 +121,7 @@
     />
 	<move file="${build_dir}/src/gr/omadak/leviathan/asp/VbsGenerator.java"
 		tofile="${build_dir}/src/gr/omadak/leviathan/asp/VbsPhpGenerator.java" 
-		overwrite="Yes" failonerror="No" quiet="Yes"/>
+		overwrite="Yes" failonerror="No" />
 	<replaceregexp file="${build_dir}/src/gr/omadak/leviathan/asp/VbsPhpGenerator.java" 
 		match="extends[ \t]*antlr.TreeParser" 
 	    replace="extends VbsAbstractProducer"/>
@@ -144,7 +144,7 @@
     />
 	<move file="${build_dir}/src/gr/omadak/leviathan/asp/VbsGenerator.java"
 		tofile="${build_dir}/src/gr/omadak/leviathan/asp/VbsJsGenerator.java" 
-		overwrite="Yes" failonerror="No" quiet="Yes"/>
+		overwrite="Yes" failonerror="No" />
 	<replaceregexp file="${build_dir}/src/gr/omadak/leviathan/asp/VbsJsGenerator.java" 
 		match="extends[ \t]*antlr.TreeParser" 
 	    replace="extends VbsAbstractProducer"/>
