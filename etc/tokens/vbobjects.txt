@@ -8,3 +8,5 @@ Object.Session=objects/session.xml
 Object.Server=objects/server.xml
 Object.Application=objects/application.xml
 Functions.1=objects/functions.xml
+Object.document=objects/document.xml
+Object.window=objects/window.xml
