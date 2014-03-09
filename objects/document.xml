@@ -18,12 +18,9 @@
 <class name="document" dependant="true">
   <method name="all" type="VOID">
 	<arg type="DSTRING" />
-    <ast name="DOT">
-		<this />
-		<ast name="METHOD_CALL" text="getElementById">
-			<ast name="ARGLIST_VALUES">
-				<arg index="1" />
-			</ast>
+	<ast name="METHOD_CALL" text="document.getElementById">
+		<ast name="ARGLIST_VALUES">
+			<arg index="1" />
 		</ast>
 	</ast>
   </method>
