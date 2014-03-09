@@ -31,6 +31,8 @@ import gr.omadak.leviathan.asp.objects.ObjectAST;
 import gr.omadak.leviathan.asp.objects.ASPObject;
 import gr.omadak.leviathan.asp.objects.ASPClass;
 import gr.omadak.leviathan.asp.objects.ASPObjectInstance;
+import gr.omadak.leviathan.asp.objects.XmlASPClass;
+import gr.omadak.leviathan.asp.objects.ASPObjectInstance;
 import gr.omadak.leviathan.asp.objects.Property;
 import gr.omadak.leviathan.asp.objects.Member;
 import gr.omadak.leviathan.asp.objects.Method;
@@ -271,6 +273,18 @@ import org.apache.commons.collections.Transformer;
         setExit();
         return result;
     }
+    
+    protected ASPObjectInstance getObject(String name) {
+    	ASPObjectInstance result = super.getObject(name);
+		
+		/* Quite dirty hack here to inject the document object. */
+		if (result == null && name.equals("document")) {
+			result = new ASPObjectInstance(new XmlASPClass(name));
+			/* This is obviously not the correct place to insert the object.
+			variables.put(result, #([GLOBALS, "GLOBALS"])); */
+		}
+		return result;
+	}
     
     private AST makeVarDeclsFromList(List elems) {
 		AST result = null;
@@ -762,7 +776,6 @@ typeStack.push(new Integer(DINT));
         #expression = #([code, "not"], #not);
     }
 }
-
 
 @tuminus : !
 @unary_minus : {

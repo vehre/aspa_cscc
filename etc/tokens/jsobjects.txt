@@ -13,5 +13,8 @@ Object.Date=objects/date.xml
 Object.Math=objects/math.xml
 Object.Boolean=objects/boolean.xml
 Object.Number=objects/number.xml
-Functions.1=objects/global.xml
 Object.document=objects/document.xml
+Functions.1=objects/global.xml
+
+
+

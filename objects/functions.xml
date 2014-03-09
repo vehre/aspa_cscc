@@ -943,17 +943,35 @@
             </ast>
         </ast>
     </method>
-<!--
+
   <method name="CreateObject" type="OBJECT">
   	<arg type="DSTRING" />
     <map>
         <key value="ADODB.Connection" use="ADOConnection" />
         <key value="ADODB.Recordset" use="ADORecordset" />
         <key value="ADODB.Command" use="ADOCommand" />
+        <key value="Microsoft.xmldom">
+        	<arg type="xmldom"/>
+        	<ast name="NEW">
+        		<ast name="IDENTIFIER" text="ActiveXObject"/>
+       			<ast name="ARGLIST_VALUES">
+       				<arg index="1"/>
+       			</ast>
+        	</ast>
+        </key>
+        <key value="Microsoft.xmlhttp" > 
+        	<arg type="xmlhttp"/>
+        	<ast name="NEW">
+        		<ast name="IDENTIFIER" text="ActiveXObject"/>
+       			<ast name="ARGLIST_VALUES">
+       				<arg index="1"/>
+       			</ast>
+        	</ast>
+        </key>
         <key>
             <ast name="INVALID_OBJECT" />
         </key>
     </map>
   </method>
--->
+
 </functions>

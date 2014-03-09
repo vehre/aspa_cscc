@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
     This file is part of Aspa.
 
@@ -15,29 +16,39 @@
     along with Aspa; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 -->
-<class name="document" dependant="true">
+<class name="document" standalone="true">
   <method name="all" type="VOID">
 	<arg type="DSTRING" />
-	<ast name="METHOD_CALL" text="document.getElementById">
-		<ast name="ARGLIST_VALUES">
-			<arg index="1" />
+	<ast name="DOT">
+		<ast name="IDENTIFIER" text="document"/>
+		<ast name="METHOD_CALL" text="getElementById">
+			<ast name="ARGLIST_VALUES">
+				<arg index="1" />
+			</ast>
 		</ast>
 	</ast>
   </method>
   <method name="writeln" type="VOID">
     <arg type="DSTRING" />
-    <ast name="METHOD_CALL" text="document.writeln">
-        <ast name="ARGLIST_VALUES">
-            <arg index="1" />
+    <ast name="DOT">
+    	<ast name="IDENTIFIER" text="document"/>
+    	<ast name="METHOD_CALL" text="writeln">
+        	<ast name="ARGLIST_VALUES">
+            	<arg index="1" />
+        	</ast>
         </ast>
     </ast>
   </method>
   <method name="write" type="VOID">
     <arg type="DSTRING" />
-    <ast name="METHOD_CALL" text="document.write">
-        <ast name="ARGLIST_VALUES">
-            <arg index="1" />
-        </ast>
-    </ast>
+    <ast name="DOT">
+    	<ast name="IDENTIFIER" text="document"/>
+	    <ast name="METHOD_CALL" text="write">
+	        <ast name="ARGLIST_VALUES">
+	            <arg index="1" />
+	        </ast>
+	    </ast>
+	</ast>
   </method>
 </class>
+

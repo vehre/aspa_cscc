@@ -152,7 +152,7 @@ expression
   | #(POST_MINUS expression <post_minus>)
   | #(DOT expression <dot> expression)
   | #(LPAREN <lp> expression <lp_end>)
-  | #(NEW IDENTIFIER <new>)
+  | #(NEW IDENTIFIER <new> (arglist_values)?)
   | DINT <int>
   | DFLOAT <float>
   | IDENTIFIER <id>
