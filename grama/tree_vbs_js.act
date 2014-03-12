@@ -32,9 +32,10 @@ import gr.omadak.leviathan.asp.objects.ASPObject;
 import gr.omadak.leviathan.asp.objects.ASPClass;
 import gr.omadak.leviathan.asp.objects.ASPObjectInstance;
 import gr.omadak.leviathan.asp.objects.XmlASPClass;
-import gr.omadak.leviathan.asp.objects.ASPObjectInstance;
+import gr.omadak.leviathan.asp.objects.GenericASPProperty;
 import gr.omadak.leviathan.asp.objects.Property;
 import gr.omadak.leviathan.asp.objects.Member;
+import gr.omadak.leviathan.asp.objects.BaseMember;
 import gr.omadak.leviathan.asp.objects.Method;
 import gr.omadak.leviathan.asp.objects.VbUserDefinedMethod;
 import gr.omadak.leviathan.asp.objects.VbUserDefinedProperty;
@@ -108,8 +109,8 @@ import org.apache.commons.collections.Transformer;
                     if (method.getEvaluatedClass() != null) {
                         ASPClass clazz = method.getEvaluatedClass();
                         result = createObjectAST(CommonConstants.OBJECT,
-                        clazz.getName(), new ASPObjectInstance(
-                        methodInstance.getInstance(), clazz));
+                        		clazz.getName(), new ASPObjectInstance(
+                        			methodInstance.getInstance(), clazz));
 					} else if (method.getRetObjectClass() != null) {
                         ASPClass clazz = method.getRetObjectClass();
                         AST trans = translateMember(method, methodInstance);
@@ -274,14 +275,89 @@ import org.apache.commons.collections.Transformer;
         return result;
     }
     
-    protected ASPObjectInstance getObject(String name) {
-    	ASPObjectInstance result = super.getObject(name);
-		
-		/* Quite dirty hack here to inject the document object. */
-		if (result == null && name.equals("document")) {
-			result = new ASPObjectInstance(new XmlASPClass(name));
-			/* This is obviously not the correct place to insert the object.
-			variables.put(result, #([GLOBALS, "GLOBALS"])); */
+    protected ASPObjectInstance getObjectInstance(AST ast) {
+    	ASPObjectInstance result = null;
+    	AST workAst = ast;
+		if (workAst != null && workAst.getType() == DOT) {
+			workAst = workAst.getFirstChild();
+			if (workAst != null && workAst instanceof ObjectAST) {
+				ObjectAST oAst = (ObjectAST) workAst;
+				Member mem = oAst.getInstance().getMember();
+				if (mem != null) 
+					return new ASPObjectInstance(ast, mem.getRetObjectClass());
+				else
+					log.warn("Could not follow reference path: " + ast.toString());
+			}
+		}
+		/* Found a suitable instance. */
+		if (result != null) return result;
+	
+		if (ast instanceof ObjectAST) {
+			ObjectAST oAST = (ObjectAST) ast;
+			ASPObjectInstance inst = oAST.getInstance();
+			ASPClass clazz = inst.getASPClass();
+			if (inst.getMember() != null) {
+				Member mem = inst.getMember();
+				if (mem.getRetObjectClass() != null) {
+					clazz = mem.getRetObjectClass();
+				} else {
+					log.error("BUG:I expected the member to be null:" + inst);
+				}
+			}
+			result = new ASPObjectInstance(inst.getInstance(), clazz);
+		} else if (ast.getType() == IDENTIFIER) {
+			String className = ast.getText();
+			if (OBJECT_CLASSES.containsKey(className.toUpperCase())) {
+				result = new ASPObjectInstance(ast,
+						(ASPClass) OBJECT_CLASSES.get(className.toUpperCase()));
+			} else {
+				result = getObject(className);
+				if (result == null) {
+					log.warn("Could not find object '" + className + "'.");
+				}
+			}
+		}
+		return result;
+	}
+    
+    protected AST getObject(ASPObjectInstance instance, AST member) {
+		AST result = null;
+		ASPClass clazz = instance.getASPClass();
+		if (clazz == null) {
+			log.error("Unable to get class:" + instance.getInstance());
+		} else {
+			Member mem = clazz.getMemberObject(member.getText());
+			if (mem == null) {
+				log.error("Failed to get member:" + member.getText()
+						+ " from class:" + clazz.getName());
+			} else {
+				instance.setMember(mem);
+				if (mem instanceof Method) {
+					/* Do this for method calls. The appropiate AST is setup correctly by 
+						the handleFunctionSub()-method. */
+					Token token = new CommonToken(mem.getReturnType(),
+							member.getText());
+					List alts = clazz.getMemberList(member.getText());
+					if (alts.size() > 1) {
+						instance.setMemberList(alts);
+					}
+					result = new ObjectAST(token, instance);
+				} else {
+					/* Now for properties. */
+/*					instance = new ASPObjectInstance(mem.getRetObjectClass());
+					if ( mem instanceof BaseMember )
+						((BaseMember)mem).setEvaluatedClass(mem.getRetObjectClass()); 
+					instance.setMember(mem);
+					instance.setInstance(member);*/
+					AST object = createObjectAST(instance.getInstance().getType(), instance.getInstance().getText(), instance);
+					result = #([DOT, "."], object, member);
+				}
+			}
+		}
+		if (result == null) {
+			log.error("Failed to resolve member:" + member.getText()
+					+ " from class:"
+					+ (clazz != null ? clazz.getName() : "null"));
 		}
 		return result;
 	}
@@ -292,6 +368,7 @@ import org.apache.commons.collections.Transformer;
 			for (Iterator it = elems.iterator(); it.hasNext();) {
 				AST element = (AST) it.next();
 				element.setNextSibling(null);
+				addVariable(element.getFirstChild().getText(), element.getFirstChild().getType());
 			}
 			elems.add(0, #([VAR, "var"]));
 			AST[] array = (AST[]) elems.toArray(new AST[0]);

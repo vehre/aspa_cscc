@@ -242,7 +242,6 @@ public abstract class VbsAbstractTreeParser extends antlr.TreeParser implements
 			}
 		}
 		if (result == null) {
-			int code = DOT;
 			log.error("Failed to resolve member:" + member.getText()
 					+ " from class:"
 					+ (clazz != null ? clazz.getName() : "null"));

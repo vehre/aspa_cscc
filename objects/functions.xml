@@ -950,24 +950,8 @@
         <key value="ADODB.Connection" use="ADOConnection" />
         <key value="ADODB.Recordset" use="ADORecordset" />
         <key value="ADODB.Command" use="ADOCommand" />
-        <key value="Microsoft.xmldom">
-        	<arg type="xmldom"/>
-        	<ast name="NEW">
-        		<ast name="IDENTIFIER" text="ActiveXObject"/>
-       			<ast name="ARGLIST_VALUES">
-       				<arg index="1"/>
-       			</ast>
-        	</ast>
-        </key>
-        <key value="Microsoft.xmlhttp" > 
-        	<arg type="xmlhttp"/>
-        	<ast name="NEW">
-        		<ast name="IDENTIFIER" text="ActiveXObject"/>
-       			<ast name="ARGLIST_VALUES">
-       				<arg index="1"/>
-       			</ast>
-        	</ast>
-        </key>
+        <key value="Microsoft.xmldom" use="MSXMLDOM" />
+        <key value="Microsoft.xmlhttp" use="MSXMLHttp" /> 
         <key>
             <ast name="INVALID_OBJECT" />
         </key>

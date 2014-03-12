@@ -15,8 +15,11 @@
     along with Aspa; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 -->
-<class name="window" dependant="true">
-  <method name="focus" type="VOID">
-		<ast name="METHOD_CALL" text="window.focus" />
+<class name="window" standalone="true">
+	<method name="focus" type="VOID">
+  		<ast name="DOT">
+  			<this />
+			<ast name="METHOD_CALL" text="focus" />
+		</ast>
   </method>
 </class>

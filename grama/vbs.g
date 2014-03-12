@@ -169,11 +169,6 @@ pp
   PUBLIC! ({currentClass != null}? (DEFAULT)? |) | PRIVATE
   ;
 
-//dim_stm
-//  :
-//  DIM^ s_decl (COMMA! s_decl)*
-//  ;
-
 class_statement
     <class_init>
     :

@@ -16,12 +16,12 @@
     along with Aspa; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 -->
-<class name="documentElement" dependant="true">
-	<method name="selectSingleNode" type="DSTRING">
+<class name="MSDOMNode" dependant="true">
+	<method name="getAttribute" type="DSTRING">
 		<arg type="DSTRING"/>
-		<ast name="DOT" value=".">
+		<ast name="DOT">
 			<this/>
-			<ast name="METHOD_CALL" text="selectSingleNode">
+			<ast name="METHOD_CALL" text="getAttribute">
 			  <ast name="ARGLIST_VALUES">
 				<arg index="1" />
 			  </ast>
@@ -29,5 +29,3 @@
 		</ast>
 	</method>
 </class>
-
-	

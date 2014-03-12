@@ -16,39 +16,36 @@
     along with Aspa; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 -->
-<class name="document" standalone="true">
-  <method name="all" type="ANY">
-	<arg type="DSTRING" />
-	<ast name="DOT">
-		<this/>
-		<ast name="METHOD_CALL" text="getElementById">
-			<ast name="ARGLIST_VALUES">
-				<arg index="1" />
+<class name="MSXMLDOM" standalone="true">
+	<property name="documentElement" type="MSDOMDocument">
+		<read>
+			 <ast name="DOT">
+                <this />
+                <ast name="IDENTIFIER" text="documentElement" />
+            </ast>
+		</read>
+	</property>
+	
+	<constructor>
+		<ast name="NEW">
+        	<ast name="IDENTIFIER" text="ActiveXObject"/>
+       			<ast name="ARGLIST_VALUES">
+       				<ast name="DSTRING" text="Microsoft.xmldom"/>
+       			</ast>
+        </ast>
+  </constructor>
+  
+  	<method name="loadXML" type="VOID">
+		<arg type="DSTRING"/>
+		<ast name="DOT">
+			<this />
+			<ast name="METHOD_CALL" text="loadXML">
+				<ast name="ARGLIST_VALUES">
+					<arg index="1" />
+				</ast>
 			</ast>
 		</ast>
-	</ast>
-  </method>
-  <method name="writeln" type="VOID">
-    <arg type="DSTRING" />
-    <ast name="DOT">
-    	<this/>
-    	<ast name="METHOD_CALL" text="writeln">
-        	<ast name="ARGLIST_VALUES">
-            	<arg index="1" />
-        	</ast>
-        </ast>
-    </ast>
-  </method>
-  <method name="write" type="VOID">
-    <arg type="DSTRING" />
-    <ast name="DOT">
-    	<this/>
-	    <ast name="METHOD_CALL" text="write">
-	        <ast name="ARGLIST_VALUES">
-	            <arg index="1" />
-	        </ast>
-	    </ast>
-	</ast>
-  </method>
+	</method>
 </class>
 
+	

@@ -16,16 +16,46 @@
     along with Aspa; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 -->
-<class name="xmldom" standalone="true">
-	<property name="documentElement" type="documentElement">
-		<arg type="DSTRING"/>
+<class name="MSXMLHttp" standalone="true">
+	<constructor>
+		<ast name="NEW">
+        	<ast name="IDENTIFIER" text="ActiveXObject" />
+       			<ast name="ARGLIST_VALUES">
+       				<ast name="DSTRING" text="Microsoft.xmlhttp" />
+       			</ast>
+        </ast>
+	</constructor>
+	
+	<property name="responseXML" type="ANY">
 		<read>
 			 <ast name="DOT">
                 <this />
-                <ast name="IDENTIFIER" text="documentElement" />
+                <ast name="IDENTIFIER" text="responseXML" />
             </ast>
-		</read>
+		</read>	
 	</property>
+	
+	<method name="open" type="VOID">
+		<arg type="DSTRING"/>
+		<arg type="DSTRING"/>
+		<arg type="DBOOL"/>
+		<ast name="DOT">
+			<this />
+			<ast name="METHOD_CALL" text="open">
+				<ast name="ARGLIST_VALUES">
+					<arg index="1" />
+					<arg index="2" />
+					<arg index="3" />
+				</ast>
+			</ast>
+		</ast>
+	</method>
+	
+	<method name="send" type="VOID">
+		<ast name="DOT">
+			<this />
+			<ast name="METHOD_CALL" text="send" />
+		</ast>
+	</method>
 </class>
 
-	
