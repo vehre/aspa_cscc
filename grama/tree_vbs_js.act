@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.TreeMap;
 import antlr.CommonToken;
+import gr.omadak.leviathan.asp.CommonConstants;
 import gr.omadak.leviathan.asp.objects.ObjectAST;
 import gr.omadak.leviathan.asp.objects.ASPObject;
 import gr.omadak.leviathan.asp.objects.ASPClass;
@@ -115,7 +116,7 @@ import org.apache.commons.collections.Transformer;
                         ASPClass clazz = method.getRetObjectClass();
                         AST trans = translateMember(method, methodInstance);
                         result = createObjectAST(CommonConstants.OBJECT_RET,
-                        clazz.getName(), new ASPObjectInstance(trans, clazz));
+                        		clazz.getName(), new ASPObjectInstance(trans, clazz));
                     } else {
                         result = createObjectAST(CommonConstants.OBJECT,
                         method.getName(), methodInstance);
@@ -127,11 +128,46 @@ import org.apache.commons.collections.Transformer;
             }
         } else {
             if (arguments.isEmpty()) {
-                result = #[UKNOWN_METHOD, methodAST.getText()];
+                result = #([UKNOWN_METHOD, ""], #([METHOD_CALL, ""], methodAST));
             } else {
-                result = makeFromList(arguments,
-                #[ARGLIST_VALUES, "ARGLIST_VALUES"]);
-                result = #([UKNOWN_METHOD, methodAST.getText()], result);
+                AST argcopy = makeFromList(arguments,
+                		#[ARGLIST_VALUES, "ARGLIST_VALUES"]);
+                /* Translate unknown identifiers that represent a function call into a function
+                	call. Unfortunately, three cases occur: */
+//                String name;
+//                if (methodAST.getFirstChild() != null ) {
+//	                switch (methodAST.getFirstChild().getType()) {
+//	                case DOT:
+//	                	/* 1. The function call is at the end of chain of derefs, i.e., o1.o2....oN.call()
+//	                		where N is at least 2. The issue here is, that the derefs o1 to oN are
+//	                		already in the style #(DOT #(DOT #(DOT o1, #(DOT o2, ... (#DOT oN, null)...)), call), arguments)
+//	                		and have to be translated accordingly.  */
+//	                    AST subTree = methodAST.getFirstChild();
+//	                    /* The function name is in the text field of the first's DOT 
+//	                    	second sibling. */
+//		                name = subTree.getNextSibling().getText();
+//		                /* While the deref chain is in the first's DOT first sibling (child). */
+//		                result = #([UKNOWN_METHOD, ""], 
+//								#([METHOD_CALL, name], subTree.getFirstChild(), argcopy));
+//						break;
+//					case IDENTIFIER:
+//						/* 2. The hierarchy is only object.call(), then the tree is:
+//							#(DOT #(DOT object, null), call), arguments) */
+//						name = methodAST.getFirstChild().getNextSibling().getText();
+//						String ident = methodAST.getFirstChild().getText();
+//						result = #([UKNOWN_METHOD, ""],
+//								#([METHOD_CALL, name], 
+//								#[IDENTIFIER, ident], argcopy));
+//						break;
+//					default:
+//						result = #([UKNOWN_METHOD, ""], result);
+//	                }
+//               } else {
+//                	/* or 3. no object is present at all, so that it is just a call. */
+//	               	name = methodAST.getText();
+//                	result = #([UKNOWN_METHOD, ""], #([METHOD_CALL, name], argcopy));	
+//                } 
+                result = #([UKNOWN_METHOD, ""], methodAST, argcopy);
             }
         }
         return result;
@@ -141,10 +177,10 @@ import org.apache.commons.collections.Transformer;
 	protected AST translateArray(AST array, int lastStackSize) {
 		AST result;
 		List[] args = argStack.size() != lastStackSize
-        ? (List[]) argStack.pop()
-        : null;
+        		? (List[]) argStack.pop()
+		        : null;
 		if (args == null) {
-			log.warn("No indexe passed to array access:" + array);
+			log.warn("No indexes passed to array access:" + array);
 			//this case should not happen
 			result = null;
 		} else {
@@ -277,20 +313,6 @@ import org.apache.commons.collections.Transformer;
     
     protected ASPObjectInstance getObjectInstance(AST ast) {
     	ASPObjectInstance result = null;
-    	AST workAst = ast;
-		if (workAst != null && workAst.getType() == DOT) {
-			workAst = workAst.getFirstChild();
-			if (workAst != null && workAst instanceof ObjectAST) {
-				ObjectAST oAst = (ObjectAST) workAst;
-				Member mem = oAst.getInstance().getMember();
-				if (mem != null) 
-					return new ASPObjectInstance(ast, mem.getRetObjectClass());
-				else
-					log.warn("Could not follow reference path: " + ast.toString());
-			}
-		}
-		/* Found a suitable instance. */
-		if (result != null) return result;
 	
 		if (ast instanceof ObjectAST) {
 			ObjectAST oAST = (ObjectAST) ast;
@@ -298,13 +320,16 @@ import org.apache.commons.collections.Transformer;
 			ASPClass clazz = inst.getASPClass();
 			if (inst.getMember() != null) {
 				Member mem = inst.getMember();
-				if (mem.getRetObjectClass() != null) {
-					clazz = mem.getRetObjectClass();
-				} else {
-					log.error("BUG:I expected the member to be null:" + inst);
+				if ( mem.getReturnType() == CommonConstants.OBJECT ) {
+					if ( mem.getRetObjectClass() != null ) {
+						clazz = mem.getRetObjectClass();
+					} else {
+						log.error("Member " + inst.getMember().getName() + "() returns no type for " + inst);
+						return null;
+					}
 				}
 			}
-			result = new ASPObjectInstance(inst.getInstance(), clazz);
+			result = new ASPObjectInstance(oAST /*inst.getInstance()*/, clazz);
 		} else if (ast.getType() == IDENTIFIER) {
 			String className = ast.getText();
 			if (OBJECT_CLASSES.containsKey(className.toUpperCase())) {
@@ -333,7 +358,7 @@ import org.apache.commons.collections.Transformer;
 			} else {
 				instance.setMember(mem);
 				if (mem instanceof Method) {
-					/* Do this for method calls. The appropiate AST is setup correctly by 
+					/* Do this for method calls. The appropriate AST is setup correctly by 
 						the handleFunctionSub()-method. */
 					Token token = new CommonToken(mem.getReturnType(),
 							member.getText());
@@ -344,20 +369,11 @@ import org.apache.commons.collections.Transformer;
 					result = new ObjectAST(token, instance);
 				} else {
 					/* Now for properties. */
-/*					instance = new ASPObjectInstance(mem.getRetObjectClass());
-					if ( mem instanceof BaseMember )
-						((BaseMember)mem).setEvaluatedClass(mem.getRetObjectClass()); 
-					instance.setMember(mem);
-					instance.setInstance(member);*/
-					AST object = createObjectAST(instance.getInstance().getType(), instance.getInstance().getText(), instance);
-					result = #([DOT, "."], object, member);
+					ASPObjectInstance newInst = new ASPObjectInstance(instance.getInstance(), mem.getRetObjectClass());
+					newInst.setMember(mem);
+					result = createObjectAST(mem.getReturnType(), member.getText(), newInst);
 				}
 			}
-		}
-		if (result == null) {
-			log.error("Failed to resolve member:" + member.getText()
-					+ " from class:"
-					+ (clazz != null ? clazz.getName() : "null"));
 		}
 		return result;
 	}
@@ -611,8 +627,23 @@ import org.apache.commons.collections.Transformer;
 @dot_id_end : {
     AST res = getObject(#do1, #do2);
     if (res != null) {
+    	if (res instanceof ObjectAST && ((ObjectAST) res).getInstance().getMember() instanceof Property) {
+    		/* Need to apply property conversion to in chains of properties, e.g., foo.bar.baz.call(). */
+    		ASPObjectInstance instance = (ASPObjectInstance)((ObjectAST) res).getInstance();
+    		/* Copied from VbsAstractTree.translateMember(). */
+    		Property prop = (Property) instance.getMember();
+			res = prop.read(instance == null ? null : instance.getInstance());
+			if ( res != null ) {
+				AST temp = createObjectAST(res.getType(), res.getText(), instance);
+				temp.addChild(res.getFirstChild());
+				res = temp;
+			}
+			/* When the prop.read() failed, then res is null and the check after the outer if
+				will be executed. */
+    	}
         #expression = res;
-    } else {
+    } 
+    if (res == null ) {
         log.warn("Unable to resolve Member:" + #do2.getText() + " from object:" + #do1.getText());
         
         #expression = #(DOT, #do1, #do2);
@@ -1145,7 +1176,7 @@ typeStack.push(new Integer(DINT));
 
 @tcel : !
 @case_else_end : {
-    #case_else = #([CASE_ELSE, "defaut"], #st, [BREAK, "break"]);
+    #case_else = #([CASE_ELSE, "default"], #st, [BREAK, "break"]);
 }
 
 @tfor : !
@@ -1154,15 +1185,15 @@ typeStack.push(new Integer(DINT));
 @for_init : {
     AST checkNode = toStep == null ? null : toStep.getFirstChild();
     AST counterName = astFactory.dupTree(
-    #fInit.getFirstChild().getFirstChild());
+    	#fInit.getFirstChild().getFirstChild());
     if (checkNode != null
-    && checkNode.getType() != DINT
-    && checkNode.getType() != UNARY_MINUS) {
+		    && checkNode.getType() != DINT
+		    && checkNode.getType() != UNARY_MINUS) {
         whileAST =
         #([DO_END, "while"],
             #([NEQ, "<>"],
                 counterName,
-                astFactory.dupTree(#toexpr.getFirstChild())
+                #toexpr.getFirstChild()
             )
         );
     } else {
@@ -1171,12 +1202,12 @@ typeStack.push(new Integer(DINT));
         if (checkNode != null) {
             operator = checkNode.getType() == UNARY_MINUS ? GE : LE;
             boolean isPostMin = operator == GE
-            && checkNode.getFirstChild() != null
-            && checkNode.getFirstChild().getType() == DINT
-            && Integer.parseInt(checkNode.getFirstChild().getText()) == 1;
+	            && checkNode.getFirstChild() != null
+	            && checkNode.getFirstChild().getType() == DINT
+	            && Integer.parseInt(checkNode.getFirstChild().getText()) == 1;
             boolean isPostPlus = !isPostMin
-            && checkNode.getType() == DINT
-            && Integer.parseInt(checkNode.getText()) == 1;
+	            && checkNode.getType() == DINT
+	            && Integer.parseInt(checkNode.getText()) == 1;
             if (isPostMin) {
                 toStep = #([EXPR, "EXPR"],
                     #([POST_MINUS, "--"], astFactory.dupTree(counterName))
@@ -1207,14 +1238,13 @@ typeStack.push(new Integer(DINT));
             );
         }
         String operatorName = _tokenNames[operator];
-        AST toChild = astFactory.dupTree(#toexpr.getFirstChild());
         fIn =
         #([forInitCode, "for_init"],
             #fInit,
             #([EXPR, "EXPR"],
                 #([operator, operatorName],
                     counterName,
-                    toChild
+                    #toexpr.getFirstChild()
                 )
             ),
             toStep
@@ -1224,8 +1254,8 @@ typeStack.push(new Integer(DINT));
 @for_end : {
     if (whileAST != null) {
         AST counterName = astFactory.dupTree(
-        #fInit.getFirstChild().getFirstChild());
-        counterName.setNextSibling(null);
+	        #fInit.getFirstChild().getFirstChild());
+	        counterName.setNextSibling(null);
         AST counterTwo = astFactory.dupTree(counterName);
         String incName = "while_step" + lastForWhile;
         String limName = "while_lim" + lastForWhile++;

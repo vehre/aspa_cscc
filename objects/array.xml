@@ -207,11 +207,15 @@
     <property name="length" type="DINT">
         <arg type="DINT" />
         <read>
-            <ast name="METHOD_CALL" text="count">
+        	<ast name="DOT">
+        		<this />
+            	<ast name="METHOD_CALL" text="length" />
+            </ast>
+<!--             <ast name="METHOD_CALL" text="count" language="php">
                 <ast name="ARGLIST_VALUES">
                     <this />
                 </ast>
-            </ast>
+            </ast> -->
         </read>
         <write>
             <ast name="EXPR">

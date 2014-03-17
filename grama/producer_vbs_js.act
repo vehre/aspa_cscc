@@ -21,6 +21,7 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.Set;
 import java.util.HashSet;
+import gr.omadak.leviathan.asp.objects.ObjectAST;
 
 @init : {
 	private static Logger LOG = Logger.getLogger(VbsJsGenerator.class);
@@ -28,6 +29,9 @@ import java.util.HashSet;
 	public void setWriter(Writer writer) {
         out = new SourceBuffer(new PrintWriter(writer), false);
     }
+    
+    public static final int OBJECT = CommonConstants.OBJECT;
+    public static final int OBJECT_RET = CommonConstants.OBJECT_RET;
 }
 
 
@@ -101,6 +105,22 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
 @post_plus : { out.print("++"); }
 @post_minus : { out.print("--"); }
 @method : { out.print(#METHOD_CALL.getText()); }
+@CCobject_ret : {
+	if ( #OBJECT_RET instanceof ObjectAST ) {
+		ObjectAST oAST = (ObjectAST) #OBJECT_RET;
+		expression(oAST.getInstance().getInstance());
+		//out.print(".");
+	} else 
+		out.print(#OBJECT_RET.getText()); 
+}
+@CCobject : {
+	if ( #OBJECT instanceof ObjectAST ) {
+		ObjectAST oAST = (ObjectAST) #OBJECT;
+		expression(oAST.getInstance().getInstance());
+		//out.print(".");
+	} else 
+		out.print(#OBJECT.getText()); 
+}
 @dot : { out.print("."); }
 @no_args : { out.print("()"); }
 @arg_init : { boolean isFirst = true; out.print('('); }

@@ -28,6 +28,10 @@ import java.util.HashSet;
 	public void setWriter(Writer writer) {
 		out = new SourceBuffer(new PrintWriter(writer), true);
    	}
+   	
+    public static final int OBJECT = CommonConstants.OBJECT;
+    public static final int OBJECT_RET = CommonConstants.OBJECT_RET;
+
 }
 
 
@@ -271,3 +275,7 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
     ids.add(#IDENTIFIER.getText());
 }
 @end : { out.end();}
+
+@CCobject_ret : { ; }
+
+@CCobject : { ; }

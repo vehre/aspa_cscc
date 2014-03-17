@@ -26,7 +26,7 @@
         </ast>
 	</constructor>
 	
-	<property name="responseXML" type="ANY">
+	<property name="responseXML" type="DSTRING">
 		<read>
 			 <ast name="DOT">
                 <this />

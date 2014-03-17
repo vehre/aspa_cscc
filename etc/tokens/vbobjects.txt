@@ -2,6 +2,7 @@ Object.ADORecordset=objects/adorecordset.xml
 Object.ADOConnection=objects/adoconnection.xml
 Object.ADOCommand=objects/adocommand.xml
 Object.ADOParameter=objects/adoparam.xml
+Object.Array=objects/array.xml
 Object.Request=objects/request.xml
 Object.Response=objects/response.xml
 Object.Session=objects/session.xml

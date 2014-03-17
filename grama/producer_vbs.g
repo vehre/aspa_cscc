@@ -139,6 +139,8 @@ expression
   | #(NOT <not> expression)
   | #(BNOT <bnot> expression)
   | #(METHOD_CALL <method> (arglist_values | <no_args>))
+  | #(OBJECT_RET <CCobject_ret>)
+  | #(OBJECT <CCobject>)
   | #(CONDITIONAL expression <quest> expression <alt> expression)
   | #(CAST <cast> expression)
   | #(INDEX_OP iex:expression 
@@ -147,7 +149,7 @@ expression
           | (<pre_index> index:expression <post_index>)+
       )
   )
-  | #(UKNOWN_METHOD <uknown_method> (arglist_values | <no_args>))
+  | #(UKNOWN_METHOD <uknown_method> (expression | arglist_values | <no_args>))
   | #(POST_PLUS expression <post_plus>)
   | #(POST_MINUS expression <post_minus>)
   | #(DOT expression <dot> expression)
