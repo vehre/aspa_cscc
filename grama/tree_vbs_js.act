@@ -136,6 +136,7 @@ import org.apache.commons.collections.Transformer;
                 Unfortunately, three cases occur of where to find the method_name: */
         	String methodName = "";
         	result = methodAST;
+   			AST argscopy = !arguments.isEmpty() ? makeFromList(arguments, #[ARGLIST_VALUES, "ARGLIST_VALUES"]) : null;
         	AST where2Insert = null;
         	switch (methodAST.getType()) {
         	case IDENTIFIER:
@@ -144,29 +145,39 @@ import org.apache.commons.collections.Transformer;
         		break;
         	case DOT:
         		where2Insert = methodAST;
-        		while ( where2Insert != null && where2Insert.getFirstChild() != null ) {
-					if ( where2Insert.getFirstChild().getType() == DOT ) {
-	                	/* 2. There is a chain of o1.o2....oN.call() */
-	                    where2Insert = where2Insert.getFirstChild();
-					} else if ( where2Insert.getFirstChild().getType() == IDENTIFIER ) {
-						/* 3. Found the call */
-						if ( where2Insert.getFirstChild().getFirstChild() == null &&
-						 		where2Insert.getFirstChild().getNextSibling() != null &&
-								where2Insert.getFirstChild().getNextSibling().getType() == IDENTIFIER) {
-							methodName = where2Insert.getFirstChild().getNextSibling().getText();
-							where2Insert.getFirstChild().setNextSibling(null);
-							break;
+        		if (where2Insert.getFirstChild() instanceof ObjectAST) {
+        			/* Now in methodAST.firstChild already the correct tree for accessing the
+        				subtree is present. */ 
+        			methodName = where2Insert.getFirstChild().getNextSibling().getText();
+        			/* Add the method call. */
+        			result.getFirstChild().setNextSibling(#([METHOD_CALL, methodName], argscopy)); 
+        			/* And prefix it with an unknown method tag. */
+        			return #([UKNOWN_METHOD, ""], result);
+        		} else {
+	        		while ( where2Insert != null && where2Insert.getFirstChild() != null ) {
+						if ( where2Insert.getFirstChild().getType() == DOT ) {
+		                	/* 2. There is a chain of o1.o2....oN.call() */
+		                    where2Insert = where2Insert.getFirstChild();
+						} else if ( where2Insert.getFirstChild().getType() == IDENTIFIER ) {
+							/* 3. Found the call */
+							if ( where2Insert.getFirstChild().getFirstChild() == null &&
+							 		where2Insert.getFirstChild().getNextSibling() != null &&
+									where2Insert.getFirstChild().getNextSibling().getType() == IDENTIFIER) {
+								methodName = where2Insert.getFirstChild().getNextSibling().getText();
+								where2Insert.getFirstChild().setNextSibling(null);
+								break;
+							} else {
+								log.error("Booom!!!");
+								where2Insert = null;
+								break;
+							}
 						} else {
-							log.error("Booom!!!");
+							log.error("Malformed tree: No method name in call.");
 							where2Insert = null;
 							break;
-						}
-					} else {
-						log.error("Malformed tree: No method name in call.");
-						where2Insert = null;
-						break;
-	                }
-				}
+		                }
+					}
+        		}
 				if ( methodName.isEmpty() ) {
                 	/* Error in tree construction. There should be a first child. */
 	               	log.error("Malformed tree: DOT w/o a first child.");
@@ -178,7 +189,6 @@ import org.apache.commons.collections.Transformer;
         		/* We have to quit here early, because we do not know how to proceed. */
         		return #([UKNOWN_METHOD, ""], #([METHOD_CALL, ""], methodAST));
         	}
-        	AST argscopy = !arguments.isEmpty() ? makeFromList(arguments, #[ARGLIST_VALUES, "ARGLIST_VALUES"]) : null;
 
 			/* Add the method call at the correct position. */
 			if ( where2Insert != null ) {
@@ -187,10 +197,9 @@ import org.apache.commons.collections.Transformer;
 			} else 
 				/* No insert position present, i.e., no base tree needed. */ 
 				result = #([UKNOWN_METHOD, ""], #([METHOD_CALL, methodName], argscopy));
-		}            	
+        }
         return result;
     }
-
 
 	protected AST translateArray(AST array, int lastStackSize) {
 		AST result;
