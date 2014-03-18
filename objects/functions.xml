@@ -418,17 +418,37 @@
     <method name="InStr" type="DINT">
         <arg type="DSTRING" />
         <arg type="DSTRING" />
+		<ast name="DOT">
+			<arg index="1" />
+			<ast name="METHOD_CALL" text="indexOf">
+				<ast name="ARGLIST_VALUES">
+					<arg index="2" />
+				</ast>
+			</ast>
+		</ast>
+		<!--
         <ast name="METHOD_CALL" text="stripos">
             <ast name="ARGLIST_VALUES">
                 <arg index="1" />
                 <arg index="2" />
             </ast>
         </ast>
+		-->
     </method>
     <method name="InStr" type="DINT">
         <arg type="DINT" />
         <arg type="DSTRING" />
         <arg type="DSTRING" />
+		<ast name="DOT">
+			<arg index="1" />
+			<ast name="METHOD_CALL" text="indexOf">
+				<ast name="ARGLIST_VALUES">
+					<arg index="2" />
+					<arg index="3" />
+				</ast>
+			</ast>
+		</ast>
+		<!--
         <ast name="METHOD_CALL" text="stripos">
             <ast name="ARGLIST_VALUES">
                 <arg index="2" />
@@ -436,6 +456,7 @@
                 <arg index="1" />
             </ast>
         </ast>
+		-->
     </method>
     <!--
     Problem:
@@ -560,31 +581,55 @@
 
     <method name="LCase" type="DSTRING">
         <arg type="DSTRING" />
+		<ast name="DOT">
+			<arg index="1" />
+			<ast name="METHOD_CALL" text="toLowerCase">
+			</ast>
+		</ast>
+		<!--
         <ast name="METHOD_CALL" text="strtolower">
             <ast name="ARGLIST_VALUES">
                 <arg index="1" />
             </ast>
         </ast>
+		-->
     </method>
 
     <method name="left" type="DSTRING">
         <arg type="DSTRING" />
         <arg type="DINT" />
+		<ast name="DOT">
+			<arg index="1" />
+			<ast name="METHOD_CALL" text="substring">
+				<ast name="ARGLIST_VALUES">
+					<ast name="DINT" text="0" />
+					<arg index="2" />
+				</ast>
+			</ast>
+		</ast>
+		<!--
         <ast name="METHOD_CALL" text="substr">
             <ast name="ARGLIST_VALUES">
                 <arg index="1" />
                 <arg index="2" />
             </ast>
         </ast>
+		-->
     </method>
 
     <method name="len" type="DINT">
         <arg type="DSTRING" />
+		<ast name="DOT">
+			<arg index="1" />
+			<ast name="IDENTIFIER" text="length" />
+		</ast>
+		<!--
         <ast name="METHOD_CALL" text="strlen">
             <ast name="ARGLIST_VALUES">
                 <arg index="1" />
             </ast>
         </ast>
+		-->
     </method>
 
     <method name="log" type="DINT">
@@ -936,11 +981,18 @@
 
     <method name="UCase" type="DSTRING">
         <arg type="DSTRING" />
+		<ast name="DOT">
+			<arg index="1" />
+			<ast name="METHOD_CALL" text="toUpperCase">
+			</ast>
+		</ast>
+		<!--
         <ast name="METHOD_CALL" text="strtoupper">
             <ast name="ARGLIST_VALUES">
                 <arg index="1" />
             </ast>
         </ast>
+		-->
     </method>
     <!-- WeekDay, WeekDayName, Year -->
 
