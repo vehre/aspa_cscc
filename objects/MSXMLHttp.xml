@@ -26,7 +26,18 @@
         </ast>
 	</constructor>
 	
+	
+	<!--
 	<property name="responseXML" type="DSTRING">
+		<read>
+			 <ast name="DOT">
+                <this />
+                <ast name="IDENTIFIER" text="responseXML" />
+            </ast>
+		</read>	
+	</property>
+	-->
+	<property name="responseXML" type="MSXMLDOM">
 		<read>
 			 <ast name="DOT">
                 <this />
