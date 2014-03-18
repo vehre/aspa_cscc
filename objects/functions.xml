@@ -89,10 +89,19 @@
     </method>
 
     <method name="cint" type="DINT">
+		<!--
         <arg type="DSTRING" />
         <ast name="CAST" text="int">
             <arg index="1" />
         </ast>
+		-->
+		<arg type="DSTRING" />
+		<ast name="METHOD_CALL" text="parseInt">
+			<ast name="ARGLIST_VALUES">
+				<arg index="1" />
+				<ast name="DINT" text="10"/>
+			</ast>
+		</ast>
     </method>
 
     <method name="clng" type="DINT">
