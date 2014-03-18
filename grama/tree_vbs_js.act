@@ -119,7 +119,7 @@ import org.apache.commons.collections.Transformer;
                         		clazz.getName(), new ASPObjectInstance(trans, clazz));
                     } else {
                         result = createObjectAST(CommonConstants.OBJECT,
-                        method.getName(), methodInstance);
+                        		method.getName(), methodInstance);
                     }
                 } else {
                     result = translateMember(method, methodInstance);
@@ -127,49 +127,67 @@ import org.apache.commons.collections.Transformer;
                 }
             }
         } else {
-            if (arguments.isEmpty()) {
-                result = #([UKNOWN_METHOD, ""], #([METHOD_CALL, ""], methodAST));
-            } else {
-                AST argcopy = makeFromList(arguments,
-                		#[ARGLIST_VALUES, "ARGLIST_VALUES"]);
-                /* Translate unknown identifiers that represent a function call into a function
-                	call. Unfortunately, three cases occur: */
-//                String name;
-//                if (methodAST.getFirstChild() != null ) {
-//	                switch (methodAST.getFirstChild().getType()) {
-//	                case DOT:
-//	                	/* 1. The function call is at the end of chain of derefs, i.e., o1.o2....oN.call()
-//	                		where N is at least 2. The issue here is, that the derefs o1 to oN are
-//	                		already in the style #(DOT #(DOT #(DOT o1, #(DOT o2, ... (#DOT oN, null)...)), call), arguments)
-//	                		and have to be translated accordingly.  */
-//	                    AST subTree = methodAST.getFirstChild();
-//	                    /* The function name is in the text field of the first's DOT 
-//	                    	second sibling. */
-//		                name = subTree.getNextSibling().getText();
-//		                /* While the deref chain is in the first's DOT first sibling (child). */
-//		                result = #([UKNOWN_METHOD, ""], 
-//								#([METHOD_CALL, name], subTree.getFirstChild(), argcopy));
-//						break;
-//					case IDENTIFIER:
-//						/* 2. The hierarchy is only object.call(), then the tree is:
-//							#(DOT #(DOT object, null), call), arguments) */
-//						name = methodAST.getFirstChild().getNextSibling().getText();
-//						String ident = methodAST.getFirstChild().getText();
-//						result = #([UKNOWN_METHOD, ""],
-//								#([METHOD_CALL, name], 
-//								#[IDENTIFIER, ident], argcopy));
-//						break;
-//					default:
-//						result = #([UKNOWN_METHOD, ""], result);
-//	                }
-//               } else {
-//                	/* or 3. no object is present at all, so that it is just a call. */
-//	               	name = methodAST.getText();
-//                	result = #([UKNOWN_METHOD, ""], #([METHOD_CALL, name], argcopy));	
-//                } 
-                result = #([UKNOWN_METHOD, ""], methodAST, argcopy);
-            }
-        }
+        	/* The method is not known.    
+        		Translate unknown identifiers that represent a function call into a function
+                call. The function call tree has to look like:
+                (UKNOWN_METHOD "" (METHOD_CALL "method_name" arguments null), null) or
+                (UKNOWN_METHOD "" (DOT .. (METHOD_CALL "method_name" arguments null), null)
+                
+                Unfortunately, three cases occur of where to find the method_name: */
+        	String methodName = "";
+        	result = methodAST;
+        	AST where2Insert = null;
+        	switch (methodAST.getType()) {
+        	case IDENTIFIER:
+        		/* 1. Plain function call. */
+        		methodName = methodAST.getText();
+        		break;
+        	case DOT:
+        		where2Insert = methodAST;
+        		while ( where2Insert != null && where2Insert.getFirstChild() != null ) {
+					if ( where2Insert.getFirstChild().getType() == DOT ) {
+	                	/* 2. There is a chain of o1.o2....oN.call() */
+	                    where2Insert = where2Insert.getFirstChild();
+					} else if ( where2Insert.getFirstChild().getType() == IDENTIFIER ) {
+						/* 3. Found the call */
+						if ( where2Insert.getFirstChild().getFirstChild() == null &&
+						 		where2Insert.getFirstChild().getNextSibling() != null &&
+								where2Insert.getFirstChild().getNextSibling().getType() == IDENTIFIER) {
+							methodName = where2Insert.getFirstChild().getNextSibling().getText();
+							where2Insert.getFirstChild().setNextSibling(null);
+							break;
+						} else {
+							log.error("Booom!!!");
+							where2Insert = null;
+							break;
+						}
+					} else {
+						log.error("Malformed tree: No method name in call.");
+						where2Insert = null;
+						break;
+	                }
+				}
+				if ( methodName.isEmpty() ) {
+                	/* Error in tree construction. There should be a first child. */
+	               	log.error("Malformed tree: DOT w/o a first child.");
+	               	where2Insert = null;
+                } 
+        		break;
+        	default:
+        		log.error("Unrecognized token type while processing unknown method. Token type is: " + methodAST.getType());
+        		/* We have to quit here early, because we do not know how to proceed. */
+        		return #([UKNOWN_METHOD, ""], #([METHOD_CALL, ""], methodAST));
+        	}
+        	AST argscopy = !arguments.isEmpty() ? makeFromList(arguments, #[ARGLIST_VALUES, "ARGLIST_VALUES"]) : null;
+
+			/* Add the method call at the correct position. */
+			if ( where2Insert != null ) {
+    			where2Insert.addChild(#([METHOD_CALL, methodName], argscopy)); 
+				result = #([UKNOWN_METHOD, ""], result); 
+			} else 
+				/* No insert position present, i.e., no base tree needed. */ 
+				result = #([UKNOWN_METHOD, ""], #([METHOD_CALL, methodName], argscopy));
+		}            	
         return result;
     }
 
