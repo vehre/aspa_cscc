@@ -451,7 +451,7 @@
 
     <method name="int" type="DINT">
         <arg type="DFLOAT" />
-        <ast name="METHOD_CALL" text="floor">
+        <ast name="METHOD_CALL" text="Math.floor">
             <ast name="ARGLIST_VALUES">
                 <arg index="1" />
             </ast>
@@ -462,9 +462,9 @@
         <arg type="DFLOAT" />
         <!-- floor(abs(arg)) * arg > 0 ? 1 : -1 -->
         <ast name="ASTERISK">
-            <ast name="METHOD_CALL" text="floor">
+            <ast name="METHOD_CALL" text="Math.floor">
                 <ast name="ARGLIST_VALUES">
-                    <ast name="METHOD_CALL" text="abs">
+                    <ast name="METHOD_CALL" text="Math.abs">
                         <ast name="ARGLIST_VALUES">
                             <arg index="1" />
                         </ast>
