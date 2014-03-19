@@ -232,7 +232,7 @@ public class AspStreamSelector extends TokenStreamSelector {
 		                	sb.append(t.getText());
 		                	sb.append(result.getText());
 	                	}
-	                	super.nextToken();
+	                	//super.nextToken();
 	                	/* Remove the vbs parser from the lexer stack. */
 	                	pop();
 	                	result = null;
