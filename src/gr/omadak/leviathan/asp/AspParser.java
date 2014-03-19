@@ -268,7 +268,7 @@ public class AspParser {
         } else {
 			currentFileName = file.getName();
             AspStreamSelector selector = new AspStreamSelector(file, baseDir,
-            sTable == null);
+            		sTable == null, false /* Add argument for switching non language asp directives on/off. */);
             VbsParser vbParser = null;
             JsParser  jsParser = null;
             VbsAbstractTreeParser vbtree = null;
@@ -521,7 +521,7 @@ public class AspParser {
                     String name = f.getName();
                     int lastDot = name.lastIndexOf('.');
                     result = lastDot > 0 && "asp".equalsIgnoreCase(
-                    name.substring(lastDot + 1));
+                    		name.substring(lastDot + 1));
                 }
                 return result;
             }

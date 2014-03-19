@@ -619,6 +619,9 @@ import org.apache.log4j.Logger;
     $setText(lang);
 }
 
+@lexer_unknown_control : {
+	$setType(HtmlLexerUtil.UNKNOWN_CONTROL);
+}
 
 @lexer_ws : {
     newline();

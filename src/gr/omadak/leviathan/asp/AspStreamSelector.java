@@ -58,6 +58,7 @@ public class AspStreamSelector extends TokenStreamSelector {
     private int pageLanguage = LEX_VB;
     private boolean foundEOF = false;
     private boolean languageDefined;
+	private boolean includeNonLanguageASPDirectives = true;
 
 
     private static class ICaseFileFilter implements FileFilter {
@@ -89,7 +90,7 @@ public class AspStreamSelector extends TokenStreamSelector {
     throws TokenStreamException {
         Token t = tokenNext();
         boolean firstHtml = true;
-        while (t.getType() == HtmlLexerUtil.HTML) {
+        while (t.getType() == HtmlLexerUtil.HTML ) {
             if (firstHtml) {
                 line_col[0] = t.getLine();
                 line_col[1] = t.getColumn();
@@ -113,12 +114,12 @@ public class AspStreamSelector extends TokenStreamSelector {
     private Token aspStart() throws TokenStreamException {
         Token result;
         pushScriptLexer(pageLanguage == LEX_VB
-        ? HtmlLexerUtil.VBS_START
-        : HtmlLexerUtil.JS_START);
+        		? HtmlLexerUtil.VBS_START
+        	    : HtmlLexerUtil.JS_START);
         Token next = tokenNext();
-        if (next.getType() == HtmlLexerUtil.LANGUAGE) {
-            if (utility.getLangType(next.getText())
-            == HtmlLexerUtil.VBS_START) {
+        switch (next.getType()) {
+        case HtmlLexerUtil.LANGUAGE: 
+            if (utility.getLangType(next.getText()) == HtmlLexerUtil.VBS_START) {
                 pageLanguage = LEX_VB;
             } else {
                 pageLanguage = LEX_JS;
@@ -131,9 +132,14 @@ public class AspStreamSelector extends TokenStreamSelector {
             //The @language directive should be the first
             //in an asp.Previus tokens are of no interest
             result = processHTML();
-		} else if (next.getType() == HtmlLexerUtil.ASP_END) {
+            break;
+        case HtmlLexerUtil.ASP_END:
 			result = processJsVb(next);
-		} else {
+			break;
+        case HtmlLexerUtil.UNKNOWN_CONTROL:
+        	result = next;
+        	break;
+		default:
             boolean isEq =
             (lexerType == LEX_VB && next.getType() == VbsTokenTypes.ASSIGN)
             || (lexerType == LEX_JS && next.getType() == JsTokenTypes.ASSIGN);
@@ -155,17 +161,17 @@ public class AspStreamSelector extends TokenStreamSelector {
         File[] files = dir.listFiles(new ICaseFileFilter(fileName, notLast));
         File result;
         switch (files.length) {
-            case 0 : result = null; break;
-            case 1 : result = files[0]; break;
-            default :
-                result = null; //make compiler stop complaining
-                for (int i = 0; i < files.length; i++) {
-                    result = files[i];
-                    if (result.getName().equals(fileName)) {
-                        break;
-                    }
+        case 0 : result = null; break;
+        case 1 : result = files[0]; break;
+        default :
+            result = null; //make compiler stop complaining
+            for (int i = 0; i < files.length; i++) {
+                result = files[i];
+                if (result.getName().equals(fileName)) {
+                    break;
                 }
-                break;
+            }
+            break;
         }
         return result;
     }
@@ -214,50 +220,62 @@ public class AspStreamSelector extends TokenStreamSelector {
         Token result = null;
         StringBuffer sb = new StringBuffer();
         int[] line_col = new int[2];
-        Token t = grabHTML(sb, line_col);
+        Token t;
         int initialLexerType = lexerType;
-        switch (t.getType()) {
-            case HtmlLexerUtil.ASP_START:
-                result = aspStart();
-                break;
-            case HtmlLexerUtil.JS_START:
-                pushScriptLexer(HtmlLexerUtil.JS_START);
-                if (initialLexerType != LEX_JS && vbsLexer != null) {
-                    result = createToken(Token.EOF_TYPE, null, t.getLine(),
-                    t.getColumn());
-                } else {
-                    result = createToken(JsTokenTypes.NEW_LINE,
-                    null, t.getLine(),t.getColumn());
-                }
-                break;
-            case HtmlLexerUtil.VBS_START:
-                pushScriptLexer(HtmlLexerUtil.VBS_START);
-                if (initialLexerType != LEX_VB && jsLexer != null) {
-                    result = createToken(Token.EOF_TYPE, null, t.getLine(),
-                    t.getColumn());
-                } else {
-                    result = createToken(VbsTokenTypes.STATEMENT_END,
-                    null, t.getLine(),t.getColumn());
-                }
-                break;
-            case HtmlLexerUtil.INCLUDE:
-                Object[] include = utility.getLastInclude();
-                File dir = HtmlLexerUtil.TYPE_FILE.equals(include[0])
-                ? currentFile.getParentFile()
-                : baseDir;
-                File included = getFile(dir, include[1].toString());
-                result = createToken(pageLanguage == LEX_JS
-                ? JsTokenTypes.INCLUDE : VbsTokenTypes.INCLUDE,
-                included == null ? include[1].toString()
-                : included.getAbsolutePath(), t.getColumn(), t.getLine());
-                break;
-            case Token.EOF_TYPE:
-                foundEOF = true;
-                result = t;
-                break;
-            default: throw new RuntimeException("Unexpected token:"
-            + t.toString());
-        }
+        do {
+        	t = grabHTML(sb, line_col);
+	        switch (t.getType()) {
+	            case HtmlLexerUtil.ASP_START:
+	                result = aspStart();
+	                if ( result.getType() == HtmlLexerUtil.UNKNOWN_CONTROL ) {
+	                	if ( includeNonLanguageASPDirectives  ) {
+		                	sb.append(t.getText());
+		                	sb.append(result.getText());
+	                	}
+	                	super.nextToken();
+	                	/* Remove the vbs parser from the lexer stack. */
+	                	pop();
+	                	result = null;
+	                }
+	                break;
+	            case HtmlLexerUtil.JS_START:
+	                pushScriptLexer(HtmlLexerUtil.JS_START);
+	                if (initialLexerType != LEX_JS && vbsLexer != null) {
+	                    result = createToken(Token.EOF_TYPE, null, t.getLine(),
+	                    t.getColumn());
+	                } else {
+	                    result = createToken(JsTokenTypes.NEW_LINE,
+	                    null, t.getLine(),t.getColumn());
+	                }
+	                break;
+	            case HtmlLexerUtil.VBS_START:
+	                pushScriptLexer(HtmlLexerUtil.VBS_START);
+	                if (initialLexerType != LEX_VB && jsLexer != null) {
+	                    result = createToken(Token.EOF_TYPE, null, t.getLine(),
+	                    		t.getColumn());
+	                } else {
+	                    result = createToken(VbsTokenTypes.STATEMENT_END,
+	                    null, t.getLine(),t.getColumn());
+	                }
+	                break;
+	            case HtmlLexerUtil.INCLUDE:
+	                Object[] include = utility.getLastInclude();
+	                File dir = HtmlLexerUtil.TYPE_FILE.equals(include[0])
+	                		? currentFile.getParentFile()
+	                				: baseDir;
+	                File included = getFile(dir, include[1].toString());
+	                result = createToken(pageLanguage == LEX_JS
+	                		? JsTokenTypes.INCLUDE : VbsTokenTypes.INCLUDE,
+	                				included == null ? include[1].toString()
+	                : included.getAbsolutePath(), t.getColumn(), t.getLine());
+	                break;
+	            case Token.EOF_TYPE:
+	                foundEOF = true;
+	                result = t;
+	                break;
+	            default: throw new RuntimeException("Unexpected token:"+ t.toString());
+	        }
+        } while ( result == null );
         int i = 0;
         //check if everything is just blanks
         while (i < sb.length() && (sb.charAt(i) == 13 || sb.charAt(i) == 10)) {
@@ -266,8 +284,8 @@ public class AspStreamSelector extends TokenStreamSelector {
         if (sb.length() > i) {
             storedTokens.add(result);
             result = createToken(pageLanguage == LEX_JS
-            ? JsTokenTypes.HTML : VbsTokenTypes.HTML, sb.toString(),
-            line_col[0], line_col[1]);
+            		? JsTokenTypes.HTML : VbsTokenTypes.HTML, sb.toString(),
+            				line_col[0], line_col[1]);
         }
         return result;
     }
@@ -355,9 +373,10 @@ public class AspStreamSelector extends TokenStreamSelector {
     }
 
 
-    public AspStreamSelector(File f, File baseDir, boolean findLang)
+    public AspStreamSelector(File f, File baseDir, boolean findLang, boolean incNonLangDirectives)
     throws TokenStreamException {
         super();
+        includeNonLanguageASPDirectives = incNonLangDirectives;
         try {
             currentFile = f;
             fis = new FileInputStream(currentFile);
@@ -382,8 +401,8 @@ public class AspStreamSelector extends TokenStreamSelector {
     }
 
 
-    public AspStreamSelector(File f, File baseDir) throws TokenStreamException {
-        this(f, baseDir, true);
+    public AspStreamSelector(File f, File baseDir, boolean incNonLangDirectives) throws TokenStreamException {
+        this(f, baseDir, true, incNonLangDirectives);
     }
 
 
