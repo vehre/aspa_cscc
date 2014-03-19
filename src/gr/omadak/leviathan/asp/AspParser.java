@@ -314,6 +314,10 @@ public class AspParser {
 	                                mergeSymbols(holder, sTable);
 	                            }
 	                        }
+                    	} else {
+                    		vbtree.setFunctions(vbParser.getFunctions());
+                            vbtree.setClasses(vbParser.getClasses());
+                            vbtree.setGlobalIds(vbParser.getGlobalIds());
                     	}
                         vbtree.start_rule(node);
                         if (generateCode) {
