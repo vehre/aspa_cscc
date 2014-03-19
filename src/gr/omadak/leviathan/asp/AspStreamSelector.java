@@ -231,8 +231,8 @@ public class AspStreamSelector extends TokenStreamSelector {
 	                	if ( includeNonLanguageASPDirectives  ) {
 		                	sb.append(t.getText());
 		                	sb.append(result.getText());
-	                	}
-	                	//super.nextToken();
+	                	} else
+	                		LOG.info("Discarding asp directive: "+ result.getText());
 	                	/* Remove the vbs parser from the lexer stack. */
 	                	pop();
 	                	result = null;
