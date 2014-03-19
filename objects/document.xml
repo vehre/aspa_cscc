@@ -19,6 +19,23 @@
 <class name="document" dependent="true">
 	<!-- ugly hack to embed MSDOMNode -->
 	<class name="MSDOMNode" dependant="true">
+		<property name="Value" type="DSTRING">
+			<read>
+				 <ast name="DOT">
+					<this />
+					<ast name="IDENTIFIER" text="value" />
+				</ast>
+			</read>
+		</property>
+		<method name="focus" type="VOID">
+			<read>
+				 <ast name="DOT">
+					<this />
+					<ast name="METHOD_CALL" text="focus" />
+				</ast>
+			</read>
+		</method>
+		
 		<method name="loadmovie" type="DSTRING">
 			<arg type="DINT"/>
 			<arg type="DSTRING"/>
@@ -51,6 +68,7 @@
 			</ast>
 		</method>
 	</class>
+	
   <method name="all" type="MSDOMNode">
 	<arg type="DSTRING" />
 	<ast name="DOT">

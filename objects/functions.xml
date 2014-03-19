@@ -28,11 +28,14 @@
 
     <method name="asc" type="DINT">
         <arg type="DSTRING" />
-        <ast name="METHOD_CALL" text="ord">
-            <ast name="ARGLIST_VALUES">
-                <arg index="1" />
-            </ast>
-        </ast>
+		<ast name="DOT">
+			<this />
+			<ast name="METHOD_CALL" text="charCodeAt">
+				<ast name="ARGLIST_VALUES">
+					<ast name="DINT" text="0" />
+				</ast>
+			</ast>
+		</ast>
     </method>
 
     <method name="atn" type="DINT">
@@ -465,11 +468,11 @@
         <arg type="DSTRING" />
         <arg type="DSTRING" />
 		<ast name="DOT">
-			<arg index="1" />
+			<arg index="2" />
 			<ast name="METHOD_CALL" text="indexOf">
 				<ast name="ARGLIST_VALUES">
-					<arg index="2" />
 					<arg index="3" />
+					<arg index="1" />
 				</ast>
 			</ast>
 		</ast>
