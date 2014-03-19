@@ -21,5 +21,18 @@
   			<this />
 			<ast name="METHOD_CALL" text="focus" />
 		</ast>
-  </method>
+	</method>
+	<method name="scrollBy" type="VOID">
+		<arg type="DINT" />
+		<arg type="DINT" />
+  		<ast name="DOT">
+  			<this />
+			<ast name="METHOD_CALL" text="scrollBy">
+				<ast name="ARGLIST_VALUES">
+					<arg index="1" />
+					<arg index="2" />
+				</ast>
+			</ast>
+		</ast>
+	</method>
 </class>

@@ -82,7 +82,7 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
 @ge : { out.print(" >= "); }
 @eq : { out.print(" == "); }
 @assign : { out.print(" = "); }
-@cassign : { out.print(" .= "); }
+@cassign : { out.print(" += "); }
 @passign : { out.print(" += "); }
 @minassign : { out.print(" -= "); }
 @modassign : { out.print(" %= "); }

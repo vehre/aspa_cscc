@@ -19,7 +19,7 @@
     <!-- just convert name case -->
     <method name="abs" type="DINT">
         <arg type="DINT" />
-        <ast name="METHOD_CALL" text="abs">
+        <ast name="METHOD_CALL" text="Math.abs">
             <ast name="ARGLIST_VALUES">
                 <arg index="1" />
             </ast>
@@ -73,10 +73,18 @@
     </method>
 
     <method name="cdbl" type="DFLOAT">
+		<!--
         <arg type="DSTRING" />
         <ast name="CAST" text="float">
             <arg index="1" />
         </ast>
+		-->
+		<arg type="DSTRING" />
+		<ast name="METHOD_CALL" text="parseFloat">
+			<ast name="ARGLIST_VALUES">
+				<arg index="1" />
+			</ast>
+		</ast>
     </method>
 
     <method name="chr" type="DSTRING">
@@ -105,15 +113,24 @@
     </method>
 
     <method name="clng" type="DINT">
+		<!--
         <arg type="DSTRING" />
         <ast name="CAST" text="int">
             <arg index="1" />
         </ast>
+		-->
+		<arg type="DSTRING" />
+		<ast name="METHOD_CALL" text="parseInt">
+			<ast name="ARGLIST_VALUES">
+				<arg index="1" />
+				<ast name="DINT" text="10"/>
+			</ast>
+		</ast>
     </method>
 
     <method name="cos" type="DINT">
         <arg type="DSTRING" />
-        <ast name="METHOD_CALL" text="cos">
+        <ast name="METHOD_CALL" text="Math.cos">
             <ast name="ARGLIST_VALUES">
                 <arg index="1" />
             </ast>
@@ -121,10 +138,18 @@
     </method>
 
     <method name="csng" type="DFLOAT">
+		<!--
         <arg type="DSTRING" />
         <ast name="CAST" text="float">
             <arg index="1" />
         </ast>
+		-->
+		<arg type="DSTRING" />
+		<ast name="METHOD_CALL" text="parseFloat">
+			<ast name="ARGLIST_VALUES">
+				<arg index="1" />
+			</ast>
+		</ast>
     </method>
 
     <method name="cstr" type="DSTRING">
