@@ -752,8 +752,8 @@ LANGUAGE
     	  '"' i:IDENTIFIER '"' <lexer_langi>
 	      | j:IDENTIFIER <lexer_langj>
   	  ) <lexer_langend>
-  	  |
-  	  id:IDENTIFIER ({LA(2) != '>'}? ~'%')* "%>" <lexer_unknown_control>
+  	  //| "include" (IGNORED!)* ("file" (IGNORED!)* '=' (IGNORED!)* 
+  	  | id:IDENTIFIER ({LA(2) != '>'}? ~'%')* "%>" <lexer_unknown_control>
   	  )
   (IGNORED!)* 
   ;
