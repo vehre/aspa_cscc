@@ -30,7 +30,8 @@ public class HtmlLexerUtil {
     public final static int LANGUAGE = 30008;
     public final static int JS_END = 30009;
     public final static int VBS_END = 30010;
-
+    public final static int UNKNOWN_CONTROL = 30011;
+    
     private final static String KEY_SCRIPT = "script";
     private final static String KEY_LANG = "language";
     private final static String KEY_RUNAT = "runat";

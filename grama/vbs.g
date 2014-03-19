@@ -747,12 +747,15 @@ VBS_END : "</script>" <lexer_vbsend>;
 LANGUAGE
   <lexer_langinit>
   :
-  '@' (IGNORED!)* "language" (IGNORED!)* '=' (IGNORED!)*
-  (
-      '"' i:IDENTIFIER '"' <lexer_langi>
-      | j:IDENTIFIER <lexer_langj>
-  )
-  (IGNORED!)* <lexer_langend>
+  '@' (IGNORED!)* ("language" (IGNORED!)* '=' (IGNORED!)*
+	  (
+    	  '"' i:IDENTIFIER '"' <lexer_langi>
+	      | j:IDENTIFIER <lexer_langj>
+  	  ) <lexer_langend>
+  	  |
+  	  id:IDENTIFIER ({LA(2) != '>'}? ~'%')* "%>" <lexer_unknown_control>
+  	  )
+  (IGNORED!)* 
   ;
 
 
