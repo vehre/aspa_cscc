@@ -167,6 +167,7 @@ expression
   | NON_APPLICABLE_HEADER <nhead>
   | INVALID_OBJECT <inv_obj>
   | CONSTANT <const>
+  | EMBEDDED_ASP <embedded_asp>
   ;
 
 

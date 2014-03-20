@@ -229,7 +229,7 @@ import org.apache.commons.collections.Transformer;
                 #[GLOBALS, "GLOBALS"]);
                 elements.add(globalsAST);
             }
-            if (!valueAsignedForLevel()) {
+            if (!valueAssignedForLevel()) {
                 AST declExpr =
                 #([EXPR, "EXPR"],
                     ([ASSIGN, "="],
@@ -262,7 +262,7 @@ import org.apache.commons.collections.Transformer;
 
 
     protected AST exitFunction() {
-        AST result = valueAsignedForLevel()
+        AST result = valueAssignedForLevel()
         ? #([RETURN, "return"],
                     #([EXPR, "EXPR"],
                     [IDENTIFIER, FUNCTION_RESULT])

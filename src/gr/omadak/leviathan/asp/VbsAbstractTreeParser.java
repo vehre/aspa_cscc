@@ -579,7 +579,7 @@ public abstract class VbsAbstractTreeParser extends antlr.TreeParser implements
 		}
 	}
 
-	protected boolean valueAsignedForLevel() {
+	protected boolean valueAssignedForLevel() {
 		Integer key = new Integer(cLevel);
 		Integer val = (Integer) levelList.get(key);
 		return val != null && (val.intValue() & 1) == 1;

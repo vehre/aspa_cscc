@@ -640,6 +640,7 @@ primaryExpression
   | id:IDENTIFIER <set_lastid>
   | NEW^ IDENTIFIER
   | LPAREN^ relationalImpExpression RPAREN!
+  | EMBEDDED_ASP
   ;
 
 
@@ -714,6 +715,7 @@ COMMA : ',' ;
 LPAREN : '(' ;
 RPAREN : ')' ;
 
+EMBEDDED_ASP : "<%" ({LA(2) != '>'}? ~'%')* "%>";
 
 /* Operators */
 
@@ -734,15 +736,11 @@ COLON : ':';
 
 CONTINUE_STAT : '_' (WS!)? <lexer_lasttoken_stat>;
 
-
 IDENTIFIER_TYPES : <lexer_store_last> id:IDENTIFIER <lexer_identifier>;
-
 
 ASP_END : "%>" <lexer_aspend>;
 
-
 VBS_END : "</script>" <lexer_vbsend>;
-
 
 LANGUAGE
   <lexer_langinit>
