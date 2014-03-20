@@ -29,7 +29,7 @@
     <method name="asc" type="DINT">
         <arg type="DSTRING" />
 		<ast name="DOT">
-			<this />
+			<arg index="1" />
 			<ast name="METHOD_CALL" text="charCodeAt">
 				<ast name="ARGLIST_VALUES">
 					<ast name="DINT" text="0" />

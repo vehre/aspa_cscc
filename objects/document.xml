@@ -28,12 +28,10 @@
 			</read>
 		</property>
 		<method name="focus" type="VOID">
-			<read>
-				 <ast name="DOT">
-					<this />
-					<ast name="METHOD_CALL" text="focus" />
-				</ast>
-			</read>
+			<ast name="DOT">
+				<this />
+				<ast name="METHOD_CALL" text="focus" />
+			</ast>
 		</method>
 		
 		<method name="loadmovie" type="DSTRING">
