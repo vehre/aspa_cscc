@@ -846,22 +846,44 @@
 
     <method name="Split" type="ARRAY">
         <arg type="DSTRING" />
+		<ast name="DOT">
+			<arg index="1" />
+			<ast name="METHOD_CALL" text="split">
+			</ast>
+		</ast>
+		<!--
+		
         <ast name="METHOD_CALL" text="explode">
             <ast name="ARGLIST_VALUES">
                 <ast name="DSTRING" text=" " />
                 <arg index="1" />
             </ast>
         </ast>
+		-->
     </method>
     <method name="Split" type="ARRAY">
         <arg type="DSTRING" />
         <arg type="DSTRING" />
+		
+		
+		<ast name="DOT">
+			<arg index="1" />
+			<ast name="METHOD_CALL" text="split">
+				<ast name="ARGLIST_VALUES">
+					<arg index="2" />
+				</ast>
+			</ast>
+		</ast>
+		<!--
+		
         <ast name="METHOD_CALL" text="explode">
             <ast name="ARGLIST_VALUES">
                 <arg index="2" />
                 <arg index="1" />
             </ast>
         </ast>
+		
+		-->
     </method>
     <method name="Split" type="ARRAY">
         <arg type="DSTRING" />
@@ -1026,10 +1048,12 @@
 
     <method name="Array" type="ARRAY">
         <args />
-        <ast name="METHOD_CALL" text="array">
-            <ast name="ARGLIST_VALUES">
-                <args />
-            </ast>
+        <ast name="NEW">
+			<ast name="METHOD_CALL" text="Array">
+				<ast name="ARGLIST_VALUES">
+					<args />
+				</ast>
+			</ast>
         </ast>
     </method>
 

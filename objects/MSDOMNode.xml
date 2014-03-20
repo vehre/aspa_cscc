@@ -17,6 +17,54 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 -->
 <class name="MSDOMNode" dependant="true">
+	<property name="Value" type="DSTRING">
+		<read>
+			 <ast name="DOT">
+				<this />
+				<ast name="IDENTIFIER" text="value" />
+			</ast>
+		</read>
+	</property>
+	<property name="ReadOnly" type="DBOOL">
+		<read>
+			 <ast name="DOT">
+				<this />
+				<ast name="IDENTIFIER" text="readonly" />
+			</ast>
+		</read>
+		<write>
+			 <ast name="DOT">
+				<this />
+				<ast name="IDENTIFIER" text="readonly" />
+			</ast>
+		</write>
+	</property>
+	<method name="Focus" type="VOID">
+		<ast name="DOT">
+			<this />
+			<ast name="METHOD_CALL" text="focus" />
+		</ast>
+	</method>
+	<method name="Select" type="VOID">
+		<ast name="DOT">
+			<this/>
+			<ast name="METHOD_CALL" text="select">
+			</ast>
+		</ast>
+	</method>
+	<method name="getAttribute" type="DSTRING">
+		<arg type="DSTRING"/>
+		<ast name="DOT">
+			<this/>
+			<ast name="METHOD_CALL" text="getAttribute">
+			  <ast name="ARGLIST_VALUES">
+				<arg index="1" />
+			  </ast>
+			</ast>
+		</ast>
+	</method>
+	
+	<!-- Flash Element functions -->
 	<method name="loadmovie" type="DSTRING">
 		<arg type="DINT"/>
 		<arg type="DSTRING"/>
@@ -37,14 +85,17 @@
 			</ast>
 		</ast>
 	</method>
-	<method name="getAttribute" type="DSTRING">
-		<arg type="DSTRING"/>
+	<method name="Rewind" type="VOID">
 		<ast name="DOT">
 			<this/>
-			<ast name="METHOD_CALL" text="getAttribute">
-			  <ast name="ARGLIST_VALUES">
-				<arg index="1" />
-			  </ast>
+			<ast name="METHOD_CALL" text="Rewind">
+			</ast>
+		</ast>
+	</method>
+	<method name="StopPlay" type="VOID">
+		<ast name="DOT">
+			<this/>
+			<ast name="METHOD_CALL" text="StopPlay">
 			</ast>
 		</ast>
 	</method>
