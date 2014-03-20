@@ -109,7 +109,6 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
 	if ( #OBJECT_RET instanceof ObjectAST ) {
 		ObjectAST oAST = (ObjectAST) #OBJECT_RET;
 		expression(oAST.getInstance().getInstance());
-		//out.print(".");
 	} else 
 		out.print(#OBJECT_RET.getText()); 
 }
@@ -117,7 +116,6 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
 	if ( #OBJECT instanceof ObjectAST ) {
 		ObjectAST oAST = (ObjectAST) #OBJECT;
 		expression(oAST.getInstance().getInstance());
-		//out.print(".");
 	} else 
 		out.print(#OBJECT.getText()); 
 }
@@ -249,32 +247,23 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
     out.incLevel();
 }
 @glob_init : {
-    boolean firstGlobal = true;
-    out.print("global ");
-    hasGlobals = true;
+	LOG.error("GLOBAL node found in function. This should not happen in vbscript to javascript conversion.");
 }
 @id_glob : {
-    if (!firstGlobal) {
-        out.print(", ");
-    } else {
-        firstGlobal = false;
-    }
-    out.print(#IDENTIFIER.getText());
+	LOG.error("Global identifier: '" + #IDENTIFIER.getText() + "' declared.");
 }
-@func_end : {
-    if (hasGlobals) {
-        out.println(";");
-    }
-}
+
+@func_end : !
+
 @nhead : {
-    out.print("/*Unsupported Header*/\""
-    + #NON_APPLICABLE_HEADER.getText() + "\"");
+    out.print("/*Unsupported Header*/\"" + #NON_APPLICABLE_HEADER.getText() + "\"");
 }
 @inv_obj : {
     out.print("/*Unknown object*/\""
     + #INVALID_OBJECT.getText() + "\"");
 }
 @const : { out.print(#CONSTANT.getText()); }
+@embedded_asp : { out.print(#EMBEDDED_ASP.getText()); }
 @lp : { out.print('('); }
 @lp_end : { out.print(')'); }
 

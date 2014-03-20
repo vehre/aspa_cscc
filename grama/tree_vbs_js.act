@@ -289,18 +289,14 @@ import org.apache.commons.collections.Transformer;
             if (fList != null) {
                 elements.add(fList);
             }
-            List globals = currentFunction.getUsedGlobals();
-            if (!globals.isEmpty()) {
-                AST globalsAST = makeFromList(transform(globals),
-                #[GLOBALS, "GLOBALS"]);
-                elements.add(globalsAST);
-            }
-            if (!valueAsignedForLevel()) {
+            if (!valueAssignedForLevel()) {
                 AST declExpr =
-                #([EXPR, "EXPR"],
-                    ([ASSIGN, "="],
-                        [IDENTIFIER, FUNCTION_RESULT],
-                        [NULL, "null"]
+                #([VAR, "var" ], 
+                	([EXPR, "EXPR"],
+                    	([ASSIGN, "="],
+                        	[IDENTIFIER, FUNCTION_RESULT],
+                        	[NULL, "null"]
+                        )
                     )
                 );
                 elements.add(declExpr);
@@ -328,7 +324,7 @@ import org.apache.commons.collections.Transformer;
 
 
     protected AST exitFunction() {
-        AST result = valueAsignedForLevel()
+        AST result = valueAssignedForLevel()
         ? #([RETURN, "return"],
                     #([EXPR, "EXPR"],
                     [IDENTIFIER, FUNCTION_RESULT])
@@ -525,14 +521,14 @@ import org.apache.commons.collections.Transformer;
         this_type = ASSIGN;
     }
     boolean functionAssign = currentFunction != null
-    && #eq_ex1.getType() == IDENTIFIER
-    && FUNCTION_RESULT.equals(#eq_ex1.getText());
+	    && #eq_ex1.getType() == IDENTIFIER
+    	&& FUNCTION_RESULT.equals(#eq_ex1.getText());
     if (functionAssign) {
         setAssignement();
     }
     boolean isAssign = this_type == ASSIGN;
     boolean areObjects = #eq_ex1 instanceof ObjectAST
-    || #eq_ex2 instanceof ObjectAST;
+	    || #eq_ex2 instanceof ObjectAST;
     if (isAssign && areObjects) {
         if (#eq_ex1.getType() == IDENTIFIER) {
             AST ast = handleIdObject(#eq_ex1, (ObjectAST) #eq_ex2);
@@ -947,13 +943,13 @@ typeStack.push(new Integer(DINT));
 @id : {
     if (localFunctions != null) {
         if (localFunctions.containsKey(#IDENTIFIER.getText())
-        && (currentFunction == null
-        || !currentFunction.getName().equals(#IDENTIFIER.getText()))) {
+     		   && (currentFunction == null
+        		|| !currentFunction.getName().equals(#IDENTIFIER.getText()))) {
             #IDENTIFIER.setType(METHOD_CALL);
         } else if (currentFunction != null) {
             if (currentFunction.getName().equals(#IDENTIFIER.getText())
-            || (currentProperty != null && currentProperty.getName().equals(
-            #IDENTIFIER.getText()))) {
+            		|| (currentProperty != null && currentProperty.getName().equals(
+            			#IDENTIFIER.getText()))) {
                 #IDENTIFIER.setText(FUNCTION_RESULT);
             }
         }
@@ -1382,7 +1378,7 @@ typeStack.push(new Integer(DINT));
     ## = exitFunction();
 }
 
-@nested : { cLevel++; }
+@nested : { cLevel++; } 
 @nested_end : { cLevel--; }
 
 @include : {

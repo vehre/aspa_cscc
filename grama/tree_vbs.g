@@ -40,23 +40,11 @@ start_rule
   statements
   ;
 
-
-sub_statement
+statements
+  <statements_init>
   :
-  #(s:SUB <sub_decl> statements <sub_end>)
+  !(stm:statement <statement>)*
   ;
-
-function_statement
-  :
-  <tfunc> #(f:FUNCTION <func_decl> fst:statements <func_end>)
-  ;
-
-
-sub_func
-  :
-  sub_statement | function_statement
-  ;
-
 
 statement
   <init_stat>
@@ -88,6 +76,20 @@ statement
   | nested <nested_end>
   ;
 
+sub_func
+  :
+  sub_statement | function_statement
+  ;
+
+sub_statement
+  :
+  #(s:SUB <sub_decl> statements <sub_end>)
+  ;
+
+function_statement
+  :
+  <tfunc> #(f:FUNCTION <func_decl> fst:statements <func_end>)
+  ;
 
 nested
   <nested>
@@ -177,13 +179,6 @@ case_else
   #(cel:CASE_ELSE st:statements <case_else_end>)
   ;
 
-
-statements
-  <statements_init>
-  :
-  !(stm:statement <statement>)*
-  ;
-
 s_decl
   :
   #(ASSIGN sub_s_decl expr) | sub_s_decl
@@ -256,6 +251,7 @@ expression
   | FALSE
   | EMPTY
   | NULL
+  | EMBEDDED_ASP
   |! NOTHING <nothing>
   ;
 
