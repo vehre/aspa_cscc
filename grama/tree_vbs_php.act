@@ -367,7 +367,7 @@ import org.apache.commons.collections.Transformer;
     && #eq_ex1.getType() == IDENTIFIER
     && FUNCTION_RESULT.equals(#eq_ex1.getText());
     if (functionAssign) {
-        setAssignement();
+        setAssignment();
     }
     boolean isAssign = this_type == ASSIGN;
     boolean areObjects = #eq_ex1 instanceof ObjectAST

@@ -83,7 +83,7 @@ public abstract class UserDefinedMethod extends GenericMethod {
     }
 
     /**
-    * Checks if the method contains an initilized
+    * Checks if the method contains an initialized
     * variable which contains an Object reference
     * @param name is the name of the variable
     * @return true if the method contains a variable
@@ -107,7 +107,18 @@ public abstract class UserDefinedMethod extends GenericMethod {
         && localObjects.containsKey(name);
     }
 
-
+    /**
+    * Get the type of the local object. 
+    * @param name is the name of the variable
+    * @return The type of the variable, or unknown_type, if the variable is not present.
+    */
+    public int getVariableType(String name) {
+    	if ( localObjects == null)
+    		return CommonConstants.UKNOWN_TYPE; 
+    	Object obj = localObjects.get(name);
+        return obj == null ? CommonConstants.UKNOWN_TYPE : ((Integer) obj).intValue();
+    }
+    
 	private void place(String name, Object obj, boolean local) {
 		if (local) {
 			if (localObjects == null) {
@@ -199,7 +210,6 @@ public abstract class UserDefinedMethod extends GenericMethod {
         }
         return result;
     }
-
 
     /**
 	 * Generates the AST of the method call

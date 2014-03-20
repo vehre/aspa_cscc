@@ -54,6 +54,12 @@ import org.apache.commons.collections.Transformer;
     OBJECT_ATTRIBUTE; BXOR; BOR; BAND; BNOT; CONSTRUCTOR;
 @init :
 {
+	/** The current nesting level of function definitions. 
+		Increase on entering a function or sub body, decreased on leave. */
+	private int functionNestingLevel = 0;
+	/** Set the i'th bit, if the function on the level returns a value. */
+	private int functionReturnsMask = 0;
+	
     protected AST createNode(int type, AST left, AST right) {
         try {
 			String label = _tokenNames[type];
@@ -232,6 +238,11 @@ import org.apache.commons.collections.Transformer;
         return out;
     }
 
+	protected void setAssignment() {
+		super.setAssignment();
+		functionReturnsMask = functionReturnsMask | (1<< functionNestingLevel);	
+	}
+
     protected void makeSub(AST subRoot) {
         AST fList;
         List args = currentFunction.getArgTypes();
@@ -289,16 +300,33 @@ import org.apache.commons.collections.Transformer;
             if (fList != null) {
                 elements.add(fList);
             }
-            if (!valueAssignedForLevel()) {
+            /* Check, if the function name has been assigned to. */
+            if ( (functionReturnsMask & (1<< functionNestingLevel))> 0) {
+            	/* Compute the type of the function_result and create a suitable initializer. */
+            	AST initializer;
+            	switch (currentFunction.getVariableType(VbsAbstractTreeParser.FUNCTION_RESULT)) {
+				case DSTRING:
+					initializer = #[DSTRING, ""];
+					break;
+				case DFLOAT:
+					initializer = #[DFLOAT, "0.0"];
+					break;
+				case DINT:
+					initializer = #[DINT, "0"];
+					break;
+				default:
+					initializer = #[NULL, "null"];
+					break;	
+				}					
                 AST declExpr =
-                #([VAR, "var" ], 
-                	([EXPR, "EXPR"],
-                    	([ASSIGN, "="],
-                        	[IDENTIFIER, FUNCTION_RESULT],
-                        	[NULL, "null"]
-                        )
-                    )
-                );
+	                #([VAR, "var" ], 
+	                	([EXPR, "EXPR"],
+	                    	([ASSIGN, "="],
+	                        	[IDENTIFIER, FUNCTION_RESULT],
+	                        	initializer
+	                        )
+	                    )
+	                );
                 elements.add(declExpr);
             }
             AST stm = statements;
@@ -306,7 +334,7 @@ import org.apache.commons.collections.Transformer;
             while ((stm = stm.getNextSibling()) != null) {
                 elements.add(stm);
             }
-            if (!exitForLevel()) {
+            if ( (functionReturnsMask & (1<< functionNestingLevel))> 0 ) {
                 AST retExpr =
                 #([RETURN, "return"],
                     ([EXPR, "EXPR"],
@@ -319,17 +347,19 @@ import org.apache.commons.collections.Transformer;
             #[funcRoot.getType(), funcRoot.getText()]);
         }
         currentFunction = null;
+        /* Remove the marker, that the function on this level returns a value. */
+        functionReturnsMask = functionReturnsMask & ~(1<< functionNestingLevel);
         return result;
     }
 
 
     protected AST exitFunction() {
-        AST result = valueAssignedForLevel()
-        ? #([RETURN, "return"],
-                    #([EXPR, "EXPR"],
-                    [IDENTIFIER, FUNCTION_RESULT])
-            )
-        : #([RETURN, "return"]);
+        AST result = (functionReturnsMask & (1<< functionNestingLevel))> 0
+	        ? #([RETURN, "return"],
+    	                #([EXPR, "EXPR"],
+	                    [IDENTIFIER, FUNCTION_RESULT])
+	            )
+	        : #([RETURN, "return"]);
         setExit();
         return result;
     }
@@ -352,7 +382,7 @@ import org.apache.commons.collections.Transformer;
 					}
 				}
 			}
-			result = new ASPObjectInstance(oAST /*inst.getInstance()*/, clazz);
+			result = new ASPObjectInstance(oAST, clazz);
 		} else if (ast.getType() == IDENTIFIER) {
 			String className = ast.getText();
 			if (OBJECT_CLASSES.containsKey(className.toUpperCase())) {
@@ -524,7 +554,7 @@ import org.apache.commons.collections.Transformer;
 	    && #eq_ex1.getType() == IDENTIFIER
     	&& FUNCTION_RESULT.equals(#eq_ex1.getText());
     if (functionAssign) {
-        setAssignement();
+        setAssignment();
     }
     boolean isAssign = this_type == ASSIGN;
     boolean areObjects = #eq_ex1 instanceof ObjectAST
@@ -1347,9 +1377,11 @@ typeStack.push(new Integer(DINT));
     } else {
         currentFunction = (VbUserDefinedMethod) localFunctions.get(text);
     }
+    functionNestingLevel++;
 }
 @sub_end : {
     makeSub(#s);
+    functionNestingLevel--;
     currentFunction = null;
 }
 
@@ -1369,9 +1401,11 @@ typeStack.push(new Integer(DINT));
         currentFunction = (VbUserDefinedMethod) localFunctions.get(text);
     }
     levelList.clear();
+    functionNestingLevel++;
 }
 @func_end : {
     ## = makeFunction(#f, #fst);
+    functionNestingLevel--;
     currentFunction = null;
 }
 @exit_func : {

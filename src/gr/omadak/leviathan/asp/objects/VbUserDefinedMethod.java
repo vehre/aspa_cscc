@@ -97,9 +97,4 @@ public class VbUserDefinedMethod extends UserDefinedMethod {
     public String toString() {
 		return getName();
 	}
-
-
-	public int getVariableType(String name) {
-		return CommonConstants.UKNOWN_TYPE;
-	}
 }

@@ -555,7 +555,7 @@ public abstract class VbsAbstractTreeParser extends antlr.TreeParser implements
 		uExpr.setFirstChild(dw);
 	}
 
-	protected void setAssignement() {
+	protected void setAssignment() {
 		Integer key = new Integer(cLevel);
 		Integer val = (Integer) levelList.get(key);
 		if (val == null) {
