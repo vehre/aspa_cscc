@@ -443,9 +443,21 @@
     <!--
     hour, InStrRev, time
     -->
+	
+	<method name="InStr" type="DINT">
+		<args />
+		<ast name="METHOD_CALL" text="InStr">
+			<ast name="ARGLIST_VALUES">
+				<args />
+			</ast>
+		</ast>
+	</method>
+	
+	<!--
     <method name="InStr" type="DINT">
         <arg type="DSTRING" />
         <arg type="DSTRING" />
+		<ast name="PLUS">
 		<ast name="DOT">
 			<arg index="1" />
 			<ast name="METHOD_CALL" text="indexOf">
@@ -454,6 +466,8 @@
 				</ast>
 			</ast>
 		</ast>
+		<ast name="DINT" text="1" />
+		</ast>-->
 		<!--
         <ast name="METHOD_CALL" text="stripos">
             <ast name="ARGLIST_VALUES">
@@ -462,11 +476,12 @@
             </ast>
         </ast>
 		-->
-    </method>
+<!--    </method>
     <method name="InStr" type="DINT">
         <arg type="DINT" />
         <arg type="DSTRING" />
         <arg type="DSTRING" />
+		<ast name="PLUS">
 		<ast name="DOT">
 			<arg index="2" />
 			<ast name="METHOD_CALL" text="indexOf">
@@ -476,6 +491,8 @@
 				</ast>
 			</ast>
 		</ast>
+		<ast name="DINT" text="1" />
+		</ast>-->
 		<!--
         <ast name="METHOD_CALL" text="stripos">
             <ast name="ARGLIST_VALUES">
@@ -485,14 +502,14 @@
             </ast>
         </ast>
 		-->
-    </method>
+<!--    </method>-->
     <!--
     Problem:
     if the 4 argument has value 0 = vbBinaryCompare
     then stripos should be called
     if value = 1 = vbTextCompare then strpos should be called
     In this translation strpos is called allways
-    -->
+    --><!--
     <method name="InStr" type="DINT">
         <arg type="DINT" />
         <arg type="DSTRING" />
@@ -506,7 +523,7 @@
             </ast>
         </ast>
     </method>
-
+-->
     <method name="int" type="DINT">
         <arg type="DFLOAT" />
         <ast name="METHOD_CALL" text="Math.floor">
@@ -596,14 +613,16 @@
     </method>
 
     <method name="join" type="DSTRING">
+        <arg type="ARRAY" />
         <arg type="DSTRING" />
-        <arg type="DSTRING" />
-        <ast name="METHOD_CALL" text="implode">
-            <ast name="ARGLIST_VALUES">
-                <arg index="2" />
-                <arg index="1" />
-            </ast>
-        </ast>
+		<ast name="DOT">
+			<arg index="1" />
+			<ast name="METHOD_CALL" text="join">
+				<ast name="ARGLIST_VALUES">
+					<arg index="2" />
+				</ast>
+			</ast>
+		</ast>
     </method>
     <!-- LBound -->
 
@@ -699,7 +718,7 @@
     <method name="Mid" type="DSTRING">
         <arg type="DSTRING" />
         <arg type="DINT" />
-        <ast name="METHOD_CALL" text="substr">
+        <ast name="METHOD_CALL" text="Mid">
             <ast name="ARGLIST_VALUES">
                 <arg index="1" />
                 <arg index="2" />
@@ -710,7 +729,7 @@
         <arg type="DSTRING" />
         <arg type="DINT" />
         <arg type="DINT" />
-        <ast name="METHOD_CALL" text="substr">
+        <ast name="METHOD_CALL" text="Mid">
             <ast name="ARGLIST_VALUES">
                 <arg index="1" />
                 <arg index="2" />
@@ -741,6 +760,13 @@
         but php function does not support those
     -->
     <method name="Replace" type="DSTRING">
+		<args />
+		<ast name="METHOD_CALL" text="Replace">
+			<ast name="ARGLIST_VALUES">
+				<args />
+			</ast>
+		</ast>
+		<!--
         <arg type="DSTRING" />
         <arg type="DSTRING" />
         <arg type="DSTRING" />
@@ -751,14 +777,23 @@
                 <arg index="1" />
             </ast>
         </ast>
+		-->
     </method>
 
 
     <method name="Right" type="DSTRING">
+		<args />
+		<ast name="METHOD_CALL" text="Right">
+			<ast name="ARGLIST_VALUES">
+				<args />
+			</ast>
+		</ast>
+		<!--
         <arg type="DSTRING" />
-        <arg type="DINT" />
+        <arg type="DINT" />-->
         <!-- substr(str, -length) -->
-        <ast name="METHOD_CALL" text="substr">
+        <!--
+		<ast name="METHOD_CALL" text="substr">
             <ast name="ARGLIST_VALUES">
                 <arg index="1" />
                 <ast name="UMINUS">
@@ -766,10 +801,11 @@
                 </ast>
             </ast>
         </ast>
+		-->
     </method>
 
 
-    <!-- mt_round() / MAX_RAND -->
+    <!-- mt_rand() / MAX_RAND -->
     <method name="Rnd" type="DFLOAT">
         <ast name="DIVIDE">
             <ast name="METHOD_CALL" text="mt_rand">
