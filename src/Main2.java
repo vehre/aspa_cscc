@@ -88,7 +88,7 @@ public class Main2 {
             File f = new File(args[0]);
             File base = new File(args[1]);
             if (printTokens) {
-                AspStreamSelector selector = new AspStreamSelector(f, base, true);
+                AspStreamSelector selector = new AspStreamSelector(f, base, true, false);
                 printApsTokens(selector);
                 if (!(showTree || produceXml)) {
                     return;
