@@ -331,7 +331,7 @@ public class AspStreamSelector extends TokenStreamSelector {
                 break;
             default:
                 //should never happen
-                throw new RuntimeException("Uknown lexer type");
+                throw new RuntimeException("Unknown lexer type");
         }
         return result;
     }
@@ -367,7 +367,7 @@ public class AspStreamSelector extends TokenStreamSelector {
             }
             push(vbsLexer);
         } else {
-            throw new RuntimeException("Uknown lang type:" + lang_type);
+            throw new RuntimeException("Unknown lang type:" + lang_type);
         }
     }
 

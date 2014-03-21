@@ -694,12 +694,15 @@ INT_CONST
   )
   ;
 
+protected EMB_ASP : "<%" ({LA(2) != '>'}? ~'%')* "%>";
+
+EMBEDDED_ASP : EMB_ASP ;
 
 DSTRING
   :
   '"'!
   (
-      {LA(2) == '"'}? '"'! '"' | ~('"' | '\n' | '\r')
+      {LA(2) == '"'}? '"'! '"' | EMB_ASP | ~('"' | '\n' | '\r') 
   )*
   '"'!
   ;
@@ -714,8 +717,6 @@ DDATE
 COMMA : ',' ;
 LPAREN : '(' ;
 RPAREN : ')' ;
-
-EMBEDDED_ASP : "<%" ({LA(2) != '>'}? ~'%')* "%>";
 
 /* Operators */
 
