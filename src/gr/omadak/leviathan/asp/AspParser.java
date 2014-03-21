@@ -133,6 +133,8 @@ public class AspParser {
     private Map parsedAST;
     private boolean generateCode;
     private boolean preserveAST;
+    /** If set, then ignore all server side code given by <% directives. */
+    private boolean disableServerSideCode;
 	private String currentFileName;
 
     private static Logger LOG = Logger.getLogger(AspParser.class);
@@ -268,7 +270,8 @@ public class AspParser {
         } else {
 			currentFileName = file.getName();
             AspStreamSelector selector = new AspStreamSelector(file, baseDir,
-            		sTable == null, false /* Add argument for switching non language asp directives on/off. */);
+            		sTable == null, false /* Add argument for switching non language asp directives on/off. */,
+            		disableServerSideCode);
             VbsParser vbParser = null;
             JsParser  jsParser = null;
             VbsAbstractTreeParser vbtree = null;
@@ -563,13 +566,19 @@ public class AspParser {
         this.generateCode = generateCode;
     }
 
-
+    /** Disable interpretation of server side code.  
+     */
+    public void disableServerSideCode() {
+    	disableServerSideCode = true;
+    }
+    
     public static void main(String[] args) {
         File bDir = null;
         File oDir = null;
         File sDir = null;
         boolean gSource = true;
         boolean defaultVB = true;
+        boolean enableServerSideCode = true;
         int i = 0;
         int argCount = args.length;
         while (i < argCount) {
@@ -586,11 +595,14 @@ public class AspParser {
                 gSource = false;
             } else if (args[i].equals("-js")) {
                 defaultVB = false;
+            } else if (args[i].equals("-vb")) {
+                defaultVB = true;
+            } else if (args[i].equals("-ds")) {
+                enableServerSideCode = false;
             }
             i++;
         }
-        boolean oDirValid = oDir != null
-        && (!oDir.exists() || oDir.isDirectory());
+        boolean oDirValid = oDir != null && (!oDir.exists() || oDir.isDirectory());
         boolean bDirValid = bDir != null && bDir.isDirectory();
         boolean isValid = oDirValid && bDirValid;
         if (isValid && sDir == null) {
@@ -598,14 +610,17 @@ public class AspParser {
         }
         if (!isValid) {
             System.err.println("Usage:AspParser -b <base directory> "
-            + "-o <output directory> [-s <source directory> -g -ng -vb -js]\n"
+            + "-o <output directory> [-s <source directory> -g -ng -vb -js -ds]\n"
             + "base directory: the directory where virtual root exists.\n"
-            + "eg <!--#include virtual=\"/someFile.asp\"-->\noutput directory"
-            + ": the directory where generated files will be placed in\n"
-            + "source directory: the root directory where sources are\nIf not "
-            + "defined then the base directory is used\n"
+            + "eg <!--#include virtual=\"/someFile.asp\"-->\n"
+            + "output directory: the directory where generated files will be placed in\n"
+            + "source directory: the root directory where sources are\n"
+            + "    If not defined then the base directory is used\n"
             + "-ng disables source production\n"
-            + "-js if an asp page has not defined the langugae asume is js");
+            + "-js if an asp page has not defined the language assume it is js\n"
+            + "-vb if an asp page has not defined the language assume it is vb\n"
+            + "-ds disables interpretation of any server side code directives\n"
+            + "    starting with <%");
             if (!oDirValid) {
                 if (oDir == null) {
                     System.err.println("Output directory is not defined");
@@ -626,6 +641,7 @@ public class AspParser {
         }
         AspParser parser = new AspParser(bDir, oDir);
         parser.setGenerateCode(gSource);
+        if ( !enableServerSideCode ) parser.disableServerSideCode();
         parser.parseDir(sDir, defaultVB);
         System.exit(0);
     }

@@ -50,7 +50,7 @@ TAG
               ("-->")?
               | ~'-' (~('\n' | '>'))*
           )
-      | '%' <asp_start>
+      | { (!ignoreServerSide) }? '%' <asp_start> // Only scan server side instructions when allowed to.
       |
       (
           n:NAME <check_script>
