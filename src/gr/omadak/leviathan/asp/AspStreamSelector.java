@@ -60,7 +60,6 @@ public class AspStreamSelector extends TokenStreamSelector {
     private boolean languageDefined;
 	private boolean includeNonLanguageASPDirectives = true;
 
-
     private static class ICaseFileFilter implements FileFilter {
         String fileName;
         boolean getDirs;
@@ -373,18 +372,20 @@ public class AspStreamSelector extends TokenStreamSelector {
     }
 
 
-    public AspStreamSelector(File f, File baseDir, boolean findLang, boolean incNonLangDirectives)
-    throws TokenStreamException {
+    public AspStreamSelector(File f, File baseDir, boolean findLang, boolean incNonLangDirectives,
+    		boolean disServerSideCode)
+    				throws TokenStreamException {
         super();
         includeNonLanguageASPDirectives = incNonLangDirectives;
         try {
             currentFile = f;
             fis = new FileInputStream(currentFile);
             bis = new BufferedReader(
-            new InputStreamReader(fis), 1024);
+            		new InputStreamReader(fis), 1024);
             htmlLexer = new HtmlLexer(bis);
             htmlLexer.setFilename(currentFile.getAbsolutePath());
             htmlLexer.setHtmlLexerUtil(utility);
+            if ( disServerSideCode ) htmlLexer.disableServerSideCode();
             addInputStream(htmlLexer, "1");
             select(htmlLexer);
         } catch (IOException ioe) {
@@ -401,8 +402,9 @@ public class AspStreamSelector extends TokenStreamSelector {
     }
 
 
-    public AspStreamSelector(File f, File baseDir, boolean incNonLangDirectives) throws TokenStreamException {
-        this(f, baseDir, true, incNonLangDirectives);
+    public AspStreamSelector(File f, File baseDir, boolean incNonLangDirectives, boolean disServerSideCode) 
+    		throws TokenStreamException {
+        this(f, baseDir, true, incNonLangDirectives, disServerSideCode);
     }
 
 
