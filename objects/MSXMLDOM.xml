@@ -54,6 +54,30 @@
 			</ast>
 		</ast>
 	</method>
+	
+	<method name="selectSingleNode" type="MSDOMNode">
+		<arg type="DSTRING"/>
+		<ast name="DOT">
+			<this/>
+			<ast name="METHOD_CALL" text="selectSingleNode">
+			  <ast name="ARGLIST_VALUES">
+				<arg index="1" />
+			  </ast>
+			</ast>
+		</ast>
+	</method>
+	
+	<method name="getAttribute" type="DSTRING">
+		<arg type="DSTRING"/>
+		<ast name="DOT">
+			<this/>
+			<ast name="METHOD_CALL" text="getAttribute">
+			  <ast name="ARGLIST_VALUES">
+				<arg index="1" />
+			  </ast>
+			</ast>
+		</ast>
+	</method>
 </class>
 
 	

@@ -1100,6 +1100,7 @@
         <key value="ADODB.Recordset" use="ADORecordset" />
         <key value="ADODB.Command" use="ADOCommand" />
         <key value="Microsoft.xmldom" use="MSXMLDOM" />
+        <key value="msxml2.domdocument" use="MSDOMDocument" />
         <key value="Microsoft.xmlhttp" use="MSXMLHttp" /> 
         <key>
             <ast name="INVALID_OBJECT" />

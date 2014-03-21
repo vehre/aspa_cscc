@@ -35,4 +35,26 @@
 			</ast>
 		</ast>
 	</method>
+	<method name="setTimeout" type="DINT">
+		<args />
+  		<ast name="DOT">
+  			<this />
+			<ast name="METHOD_CALL" text="setTimeout">
+				<ast name="ARGLIST_VALUES">
+					<args />
+				</ast>
+			</ast>
+		</ast>
+	</method>
+	<method name="setInterval" type="DINT">
+		<args />
+  		<ast name="DOT">
+  			<this />
+			<ast name="METHOD_CALL" text="setInterval">
+				<ast name="ARGLIST_VALUES">
+					<args />
+				</ast>
+			</ast>
+		</ast>
+	</method>
 </class>
