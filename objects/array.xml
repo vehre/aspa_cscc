@@ -17,13 +17,12 @@
 -->
 <class name="Array" standalone="true">
     <constructor>
-        <ast name="METHOD_CALL" text="array">
-        </ast>
+		<ast name="IDENTIFIER" text="[]" />
     </constructor>
 
     <constructor>
         <arg type="DINT" />
-        <ast name="METHOD_CALL" text="array">
+		<ast name="IDENTIFIER" text="[]">
         </ast>
     </constructor>
 
@@ -58,46 +57,70 @@
 
     <method name="join" type="DSTRING">
         <arg type="DSTRING" />
+		<!--
         <ast name="METHOD_CALL" text="implode">
             <ast name="ARGLIST_VALUES">
                 <arg index="1" />
                 <this />
             </ast>
         </ast>
+		-->
+		<ast name="DOT">
+			<this />
+			<ast name="METHOD_CALL" text="join">
+				<ast name="ARGLIST_VALUES">
+					<arg index="1" />
+				</ast>
+			</ast>
+		</ast>
     </method>
 
     <method name="pop" type="ANY">
+		<!--
         <ast name="METHOD_CALL" text="array_pop">
             <ast name="ARGLIST_VALUES">
                 <this />
             </ast>
         </ast>
+		-->
+		<ast name="DOT">
+			<this />
+			<ast name="METHOD_CALL" text="pop">
+			</ast>
+		</ast>
     </method>
 
     <method name="push" type="DINT">
         <args/>
-        <ast name="METHOD_CALL" text="array_push">
-            <ast name="ARGLIST_VALUES">
-                <this />
-                <args />
-            </ast>
-        </ast>
+		<ast name="DOT">
+			<this />
+			<ast name="METHOD_CALL" text="push">
+				<ast name="ARGLIST_VALUES">
+					<args />
+				</ast>
+			</ast>
+		</ast>
     </method>
 
     <method name="reverse" type="LBRACK">
-        <ast name="METHOD_CALL" text="array_reverse">
-            <ast name="ARGLIST_VALUES">
-                <this />
-            </ast>
-        </ast>
+		<ast name="DOT">
+			<this />
+			<ast name="METHOD_CALL" text="reverse">
+			</ast>
+		</ast>
     </method>
 
     <method name="shift" type="ANY">
-        <ast name="METHOD_CALL" text="array_shift">
+        <!--<ast name="METHOD_CALL" text="array_shift">
             <ast name="ARGLIST_VALUES">
                 <this />
             </ast>
-        </ast>
+        </ast>-->
+		<ast name="DOT">
+			<this />
+			<ast name="METHOD_CALL" text="shift">
+			</ast>
+		</ast>
     </method>
 
     <method name="slice" type="LBRACK">
