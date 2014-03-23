@@ -17,23 +17,13 @@
 -->
 <class name="Array" standalone="true">
     <constructor>
-    	<ast name="NEW">
-	        <ast name="IDENTIFIER" text="array"/>
-	    </ast>
-	    <!-- 
-	    <ast lang="php" name="METHOD_CALL" text="array"/> 
-	    -->
+		<ast name="IDENTIFIER" text="[]" />
     </constructor>
 
     <constructor>
-    	<arg type="DINT"/>
-        <ast name="NEW">
-	        <ast name="IDENTIFIER" text="array">
-		        <ast name="ARGLIST_VALUES">
-		        	<args />
-		        </ast>
-	        </ast>
-	    </ast>
+        <arg type="DINT" />
+		<ast name="IDENTIFIER" text="[]">
+        </ast>
 	    <!--
 	    <ast lang="php" name="METHOD_CALL" text="array"/>
 	    -->
@@ -41,7 +31,7 @@
 
     <constructor>
         <args />
-        <ast name="METHOD_CALL" text="array">
+        <ast name="METHOD_CALL" text="Array">
             <ast name="ARGLIST_VALUES">
                 <args />
             </ast>
@@ -71,7 +61,7 @@
     <method name="join" type="DSTRING">
         <arg type="DSTRING" />
 		<!--
-        <ast lang="php" name="METHOD_CALL" text="implode">
+        <ast name="METHOD_CALL" text="implode">
             <ast name="ARGLIST_VALUES">
                 <arg index="1" />
                 <this />
@@ -90,7 +80,7 @@
 
     <method name="pop" type="ANY">
 		<!--
-        <ast lang="php" name="METHOD_CALL" text="array_pop">
+        <ast name="METHOD_CALL" text="array_pop">
             <ast name="ARGLIST_VALUES">
                 <this />
             </ast>
@@ -113,12 +103,6 @@
 				</ast>
 			</ast>
 		</ast>
-		<!--         <ast lang="php" name="METHOD_CALL" text="array_push">
-            <ast name="ARGLIST_VALUES">
-                <this />
-                <args />
-            </ast>
-        </ast> -->
     </method>
 
     <method name="reverse" type="LBRACK">
@@ -127,16 +111,10 @@
 			<ast name="METHOD_CALL" text="reverse">
 			</ast>
 		</ast>
-		<!--         <ast lang="php" name="METHOD_CALL" text="array_push">
-            <ast name="ARGLIST_VALUES">
-                <this />
-                <args />
-            </ast>
-        </ast> -->
     </method>
 
     <method name="shift" type="ANY">
-        <!--<ast lang="php" name="METHOD_CALL" text="array_shift">
+        <!--<ast name="METHOD_CALL" text="array_shift">
             <ast name="ARGLIST_VALUES">
                 <this />
             </ast>

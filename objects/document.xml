@@ -17,40 +17,10 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 -->
 <class name="document" dependent="true">
-	<!-- ugly hack to embed MSDOMNode -->
-	<class name="MSDOMNode" dependant="true">
-		<method name="loadmovie" type="DSTRING">
-			<arg type="DINT"/>
-			<arg type="DSTRING"/>
-			<ast name="DOT">
-				<this/>
-				<ast name="METHOD_CALL" text="LoadMovie">
-					<ast name="ARGLIST_VALUES">
-						<arg index="1" />
-						<arg index="2" />
-					</ast>
-				</ast>
-			</ast>
-		</method>
-		<method name="Play" type="VOID">
-			<ast name="DOT">
-				<this/>
-				<ast name="METHOD_CALL" text="Play">
-				</ast>
-			</ast>
-		</method>
-		<method name="getAttribute" type="DSTRING">
-			<arg type="DSTRING"/>
-			<ast name="DOT">
-				<this/>
-				<ast name="METHOD_CALL" text="getAttribute">
-				  <ast name="ARGLIST_VALUES">
-					<arg index="1" />
-				  </ast>
-				</ast>
-			</ast>
-		</method>
-	</class>
+
+<class name="MSDOMNode" dependant="true">
+</class>
+
   <method name="all" type="MSDOMNode">
 	<arg type="DSTRING" />
 	<ast name="DOT">
