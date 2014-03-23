@@ -1108,10 +1108,10 @@ typeStack.push(new Integer(DINT));
 	String varName = #ARRAY.getText();
 	AST result;
 	if (dims.size() < 2) {
-		//result = #[METHOD_CALL, "array"];
+		//result = #[METHOD_CALL, "Array"];
 		result = #[IDENTIFIER, "[]"];
 	} else {
-		result = #[METHOD_CALL, "array"];
+		result = #[METHOD_CALL, "Array"];
 		for (int i = dims.size() - 2; i > -1; i--) {
 			AST size = (AST) dims.get(i);
 			if (size.getType() == DINT) {
