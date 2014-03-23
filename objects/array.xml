@@ -24,11 +24,14 @@
         <arg type="DINT" />
 		<ast name="IDENTIFIER" text="[]">
         </ast>
+	    <!--
+	    <ast lang="php" name="METHOD_CALL" text="array"/>
+	    -->
     </constructor>
 
     <constructor>
         <args />
-        <ast name="METHOD_CALL" text="array">
+        <ast name="METHOD_CALL" text="Array">
             <ast name="ARGLIST_VALUES">
                 <args />
             </ast>
