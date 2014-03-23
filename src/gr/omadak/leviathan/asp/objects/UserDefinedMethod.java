@@ -116,7 +116,7 @@ public abstract class UserDefinedMethod extends GenericMethod {
     	if ( localObjects == null)
     		return CommonConstants.UKNOWN_TYPE; 
     	Object obj = localObjects.get(name);
-        return obj == null ? CommonConstants.UKNOWN_TYPE : ((Integer) obj).intValue();
+        return obj == null || !(obj instanceof Integer)? CommonConstants.UKNOWN_TYPE : ((Integer) obj).intValue();
     }
     
 	private void place(String name, Object obj, boolean local) {
