@@ -662,7 +662,7 @@ options {
     caseSensitive = false;
     caseSensitiveLiterals = false;
     filter = false;
-    charVocabulary = '\u0003'..'\u7FFF';
+    charVocabulary = '\u0003'..'\uFFFF';
 }
 
 <lexer_init>
