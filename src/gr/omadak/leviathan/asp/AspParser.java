@@ -21,6 +21,7 @@ import antlr.ANTLRException;
 import antlr.collections.AST;
 import gr.omadak.leviathan.asp.objects.XmlASPClass;
 import gr.omadak.leviathan.asp.objects.XmlObjectParser;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileWriter;
@@ -38,6 +39,7 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
+
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.log4j.Logger;
 
@@ -227,6 +229,8 @@ public class AspParser {
                 if (pElem.endsWith(".asp")) {
                 	// TODO: Implement switch on using ".html" and ".php"
                     pElem = pElem.substring(0, pElem.lastIndexOf('.')) + (true ? ".html" : ".php");
+                } else if (pElem.endsWith(".vbs")) {
+                	pElem = pElem.substring(0, pElem.lastIndexOf('.')) + ".js";
                 }
             }
             out = new File(out == null ? baseOutDir : out, pElem);
@@ -258,15 +262,15 @@ public class AspParser {
     * otherwise is expected to be null.
     * @return a List which contains the AST forest if preserveAST is true.
     */
-    private List parseFile(File file, boolean isVb, SymbolTableExposer sTable)
+    private List<Object> parseFile(File file, boolean isVb, SymbolTableExposer sTable)
     throws ANTLRException {
-        List result;
+        List<Object> result;
         if (fileIsParsed(file)) {
 			if (sTable != null) { //is an include file
 				mergeSymbols((DataHolder) parsedFiles.get(file.getAbsolutePath()),
 				sTable);
 			}
-            result = Collections.EMPTY_LIST;
+            result = Collections.emptyList();
         } else {
 			currentFileName = file.getName();
             AspStreamSelector selector = new AspStreamSelector(file, baseDir,
@@ -277,7 +281,7 @@ public class AspParser {
             VbsAbstractTreeParser vbtree = null;
             JsTree jsTree = null;
             selector.setDefaultVb(isVb);
-            result = new ArrayList();
+            result = new ArrayList<Object>();
             Set includes = null;
             if (generateCode) {
                 includes = new HashSet();
@@ -328,7 +332,7 @@ public class AspParser {
                         }
                         fillHolder(vbtree, holder);
                         result.add(new Object[] {Boolean.TRUE, node,
-                        vbtree.getAST()});
+                        		vbtree.getAST()});
                     }
                 } else {
                     if (jsParser == null) {
@@ -355,7 +359,7 @@ public class AspParser {
                         }
                         fillHolder(jsTree, holder);
                         result.add(new Object[] {Boolean.FALSE, node,
-                        jsTree.getAST()});
+                        		jsTree.getAST()});
                     }
                 }
             }
@@ -373,7 +377,7 @@ public class AspParser {
                 try {
                     Writer writer = getWriter(file);
                     produceCode(result, writer, includes,
-                    file.getAbsolutePath());
+                    		file.getAbsolutePath());
                     writer.close();
                 } catch (IOException ioex) {
                     LOG.error("Failed to generate code", ioex);
@@ -462,7 +466,7 @@ public class AspParser {
 
     private void printIncludes(CodeGenerator generator, Set includes) {
         SourceBuffer buffer = generator.getBuffer();
-        for (Iterator it = includes.iterator(); it.hasNext();) {
+        for (Iterator<?> it = includes.iterator(); it.hasNext();) {
             String fileName = (String) it.next();
             buffer.println("require \"" + fileName + "\";");
         }
@@ -490,7 +494,7 @@ public class AspParser {
         List result = new ArrayList(parseFile(file, isVb, null));
         if (preserveAST) {
             String absPath = file.getAbsolutePath();
-            for (Iterator it = parsedAST.keySet().iterator(); it.hasNext();) {
+            for (Iterator<?> it = parsedAST.keySet().iterator(); it.hasNext();) {
                 String key = (String) it.next();
                 if (!absPath.equals(key)) {
                     result.addAll((List) parsedFiles.get(key));
@@ -503,7 +507,7 @@ public class AspParser {
 
 	/**
 	 * Get the current file name
-	 * @return the name of the file being parsedcuurCurrentFileName value.	 
+	 * @return the name of the file being parsed.	 
 	*/
 	public String getCurrentFileName() {
 		return currentFileName;
@@ -533,11 +537,11 @@ public class AspParser {
                 return result;
             }
         };
-        Stack stack = new Stack();
+        Stack<File> stack = new Stack<File>();
         stack.push(sdir);
         while (!stack.isEmpty()) {
             File dir = (File) stack.pop();
-            for (Iterator it = IteratorUtils.arrayIterator(
+            for (Iterator<?> it = IteratorUtils.arrayIterator(
             dir.listFiles(filter)); it.hasNext();) {
                 File f = (File) it.next();
                 if (f.isDirectory()) {

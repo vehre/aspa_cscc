@@ -22,6 +22,8 @@ import antlr.Token;
 import antlr.TokenStream;
 import antlr.TokenStreamException;
 import antlr.TokenStreamSelector;
+import antlr.collections.Stack;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
@@ -31,6 +33,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+
 import org.apache.log4j.Logger;
 
 public class AspStreamSelector extends TokenStreamSelector {
@@ -261,12 +264,12 @@ public class AspStreamSelector extends TokenStreamSelector {
 	                Object[] include = utility.getLastInclude();
 	                File dir = HtmlLexerUtil.TYPE_FILE.equals(include[0])
 	                		? currentFile.getParentFile()
-	                				: baseDir;
+               				: baseDir;
 	                File included = getFile(dir, include[1].toString());
-	                result = createToken(pageLanguage == LEX_JS
-	                		? JsTokenTypes.INCLUDE : VbsTokenTypes.INCLUDE,
-	                				included == null ? include[1].toString()
-	                : included.getAbsolutePath(), t.getColumn(), t.getLine());
+	                result = createToken(
+	                		pageLanguage == LEX_JS ? JsTokenTypes.INCLUDE : VbsTokenTypes.INCLUDE,
+	                		included == null ? include[1].toString() : included.getAbsolutePath(), 
+	                		t.getColumn(), t.getLine());
 	                break;
 	            case Token.EOF_TYPE:
 	                foundEOF = true;
@@ -296,21 +299,27 @@ public class AspStreamSelector extends TokenStreamSelector {
     private Token processJsVb(Token t) throws TokenStreamException {
         Token result = t != null ? t : tokenNext();
         int type = result.getType();
-        boolean shouldPop = type ==
-        HtmlLexerUtil.ASP_END
-        || (lexerType == LEX_JS && type == HtmlLexerUtil.JS_END)
-        || (lexerType == LEX_VB && type == HtmlLexerUtil.VBS_END);
+        boolean shouldPop = type == HtmlLexerUtil.ASP_END
+        		|| (lexerType == LEX_JS && type == HtmlLexerUtil.JS_END)
+        		|| (lexerType == LEX_VB && (type == HtmlLexerUtil.VBS_END || type == Token.EOF_TYPE));
         if (shouldPop) {
             int lastLexer = lexerType;
             //job done
-            pop();
+            try {
+            	pop();
+            } catch (java.util.NoSuchElementException ex) {
+            	; // Everything fine for the moment. TODO:!!!
+            }
             int tType;
             if (type == HtmlLexerUtil.ASP_END) {
                 tType = lastLexer == LEX_JS
-                ? JsTokenTypes.NEW_LINE
-                : VbsTokenTypes.STATEMENT_END;
+                		? JsTokenTypes.NEW_LINE
+                		: VbsTokenTypes.STATEMENT_END;
             } else {
                 tType = Token.EOF_TYPE;
+                /* Only set foundEOF, when EOF really occurred. */
+                if ( type == Token.EOF_TYPE ) 
+                	foundEOF = true;
             }
             result = createToken(tType, null, result.getLine(),
             result.getColumn());
@@ -382,12 +391,20 @@ public class AspStreamSelector extends TokenStreamSelector {
             fis = new FileInputStream(currentFile);
             bis = new BufferedReader(
             		new InputStreamReader(fis), 1024);
-            htmlLexer = new HtmlLexer(bis);
-            htmlLexer.setFilename(currentFile.getAbsolutePath());
-            htmlLexer.setHtmlLexerUtil(utility);
-            if ( disServerSideCode ) htmlLexer.disableServerSideCode();
-            addInputStream(htmlLexer, "1");
-            select(htmlLexer);
+            if ( currentFile.getName().endsWith(".vbs")) {
+	            vbsLexer = new VbsLexer(bis);
+	            vbsLexer.setFilename(currentFile.getAbsolutePath());
+	            addInputStream(vbsLexer, "1");
+	            select(vbsLexer);
+	            lexerType = LEX_VB;
+            } else {
+	            htmlLexer = new HtmlLexer(bis);
+	            htmlLexer.setFilename(currentFile.getAbsolutePath());
+	            htmlLexer.setHtmlLexerUtil(utility);
+	            if ( disServerSideCode ) htmlLexer.disableServerSideCode();
+	            addInputStream(htmlLexer, "1");
+	            select(htmlLexer);
+            }
         } catch (IOException ioe) {
             throw new TokenStreamException(ioe.getMessage());
         }

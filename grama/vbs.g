@@ -681,7 +681,7 @@ protected FLT_SUFFIX
 
 INT_CONST
   :
-  (
+  ( 
       '.' <lexer_typedot>
       (
           ('0'..'9')+ (EXPONENT)? (FLT_SUFFIX)? <lexer_typefloat>
@@ -689,7 +689,7 @@ INT_CONST
       | (DIGIT)+ <lexer_typeint> ('.' (DIGIT)+ (EXPONENT)? (FLT_SUFFIX)? <lexer_typefloat>)?
       | '&' <lexer_typeconcat> (
         'h' (HEX_DIGIT)+ <lexer_typeint> (('&')?)!
-        | 'o' ('0' .. '7')+ <lexer_typeint>
+        | { Character.isDigit(LA(2)) }? ( 'o' ('0' .. '7')+  <lexer_typeint>)
       )?
   )
   ;
@@ -702,6 +702,9 @@ DSTRING
   :
   '"'!
   (
+  	options {
+		generateAmbigWarnings=false;
+	} :
       {LA(2) == '"'}? '"'! '"' | EMB_ASP | ~('"' | '\n' | '\r') 
   )*
   '"'!
@@ -744,17 +747,20 @@ ASP_END : "%>" <lexer_aspend>;
 VBS_END : "</script>" <lexer_vbsend>;
 
 LANGUAGE
-  <lexer_langinit>
-  :
-  '@' (IGNORED!)* ("language" (IGNORED!)* '=' (IGNORED!)*
-	  (
-    	  '"' i:IDENTIFIER '"' <lexer_langi>
-	      | j:IDENTIFIER <lexer_langj>
-  	  ) <lexer_langend>
-  	  //| "include" (IGNORED!)* ("file" (IGNORED!)* '=' (IGNORED!)* 
-  	  | id:IDENTIFIER ({LA(2) != '>'}? ~'%')* "%>" <lexer_unknown_control>
-  	  )
-  (IGNORED!)* 
+	<lexer_langinit>
+	:
+	'@' (IGNORED!)* (
+		/* Remove some ambiguity warnings. */
+		options {
+			generateAmbigWarnings=false;
+		} :
+			"language" (IGNORED!)* '=' (IGNORED!)*
+	  			(
+		    	  '"' i:IDENTIFIER '"' <lexer_langi>
+	      			| j:IDENTIFIER <lexer_langj>
+  	  			) <lexer_langend>
+  	  		| id:IDENTIFIER ({LA(2) != '>'}? ~'%')* "%>" <lexer_unknown_control>
+		) (IGNORED!)* 
   ;
 
 
@@ -780,9 +786,14 @@ protected LETTER
 
 
 protected IDENTIFIER
-  :
-  LETTER ( LETTER | DIGIT | '_' )*
-  ;
+	:
+	(/* Remove some ambiguity warnings. */
+		options {
+			generateAmbigWarnings=false;
+		} :
+  		LETTER ( LETTER | DIGIT | '_' )* 
+  	)
+  	;
 
 
 protected LINE : (~'\n')* '\n' <lexer_line> ;

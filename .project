@@ -66,7 +66,6 @@
 		</buildCommand>
 	</buildSpec>
 	<natures>
-		<nature>org.antlr.eclipse.core.antlrnature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.python.pydev.pythonNature</nature>
 	</natures>
