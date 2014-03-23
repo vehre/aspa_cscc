@@ -26,7 +26,7 @@
     </constructor>
 
     <constructor>
-    	<arg type="DINT">
+    	<arg type="DINT"/>
         <ast name="NEW">
 	        <ast name="IDENTIFIER" text="array">
 		        <ast name="ARGLIST_VALUES">
