@@ -21,7 +21,6 @@ import antlr.ANTLRException;
 import antlr.collections.AST;
 import gr.omadak.leviathan.asp.objects.XmlASPClass;
 import gr.omadak.leviathan.asp.objects.XmlObjectParser;
-
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileWriter;
@@ -39,7 +38,6 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
-
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.log4j.Logger;
 
@@ -212,7 +210,6 @@ public class AspParser {
         this.baseOutDir = baseOutDir;
     }
 
-
     private Writer getWriter(File file) throws IOException {
         String basePath = baseDir.getCanonicalFile().getAbsolutePath();
         String absFile = file.getCanonicalFile().getAbsolutePath();
@@ -226,12 +223,14 @@ public class AspParser {
             String pElem = st.nextToken();
             boolean hasMore = st.hasMoreTokens();
             if (!hasMore) {
-                if (pElem.endsWith(".asp")) {
+                /*if (pElem.toLowerCase().endsWith(".asp")) {
                 	// TODO: Implement switch on using ".html" and ".php"
                     pElem = pElem.substring(0, pElem.lastIndexOf('.')) + (true ? ".html" : ".php");
                 } else if (pElem.endsWith(".vbs")) {
                 	pElem = pElem.substring(0, pElem.lastIndexOf('.')) + ".js";
-                }
+                }*/
+				//original filename more clear; easy to post-process with a batch script
+				pElem = pElem + ".converted";
             }
             out = new File(out == null ? baseOutDir : out, pElem);
             if (hasMore && !out.exists()) {
@@ -522,7 +521,24 @@ public class AspParser {
         }
         return getCommonPath(baseDir, file);
     }
-
+	
+	/**
+	 * Check if this is a file extension we want to process
+	 * @param {String} extension
+	 * @returns {boolean}
+	 */
+	private boolean isExtensionToProcess(String extension) {
+		boolean isMatch = false;
+		String lcaseExt = extension.toLowerCase();
+		isMatch = (
+			lcaseExt.endsWith(".asp")
+			|| lcaseExt.endsWith(".jsp")
+			|| lcaseExt.endsWith(".html")
+			|| lcaseExt.endsWith(".htm")
+			|| lcaseExt.endsWith(".vbs")
+		);
+		return isMatch;
+	}
 
     public void parseDir(File sdir, boolean vbDefault) {
         FileFilter filter = new FileFilter() {
@@ -531,8 +547,9 @@ public class AspParser {
                 if (!result) {
                     String name = f.getName();
                     int lastDot = name.lastIndexOf('.');
-                    result = lastDot > 0 && "asp".equalsIgnoreCase(
-                    		name.substring(lastDot + 1));
+                    result = lastDot > 0 && isExtensionToProcess(
+                    		//name.substring(lastDot + 1)
+							name);
                 }
                 return result;
             }

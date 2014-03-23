@@ -19,7 +19,7 @@
     <!-- just convert name case -->
     <method name="abs" type="DINT">
         <arg type="DINT" />
-        <ast name="METHOD_CALL" text="abs">
+        <ast name="METHOD_CALL" text="Math.abs">
             <ast name="ARGLIST_VALUES">
                 <arg index="1" />
             </ast>
@@ -28,11 +28,14 @@
 
     <method name="asc" type="DINT">
         <arg type="DSTRING" />
-        <ast name="METHOD_CALL" text="ord">
-            <ast name="ARGLIST_VALUES">
-                <arg index="1" />
-            </ast>
-        </ast>
+		<ast name="DOT">
+			<arg index="1" />
+			<ast name="METHOD_CALL" text="charCodeAt">
+				<ast name="ARGLIST_VALUES">
+					<ast name="DINT" text="0" />
+				</ast>
+			</ast>
+		</ast>
     </method>
 
     <method name="atn" type="DINT">
@@ -73,10 +76,18 @@
     </method>
 
     <method name="cdbl" type="DFLOAT">
+		<!--
         <arg type="DSTRING" />
         <ast name="CAST" text="float">
             <arg index="1" />
         </ast>
+		-->
+		<arg type="DSTRING" />
+		<ast name="METHOD_CALL" text="parseFloat">
+			<ast name="ARGLIST_VALUES">
+				<arg index="1" />
+			</ast>
+		</ast>
     </method>
 
     <method name="chr" type="DSTRING">
@@ -105,15 +116,24 @@
     </method>
 
     <method name="clng" type="DINT">
+		<!--
         <arg type="DSTRING" />
         <ast name="CAST" text="int">
             <arg index="1" />
         </ast>
+		-->
+		<arg type="DSTRING" />
+		<ast name="METHOD_CALL" text="parseInt">
+			<ast name="ARGLIST_VALUES">
+				<arg index="1" />
+				<ast name="DINT" text="10"/>
+			</ast>
+		</ast>
     </method>
 
     <method name="cos" type="DINT">
         <arg type="DSTRING" />
-        <ast name="METHOD_CALL" text="cos">
+        <ast name="METHOD_CALL" text="Math.cos">
             <ast name="ARGLIST_VALUES">
                 <arg index="1" />
             </ast>
@@ -121,10 +141,18 @@
     </method>
 
     <method name="csng" type="DFLOAT">
+		<!--
         <arg type="DSTRING" />
         <ast name="CAST" text="float">
             <arg index="1" />
         </ast>
+		-->
+		<arg type="DSTRING" />
+		<ast name="METHOD_CALL" text="parseFloat">
+			<ast name="ARGLIST_VALUES">
+				<arg index="1" />
+			</ast>
+		</ast>
     </method>
 
     <method name="cstr" type="DSTRING">
@@ -415,20 +443,57 @@
     <!--
     hour, InStrRev, time
     -->
+	
+	<method name="InStr" type="DINT">
+		<args />
+		<ast name="METHOD_CALL" text="InStr">
+			<ast name="ARGLIST_VALUES">
+				<args />
+			</ast>
+		</ast>
+	</method>
+	
+	<!--
     <method name="InStr" type="DINT">
         <arg type="DSTRING" />
         <arg type="DSTRING" />
+		<ast name="PLUS">
+		<ast name="DOT">
+			<arg index="1" />
+			<ast name="METHOD_CALL" text="indexOf">
+				<ast name="ARGLIST_VALUES">
+					<arg index="2" />
+				</ast>
+			</ast>
+		</ast>
+		<ast name="DINT" text="1" />
+		</ast>-->
+		<!--
         <ast name="METHOD_CALL" text="stripos">
             <ast name="ARGLIST_VALUES">
                 <arg index="1" />
                 <arg index="2" />
             </ast>
         </ast>
-    </method>
+		-->
+<!--    </method>
     <method name="InStr" type="DINT">
         <arg type="DINT" />
         <arg type="DSTRING" />
         <arg type="DSTRING" />
+		<ast name="PLUS">
+		<ast name="DOT">
+			<arg index="2" />
+			<ast name="METHOD_CALL" text="indexOf">
+				<ast name="ARGLIST_VALUES">
+					<arg index="3" />
+					<arg index="1" />
+				</ast>
+			</ast>
+		</ast>
+		<ast name="DINT" text="1" />
+		</ast>-->
+		<!--
         <ast name="METHOD_CALL" text="stripos">
             <ast name="ARGLIST_VALUES">
                 <arg index="2" />
@@ -436,14 +501,15 @@
                 <arg index="1" />
             </ast>
         </ast>
-    </method>
+		-->
+<!--    </method>-->
     <!--
     Problem:
     if the 4 argument has value 0 = vbBinaryCompare
     then stripos should be called
     if value = 1 = vbTextCompare then strpos should be called
     In this translation strpos is called allways
-    -->
+    --><!--
     <method name="InStr" type="DINT">
         <arg type="DINT" />
         <arg type="DSTRING" />
@@ -457,7 +523,7 @@
             </ast>
         </ast>
     </method>
-
+-->
     <method name="int" type="DINT">
         <arg type="DFLOAT" />
         <ast name="METHOD_CALL" text="Math.floor">
@@ -547,44 +613,70 @@
     </method>
 
     <method name="join" type="DSTRING">
+        <arg type="ARRAY" />
         <arg type="DSTRING" />
-        <arg type="DSTRING" />
-        <ast name="METHOD_CALL" text="implode">
-            <ast name="ARGLIST_VALUES">
-                <arg index="2" />
-                <arg index="1" />
-            </ast>
-        </ast>
+		<ast name="DOT">
+			<arg index="1" />
+			<ast name="METHOD_CALL" text="join">
+				<ast name="ARGLIST_VALUES">
+					<arg index="2" />
+				</ast>
+			</ast>
+		</ast>
     </method>
     <!-- LBound -->
 
     <method name="LCase" type="DSTRING">
         <arg type="DSTRING" />
+		<ast name="DOT">
+			<arg index="1" />
+			<ast name="METHOD_CALL" text="toLowerCase">
+			</ast>
+		</ast>
+		<!--
         <ast name="METHOD_CALL" text="strtolower">
             <ast name="ARGLIST_VALUES">
                 <arg index="1" />
             </ast>
         </ast>
+		-->
     </method>
 
     <method name="left" type="DSTRING">
         <arg type="DSTRING" />
         <arg type="DINT" />
+		<ast name="DOT">
+			<arg index="1" />
+			<ast name="METHOD_CALL" text="substring">
+				<ast name="ARGLIST_VALUES">
+					<ast name="DINT" text="0" />
+					<arg index="2" />
+				</ast>
+			</ast>
+		</ast>
+		<!--
         <ast name="METHOD_CALL" text="substr">
             <ast name="ARGLIST_VALUES">
                 <arg index="1" />
                 <arg index="2" />
             </ast>
         </ast>
+		-->
     </method>
 
     <method name="len" type="DINT">
         <arg type="DSTRING" />
+		<ast name="DOT">
+			<arg index="1" />
+			<ast name="IDENTIFIER" text="length" />
+		</ast>
+		<!--
         <ast name="METHOD_CALL" text="strlen">
             <ast name="ARGLIST_VALUES">
                 <arg index="1" />
             </ast>
         </ast>
+		-->
     </method>
 
     <method name="log" type="DINT">
@@ -626,7 +718,7 @@
     <method name="Mid" type="DSTRING">
         <arg type="DSTRING" />
         <arg type="DINT" />
-        <ast name="METHOD_CALL" text="substr">
+        <ast name="METHOD_CALL" text="Mid">
             <ast name="ARGLIST_VALUES">
                 <arg index="1" />
                 <arg index="2" />
@@ -637,7 +729,7 @@
         <arg type="DSTRING" />
         <arg type="DINT" />
         <arg type="DINT" />
-        <ast name="METHOD_CALL" text="substr">
+        <ast name="METHOD_CALL" text="Mid">
             <ast name="ARGLIST_VALUES">
                 <arg index="1" />
                 <arg index="2" />
@@ -668,6 +760,13 @@
         but php function does not support those
     -->
     <method name="Replace" type="DSTRING">
+		<args />
+		<ast name="METHOD_CALL" text="Replace">
+			<ast name="ARGLIST_VALUES">
+				<args />
+			</ast>
+		</ast>
+		<!--
         <arg type="DSTRING" />
         <arg type="DSTRING" />
         <arg type="DSTRING" />
@@ -678,14 +777,23 @@
                 <arg index="1" />
             </ast>
         </ast>
+		-->
     </method>
 
 
     <method name="Right" type="DSTRING">
+		<args />
+		<ast name="METHOD_CALL" text="Right">
+			<ast name="ARGLIST_VALUES">
+				<args />
+			</ast>
+		</ast>
+		<!--
         <arg type="DSTRING" />
-        <arg type="DINT" />
+        <arg type="DINT" />-->
         <!-- substr(str, -length) -->
-        <ast name="METHOD_CALL" text="substr">
+        <!--
+		<ast name="METHOD_CALL" text="substr">
             <ast name="ARGLIST_VALUES">
                 <arg index="1" />
                 <ast name="UMINUS">
@@ -693,10 +801,11 @@
                 </ast>
             </ast>
         </ast>
+		-->
     </method>
 
 
-    <!-- mt_round() / MAX_RAND -->
+    <!-- mt_rand() / MAX_RAND -->
     <method name="Rnd" type="DFLOAT">
         <ast name="DIVIDE">
             <ast name="METHOD_CALL" text="mt_rand">
@@ -773,22 +882,44 @@
 
     <method name="Split" type="ARRAY">
         <arg type="DSTRING" />
+		<ast name="DOT">
+			<arg index="1" />
+			<ast name="METHOD_CALL" text="split">
+			</ast>
+		</ast>
+		<!--
+		
         <ast name="METHOD_CALL" text="explode">
             <ast name="ARGLIST_VALUES">
                 <ast name="DSTRING" text=" " />
                 <arg index="1" />
             </ast>
         </ast>
+		-->
     </method>
     <method name="Split" type="ARRAY">
         <arg type="DSTRING" />
         <arg type="DSTRING" />
+		
+		
+		<ast name="DOT">
+			<arg index="1" />
+			<ast name="METHOD_CALL" text="split">
+				<ast name="ARGLIST_VALUES">
+					<arg index="2" />
+				</ast>
+			</ast>
+		</ast>
+		<!--
+		
         <ast name="METHOD_CALL" text="explode">
             <ast name="ARGLIST_VALUES">
                 <arg index="2" />
                 <arg index="1" />
             </ast>
         </ast>
+		
+		-->
     </method>
     <method name="Split" type="ARRAY">
         <arg type="DSTRING" />
@@ -936,20 +1067,29 @@
 
     <method name="UCase" type="DSTRING">
         <arg type="DSTRING" />
+		<ast name="DOT">
+			<arg index="1" />
+			<ast name="METHOD_CALL" text="toUpperCase">
+			</ast>
+		</ast>
+		<!--
         <ast name="METHOD_CALL" text="strtoupper">
             <ast name="ARGLIST_VALUES">
                 <arg index="1" />
             </ast>
         </ast>
+		-->
     </method>
     <!-- WeekDay, WeekDayName, Year -->
 
     <method name="Array" type="ARRAY">
         <args />
-        <ast name="METHOD_CALL" text="array">
-            <ast name="ARGLIST_VALUES">
-                <args />
-            </ast>
+        <ast name="NEW">
+			<ast name="METHOD_CALL" text="Array">
+				<ast name="ARGLIST_VALUES">
+					<args />
+				</ast>
+			</ast>
         </ast>
     </method>
 
@@ -960,6 +1100,7 @@
         <key value="ADODB.Recordset" use="ADORecordset" />
         <key value="ADODB.Command" use="ADOCommand" />
         <key value="Microsoft.xmldom" use="MSXMLDOM" />
+        <key value="msxml2.domdocument" use="MSDOMDocument" />
         <key value="Microsoft.xmlhttp" use="MSXMLHttp" /> 
         <key>
             <ast name="INVALID_OBJECT" />
