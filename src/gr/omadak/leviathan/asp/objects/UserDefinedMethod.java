@@ -43,7 +43,7 @@ public abstract class UserDefinedMethod extends GenericMethod {
 
 
     private void correctArgs() {
-        //the missing parameters will be replced by NULL
+        //the missing parameters will be replaced by NULL
         int argCount = getArgCount();
         if (args == null && argCount == 0) {
             args = Collections.EMPTY_LIST;

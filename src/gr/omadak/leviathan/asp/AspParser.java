@@ -569,7 +569,7 @@ public class AspParser {
                     } catch (ANTLRException ae) {
                         LOG.error("Failed to parse file:" + f.getAbsolutePath(),
                         ae);
-                    } catch (Exception ex) {
+                     } catch (Exception ex) {
                         LOG.error("Failed to parse file:" + f.getAbsolutePath()
                         + " with error", ex);
                     }

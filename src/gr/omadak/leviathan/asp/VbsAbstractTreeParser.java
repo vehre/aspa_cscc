@@ -455,8 +455,11 @@ public abstract class VbsAbstractTreeParser extends antlr.TreeParser implements
 				log.warn("Unable to locate method:" + ast.getText());
 			}
 		} else {
-			log.error("Expected an IDENTIFIER or an ObjectAST but is:["
-					+ ast.getType() + ", " + ast.getText() + "]");
+			log.error("Expected an IDENTIFIER or an ObjectAST but is: ["
+					+ ( ast.getType()< VbsParser._tokenNames.length 
+							? VbsParser._tokenNames[ast.getType()] : "--")
+					+ " (" + ast.getType() + "), " + ast.getText() + "] for sub-tree: "
+					+ ast.toStringList());
 		}
 		if (result != null && result.getMember() != null) {
 			result.getMember().setArgs(args);

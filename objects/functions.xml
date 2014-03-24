@@ -1055,7 +1055,7 @@
                 <arg index="1" />
             </ast>
         </ast> -->
-    </method>
+    </method> <!-- 
     <method name="UBound" type="DINT">
         <arg type="ARRAY" />
         <arg type="DINT" />
@@ -1068,7 +1068,7 @@
             </ast>
         </ast>
     </method>
-
+ -->
 
     <method name="UCase" type="DSTRING">
         <arg type="DSTRING" />

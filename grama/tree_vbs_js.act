@@ -431,6 +431,29 @@ import org.apache.commons.collections.Transformer;
 		return result;
 	}
     
+    /** For vbs to js conversion unknown methods and properties are
+     * treated by a DOT tree. Catch those cases here, before generating
+     * malformed asts.
+     */ 
+    protected ASPObjectInstance getMethod(AST ast, List args) {
+    	if ( ! (ast instanceof ObjectAST) && ast.getType() == DOT ){
+			/* Property access. */
+			ASPObjectInstance result = null;
+			Method method = new VbUserDefinedMethod(ast.getFirstChild().getNextSibling().getText(), args, false, false); 
+			AST instance = ast.getFirstChild();
+			instance.setNextSibling(null);
+			result = new ASPObjectInstance(instance);
+			result.setMember(method);
+			if (result != null && result.getMember() != null) {
+				result.getMember().setArgs(args);
+			}
+			return result;
+    	} else
+    		/* Let all other case be handled by the super mehtod. */
+    		return super.getMethod(ast, args);			
+    }
+			
+    
     private AST makeVarDeclsFromList(List elems) {
 		AST result = null;
 		if (! elems.isEmpty()) {
@@ -711,11 +734,13 @@ import org.apache.commons.collections.Transformer;
 				will be executed. */
     	}
         #expression = res;
+        if (#res != null ) System.out.println(#res.toStringList());
     } 
     if (res == null ) {
         log.warn("Unable to resolve Member:" + #do2.getText() + " from object:" + #do1.getText());
         
         #expression = #(DOT, #do1, #do2);
+        System.out.println("Helper: " + #expression.toStringList());
     }
 }
 
@@ -1308,13 +1333,14 @@ typeStack.push(new Integer(DINT));
             );
         }
         String operatorName = _tokenNames[operator];
+        AST toExpression = #toexpr.getFirstChild();
         fIn =
         #([forInitCode, "for_init"],
             #fInit,
             #([EXPR, "EXPR"],
                 #([operator, operatorName],
                     counterName,
-                    #toexpr.getFirstChild()
+                    toExpression
                 )
             ),
             toStep

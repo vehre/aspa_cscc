@@ -169,7 +169,10 @@ expression
   | CONSTANT <const>
   | EMBEDDED_ASP <embedded_asp>
   ;
-
+  exception // for rule
+  catch [NoViableAltException ex] {
+  	LOG.error(ex.toString());
+  }
 
 arglist_values
   :
