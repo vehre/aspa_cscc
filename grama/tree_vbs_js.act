@@ -553,8 +553,18 @@ import org.apache.commons.collections.Transformer;
     boolean functionAssign = currentFunction != null
 	    && #eq_ex1.getType() == IDENTIFIER
     	&& FUNCTION_RESULT.equals(#eq_ex1.getText());
+    boolean argByRef = false;
     if (functionAssign) {
         setAssignment();
+    } else {
+    	/* Only none-function-assigns can be assignment to by ref arguments. */
+    	/* For simplicity start to check only for assignments to identifiers.
+    		All other objects, like arrays or objects, implement byref semantic
+    		intrinsically. */
+    	argByRef = ( #eq_ex1.getType() == IDENTIFIER &&
+    			currentFunction != null &&
+    			currentFunction.hasArg(#eq_ex1.getText()) );
+    		/* Now the identifier in eq_ex1 is an argument name. */
     }
     boolean isAssign = this_type == ASSIGN;
     boolean areObjects = #eq_ex1 instanceof ObjectAST
@@ -598,6 +608,12 @@ import org.apache.commons.collections.Transformer;
             #expression = handleWriteToObject((ObjectAST) #eq_ex1,
             value);
         }
+    }
+    /* Need to decide what to do, when a by ref argument written to is found.
+    	For now, just emit a warning. */
+    if ( argByRef ) {
+    	log.warn("By ref argument '" + #eq_ex1.getText() + "' is written to.");
+    	System.out.println("By ref argument '" + #eq_ex1.getText() + "' is written to at " + #eq_ex1.getLine() + ", " + #eq_ex1.getColumn() + '.');
     }
 	typeStack.clear();
 }

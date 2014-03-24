@@ -1045,11 +1045,16 @@
 
     <method name="UBound" type="DINT">
         <arg type="ARRAY" />
+        <ast name="DOT">
+        	<arg index="1"/>
+        	<ast name="IDENTIFIER" text="length"/>
+        </ast>
+        <!-- 
         <ast name="METHOD_CALL" text="count">
             <ast name="ARGLIST_VALUES">
                 <arg index="1" />
             </ast>
-        </ast>
+        </ast> -->
     </method>
     <method name="UBound" type="DINT">
         <arg type="ARRAY" />
