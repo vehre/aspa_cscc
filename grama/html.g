@@ -39,7 +39,7 @@ TAG
   :
   '<'
   (
-      "!" (
+      { (!ignoreServerSide) }? "!" (
               "--"
               ((' ' | '\t')=> SPACE_TAB |)
               (
