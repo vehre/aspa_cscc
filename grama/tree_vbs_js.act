@@ -635,8 +635,9 @@ import org.apache.commons.collections.Transformer;
     /* Need to decide what to do, when a by ref argument written to is found.
     	For now, just emit a warning. */
     if ( argByRef ) {
-    	log.warn("By ref argument '" + #eq_ex1.getText() + "' is written to.");
-    	System.out.println("By ref argument '" + #eq_ex1.getText() + "' is written to at " + #eq_ex1.getLine() + ", " + #eq_ex1.getColumn() + '.');
+    	log.warn("By ref argument '" + #eq_ex1.getText() + "' is written to in function/sub " + currentFunction.getName());
+    	System.out.println("By ref argument '" + #eq_ex1.getText() + "' is written to in function/sub " + currentFunction.getName());
+		#eq_ex1.setText( "/* TODO ByRef Parameter Modification Detected */" + #eq_ex1.getText() );
     }
 	typeStack.clear();
 }
