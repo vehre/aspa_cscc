@@ -41,11 +41,7 @@ import java.util.HashMap;
     }
 }
 
-@init_tag : {
-    boolean isScript = false;
-}
-
-
+/** Add a server side include. */
 @attribute : {
     _ttype = HtmlLexerUtil.INCLUDE;
     util.addInclude(k.getText(), l.getText());
@@ -53,12 +49,7 @@ import java.util.HashMap;
 
 @asp_start : { _ttype = HtmlLexerUtil.ASP_START; }
 
-@check_script : {
-    String name = n.getText();
-    isScript = name != null && name.equalsIgnoreCase("script");
-}
-
-@check_server : {
+@checkScriptTag : {
     _ttype = util.getType(n.getText(), attributes);
     attributes.clear();
 }
@@ -71,7 +62,8 @@ import java.util.HashMap;
 
 
 @put_attr : {
-    attributes.put(k.getText().toLowerCase(),l.getText().toLowerCase());
+	/* Mangling filenames is a major problem on all decent OS, so don't do it. */
+	attributes.put(k.getText().toLowerCase(), k.getText().equalsIgnoreCase("src")? l.getText(): l.getText().toLowerCase()); 
 }
 
 

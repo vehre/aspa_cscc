@@ -50,6 +50,22 @@ public class AspParser {
         List classes;
         boolean isVb;
     }
+	public class TreeInfo {
+		/** The tree put into the tree parser. */
+		AST inputTree;
+		/** The output of the transforming tree parser. */
+		AST transformedTree;
+		/** Is this a vbs or a js tree. */
+		boolean vbs;
+		/** Is this server side or client side code. */
+		boolean serverSide;
+		protected TreeInfo(AST inTr, AST trTree, boolean isVbs, boolean isSer) {
+			inputTree = inTr;
+			transformedTree = trTree;
+			vbs = isVbs;
+			serverSide = isSer;
+		}
+	}
 /*
     private static void printClass(ASPClass clazz) {
         LOG.debug(clazz.getName() + " standalone:" + Boolean.toString(
@@ -261,9 +277,9 @@ public class AspParser {
     * otherwise is expected to be null.
     * @return a List which contains the AST forest if preserveAST is true.
     */
-    private List<Object> parseFile(File file, boolean isVb, SymbolTableExposer sTable)
+    private List<TreeInfo> parseFile(File file, boolean isVb, SymbolTableExposer sTable)
     throws ANTLRException {
-        List<Object> result;
+        List<TreeInfo> result;
         if (fileIsParsed(file)) {
 			if (sTable != null) { //is an include file
 				mergeSymbols((DataHolder) parsedFiles.get(file.getAbsolutePath()),
@@ -280,7 +296,7 @@ public class AspParser {
             VbsAbstractTreeParser vbtree = null;
             JsTree jsTree = null;
             selector.setDefaultVb(isVb);
-            result = new ArrayList<Object>();
+            result = new ArrayList<TreeInfo>();
             Set includes = null;
             if (generateCode) {
                 includes = new HashSet();
@@ -330,8 +346,7 @@ public class AspParser {
                             includes.addAll(vbtree.getDependencies());
                         }
                         fillHolder(vbtree, holder);
-                        result.add(new Object[] {Boolean.TRUE, node,
-                        		vbtree.getAST()});
+                        result.add(new TreeInfo(node, vbtree.getAST(), true, false));
                     }
                 } else {
                     if (jsParser == null) {
@@ -346,7 +361,7 @@ public class AspParser {
                             jsTree.setAspParser(this);
                             jsTree.setFunctions(jsParser.getFunctions());
                             jsTree.setAnonymousFunctions(
-                            jsParser.getAnonymousFunctions());
+                            		jsParser.getAnonymousFunctions());
                             jsTree.setParserClasses(jsParser.getClasses());
                             if (sTable != null) {
                                 mergeSymbols(holder, jsTree);
@@ -357,8 +372,7 @@ public class AspParser {
                             includes.addAll(jsTree.getDependencies());
                         }
                         fillHolder(jsTree, holder);
-                        result.add(new Object[] {Boolean.FALSE, node,
-                        		jsTree.getAST()});
+                        result.add(new TreeInfo(node, jsTree.getAST(), false, true));
                     }
                 }
             }
@@ -390,47 +404,47 @@ public class AspParser {
     }
 
 
-    private void produceCode(List ast, Writer writer, Set includes,
-    String path) {
+    private void produceCode(List<TreeInfo> ast, Writer writer, Set includes,
+    		String path) {
         CodeGenerator vbgenerator = null;
         JsGenerator jsgenerator = null;
         boolean isFirst = true;
-        for (Iterator it = ast.iterator(); it.hasNext();) {
-            Object[] nodes = (Object[]) it.next();
-            if (nodes.length == 3) {
-                AST phpTree = (AST) nodes[2];
-                boolean isVbTree = ((Boolean) nodes[0]).booleanValue();
-                CodeGenerator generator;
-                if (isVbTree) {
-                    if (vbgenerator == null) {
-                    	// TODO: Implement switching between php and js script generator depending on server / client side scripting
-                        vbgenerator = new VbsJsGenerator();
-                        vbgenerator.setWriter(writer);
-                    }
-                    generator = vbgenerator;
-                } else {
-                    if (jsgenerator == null) {
-                        jsgenerator = new JsGenerator();
-                    }
-                    jsgenerator.setWriter(writer);
-                    generator = jsgenerator;
+        for (Iterator<TreeInfo> it = ast.iterator(); it.hasNext();) {
+            TreeInfo nodes = it.next();
+            CodeGenerator generator;
+            if (nodes.vbs) {
+                if (vbgenerator == null || vbgenerator instanceof VbsJsGenerator && nodes.serverSide ||
+                		vbgenerator instanceof VbsPhpGenerator && ! nodes.serverSide) {
+                    vbgenerator = nodes.serverSide ? new VbsPhpGenerator() : new VbsJsGenerator();
+                    /* If just one ast is present, then the whole file is code, i.e., 
+                     * no need for script tags.
+                     */
+                    if ( ast.size() <= 1 ) ((VbsJsGenerator)vbgenerator).setNonInline();
+                    vbgenerator.setWriter(writer);
                 }
+                generator = vbgenerator;
+            } else {
+                if (jsgenerator == null) {
+                    jsgenerator = new JsGenerator();
+                }
+                jsgenerator.setWriter(writer);
+                generator = jsgenerator;
+            }
+            try {
+                if (isFirst && !includes.isEmpty()) {
+                    printIncludes(generator, includes);
+                    includes.clear();
+                }
+                isFirst = false;
+                generator.generate(nodes.transformedTree);
+            } catch (ANTLRException an) {
+                LOG.error("Failed to produce code from "
+                		+ (nodes.vbs ? "vb" : "js") + " : " + path, an);
                 try {
-                    if (isFirst && !includes.isEmpty()) {
-                        printIncludes(generator, includes);
-                        includes.clear();
-                    }
-                    isFirst = false;
-                    generator.generate(phpTree);
-                } catch (ANTLRException an) {
-                    LOG.error("Failed to produce code from "
-                    + (isVbTree ? "vb" : "js") + " : " + path, an);
-                    try {
-                        generator.getBuffer().end();
-                        writer.flush();
-                    } catch (IOException ioex) {
-                        LOG.error("Failed to flush buffers" + ioex);
-                    }
+                    generator.getBuffer().endCode();
+                    writer.flush();
+                } catch (IOException ioex) {
+                    LOG.error("Failed to flush buffers" + ioex);
                 }
             }
         }
@@ -514,7 +528,7 @@ public class AspParser {
 
 
     public String parseInclude(String path, SymbolTableExposer sTable,
-    boolean isVb) throws ANTLRException {
+    		boolean isVb) throws ANTLRException {
         File file = new File(path);
         if (file.exists() && file.isFile() && file.canRead()) {
             parseFile(file, isVb, sTable);
@@ -547,9 +561,7 @@ public class AspParser {
                 if (!result) {
                     String name = f.getName();
                     int lastDot = name.lastIndexOf('.');
-                    result = lastDot > 0 && isExtensionToProcess(
-                    		//name.substring(lastDot + 1)
-							name);
+                    result = lastDot > 0 && isExtensionToProcess(name);
                 }
                 return result;
             }
