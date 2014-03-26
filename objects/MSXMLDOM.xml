@@ -55,7 +55,7 @@
 		</ast>
 	</method>
 	
-	<method name="selectSingleNode" type="MSDOMNode">
+	<method name="selectSingleNode" type="MSXMLDOM">
 		<arg type="DSTRING"/>
 		<ast name="DOT">
 			<this/>

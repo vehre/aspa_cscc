@@ -1108,7 +1108,11 @@
         <key value="msxml2.domdocument" use="MSDOMDocument" />
         <key value="Microsoft.xmlhttp" use="MSXMLHttp" /> 
         <key>
-            <ast name="INVALID_OBJECT" />
+            <ast name="METHOD_CALL" text="CreateObject">
+				<ast name="ARGLIST_VALUES">
+					<arg index="1" />
+				</ast>
+			</ast>
         </key>
     </map>
   </method>

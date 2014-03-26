@@ -16,6 +16,24 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 -->
 <class name="window" standalone="true">
+	<method name="open" type="window">
+		<args />
+  		<ast name="DOT">
+  			<this />
+			<ast name="METHOD_CALL" text="open">
+				<ast name="ARGLIST_VALUES">
+					<args />
+				</ast>
+			</ast>
+		</ast>
+	</method>
+	<method name="close" type="window">
+  		<ast name="DOT">
+  			<this />
+			<ast name="METHOD_CALL" text="close">
+			</ast>
+		</ast>
+	</method>
 	<method name="focus" type="VOID">
   		<ast name="DOT">
   			<this />
