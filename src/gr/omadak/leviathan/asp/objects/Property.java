@@ -25,8 +25,8 @@ public interface Property extends Member {
     public void setArgType(int type);
     /**
     * Sets the name of the method which it's arguments
-    * are affected by an assignement to this property
-    *@param method is the method indicated by the propety
+    * are affected by an assignment to this property
+    *@param method is the method indicated by the property
     *@param index is the argument's index in the method
     */
     public void setIndicatedMethod(Method method, int index);

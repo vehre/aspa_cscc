@@ -1,0 +1,14 @@
+/bin
+/build
+/logs/*
+/.externalToolBuilders
+/.metadata
+/.settings
+/input
+/input2
+/lib
+/log4j
+/output
+/RemoteSystemsTempFiles
+/.classpath
+/.pydevproject

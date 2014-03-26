@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is part of Aspa.
+
+    Aspa is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    Aspa is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Aspa; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+-->
+<class name="MSDOMNode" dependant="true">
+	<property name="Value" type="DSTRING">
+		<read>
+			 <ast name="DOT">
+				<this />
+				<ast name="IDENTIFIER" text="value" />
+			</ast>
+		</read>
+	</property>
+	<property name="ReadOnly" type="DBOOL">
+		<read>
+			 <ast name="DOT">
+				<this />
+				<ast name="IDENTIFIER" text="readonly" />
+			</ast>
+		</read>
+		<write>
+			 <ast name="DOT">
+				<this />
+				<ast name="IDENTIFIER" text="readonly" />
+			</ast>
+		</write>
+	</property>
+	
+	<method name="Focus" type="VOID">
+		<ast name="DOT">
+			<this />
+			<ast name="METHOD_CALL" text="focus" />
+		</ast>
+	</method>
+	<method name="Select" type="VOID">
+		<ast name="DOT">
+			<this/>
+			<ast name="METHOD_CALL" text="select">
+			</ast>
+		</ast>
+	</method>
+	
+	<method name="getAttribute" type="DSTRING">
+		<arg type="DSTRING"/>
+		<ast name="DOT">
+			<this/>
+			<ast name="METHOD_CALL" text="getAttribute">
+			  <ast name="ARGLIST_VALUES">
+				<arg index="1" />
+			  </ast>
+			</ast>
+		</ast>
+	</method>
+	
+	<!-- Flash Element functions -->
+	<property name="Movie" type="DSTRING">
+		<read>
+			 <ast name="DOT">
+				<this />
+				<ast name="IDENTIFIER" text="Movie" />
+			</ast>
+		</read>
+	</property>
+	<method name="loadmovie" type="DSTRING">
+		<arg type="DINT"/>
+		<arg type="DSTRING"/>
+		<ast name="DOT">
+			<this/>
+			<ast name="METHOD_CALL" text="LoadMovie">
+				<ast name="ARGLIST_VALUES">
+					<arg index="1" />
+					<arg index="2" />
+				</ast>
+			</ast>
+		</ast>
+	</method>
+	<method name="Play" type="VOID">
+		<ast name="DOT">
+			<this/>
+			<ast name="METHOD_CALL" text="Play">
+			</ast>
+		</ast>
+	</method>
+	<method name="Rewind" type="VOID">
+		<ast name="DOT">
+			<this/>
+			<ast name="METHOD_CALL" text="Rewind">
+			</ast>
+		</ast>
+	</method>
+	<method name="StopPlay" type="VOID">
+		<ast name="DOT">
+			<this/>
+			<ast name="METHOD_CALL" text="StopPlay">
+			</ast>
+		</ast>
+	</method>
+</class>

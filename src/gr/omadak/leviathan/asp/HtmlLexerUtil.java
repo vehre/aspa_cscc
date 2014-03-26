@@ -30,7 +30,8 @@ public class HtmlLexerUtil {
     public final static int LANGUAGE = 30008;
     public final static int JS_END = 30009;
     public final static int VBS_END = 30010;
-
+    public final static int UNKNOWN_CONTROL = 30011;
+    
     private final static String KEY_SCRIPT = "script";
     private final static String KEY_LANG = "language";
     private final static String KEY_RUNAT = "runat";
@@ -60,21 +61,21 @@ public class HtmlLexerUtil {
 
 
     public int getType(String name, Map attributes) {
+    	// TODO: Currently all vbscript is treated to be client side. Correct this!
         if (!KEY_SCRIPT.equalsIgnoreCase(name)
                  || !attributes.keySet().contains(KEY_LANG)
-                 || !attributes.keySet().contains(KEY_RUNAT)) {
+                 /*|| !attributes.keySet().contains(KEY_RUNAT)*/) {
             return HTML;
         }
-        String lang = attributes.get(KEY_LANG).toString();
-        String runat = attributes.get(KEY_RUNAT).toString();
+        String lang = clearQuotes(attributes.get(KEY_LANG).toString());
+        boolean runatServer = attributes.containsKey(KEY_RUNAT) 
+        		&& clearQuotes(attributes.get(KEY_RUNAT).toString()).equalsIgnoreCase("server");
         String src = null;
         if (attributes.containsKey(KEY_SRC)) {
             src = attributes.get(KEY_SRC).toString();
         }
-        lang = clearQuotes(lang);
-        runat = clearQuotes(runat);
         int type = HTML;
-        if (runat.equalsIgnoreCase("server")) {
+        if (runatServer|| lang.equalsIgnoreCase("vbscript")) {
             type = getLangType(lang);
         }
         if (type != HTML) {
@@ -95,7 +96,7 @@ public class HtmlLexerUtil {
         } else if (lang.equalsIgnoreCase("vbscript")) {
             type = VBS_START;
         } else {
-            throw new RuntimeException("Uknown language:" + lang);
+            throw new RuntimeException("Unknown language:" + lang);
         }
         return type;
     }

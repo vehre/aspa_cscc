@@ -21,17 +21,17 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.Set;
 import java.util.HashSet;
+import gr.omadak.leviathan.asp.objects.ObjectAST;
 
 @init : {
-   	protected static Logger LOG = Logger.getLogger(VbsPhpGenerator.class);
-   
+	private static Logger LOG = Logger.getLogger(VbsJsGenerator.class);
+	
 	public void setWriter(Writer writer) {
-		out = new SourceBuffer(new PrintWriter(writer), true);
-   	}
-   	
+        out = new SourceBuffer(new PrintWriter(writer), false);
+    }
+    
     public static final int OBJECT = CommonConstants.OBJECT;
     public static final int OBJECT_RET = CommonConstants.OBJECT_RET;
-
 }
 
 
@@ -39,9 +39,9 @@ import java.util.HashSet;
 @float : { out.print(#DFLOAT.getText()); }
 @id : {
     if (inClass && ids.contains(#IDENTIFIER.getText())) {
-        out.print("$this->");
+        out.print("this.");
     }
-    out.print("$" + #IDENTIFIER.getText()); 
+    out.print(#IDENTIFIER.getText()); 
 }
 @string : { out.print(out.makeString(#DSTRING.getText())); }
 @true : { out.print("true"); }
@@ -60,7 +60,11 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
     }
 }
 
-
+@var_decl : { out.print("var "); boolean firstVarSeen = false; }
+@next_var : { if(firstVarSeen){ out.print(", "); } firstVarSeen = true; } 
+@const_decl : { out.print("const "); boolean firstConstSeen = false; }
+@next_const : { if(firstConstSeen){ out.print(", "); } firstConstSeen = true; }
+ 
 @quest : { out.print(" ? "); }
 @alt : { out.print(" : "); }
 
@@ -78,14 +82,15 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
 @ge : { out.print(" >= "); }
 @eq : { out.print(" == "); }
 @assign : { out.print(" = "); }
-@cassign : { out.print(" .= "); }
+@cassign : { out.print(" += "); }
 @passign : { out.print(" += "); }
 @minassign : { out.print(" -= "); }
 @modassign : { out.print(" %= "); }
 @sassign : { out.print(" *= "); }
 @dassign : { out.print(" /= "); }
 @neq : { out.print(" != "); }
-@concat : { out.print(" . "); }
+@is : { out.print(" == "); }
+@concat : { out.print(" + "); }
 @plus : { out.print(" + "); }
 @minus : { out.print(" - "); }
 @mod : { out.print(" % "); }
@@ -100,7 +105,21 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
 @post_plus : { out.print("++"); }
 @post_minus : { out.print("--"); }
 @method : { out.print(#METHOD_CALL.getText()); }
-@dot : { out.print("->"); }
+@CCobject_ret : {
+	if ( #OBJECT_RET instanceof ObjectAST ) {
+		ObjectAST oAST = (ObjectAST) #OBJECT_RET;
+		expression(oAST.getInstance().getInstance());
+	} else 
+		out.print(#OBJECT_RET.getText()); 
+}
+@CCobject : {
+	if ( #OBJECT instanceof ObjectAST ) {
+		ObjectAST oAST = (ObjectAST) #OBJECT;
+		expression(oAST.getInstance().getInstance());
+	} else 
+		out.print(#OBJECT.getText()); 
+}
+@dot : { out.print("."); }
 @no_args : { out.print("()"); }
 @arg_init : { boolean isFirst = true; out.print('('); }
 @arg : {
@@ -118,11 +137,11 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
 
 
 @include : {
-    out.println("require '" + #INCLUDE.getText() + "';");
+    out.println("import '" + #INCLUDE.getText() + "';");
 }
 
 @eq_html : {
-    out.print("echo ");
+    out.print("document.write ");
 }
 
 @pre_index : { out.print('['); }
@@ -147,7 +166,7 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
 }
 
 @uknown_method : {
-    out.print("/* Uknown method:" + #UKNOWN_METHOD.getText() + "*/ "
+    out.print("/* Unknown method:" + #UKNOWN_METHOD.getText() + "*/ "
     + #UKNOWN_METHOD.getText());
 }
 
@@ -160,7 +179,7 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
 }
 @elseif : {
     out.decLevel();
-    out.print("} elseif (");
+    out.print("} else if (");
 }
 @elseif_expr : {
     out.println(") {");
@@ -213,7 +232,7 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
     } else {
         firstArg = false;
     }
-    out.print("&$" + #BYREF.getText());
+    out.print("&" + #BYREF.getText());
 }
 @arg_id : {
     if (!firstArg) {
@@ -221,39 +240,30 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
     } else {
         firstArg = false;
     }
-    out.print("$" + #IDENTIFIER.getText());
+    out.print(#IDENTIFIER.getText());
 }
 @arglist_end : {
     out.println(") {");
     out.incLevel();
 }
 @glob_init : {
-    boolean firstGlobal = true;
-    out.print("global ");
-    hasGlobals = true;
+	LOG.error("GLOBAL node found in function. This should not happen in vbscript to javascript conversion.");
 }
 @id_glob : {
-    if (!firstGlobal) {
-        out.print(", ");
-    } else {
-        firstGlobal = false;
-    }
-    out.print("$" + #IDENTIFIER.getText());
+	LOG.error("Global identifier: '" + #IDENTIFIER.getText() + "' declared.");
 }
-@func_end : {
-    if (hasGlobals) {
-        out.println(";");
-    }
-}
+
+@func_end : !
+
 @nhead : {
-    out.print("/*Unsupported Header*/\""
-    + #NON_APPLICABLE_HEADER.getText() + "\"");
+    out.print("/*Unsupported Header*/\"" + #NON_APPLICABLE_HEADER.getText() + "\"");
 }
 @inv_obj : {
     out.print("/*Unknown object*/\""
     + #INVALID_OBJECT.getText() + "\"");
 }
 @const : { out.print(#CONSTANT.getText()); }
+@embedded_asp : { out.print(#EMBEDDED_ASP.getText()); }
 @lp : { out.print('('); }
 @lp_end : { out.print(')'); }
 
@@ -275,7 +285,3 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
     ids.add(#IDENTIFIER.getText());
 }
 @end : { out.end();}
-
-@CCobject_ret : { ; }
-
-@CCobject : { ; }
