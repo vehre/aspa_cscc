@@ -111,11 +111,16 @@
 
     <method name="ceil" type="DINT">
         <arg type="DINT" />
-        <ast name="METHOD_CALL" text="ceil">
+        <ast name="METHOD_CALL" text="Math.ceil">
             <ast name="ARGLIST_VALUES">
                 <arg index="1" />
             </ast>
         </ast>
+<!--        <ast lang="php" name="METHOD_CALL" text="ceil">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+            </ast>
+        </ast> -->
     </method>
 
     <method name="cos" type="DINT">
@@ -175,12 +180,18 @@
     <method name="pow" type="DINT">
         <arg type="DINT" />
         <arg type="DINT" />
-        <ast name="METHOD_CALL" text="pow">
+        <ast name="METHOD_CALL" text="Math.pow">
             <ast name="ARGLIST_VALUES">
                 <arg index="1" />
                 <arg index="2" />
             </ast>
         </ast>
+<!--        <ast lang="php" name="METHOD_CALL" text="pow">
+            <ast name="ARGLIST_VALUES">
+                <arg index="1" />
+                <arg index="2" />
+            </ast>
+        </ast> -->
     </method>
 
     <method name="random" type="DINT">

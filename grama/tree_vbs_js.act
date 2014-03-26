@@ -27,12 +27,16 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.TreeMap;
 import antlr.CommonToken;
+import gr.omadak.leviathan.asp.CommonConstants;
 import gr.omadak.leviathan.asp.objects.ObjectAST;
 import gr.omadak.leviathan.asp.objects.ASPObject;
 import gr.omadak.leviathan.asp.objects.ASPClass;
 import gr.omadak.leviathan.asp.objects.ASPObjectInstance;
+import gr.omadak.leviathan.asp.objects.XmlASPClass;
+import gr.omadak.leviathan.asp.objects.GenericASPProperty;
 import gr.omadak.leviathan.asp.objects.Property;
 import gr.omadak.leviathan.asp.objects.Member;
+import gr.omadak.leviathan.asp.objects.BaseMember;
 import gr.omadak.leviathan.asp.objects.Method;
 import gr.omadak.leviathan.asp.objects.VbUserDefinedMethod;
 import gr.omadak.leviathan.asp.objects.VbUserDefinedProperty;
@@ -50,7 +54,13 @@ import org.apache.commons.collections.Transformer;
     OBJECT_ATTRIBUTE; BXOR; BOR; BAND; BNOT; CONSTRUCTOR;
 @init :
 {
-     protected AST createNode(int type, AST left, AST right) {
+	/** The current nesting level of function definitions. 
+		Increase on entering a function or sub body, decreased on leave. */
+	private int functionNestingLevel = 0;
+	/** Set the i'th bit, if the function on the level returns a value. */
+	private int functionReturnsMask = 0;
+	
+    protected AST createNode(int type, AST left, AST right) {
         try {
 			String label = _tokenNames[type];
             return #([type, label], left, right);
@@ -106,16 +116,16 @@ import org.apache.commons.collections.Transformer;
                     if (method.getEvaluatedClass() != null) {
                         ASPClass clazz = method.getEvaluatedClass();
                         result = createObjectAST(CommonConstants.OBJECT,
-                        clazz.getName(), new ASPObjectInstance(
-                        methodInstance.getInstance(), clazz));
+                        		clazz.getName(), new ASPObjectInstance(
+                        			methodInstance.getInstance(), clazz));
 					} else if (method.getRetObjectClass() != null) {
                         ASPClass clazz = method.getRetObjectClass();
                         AST trans = translateMember(method, methodInstance);
                         result = createObjectAST(CommonConstants.OBJECT_RET,
-                        clazz.getName(), new ASPObjectInstance(trans, clazz));
+                        		clazz.getName(), new ASPObjectInstance(trans, clazz));
                     } else {
                         result = createObjectAST(CommonConstants.OBJECT,
-                        method.getName(), methodInstance);
+                        		method.getName(), methodInstance);
                     }
                 } else {
                     result = translateMember(method, methodInstance);
@@ -123,25 +133,87 @@ import org.apache.commons.collections.Transformer;
                 }
             }
         } else {
-            if (arguments.isEmpty()) {
-                result = #[UKNOWN_METHOD, methodAST.getText()];
-            } else {
-                result = makeFromList(arguments,
-                #[ARGLIST_VALUES, "ARGLIST_VALUES"]);
-                result = #([UKNOWN_METHOD, methodAST.getText()], result);
-            }
+        	/* The method is not known.    
+        		Translate unknown identifiers that represent a function call into a function
+                call. The function call tree has to look like:
+                (UKNOWN_METHOD "" (METHOD_CALL "method_name" arguments null), null) or
+                (UKNOWN_METHOD "" (DOT .. (METHOD_CALL "method_name" arguments null), null)
+                
+                Unfortunately, three cases occur of where to find the method_name: */
+        	String methodName = "";
+        	result = methodAST;
+   			AST argscopy = !arguments.isEmpty() ? makeFromList(arguments, #[ARGLIST_VALUES, "ARGLIST_VALUES"]) : null;
+        	AST where2Insert = null;
+        	switch (methodAST.getType()) {
+        	case IDENTIFIER:
+        		/* 1. Plain function call. */
+        		methodName = methodAST.getText();
+        		break;
+        	case DOT:
+        		where2Insert = methodAST;
+        		if (where2Insert.getFirstChild() instanceof ObjectAST) {
+        			/* Now in methodAST.firstChild already the correct tree for accessing the
+        				subtree is present. */ 
+        			methodName = where2Insert.getFirstChild().getNextSibling().getText();
+        			/* Add the method call. */
+        			result.getFirstChild().setNextSibling(#([METHOD_CALL, methodName], argscopy)); 
+        			/* And prefix it with an unknown method tag. */
+        			return #([UKNOWN_METHOD, ""], result);
+        		} else {
+	        		while ( where2Insert != null && where2Insert.getFirstChild() != null ) {
+						if ( where2Insert.getFirstChild().getType() == DOT ) {
+		                	/* 2. There is a chain of o1.o2....oN.call() */
+		                    where2Insert = where2Insert.getFirstChild();
+						} else if ( where2Insert.getFirstChild().getType() == IDENTIFIER ) {
+							/* 3. Found the call */
+							if ( where2Insert.getFirstChild().getFirstChild() == null &&
+							 		where2Insert.getFirstChild().getNextSibling() != null &&
+									where2Insert.getFirstChild().getNextSibling().getType() == IDENTIFIER) {
+								methodName = where2Insert.getFirstChild().getNextSibling().getText();
+								where2Insert.getFirstChild().setNextSibling(null);
+								break;
+							} else {
+								log.error("Booom!!!");
+								where2Insert = null;
+								break;
+							}
+						} else {
+							log.error("Malformed tree: No method name in call.");
+							where2Insert = null;
+							break;
+		                }
+					}
+        		}
+				if ( methodName.isEmpty() ) {
+                	/* Error in tree construction. There should be a first child. */
+	               	log.error("Malformed tree: DOT w/o a first child.");
+	               	where2Insert = null;
+                } 
+        		break;
+        	default:
+        		log.error("Unrecognized token type while processing unknown method. Token type is: " + methodAST.getType());
+        		/* We have to quit here early, because we do not know how to proceed. */
+        		return #([UKNOWN_METHOD, ""], #([METHOD_CALL, ""], methodAST));
+        	}
+
+			/* Add the method call at the correct position. */
+			if ( where2Insert != null ) {
+    			where2Insert.addChild(#([METHOD_CALL, methodName], argscopy)); 
+				result = #([UKNOWN_METHOD, ""], result); 
+			} else 
+				/* No insert position present, i.e., no base tree needed. */ 
+				result = #([UKNOWN_METHOD, ""], #([METHOD_CALL, methodName], argscopy));
         }
         return result;
     }
 
-
 	protected AST translateArray(AST array, int lastStackSize) {
 		AST result;
 		List[] args = argStack.size() != lastStackSize
-        ? (List[]) argStack.pop()
-        : null;
+        		? (List[]) argStack.pop()
+		        : null;
 		if (args == null) {
-			log.warn("No indexe passed to array access:" + array);
+			log.warn("No indexes passed to array access:" + array);
 			//this case should not happen
 			result = null;
 		} else {
@@ -165,6 +237,11 @@ import org.apache.commons.collections.Transformer;
         }, out);
         return out;
     }
+
+	protected void setAssignment() {
+		super.setAssignment();
+		functionReturnsMask = functionReturnsMask | (1<< functionNestingLevel);	
+	}
 
     protected void makeSub(AST subRoot) {
         AST fList;
@@ -223,20 +300,33 @@ import org.apache.commons.collections.Transformer;
             if (fList != null) {
                 elements.add(fList);
             }
-            List globals = currentFunction.getUsedGlobals();
-            if (!globals.isEmpty()) {
-                AST globalsAST = makeFromList(transform(globals),
-                #[GLOBALS, "GLOBALS"]);
-                elements.add(globalsAST);
-            }
-            if (!valueAssignedForLevel()) {
+            /* Check, if the function name has been assigned to. */
+            if ( (functionReturnsMask & (1<< functionNestingLevel))> 0) {
+            	/* Compute the type of the function_result and create a suitable initializer. */
+            	AST initializer;
+            	switch (currentFunction.getVariableType(VbsAbstractTreeParser.FUNCTION_RESULT)) {
+				case DSTRING:
+					initializer = #[DSTRING, ""];
+					break;
+				case DFLOAT:
+					initializer = #[DFLOAT, "0.0"];
+					break;
+				case DINT:
+					initializer = #[DINT, "0"];
+					break;
+				default:
+					initializer = #[NULL, "null"];
+					break;	
+				}					
                 AST declExpr =
-                #([EXPR, "EXPR"],
-                    ([ASSIGN, "="],
-                        [IDENTIFIER, FUNCTION_RESULT],
-                        [NULL, "null"]
-                    )
-                );
+	                #([VAR, "var" ], 
+	                	([EXPR, "EXPR"],
+	                    	([ASSIGN, "="],
+	                        	[IDENTIFIER, FUNCTION_RESULT],
+	                        	initializer
+	                        )
+	                    )
+	                );
                 elements.add(declExpr);
             }
             AST stm = statements;
@@ -244,7 +334,7 @@ import org.apache.commons.collections.Transformer;
             while ((stm = stm.getNextSibling()) != null) {
                 elements.add(stm);
             }
-            if (!exitForLevel()) {
+            if ( (functionReturnsMask & (1<< functionNestingLevel))> 0 ) {
                 AST retExpr =
                 #([RETURN, "return"],
                     ([EXPR, "EXPR"],
@@ -257,20 +347,141 @@ import org.apache.commons.collections.Transformer;
             #[funcRoot.getType(), funcRoot.getText()]);
         }
         currentFunction = null;
+        /* Remove the marker, that the function on this level returns a value. */
+        functionReturnsMask = functionReturnsMask & ~(1<< functionNestingLevel);
         return result;
     }
 
 
     protected AST exitFunction() {
-        AST result = valueAssignedForLevel()
-        ? #([RETURN, "return"],
-                    #([EXPR, "EXPR"],
-                    [IDENTIFIER, FUNCTION_RESULT])
-            )
-        : #([RETURN, "return"]);
+        AST result = (functionReturnsMask & (1<< functionNestingLevel))> 0
+	        ? #([RETURN, "return"],
+    	                #([EXPR, "EXPR"],
+	                    [IDENTIFIER, FUNCTION_RESULT])
+	            )
+	        : #([RETURN, "return"]);
         setExit();
         return result;
     }
+    
+    protected ASPObjectInstance getObjectInstance(AST ast) {
+    	ASPObjectInstance result = null;
+	
+		if (ast instanceof ObjectAST) {
+			ObjectAST oAST = (ObjectAST) ast;
+			ASPObjectInstance inst = oAST.getInstance();
+			ASPClass clazz = inst.getASPClass();
+			if (inst.getMember() != null) {
+				Member mem = inst.getMember();
+				if ( mem.getReturnType() == CommonConstants.OBJECT ) {
+					if ( mem.getRetObjectClass() != null ) {
+						clazz = mem.getRetObjectClass();
+					} else {
+						log.error("Member " + inst.getMember().getName() + "() returns no type for " + inst);
+						return null;
+					}
+				}
+			}
+			result = new ASPObjectInstance(oAST, clazz);
+		} else if (ast.getType() == IDENTIFIER) {
+			String className = ast.getText();
+			if (OBJECT_CLASSES.containsKey(className.toUpperCase())) {
+				result = new ASPObjectInstance(ast,
+						(ASPClass) OBJECT_CLASSES.get(className.toUpperCase()));
+			} else {
+				result = getObject(className);
+				if (result == null) {
+					log.warn("Could not find object '" + className + "'.");
+				}
+			}
+		}
+		return result;
+	}
+    
+    protected AST getObject(ASPObjectInstance instance, AST member) {
+		AST result = null;
+		ASPClass clazz = instance.getASPClass();
+		if (clazz == null) {
+			log.error("Unable to get class:" + instance.getInstance());
+		} else {
+			Member mem = clazz.getMemberObject(member.getText());
+			if (mem == null) {
+				log.error("Failed to get member:" + member.getText()
+						+ " from class:" + clazz.getName());
+			} else {
+				instance.setMember(mem);
+				if (mem instanceof Method) {
+					/* Do this for method calls. The appropriate AST is setup correctly by 
+						the handleFunctionSub()-method. */
+					Token token = new CommonToken(mem.getReturnType(),
+							member.getText());
+					List alts = clazz.getMemberList(member.getText());
+					if (alts.size() > 1) {
+						instance.setMemberList(alts);
+					}
+					result = new ObjectAST(token, instance);
+				} else {
+					/* Now for properties. */
+					ASPObjectInstance newInst = new ASPObjectInstance(instance.getInstance(), mem.getRetObjectClass());
+					newInst.setMember(mem);
+					result = createObjectAST(mem.getReturnType(), member.getText(), newInst);
+				}
+			}
+		}
+		return result;
+	}
+    
+    /** For vbs to js conversion unknown methods and properties are
+     * treated by a DOT tree. Catch those cases here, before generating
+     * malformed asts.
+     */ 
+    protected ASPObjectInstance getMethod(AST ast, List args) {
+    	if ( ! (ast instanceof ObjectAST) && ast.getType() == DOT ){
+			/* Property access. */
+			ASPObjectInstance result = null;
+			Method method = new VbUserDefinedMethod(ast.getFirstChild().getNextSibling().getText(), args, false, false); 
+			AST instance = ast.getFirstChild();
+			instance.setNextSibling(null);
+			result = new ASPObjectInstance(instance);
+			result.setMember(method);
+			if (result != null && result.getMember() != null) {
+				result.getMember().setArgs(args);
+			}
+			return result;
+    	} else
+    		/* Let all other case be handled by the super mehtod. */
+    		return super.getMethod(ast, args);			
+    }
+			
+    
+    private AST makeVarDeclsFromList(List elems) {
+		AST result = null;
+		if (! elems.isEmpty()) {
+			for (Iterator it = elems.iterator(); it.hasNext();) {
+				AST element = (AST) it.next();
+				element.setNextSibling(null);
+				addVariable(element.getFirstChild().getText(), element.getFirstChild().getType());
+			}
+			elems.add(0, #([VAR, "var"]));
+			AST[] array = (AST[]) elems.toArray(new AST[0]);
+			result = astFactory.make(array);
+		}
+		return result;
+	}
+	
+	private AST makeConstDeclsFromList(List elems) {
+		AST result = null;
+		if (! elems.isEmpty()) {
+			for (Iterator it = elems.iterator(); it.hasNext();) {
+				AST element = (AST) it.next();
+				element.setNextSibling(null);
+			}
+			elems.add(0, #([CONST, "const"]));
+			AST[] array = (AST[]) elems.toArray(new AST[0]);
+			result = astFactory.make(array);
+		}
+		return result;
+	}
 }
 
 
@@ -316,7 +527,6 @@ import org.apache.commons.collections.Transformer;
 		if (dependencies == null) {
 			dependencies = new HashSet();
 		}
-		dependencies.add("translator/runtime.php");
         ## = #([EXPR, "EXPR"],
            #([ASSIGN, "="], [IDENTIFIER, arrayName],
             #([METHOD_CALL, "vb_redim"],
@@ -364,14 +574,24 @@ import org.apache.commons.collections.Transformer;
         this_type = ASSIGN;
     }
     boolean functionAssign = currentFunction != null
-    && #eq_ex1.getType() == IDENTIFIER
-    && FUNCTION_RESULT.equals(#eq_ex1.getText());
+	    && #eq_ex1.getType() == IDENTIFIER
+    	&& FUNCTION_RESULT.equals(#eq_ex1.getText());
+    boolean argByRef = false;
     if (functionAssign) {
         setAssignment();
+    } else {
+    	/* Only none-function-assigns can be assignment to by ref arguments. */
+    	/* For simplicity start to check only for assignments to identifiers.
+    		All other objects, like arrays or objects, implement byref semantic
+    		intrinsically. */
+    	argByRef = ( #eq_ex1.getType() == IDENTIFIER &&
+    			currentFunction != null &&
+    			currentFunction.hasArg(#eq_ex1.getText()) );
+    		/* Now the identifier in eq_ex1 is an argument name. */
     }
     boolean isAssign = this_type == ASSIGN;
     boolean areObjects = #eq_ex1 instanceof ObjectAST
-    || #eq_ex2 instanceof ObjectAST;
+	    || #eq_ex2 instanceof ObjectAST;
     if (isAssign && areObjects) {
         if (#eq_ex1.getType() == IDENTIFIER) {
             AST ast = handleIdObject(#eq_ex1, (ObjectAST) #eq_ex2);
@@ -411,6 +631,13 @@ import org.apache.commons.collections.Transformer;
             #expression = handleWriteToObject((ObjectAST) #eq_ex1,
             value);
         }
+    }
+    /* Need to decide what to do, when a by ref argument written to is found.
+    	For now, just emit a warning. */
+    if ( argByRef ) {
+    	log.warn("By ref argument '" + #eq_ex1.getText() + "' is written to in function/sub " + currentFunction.getName());
+    	System.out.println("By ref argument '" + #eq_ex1.getText() + "' is written to in function/sub " + currentFunction.getName());
+		#eq_ex1.setText( "/* TODO ByRef Parameter Modification Detected */" + #eq_ex1.getText() );
     }
 	typeStack.clear();
 }
@@ -493,11 +720,28 @@ import org.apache.commons.collections.Transformer;
 @dot_id_end : {
     AST res = getObject(#do1, #do2);
     if (res != null) {
+    	if (res instanceof ObjectAST && ((ObjectAST) res).getInstance().getMember() instanceof Property) {
+    		/* Need to apply property conversion to in chains of properties, e.g., foo.bar.baz.call(). */
+    		ASPObjectInstance instance = (ASPObjectInstance)((ObjectAST) res).getInstance();
+    		/* Copied from VbsAstractTree.translateMember(). */
+    		Property prop = (Property) instance.getMember();
+			res = prop.read(instance == null ? null : instance.getInstance());
+			if ( res != null ) {
+				AST temp = createObjectAST(res.getType(), res.getText(), instance);
+				temp.addChild(res.getFirstChild());
+				res = temp;
+			}
+			/* When the prop.read() failed, then res is null and the check after the outer if
+				will be executed. */
+    	}
         #expression = res;
-    } else {
-        log.warn("Unable to resolve Member:" + #do2.getText() + " from object:"
-        + #do1.getText());
+        if (#res != null ) System.out.println(#res.toStringList());
+    } 
+    if (res == null ) {
+        log.warn("Unable to resolve Member:" + #do2.getText() + " from object:" + #do1.getText());
+        
         #expression = #(DOT, #do1, #do2);
+        System.out.println("Helper: " + #expression.toStringList());
     }
 }
 
@@ -547,7 +791,7 @@ typeStack.push(new Integer(DBOOL));
 @pre_idiv : { #int_div1 = getDefault(#int_div1); }
 @post_idiv :   {
     #expression =
-    #([METHOD_CALL, "ceil"],
+    #([METHOD_CALL, "Math.ceil"],
         #([ARGLIST_VALUES,"ARGLIST_VALUES"],
             #([DIVIDE, "/"], #int_div1, getDefault(#int_div2))
         )
@@ -578,7 +822,7 @@ typeStack.push(new Integer(DINT));
 @pre_exp : { #exp1 = getDefault(#exp1); boolean leftDint = lastType == DINT;}
 @post_exp :          {
     #expression =
-    #([METHOD_CALL, "pow"],
+    #([METHOD_CALL, "Math.pow"],
         #([ARGLIST_VALUES,"ARGLIST_VALUES"],
             #exp1,  getDefault(#exp2)
         )
@@ -736,7 +980,6 @@ typeStack.push(new Integer(DINT));
     }
 }
 
-
 @tuminus : !
 @unary_minus : {
     #uminus = getDefault(#uminus);
@@ -772,13 +1015,13 @@ typeStack.push(new Integer(DINT));
 @id : {
     if (localFunctions != null) {
         if (localFunctions.containsKey(#IDENTIFIER.getText())
-        && (currentFunction == null
-        || !currentFunction.getName().equals(#IDENTIFIER.getText()))) {
+     		   && (currentFunction == null
+        		|| !currentFunction.getName().equals(#IDENTIFIER.getText()))) {
             #IDENTIFIER.setType(METHOD_CALL);
         } else if (currentFunction != null) {
             if (currentFunction.getName().equals(#IDENTIFIER.getText())
-            || (currentProperty != null && currentProperty.getName().equals(
-            #IDENTIFIER.getText()))) {
+            		|| (currentProperty != null && currentProperty.getName().equals(
+            			#IDENTIFIER.getText()))) {
                 #IDENTIFIER.setText(FUNCTION_RESULT);
             }
         }
@@ -868,21 +1111,6 @@ typeStack.push(new Integer(DINT));
     }
 }
 
-
-@const_end : {
-    ## =
-    #([EXPR, "EXPR"],
-        #([METHOD_CALL, "define"],
-            #([ARGLIST_VALUES, "ARGLIST_VALUES"],
-                [DSTRING, #ci.getText()],
-                hardTranslate(cex),
-                [TRUE, "true"]
-            )
-        )
-    );
-}
-
-
 @terase : !
 @erase : {
     ## =
@@ -922,9 +1150,10 @@ typeStack.push(new Integer(DINT));
 	String varName = #ARRAY.getText();
 	AST result;
 	if (dims.size() < 2) {
-		result = #[METHOD_CALL, "array"];
+		//result = #[METHOD_CALL, "Array"];
+		result = #[IDENTIFIER, "[]"];
 	} else {
-		result = #[METHOD_CALL, "array"];
+		result = #[METHOD_CALL, "Array"];
 		for (int i = dims.size() - 2; i > -1; i--) {
 			AST size = (AST) dims.get(i);
 			if (size.getType() == DINT) {
@@ -941,26 +1170,29 @@ typeStack.push(new Integer(DINT));
 	}
     ## = #([ASSIGN, "="], [IDENTIFIER, varName], result);
 }
-@dim_init : { List dimArrays = null; }
+@dim_init : { List varDecls = new ArrayList(); }
 @dim_decl : {
-    if (#decl.getType() != IDENTIFIER) {
-        if (dimArrays == null) {
-            dimArrays = new ArrayList();
-        }
-        dimArrays.add(#([EXPR, "EXPR"], #decl));
-    }
+    varDecls.add(#decl.getType() != EXPR ? #([EXPR, "EXPR"], #decl) : #decl);
     if (currentFunction != null) {
         currentFunction.placeVar(
-        #decl.getType() == IDENTIFIER ? #decl.getText()
-        : #decl.getFirstChild().getText(), CommonConstants.UKNOWN_TYPE, true);
+        		#decl.getType() == IDENTIFIER ? #decl.getText()
+        			: (#decl.getFirstChild().getType() != IDENTIFIER ?
+        				#decl.getFirstChild().getFirstChild().getText() 
+        				: #decl.getFirstChild().getText()), CommonConstants.UKNOWN_TYPE, true);
     }
 }
-@dim_end : {
-    if (dimArrays != null) {
-        ##  = makeFromList(dimArrays, #[CommonConstants.TRANSLATE_ROOT]);
-    }
-}
+@dim_end : { ##  = makeVarDeclsFromList(varDecls); }
 
+/* Process constant declarations. */
+@const_init : { List constDecls = new ArrayList(); }
+@const_decl : {
+	constDecls.add(#([EXPR, "EXPR"], #([ASSIGN, "="], #ci, #cex))); 
+	if (currentFunction != null) {
+		/* For simplicity make constants local variables, too, */
+    	currentFunction.placeVar(#ci.getText(), CommonConstants.UKNOWN_TYPE, true);
+    }
+}
+@const_end : { ## = makeConstDeclsFromList(constDecls); }
 
 @tdw : !
 @do_while : { ## = #([WHILE, "while"], #do_while_expr, #dws); }
@@ -1040,7 +1272,7 @@ typeStack.push(new Integer(DINT));
 
 @tcel : !
 @case_else_end : {
-    #case_else = #([CASE_ELSE, "defaut"], #st, [BREAK, "break"]);
+    #case_else = #([CASE_ELSE, "default"], #st, [BREAK, "break"]);
 }
 
 @tfor : !
@@ -1049,15 +1281,15 @@ typeStack.push(new Integer(DINT));
 @for_init : {
     AST checkNode = toStep == null ? null : toStep.getFirstChild();
     AST counterName = astFactory.dupTree(
-    #fInit.getFirstChild().getFirstChild());
+    	#fInit.getFirstChild().getFirstChild());
     if (checkNode != null
-    && checkNode.getType() != DINT
-    && checkNode.getType() != UNARY_MINUS) {
+		    && checkNode.getType() != DINT
+		    && checkNode.getType() != UNARY_MINUS) {
         whileAST =
         #([DO_END, "while"],
             #([NEQ, "<>"],
                 counterName,
-                astFactory.dupTree(#toexpr.getFirstChild())
+                #toexpr.getFirstChild()
             )
         );
     } else {
@@ -1066,12 +1298,12 @@ typeStack.push(new Integer(DINT));
         if (checkNode != null) {
             operator = checkNode.getType() == UNARY_MINUS ? GE : LE;
             boolean isPostMin = operator == GE
-            && checkNode.getFirstChild() != null
-            && checkNode.getFirstChild().getType() == DINT
-            && Integer.parseInt(checkNode.getFirstChild().getText()) == 1;
+	            && checkNode.getFirstChild() != null
+	            && checkNode.getFirstChild().getType() == DINT
+	            && Integer.parseInt(checkNode.getFirstChild().getText()) == 1;
             boolean isPostPlus = !isPostMin
-            && checkNode.getType() == DINT
-            && Integer.parseInt(checkNode.getText()) == 1;
+	            && checkNode.getType() == DINT
+	            && Integer.parseInt(checkNode.getText()) == 1;
             if (isPostMin) {
                 toStep = #([EXPR, "EXPR"],
                     #([POST_MINUS, "--"], astFactory.dupTree(counterName))
@@ -1102,14 +1334,14 @@ typeStack.push(new Integer(DINT));
             );
         }
         String operatorName = _tokenNames[operator];
-        AST toChild = astFactory.dupTree(#toexpr.getFirstChild());
+        AST toExpression = #toexpr.getFirstChild();
         fIn =
         #([forInitCode, "for_init"],
             #fInit,
             #([EXPR, "EXPR"],
                 #([operator, operatorName],
                     counterName,
-                    toChild
+                    toExpression
                 )
             ),
             toStep
@@ -1119,8 +1351,8 @@ typeStack.push(new Integer(DINT));
 @for_end : {
     if (whileAST != null) {
         AST counterName = astFactory.dupTree(
-        #fInit.getFirstChild().getFirstChild());
-        counterName.setNextSibling(null);
+	        #fInit.getFirstChild().getFirstChild());
+	        counterName.setNextSibling(null);
         AST counterTwo = astFactory.dupTree(counterName);
         String incName = "while_step" + lastForWhile;
         String limName = "while_lim" + lastForWhile++;
@@ -1189,9 +1421,11 @@ typeStack.push(new Integer(DINT));
     } else {
         currentFunction = (VbUserDefinedMethod) localFunctions.get(text);
     }
+    functionNestingLevel++;
 }
 @sub_end : {
     makeSub(#s);
+    functionNestingLevel--;
     currentFunction = null;
 }
 
@@ -1211,16 +1445,18 @@ typeStack.push(new Integer(DINT));
         currentFunction = (VbUserDefinedMethod) localFunctions.get(text);
     }
     levelList.clear();
+    functionNestingLevel++;
 }
 @func_end : {
     ## = makeFunction(#f, #fst);
+    functionNestingLevel--;
     currentFunction = null;
 }
 @exit_func : {
     ## = exitFunction();
 }
 
-@nested : { cLevel++; }
+@nested : { cLevel++; } 
 @nested_end : { cLevel--; }
 
 @include : {
@@ -1350,3 +1586,6 @@ typeStack.push(new Integer(DINT));
 }
 
 @index : { typeStack.clear(); }
+
+@nothing : { ## = #([NULL, "null"]); }
+

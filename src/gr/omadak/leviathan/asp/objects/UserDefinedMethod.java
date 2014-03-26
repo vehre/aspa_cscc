@@ -43,7 +43,7 @@ public abstract class UserDefinedMethod extends GenericMethod {
 
 
     private void correctArgs() {
-        //the missing parameters will be replced by NULL
+        //the missing parameters will be replaced by NULL
         int argCount = getArgCount();
         if (args == null && argCount == 0) {
             args = Collections.EMPTY_LIST;
@@ -83,7 +83,7 @@ public abstract class UserDefinedMethod extends GenericMethod {
     }
 
     /**
-    * Checks if the method contains an initilized
+    * Checks if the method contains an initialized
     * variable which contains an Object reference
     * @param name is the name of the variable
     * @return true if the method contains a variable
@@ -107,7 +107,18 @@ public abstract class UserDefinedMethod extends GenericMethod {
         && localObjects.containsKey(name);
     }
 
-
+    /**
+    * Get the type of the local object. 
+    * @param name is the name of the variable
+    * @return The type of the variable, or unknown_type, if the variable is not present.
+    */
+    public int getVariableType(String name) {
+    	if ( localObjects == null)
+    		return CommonConstants.UKNOWN_TYPE; 
+    	Object obj = localObjects.get(name);
+        return obj == null || !(obj instanceof Integer)? CommonConstants.UKNOWN_TYPE : ((Integer) obj).intValue();
+    }
+    
 	private void place(String name, Object obj, boolean local) {
 		if (local) {
 			if (localObjects == null) {
@@ -124,7 +135,7 @@ public abstract class UserDefinedMethod extends GenericMethod {
 
 
     /**
-    * Initilizes or places a new variable initilized with instance.
+    * Initializes or places a new variable initialized with instance.
     * @param name is the name of the variable
     * @param instance is the Object reference
     * @param local indicates if it is a local object or a global one
@@ -199,7 +210,6 @@ public abstract class UserDefinedMethod extends GenericMethod {
         }
         return result;
     }
-
 
     /**
 	 * Generates the AST of the method call

@@ -51,8 +51,9 @@ import org.apache.log4j.Logger;
     HTML; EQ_HTML; PROPERTY_GET; PROPERTY_LET; PROPERTY_SET;
     WITH_DOT; ASP; INDEX_OP; INDEX_LIST; DO_UNTIL; DO_WHILE;
     FOR_INIT; INCLUDE; EXIT_PROPERTY; ARRAY; GOTO;
-    DIMENSION_LENGTH; REDIM_PRESERVE;
+    DIMENSION_LENGTH; REDIM_PRESERVE; EMBEDDED_ASP;
 
+	VAR;
 
 @init : {
     private boolean inWith;
@@ -154,12 +155,43 @@ import org.apache.log4j.Logger;
         ? createIdProperty(#node.getText())
         : createArrayProperty(#node));
     }
+    
+    /** Walk left-most throuhg the AST ast and find the first IDENTIFIER.
+    	return the string of the IDENTIFIER, else "".
+    */
+    private String findLeftMostID(AST ast) {
+    	AST iter= ast;
+    	while (iter != null && iter.getType() != IDENTIFIER) {
+    		iter= iter.getFirstChild();
+    	}
+    	return (iter != null && iter.getType() != IDENTIFIER) ? iter.getText() : "";
+    }
+    
+    /** Insert a variable declared in a dim statement into the set of
+		global variables, if no function (or class !! not implemented yet !!)
+		is set and a name could be retrieved by walking down the ast. 
+	*/
+	private void check4globalVar(AST var) { 
+		if (currentFunction == null) {
+			String name = findLeftMostID(var);
+			if (! name.isEmpty()) { 
+				globalIds.add(name); 
+			}
+		}
+	}
 }
 
 @check_id : {
     if (#left.getType() == IDENTIFIER && currentFunction == null) {
         globalIds.add(#left.getText());
     }
+}
+
+@check4globalVar1 : {
+	check4globalVar(#var1);
+}
+@check4globalVarN : {
+	check4globalVar(#varN);
 }
 
 
@@ -587,6 +619,9 @@ import org.apache.log4j.Logger;
     $setText(lang);
 }
 
+@lexer_unknown_control : {
+	$setType(HtmlLexerUtil.UNKNOWN_CONTROL);
+}
 
 @lexer_ws : {
     newline();

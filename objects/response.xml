@@ -261,11 +261,16 @@
 
   <method name="Write" type="VOID">
     <arg type="DSTRING" />
-    <ast name="METHOD_CALL" text="print">
+    <ast name="METHOD_CALL" text="document.write">
         <ast name="ARGLIST_VALUES">
             <arg index="1" />
         </ast>
     </ast>
+<!--    <ast lang="php" name="METHOD_CALL" text="print">
+        <ast name="ARGLIST_VALUES">
+            <arg index="1" />
+        </ast>
+    </ast>-->
   </method>
 
 

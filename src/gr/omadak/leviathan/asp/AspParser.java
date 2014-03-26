@@ -133,6 +133,8 @@ public class AspParser {
     private Map parsedAST;
     private boolean generateCode;
     private boolean preserveAST;
+    /** If set, then ignore all server side code given by <% directives. */
+    private boolean disableServerSideCode;
 	private String currentFileName;
 
     private static Logger LOG = Logger.getLogger(AspParser.class);
@@ -155,26 +157,24 @@ public class AspParser {
         try {
             MapLoader loader = new MapLoader();
             Map jsTypes = loader.loadMap(
-                AspParser.class.getResource("tokens/js.txt"), new URL[] {
-                AspParser.class.getResource("tokens/TreeJsTokenTypes.txt"),
-                AspParser.class.getResource("tokens/common.txt")});
+            		AspParser.class.getResource("tokens/js.txt"), new URL[] {
+            			AspParser.class.getResource("tokens/TreeJsTokenTypes.txt"),
+            			AspParser.class.getResource("tokens/common.txt")});
             Map objectClasses = new HashMap();
             Map functions = new TreeMap();
-            XmlObjectParser xmlParser = new XmlObjectParser(jsTypes,
-            objectClasses);
+            XmlObjectParser xmlParser = new XmlObjectParser(jsTypes, objectClasses);
             loader.loadObjects(
-            AspParser.class.getResource("tokens/jsobjects.txt"),
-            AspParser.class, objectClasses, functions, xmlParser);
+		            AspParser.class.getResource("tokens/jsobjects.txt"),
+		            AspParser.class, objectClasses, functions, xmlParser);
             XmlASPClass[] instr_classes = {
-            getInstrictObject("Array", objectClasses),
-            getInstrictObject("Date", objectClasses),
-            getInstrictObject("String", objectClasses),
-            getInstrictObject("Boolean", objectClasses),
-            getInstrictObject("Number", objectClasses)
+		            getInstrictObject("Array", objectClasses),
+		            getInstrictObject("Date", objectClasses),
+		            getInstrictObject("String", objectClasses),
+		            getInstrictObject("Boolean", objectClasses),
+		            getInstrictObject("Number", objectClasses)
             };
             JsParser.setInstrictClasses(instr_classes);
-            JsTree.setClassesAndFunctions(instr_classes, objectClasses,
-            functions);
+            JsTree.setClassesAndFunctions(instr_classes, objectClasses, functions);
 /*
             for (Iterator it = objectClasses.values().iterator();
             it.hasNext();) {
@@ -185,13 +185,12 @@ public class AspParser {
             functions = new TreeMap();
             Map vbTypes = loader.loadMap(
             AspParser.class.getResource("tokens/vbs.txt"), new URL[] {
-            AspParser.class.getResource("tokens/TreeVbsTokenTypes.txt"),
-            AspParser.class.getResource("tokens/common.txt")});
-            xmlParser = new XmlObjectParser(vbTypes,
-            objectClasses);
+            		AspParser.class.getResource("tokens/TreeVbsTokenTypes.txt"),
+            		AspParser.class.getResource("tokens/common.txt")});
+            xmlParser = new XmlObjectParser(vbTypes, objectClasses);
             loader.loadObjects(
-            AspParser.class.getResource("tokens/vbobjects.txt"),
-            AspParser.class, objectClasses, functions, xmlParser);
+            		AspParser.class.getResource("tokens/vbobjects.txt"),
+            		AspParser.class, objectClasses, functions, xmlParser);
 /*
             LOG.debug("\nVB classes\n");
             for (Iterator it = objectClasses.values().iterator();
@@ -199,7 +198,7 @@ public class AspParser {
                 printClass((ASPClass) it.next());
             }
 */
-            VbsTree.setClassesAndFunctions(objectClasses, functions);
+            VbsAbstractTreeParser.setClassesAndFunctions(objectClasses, functions);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -210,7 +209,6 @@ public class AspParser {
         this.baseDir = baseDir;
         this.baseOutDir = baseOutDir;
     }
-
 
     private Writer getWriter(File file) throws IOException {
         String basePath = baseDir.getCanonicalFile().getAbsolutePath();
@@ -225,9 +223,14 @@ public class AspParser {
             String pElem = st.nextToken();
             boolean hasMore = st.hasMoreTokens();
             if (!hasMore) {
-                if (pElem.endsWith(".asp")) {
-                    pElem = pElem.substring(0, pElem.lastIndexOf('.')) + ".php";
-                }
+                /*if (pElem.toLowerCase().endsWith(".asp")) {
+                	// TODO: Implement switch on using ".html" and ".php"
+                    pElem = pElem.substring(0, pElem.lastIndexOf('.')) + (true ? ".html" : ".php");
+                } else if (pElem.endsWith(".vbs")) {
+                	pElem = pElem.substring(0, pElem.lastIndexOf('.')) + ".js";
+                }*/
+				//original filename more clear; easy to post-process with a batch script
+				pElem = pElem + ".converted";
             }
             out = new File(out == null ? baseOutDir : out, pElem);
             if (hasMore && !out.exists()) {
@@ -258,25 +261,26 @@ public class AspParser {
     * otherwise is expected to be null.
     * @return a List which contains the AST forest if preserveAST is true.
     */
-    private List parseFile(File file, boolean isVb, SymbolTableExposer sTable)
+    private List<Object> parseFile(File file, boolean isVb, SymbolTableExposer sTable)
     throws ANTLRException {
-        List result;
+        List<Object> result;
         if (fileIsParsed(file)) {
 			if (sTable != null) { //is an include file
 				mergeSymbols((DataHolder) parsedFiles.get(file.getAbsolutePath()),
 				sTable);
 			}
-            result = Collections.EMPTY_LIST;
+            result = Collections.emptyList();
         } else {
 			currentFileName = file.getName();
             AspStreamSelector selector = new AspStreamSelector(file, baseDir,
-            sTable == null);
+            		sTable == null, false /* Add argument for switching non language asp directives on/off. */,
+            		disableServerSideCode);
             VbsParser vbParser = null;
             JsParser  jsParser = null;
-            VbsTree vbtree = null;
+            VbsAbstractTreeParser vbtree = null;
             JsTree jsTree = null;
             selector.setDefaultVb(isVb);
-            result = new ArrayList();
+            result = new ArrayList<Object>();
             Set includes = null;
             if (generateCode) {
                 includes = new HashSet();
@@ -294,23 +298,40 @@ public class AspParser {
                     AST node = vbParser.getAST();
                    // new antlr.DumpASTVisitor().visit(node);
                     if (node != null) {
-                        if (vbtree == null) {
-                            vbtree = new VbsTree();
-                            vbtree.setAspParser(this);
-                            vbtree.setFunctions(vbParser.getFunctions());
+                    	/* TODO: Decide, if conversion to php or to javascript should be done. */
+                    	if (vbtree == null || !(true /* node.isClientSideVbs() */ && vbtree instanceof VbsJsTree)) { 
+                        	/* NOTE: Currently always the client side Vbs to js converter is used. */ 
+	                        if (true /* node.isClientSideVbs() */) {
+	                            vbtree = new VbsJsTree();
+	                            vbtree.setAspParser(this);
+	                            vbtree.setFunctions(vbParser.getFunctions());
+	                            vbtree.setClasses(vbParser.getClasses());
+	                            vbtree.setGlobalIds(vbParser.getGlobalIds());
+	                            if (sTable != null) {
+	                                mergeSymbols(holder, sTable);
+	                            }
+	                        } else {
+	                            vbtree = new VbsPhpTree();
+	                            vbtree.setAspParser(this);
+	                            vbtree.setFunctions(vbParser.getFunctions());
+	                            vbtree.setClasses(vbParser.getClasses());
+	                            vbtree.setGlobalIds(vbParser.getGlobalIds());
+	                            if (sTable != null) {
+	                                mergeSymbols(holder, sTable);
+	                            }
+	                        }
+                    	} else {
+                    		vbtree.setFunctions(vbParser.getFunctions());
                             vbtree.setClasses(vbParser.getClasses());
                             vbtree.setGlobalIds(vbParser.getGlobalIds());
-                            if (sTable != null) {
-                                mergeSymbols(holder, sTable);
-                            }
-                        }
+                    	}
                         vbtree.start_rule(node);
                         if (generateCode) {
                             includes.addAll(vbtree.getDependencies());
                         }
                         fillHolder(vbtree, holder);
                         result.add(new Object[] {Boolean.TRUE, node,
-                        vbtree.getAST()});
+                        		vbtree.getAST()});
                     }
                 } else {
                     if (jsParser == null) {
@@ -337,7 +358,7 @@ public class AspParser {
                         }
                         fillHolder(jsTree, holder);
                         result.add(new Object[] {Boolean.FALSE, node,
-                        jsTree.getAST()});
+                        		jsTree.getAST()});
                     }
                 }
             }
@@ -355,7 +376,7 @@ public class AspParser {
                 try {
                     Writer writer = getWriter(file);
                     produceCode(result, writer, includes,
-                    file.getAbsolutePath());
+                    		file.getAbsolutePath());
                     writer.close();
                 } catch (IOException ioex) {
                     LOG.error("Failed to generate code", ioex);
@@ -371,7 +392,7 @@ public class AspParser {
 
     private void produceCode(List ast, Writer writer, Set includes,
     String path) {
-        VbsGenerator vbgenerator = null;
+        CodeGenerator vbgenerator = null;
         JsGenerator jsgenerator = null;
         boolean isFirst = true;
         for (Iterator it = ast.iterator(); it.hasNext();) {
@@ -382,7 +403,8 @@ public class AspParser {
                 CodeGenerator generator;
                 if (isVbTree) {
                     if (vbgenerator == null) {
-                        vbgenerator = new VbsGenerator();
+                    	// TODO: Implement switching between php and js script generator depending on server / client side scripting
+                        vbgenerator = new VbsJsGenerator();
                         vbgenerator.setWriter(writer);
                     }
                     generator = vbgenerator;
@@ -422,16 +444,16 @@ public class AspParser {
     }
 
 
-    private void fillHolder(SymbolTableExposer exp, DataHolder holder) {
+    private void fillHolder(SymbolTableExposer vbtree, DataHolder holder) {
         if (holder.variables == null) {
-            holder.variables = new HashMap(exp.getVariables());
-            holder.functions = new ArrayList(exp.getFunctions());
-            holder.classes = new ArrayList(exp.getClasses());
-            holder.isVb = exp instanceof VbsTree;
+            holder.variables = new HashMap(vbtree.getVariables());
+            holder.functions = new ArrayList(vbtree.getFunctions());
+            holder.classes = new ArrayList(vbtree.getClasses());
+            holder.isVb = vbtree instanceof VbsJsTree;
         } else {
-            holder.variables.putAll(exp.getVariables());
-            holder.functions.addAll(exp.getFunctions());
-            holder.classes.addAll(exp.getClasses());
+            holder.variables.putAll(vbtree.getVariables());
+            holder.functions.addAll(vbtree.getFunctions());
+            holder.classes.addAll(vbtree.getClasses());
         }
 		/*
         LOG.debug("variables:" + holder.variables);
@@ -443,7 +465,7 @@ public class AspParser {
 
     private void printIncludes(CodeGenerator generator, Set includes) {
         SourceBuffer buffer = generator.getBuffer();
-        for (Iterator it = includes.iterator(); it.hasNext();) {
+        for (Iterator<?> it = includes.iterator(); it.hasNext();) {
             String fileName = (String) it.next();
             buffer.println("require \"" + fileName + "\";");
         }
@@ -471,7 +493,7 @@ public class AspParser {
         List result = new ArrayList(parseFile(file, isVb, null));
         if (preserveAST) {
             String absPath = file.getAbsolutePath();
-            for (Iterator it = parsedAST.keySet().iterator(); it.hasNext();) {
+            for (Iterator<?> it = parsedAST.keySet().iterator(); it.hasNext();) {
                 String key = (String) it.next();
                 if (!absPath.equals(key)) {
                     result.addAll((List) parsedFiles.get(key));
@@ -484,7 +506,7 @@ public class AspParser {
 
 	/**
 	 * Get the current file name
-	 * @return the name of the file being parsedcuurCurrentFileName value.	 
+	 * @return the name of the file being parsed.	 
 	*/
 	public String getCurrentFileName() {
 		return currentFileName;
@@ -499,7 +521,24 @@ public class AspParser {
         }
         return getCommonPath(baseDir, file);
     }
-
+	
+	/**
+	 * Check if this is a file extension we want to process
+	 * @param {String} extension
+	 * @returns {boolean}
+	 */
+	private boolean isExtensionToProcess(String extension) {
+		boolean isMatch = false;
+		String lcaseExt = extension.toLowerCase();
+		isMatch = (
+			lcaseExt.endsWith(".asp")
+			|| lcaseExt.endsWith(".jsp")
+			|| lcaseExt.endsWith(".html")
+			|| lcaseExt.endsWith(".htm")
+			|| lcaseExt.endsWith(".vbs")
+		);
+		return isMatch;
+	}
 
     public void parseDir(File sdir, boolean vbDefault) {
         FileFilter filter = new FileFilter() {
@@ -508,17 +547,18 @@ public class AspParser {
                 if (!result) {
                     String name = f.getName();
                     int lastDot = name.lastIndexOf('.');
-                    result = lastDot > 0 && "asp".equalsIgnoreCase(
-                    name.substring(lastDot + 1));
+                    result = lastDot > 0 && isExtensionToProcess(
+                    		//name.substring(lastDot + 1)
+							name);
                 }
                 return result;
             }
         };
-        Stack stack = new Stack();
+        Stack<File> stack = new Stack<File>();
         stack.push(sdir);
         while (!stack.isEmpty()) {
             File dir = (File) stack.pop();
-            for (Iterator it = IteratorUtils.arrayIterator(
+            for (Iterator<?> it = IteratorUtils.arrayIterator(
             dir.listFiles(filter)); it.hasNext();) {
                 File f = (File) it.next();
                 if (f.isDirectory()) {
@@ -529,7 +569,7 @@ public class AspParser {
                     } catch (ANTLRException ae) {
                         LOG.error("Failed to parse file:" + f.getAbsolutePath(),
                         ae);
-                    } catch (Exception ex) {
+                     } catch (Exception ex) {
                         LOG.error("Failed to parse file:" + f.getAbsolutePath()
                         + " with error", ex);
                     }
@@ -547,13 +587,19 @@ public class AspParser {
         this.generateCode = generateCode;
     }
 
-
+    /** Disable interpretation of server side code.  
+     */
+    public void disableServerSideCode() {
+    	disableServerSideCode = true;
+    }
+    
     public static void main(String[] args) {
         File bDir = null;
         File oDir = null;
         File sDir = null;
         boolean gSource = true;
         boolean defaultVB = true;
+        boolean enableServerSideCode = true;
         int i = 0;
         int argCount = args.length;
         while (i < argCount) {
@@ -570,11 +616,14 @@ public class AspParser {
                 gSource = false;
             } else if (args[i].equals("-js")) {
                 defaultVB = false;
+            } else if (args[i].equals("-vb")) {
+                defaultVB = true;
+            } else if (args[i].equals("-ds")) {
+                enableServerSideCode = false;
             }
             i++;
         }
-        boolean oDirValid = oDir != null
-        && (!oDir.exists() || oDir.isDirectory());
+        boolean oDirValid = oDir != null && (!oDir.exists() || oDir.isDirectory());
         boolean bDirValid = bDir != null && bDir.isDirectory();
         boolean isValid = oDirValid && bDirValid;
         if (isValid && sDir == null) {
@@ -582,14 +631,17 @@ public class AspParser {
         }
         if (!isValid) {
             System.err.println("Usage:AspParser -b <base directory> "
-            + "-o <output directory> [-s <source directory> -g -ng -vb -js]\n"
+            + "-o <output directory> [-s <source directory> -g -ng -vb -js -ds]\n"
             + "base directory: the directory where virtual root exists.\n"
-            + "eg <!--#include virtual=\"/someFile.asp\"-->\noutput directory"
-            + ": the directory where generated files will be placed in\n"
-            + "source directory: the root directory where sources are\nIf not "
-            + "defined then the base directory is used\n"
+            + "eg <!--#include virtual=\"/someFile.asp\"-->\n"
+            + "output directory: the directory where generated files will be placed in\n"
+            + "source directory: the root directory where sources are\n"
+            + "    If not defined then the base directory is used\n"
             + "-ng disables source production\n"
-            + "-js if an asp page has not defined the langugae asume is js");
+            + "-js if an asp page has not defined the language assume it is js\n"
+            + "-vb if an asp page has not defined the language assume it is vb\n"
+            + "-ds disables interpretation of any server side code directives\n"
+            + "    starting with <%");
             if (!oDirValid) {
                 if (oDir == null) {
                     System.err.println("Output directory is not defined");
@@ -610,6 +662,7 @@ public class AspParser {
         }
         AspParser parser = new AspParser(bDir, oDir);
         parser.setGenerateCode(gSource);
+        if ( !enableServerSideCode ) parser.disableServerSideCode();
         parser.parseDir(sDir, defaultVB);
         System.exit(0);
     }

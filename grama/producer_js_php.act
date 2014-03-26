@@ -267,7 +267,7 @@ import java.io.Writer;
     + #NON_APPLICABLE_HEADER.getText() + "\"");
 }
 @const : { out.print(#CONSTANT.getText()); }
-@unsup : { out.print("/*Unsuported method:" + #UNSUPORTED.getText() + "*/"); }
+@unsup : { out.print("/*Unsupported method:" + #UNSUPORTED.getText() + "*/"); }
 
 @lp : { out.print('('); }
 @lp_end : { out.print(')'); }

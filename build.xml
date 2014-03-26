@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="ASP_PARSER" default="compile" basedir=".">
+<project name="aspa_cscc" default="compile" basedir=".">
 
 <!-- PROJECT OPTIONS -->
 <property file="build.properties" />
@@ -28,8 +28,9 @@
     <mkdir dir="logs" />
 </target>
 
-<!--  ANTLR   -->
+<!--  ANTLR   --> 
 <target name="antlr" depends="prepare">
+	<!-- Create the html parser. -->
     <java classname="annotation.Insert" classpathref="classpath" 
     failonerror="yes" fork="yes">
         <arg value="-s"/>
@@ -44,6 +45,7 @@
         debug="${antlr.debug}" html="${antlr.html}"
         diagnostic="${antlr.diagnostic}"
     />
+	<!-- Create the vbs parser. -->
     <java classname="annotation.Insert" classpathref="classpath" 
     failonerror="yes" fork="yes">
         <arg value="-s"/>
@@ -58,6 +60,7 @@
         debug="${antlr.debug}" html="${antlr.html}"
         diagnostic="${antlr.diagnostic}"
     />
+	<!-- Create the tree parser vbs -> php -->
     <java classname="annotation.Insert" classpathref="classpath" 
     failonerror="yes" fork="yes">
         <arg value="-s"/>
@@ -65,13 +68,39 @@
         <arg value="-i" />
         <arg value="${grama_dir}/tree_vbs_php.act" />
         <arg value="-d" />
-        <arg value="${build_dir}/${grama_dir}/tree_vbs.g" />
+        <arg value="${build_dir}/${grama_dir}/tree_vbs_php.g" />
     </java>
-    <antlr target="${build_dir}/${grama_dir}/tree_vbs.g"
+   	<replace file="${build_dir}/${grama_dir}/tree_vbs_php.g"
+		token="VbsTree" value="VbsPhpTree"/>
+    <antlr target="${build_dir}/${grama_dir}/tree_vbs_php.g"
         outputdirectory="${build_dir}/src/gr/omadak/leviathan/asp"
         debug="${antlr.debug}" html="${antlr.html}"
         diagnostic="${antlr.diagnostic}"
     />
+    <replaceregexp file="${build_dir}/src/gr/omadak/leviathan/asp/VbsPhpTree.java" 
+    		match="extends[ \t]*antlr.TreeParser" 
+    		replace="extends VbsAbstractTreeParser"/>
+	<!-- Create the tree parser vbs -> js -->
+    <java classname="annotation.Insert" classpathref="classpath" 
+    failonerror="yes" fork="yes">
+        <arg value="-s"/>
+        <arg value="${grama_dir}/tree_vbs.g" />
+        <arg value="-i" />
+        <arg value="${grama_dir}/tree_vbs_js.act" />
+        <arg value="-d" />
+        <arg value="${build_dir}/${grama_dir}/tree_vbs_js.g" />
+    </java>
+    <replace file="${build_dir}/${grama_dir}/tree_vbs_js.g"
+	token="VbsTree" value="VbsJsTree"/>
+    <antlr target="${build_dir}/${grama_dir}/tree_vbs_js.g"
+        outputdirectory="${build_dir}/src/gr/omadak/leviathan/asp"
+        debug="${antlr.debug}" html="${antlr.html}"
+        diagnostic="${antlr.diagnostic}"
+    />
+    <replaceregexp file="${build_dir}/src/gr/omadak/leviathan/asp/VbsJsTree.java" 
+    		match="extends[ \t]*antlr.TreeParser" 
+    		replace="extends VbsAbstractTreeParser"/>
+	<!-- Create VbsPhpProducer.java -->
     <java classname="annotation.Insert" classpathref="classpath" 
     failonerror="yes" fork="yes">
         <arg value="-s"/>
@@ -79,14 +108,40 @@
         <arg value="-i" />
         <arg value="${grama_dir}/producer_vbs_php.act" />
         <arg value="-d" />
-        <arg value="${build_dir}/${grama_dir}/producer_vbs.g" />
+        <arg value="${build_dir}/${grama_dir}/producer_vbs_php.g" />
     </java>
-    <antlr target="${build_dir}/${grama_dir}/producer_vbs.g"
+    <replace file="${build_dir}/${grama_dir}/producer_vbs_php.g"
+		token="VbsGenerator" value="VbsPhpGenerator"/>
+    <antlr target="${build_dir}/${grama_dir}/producer_vbs_php.g"
         outputdirectory="${build_dir}/src/gr/omadak/leviathan/asp"
         debug="${antlr.debug}" html="${antlr.html}"
         diagnostic="${antlr.diagnostic}"
     />
+	<replaceregexp file="${build_dir}/src/gr/omadak/leviathan/asp/VbsPhpGenerator.java" 
+		match="extends[ \t]*antlr.TreeParser" 
+	    replace="extends VbsAbstractProducer"/>
+	<!-- Create the producer for vbs -> js -->
     <java classname="annotation.Insert" classpathref="classpath" 
+    failonerror="yes" fork="yes">
+        <arg value="-s"/>
+        <arg value="${grama_dir}/producer_vbs.g" />
+        <arg value="-i" />
+        <arg value="${grama_dir}/producer_vbs_js.act" />
+        <arg value="-d" />
+        <arg value="${build_dir}/${grama_dir}/producer_vbs_js.g" />
+    </java>
+    <replace file="${build_dir}/${grama_dir}/producer_vbs_js.g"
+		token="VbsGenerator" value="VbsJsGenerator"/>
+    <antlr target="${build_dir}/${grama_dir}/producer_vbs_js.g"
+        outputdirectory="${build_dir}/src/gr/omadak/leviathan/asp"
+        debug="${antlr.debug}" html="${antlr.html}"
+        diagnostic="${antlr.diagnostic}"
+    />
+	<replaceregexp file="${build_dir}/src/gr/omadak/leviathan/asp/VbsJsGenerator.java" 
+		match="extends[ \t]*antlr.TreeParser" 
+	    replace="extends VbsAbstractProducer"/>
+	<!-- Create the javascript parser. -->
+	<java classname="annotation.Insert" classpathref="classpath" 
     failonerror="yes" fork="yes">
         <arg value="-s"/>
         <arg value="${grama_dir}/js.g" />
@@ -100,6 +155,7 @@
         debug="${antlr.debug}" html="${antlr.html}"
         diagnostic="${antlr.diagnostic}"
     />
+	<!-- Create the tree parser for js -> php -->
     <java classname="annotation.Insert" classpathref="classpath" 
     failonerror="yes" fork="yes">
         <arg value="-s"/>
@@ -114,6 +170,7 @@
         debug="${antlr.debug}" html="${antlr.html}"
         diagnostic="${antlr.diagnostic}"
     />
+	<!-- Create the producer for js to php -->
     <java classname="annotation.Insert" classpathref="classpath" 
     failonerror="yes" fork="yes">
         <arg value="-s"/>
@@ -129,7 +186,6 @@
         diagnostic="${antlr.diagnostic}"
     />
 </target>
-
 
 <!--  COMPILE -->
 <target name="compile" depends="antlr,scompile" />

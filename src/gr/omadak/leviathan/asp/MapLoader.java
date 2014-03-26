@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 import java.util.Properties;
 import java.util.TreeMap;
 import org.apache.log4j.Logger;
@@ -108,19 +109,20 @@ public class MapLoader {
         */
         List classes = new ArrayList();
         List resources = new ArrayList();
+        Stack globfunctions = new Stack();
         for (Iterator it = props.keySet().iterator(); it.hasNext();) {
             String key = (String) it.next();
-            String resourceName = props.getProperty(key);
             if (key.startsWith("Object.")) {
                 String objName = key.substring(7);
-                URL resource = resourceResolver.getResource(resourceName);
+                URL resource = resourceResolver.getResource(props.getProperty(key));
                 XmlASPClass clazz = new XmlASPClass(objName);
                 objectClasses.put(objName.toUpperCase(), clazz);
                 classes.add(clazz);
                 resources.add(resource);
             } else if (key.startsWith("Functions.")) {
-                URL resource = resourceResolver.getResource(resourceName);
-                parser.configureMethods(functions, resource);
+            	/* Because (global) functions may depend on classes to be present already,
+            	 * do them after the classes are parsed. */
+            	globfunctions.push(key);
             } else {
                 LOG.warn("Unrecognized key:" + key);
             }
@@ -129,6 +131,12 @@ public class MapLoader {
             XmlASPClass clazz = (XmlASPClass) classes.get(i);
             URL resource = (URL) resources.get(i);
             parser.configure(clazz, resource);
+        }
+        /* Now that all classes are known, parse the global functions. */
+        while(!globfunctions.isEmpty()){
+        	String key = (String)globfunctions.pop();
+            URL resource = resourceResolver.getResource(props.getProperty(key));
+            parser.configureMethods(functions, resource);
         }
     }
 

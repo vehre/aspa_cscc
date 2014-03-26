@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is part of Aspa.
+
+    Aspa is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    Aspa is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Aspa; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+-->
+<class name="MSXMLDOM" standalone="true">
+	<property name="documentElement" type="MSDOMDocument">
+		<read>
+			 <ast name="DOT">
+                <this />
+                <ast name="IDENTIFIER" text="documentElement" />
+            </ast>
+		</read>
+	</property>
+	<property name="xml" type="DSTRING">
+		<read>
+			 <ast name="DOT">
+                <this />
+                <ast name="IDENTIFIER" text="xml" />
+            </ast>
+		</read>
+	</property>
+	
+	<constructor>
+		<ast name="NEW">
+        	<ast name="IDENTIFIER" text="ActiveXObject"/>
+       			<ast name="ARGLIST_VALUES">
+       				<ast name="DSTRING" text="Microsoft.xmldom"/>
+       			</ast>
+        </ast>
+	</constructor>
+  
+  	<method name="loadXML" type="VOID">
+		<arg type="DSTRING"/>
+		<ast name="DOT">
+			<this />
+			<ast name="METHOD_CALL" text="loadXML">
+				<ast name="ARGLIST_VALUES">
+					<arg index="1" />
+				</ast>
+			</ast>
+		</ast>
+	</method>
+	
+	<method name="selectSingleNode" type="MSXMLDOM">
+		<arg type="DSTRING"/>
+		<ast name="DOT">
+			<this/>
+			<ast name="METHOD_CALL" text="selectSingleNode">
+			  <ast name="ARGLIST_VALUES">
+				<arg index="1" />
+			  </ast>
+			</ast>
+		</ast>
+	</method>
+	
+	<method name="getAttribute" type="DSTRING">
+		<arg type="DSTRING"/>
+		<ast name="DOT">
+			<this/>
+			<ast name="METHOD_CALL" text="getAttribute">
+			  <ast name="ARGLIST_VALUES">
+				<arg index="1" />
+			  </ast>
+			</ast>
+		</ast>
+	</method>
+</class>
+
+	

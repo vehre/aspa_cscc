@@ -89,8 +89,9 @@ statement
   | #(ERROR (RESUME | DINT))
   | #(RETURN <return> (expr)?) <exp_end>
   | expr <exp_end>
+  | #(VAR <var_decl> (<next_var> expr)+) <exp_end>
+  | #(CONST <const_decl> (<next_const> expr)+) <exp_end>
   ;
-
 
 select_case
   :
@@ -126,7 +127,7 @@ expression
   | #(STAR_ASSIGN expression <sassign> expression)
   | #(DIV_ASSIGN expression <dassign> expression)
   | #(NEQ expression <neq> expression)
-  | #(IS expression expression) //check this
+  | #(IS expression <is> expression) //check this
   | #(CONCAT expression <concat> expression)
   | #(PLUS expression <plus> expression)
   | #(MINUS expression <minus> expression)
@@ -138,6 +139,8 @@ expression
   | #(NOT <not> expression)
   | #(BNOT <bnot> expression)
   | #(METHOD_CALL <method> (arglist_values | <no_args>))
+  | #(OBJECT_RET <CCobject_ret>)
+  | #(OBJECT <CCobject>)
   | #(CONDITIONAL expression <quest> expression <alt> expression)
   | #(CAST <cast> expression)
   | #(INDEX_OP iex:expression 
@@ -146,12 +149,12 @@ expression
           | (<pre_index> index:expression <post_index>)+
       )
   )
-  | #(UKNOWN_METHOD <uknown_method> (arglist_values | <no_args>))
+  | #(UKNOWN_METHOD <uknown_method> (expression | arglist_values | <no_args>))
   | #(POST_PLUS expression <post_plus>)
   | #(POST_MINUS expression <post_minus>)
   | #(DOT expression <dot> expression)
   | #(LPAREN <lp> expression <lp_end>)
-  | #(NEW IDENTIFIER <new>)
+  | #(NEW IDENTIFIER <new> (arglist_values)?)
   | DINT <int>
   | DFLOAT <float>
   | IDENTIFIER <id>
@@ -164,8 +167,12 @@ expression
   | NON_APPLICABLE_HEADER <nhead>
   | INVALID_OBJECT <inv_obj>
   | CONSTANT <const>
+  | EMBEDDED_ASP <embedded_asp>
   ;
-
+  exception // for rule
+  catch [NoViableAltException ex] {
+  	LOG.error(ex.toString());
+  }
 
 arglist_values
   :

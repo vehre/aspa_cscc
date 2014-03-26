@@ -58,8 +58,9 @@ onError
 
 s_decl
   :
-  id:IDENTIFIER^ (LPAREN! <add_array> (dimension_length
-                (COMMA! dimension_length)*)? RPAREN!)?
+  (id:IDENTIFIER^ (LPAREN! <add_array> (dimension_length
+                (COMMA! dimension_length)*)? RPAREN!)?)
+                (ASSIGN^ relationalImpExpression)?
   ;
 
 dimension_length
@@ -91,7 +92,7 @@ left_set
 
 const_statement
   :
-  CONST^ IDENTIFIER ASSIGN! relationalImpExpression
+  CONST^ (IDENTIFIER ASSIGN! relationalImpExpression)+
   ;
 
 sub_func
@@ -132,12 +133,12 @@ block_statement
 
 simple_statement
   :
-  (DIM^ | r:REDIM^ (!PRESERVE <preserve>)?) s_decl (COMMA! s_decl)*
+  (DIM^ | r:REDIM^ (!PRESERVE <preserve>)?) (var1:s_decl <check4globalVar1>) (COMMA! varN:s_decl <check4globalVarN>)*
   |! OPTION EXPLICIT
   | ERASE^ IDENTIFIER
-  | CALL! ({inWith}? (| IDENTIFIER) | IDENTIFIER)
+  | CALL! ({inWith}? ( | IDENTIFIER) | IDENTIFIER)
       (DOT^ IDENTIFIER)*
-      LPAREN! (!exList:expressionList)? RPAREN! <call_end>
+      (LPAREN! (!exList:expressionList)? RPAREN!)? <call_end>
   | set_statement
   | RANDOMIZE^ (expression)?
   | expression_statement
@@ -166,11 +167,6 @@ statement
 pp
   :
   PUBLIC! ({currentClass != null}? (DEFAULT)? |) | PRIVATE
-  ;
-
-dim_stm
-  :
-  DIM^ s_decl (COMMA! s_decl)*
   ;
 
 class_statement
@@ -644,6 +640,7 @@ primaryExpression
   | id:IDENTIFIER <set_lastid>
   | NEW^ IDENTIFIER
   | LPAREN^ relationalImpExpression RPAREN!
+  | EMBEDDED_ASP
   ;
 
 
@@ -665,7 +662,7 @@ options {
     caseSensitive = false;
     caseSensitiveLiterals = false;
     filter = false;
-    charVocabulary = '\u0003'..'\u7FFF';
+    charVocabulary = '\u0003'..'\uFFFF';
 }
 
 <lexer_init>
@@ -684,7 +681,7 @@ protected FLT_SUFFIX
 
 INT_CONST
   :
-  (
+  ( 
       '.' <lexer_typedot>
       (
           ('0'..'9')+ (EXPONENT)? (FLT_SUFFIX)? <lexer_typefloat>
@@ -692,17 +689,23 @@ INT_CONST
       | (DIGIT)+ <lexer_typeint> ('.' (DIGIT)+ (EXPONENT)? (FLT_SUFFIX)? <lexer_typefloat>)?
       | '&' <lexer_typeconcat> (
         'h' (HEX_DIGIT)+ <lexer_typeint> (('&')?)!
-        | 'o' ('0' .. '7')+ <lexer_typeint>
+        | { Character.isDigit(LA(2)) }? ( 'o' ('0' .. '7')+  <lexer_typeint>)
       )?
   )
   ;
 
+protected EMB_ASP : "<%" ({LA(2) != '>'}? ~'%')* "%>";
+
+EMBEDDED_ASP : EMB_ASP ;
 
 DSTRING
   :
   '"'!
   (
-      {LA(2) == '"'}? '"'! '"' | ~('"' | '\n' | '\r')
+  	options {
+		generateAmbigWarnings=false;
+	} :
+      {LA(2) == '"'}? '"'! '"' | EMB_ASP | ~('"' | '\n' | '\r') 
   )*
   '"'!
   ;
@@ -717,7 +720,6 @@ DDATE
 COMMA : ',' ;
 LPAREN : '(' ;
 RPAREN : ')' ;
-
 
 /* Operators */
 
@@ -738,25 +740,27 @@ COLON : ':';
 
 CONTINUE_STAT : '_' (WS!)? <lexer_lasttoken_stat>;
 
-
 IDENTIFIER_TYPES : <lexer_store_last> id:IDENTIFIER <lexer_identifier>;
-
 
 ASP_END : "%>" <lexer_aspend>;
 
-
 VBS_END : "</script>" <lexer_vbsend>;
 
-
 LANGUAGE
-  <lexer_langinit>
-  :
-  '@' (IGNORED!)* "language" (IGNORED!)* '=' (IGNORED!)*
-  (
-      '"' i:IDENTIFIER '"' <lexer_langi>
-      | j:IDENTIFIER <lexer_langj>
-  )
-  (IGNORED!)* <lexer_langend>
+	<lexer_langinit>
+	:
+	'@' (IGNORED!)* (
+		/* Remove some ambiguity warnings. */
+		options {
+			generateAmbigWarnings=false;
+		} :
+			"language" (IGNORED!)* '=' (IGNORED!)*
+	  			(
+		    	  '"' i:IDENTIFIER '"' <lexer_langi>
+	      			| j:IDENTIFIER <lexer_langj>
+  	  			) <lexer_langend>
+  	  		| id:IDENTIFIER ({LA(2) != '>'}? ~'%')* "%>" <lexer_unknown_control>
+		) (IGNORED!)* 
   ;
 
 
@@ -782,9 +786,14 @@ protected LETTER
 
 
 protected IDENTIFIER
-  :
-  LETTER ( LETTER | DIGIT | '_' )*
-  ;
+	:
+	(/* Remove some ambiguity warnings. */
+		options {
+			generateAmbigWarnings=false;
+		} :
+  		LETTER ( LETTER | DIGIT | '_' )* 
+  	)
+  	;
 
 
 protected LINE : (~'\n')* '\n' <lexer_line> ;

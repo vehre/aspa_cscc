@@ -756,7 +756,18 @@ JS_END
 LANGUAGE
   {String lang = null;}
   :
-  '@' w:WORD (' ')*
+  '@' ("language" '=' (
+  	    	l:STRING_LITERAL {lang = l.getText();}
+    	  | i:IDENTIFIER   {lang = i.getText();}
+   		) {
+			$setType(HtmlLexerUtil.LANGUAGE);
+			$setText(lang);
+		}
+	| id:IDENTIFIER ({LA(2) != '>'}? ~'%')* "%>" {
+		$setType(HtmlLexerUtil.UNKNOWN_CONTROL);	
+	}
+  )
+  /*w:WORD (' ')*
   {
       if (!"language".equalsIgnoreCase(w.getText())) {
           throw new RecognitionException("Expected \"language\" at line:"
@@ -771,7 +782,7 @@ LANGUAGE
    {
       $setType(HtmlLexerUtil.LANGUAGE);
       $setText(lang);
-   }
+   }*/
    ;
 
 

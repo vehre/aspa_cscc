@@ -23,9 +23,21 @@ import java.util.HashMap;
 @init : {
     private HtmlLexerUtil util;
     private Map attributes = new HashMap();
+    /** Step over all server side code introduced by <% tag. */
+    private boolean ignoreServerSide = false;
 
     public void setHtmlLexerUtil(HtmlLexerUtil util) {
         this.util = util;
+    }
+    
+    /** Enable parsing of server side code instructions. */
+    public void enableServerSideCode() {
+    	ignoreServerSide = false;
+    }
+    
+    /** Disable parsing of server side code instructions. */
+    public void disableServerSideCode() {
+    	ignoreServerSide = true;
     }
 }
 

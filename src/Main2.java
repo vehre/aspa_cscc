@@ -88,7 +88,7 @@ public class Main2 {
             File f = new File(args[0]);
             File base = new File(args[1]);
             if (printTokens) {
-                AspStreamSelector selector = new AspStreamSelector(f, base);
+                AspStreamSelector selector = new AspStreamSelector(f, base, true, false);
                 printApsTokens(selector);
                 if (!(showTree || produceXml)) {
                     return;
@@ -124,7 +124,7 @@ public class Main2 {
                         rootName = "vb";
                         if (vbTokens == null) {
                             vbTokens = new HashMap();
-                            putTokens(new VbsTree(), vbTokens);
+                            putTokens(new VbsPhpTree(), vbTokens);
                         }
                         tokens = vbTokens;
                     } else {

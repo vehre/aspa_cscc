@@ -213,7 +213,7 @@ public class ASPFactory extends ASTFactory {
     /** Duplicate tree including siblings of root. */
     public AST dupList(AST t) {
         AST result = dupTree(t);
-        //dupTree may return a fake constract like (FAKE_NODE node node ...)
+        //dupTree may return a fake construct like (FAKE_NODE node node ...)
         AST nt;
         if (isFake(result)) {
             result = result.getFirstChild();
