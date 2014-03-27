@@ -146,6 +146,9 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
 @include : {
     out.println("import '" + #INCLUDE.getText() + "';");
 }
+@script : {
+    out.println("<script type=\"text/javascript\" src=\"" + #SCRIPT.getText() + "\">");
+}
 
 @eq_html : {
     out.print("document.write ");

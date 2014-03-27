@@ -220,8 +220,10 @@ public class AspStreamSelector extends TokenStreamSelector {
         int[] line_col = new int[2];
         Token t;
         int initialLexerType = lexerType;
+        boolean isScript;
         do {
         	t = grabHTML(sb, line_col);
+        	isScript = false;
 	        switch (t.getType()) {
 	            case HtmlLexerUtil.ASP_START:
 	                result = aspStart();
@@ -253,14 +255,16 @@ public class AspStreamSelector extends TokenStreamSelector {
 	                    		null, htmlLexer.getLine(), htmlLexer.getColumn());
 	                }
 	                break;
+	            case HtmlLexerUtil.SCRIPT:
+	            	isScript = true; 
+	            	// Intentionally fall through.
 	            case HtmlLexerUtil.INCLUDE:
-	                HtmlLexerUtil.InputInfo include = utility.getLastInclude();
-	                File dir = HtmlLexerUtil.TYPE_FILE == include.type
-	                		? currentFile.getParentFile()
-               				: baseDir;
+	                HtmlLexerUtil.InputInfo include = utility.getStoredInclude();
+	                File dir = HtmlLexerUtil.TYPE_FILE == include.includeType
+	                		? currentFile.getParentFile(): baseDir;
 	                File included = getFile(dir, include.location);
 	                result = createToken(
-	                		pageLanguage == LEX_JS ? JsTokenTypes.INCLUDE : VbsTokenTypes.INCLUDE,
+	                		pageLanguage == LEX_JS ? JsTokenTypes.INCLUDE : (isScript ? VbsTokenTypes.SCRIPT : VbsTokenTypes.INCLUDE),
 	                		included == null ? include.location : included.getAbsolutePath(), 
 	                		t.getColumn(), t.getLine());
 	                break;
@@ -294,7 +298,8 @@ public class AspStreamSelector extends TokenStreamSelector {
         int type = result.getType();
         boolean shouldPop = type == HtmlLexerUtil.ASP_END
         		|| (lexerType == LEX_JS && type == HtmlLexerUtil.JS_END)
-        		|| (lexerType == LEX_VB && (type == HtmlLexerUtil.VBS_END || type == Token.EOF_TYPE));
+        		|| (lexerType == LEX_VB && (type == HtmlLexerUtil.VBS_END 
+        			|| type == VbsTokenTypes.SCRIPT || type == Token.EOF_TYPE));
         if (shouldPop) {
             int lastLexer = lexerType;
             //job done
@@ -393,7 +398,7 @@ public class AspStreamSelector extends TokenStreamSelector {
 	            htmlLexer = new HtmlLexer(bis);
 	            htmlLexer.setFilename(currentFile.getAbsolutePath());
 	            htmlLexer.setHtmlLexerUtil(utility);
-	            if ( disServerSideCode ) htmlLexer.disableServerSideCode();
+	            if ( disServerSideCode ) utility.disableServerSideCode();
 	            addInputStream(htmlLexer, "1");
 	            select(htmlLexer);
             }

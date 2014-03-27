@@ -55,7 +55,7 @@ public abstract class VbsAbstractTreeParser extends antlr.TreeParser implements
 	protected int lastForWhile = 1;
 	protected Stack argStack = new Stack();
 	protected Stack withObjects = new Stack();
-	protected Map variables = new TreeMap();
+	protected Map<String, Object> variables = new TreeMap<String, Object>();
 	protected Map levelList = new HashMap();
 	protected int cLevel = 0;
 	protected AspParser parser;
@@ -66,7 +66,7 @@ public abstract class VbsAbstractTreeParser extends antlr.TreeParser implements
 	protected ASPClass currentClass;
 	protected Property currentProperty;
 	protected Set identifiers;
-	protected Set dependencies;
+	protected Set<String> dependencies;
 	protected Stack typeStack = new Stack();
 	protected int lastType;
 	// indicates if inside a redim preserve rule
@@ -108,9 +108,8 @@ public abstract class VbsAbstractTreeParser extends antlr.TreeParser implements
 		return new ArrayList(localClasses.values());
 	}
 
-	public List getDependencies() {
-		return dependencies == null ? Collections.EMPTY_LIST : new ArrayList(
-				dependencies);
+	public Set<String> getDependencies() {
+		return dependencies == null ? Collections.EMPTY_SET : dependencies;
 	}
 
 	public void setAspParser(AspParser parser) {
@@ -120,11 +119,14 @@ public abstract class VbsAbstractTreeParser extends antlr.TreeParser implements
 //				+ parser.getCurrentFileName().replace('.', '_'));
 	}
 	
-	public void appendVariables(Map vars) {
-		variables.putAll(vars);
+	public void appendVariables(Map<String, Object> vars) {
+		if (vars != null)
+			variables.putAll(vars);
 	}
 
 	public void appendFunctions(List funcs) {
+		if (funcs == null)
+			return;
 		for (Iterator it = funcs.iterator(); it.hasNext();) {
 			Method method = (Method) it.next();
 			if (!localFunctions.containsKey(method.getName())) {
@@ -134,6 +136,8 @@ public abstract class VbsAbstractTreeParser extends antlr.TreeParser implements
 	}
 
 	public void appendClasses(List classes) {
+		if (classes == null)
+			return;
 		for (Iterator it = classes.iterator(); it.hasNext();) {
 			ASPClass clazz = (ASPClass) it.next();
 			if (!localClasses.containsKey(clazz.getName())) {

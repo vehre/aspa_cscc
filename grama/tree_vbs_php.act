@@ -1231,7 +1231,7 @@ typeStack.push(new Integer(DINT));
         log.error("Failed to parse included file:" + #include.getText(), aex);
     }
 }
-
+@script : ! // script tags are not processed in conversion to php
 
 @class_init : {
     Map properties = new HashMap();

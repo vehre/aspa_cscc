@@ -1468,6 +1468,14 @@ typeStack.push(new Integer(DINT));
     }
 }
 
+@script : {
+    try {
+        String text = parser.parseInclude(#script.getText(), this, true);
+        #script.setText(text);
+    } catch (ANTLRException aex) {
+        log.error("Failed to parse included file:" + #script.getText(), aex);
+    }
+}
 
 @class_init : {
     Map properties = new HashMap();

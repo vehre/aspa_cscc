@@ -53,7 +53,7 @@ NON_APPLICABLE_HEADER;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
     //arguments Stack
     private Stack argStack = new Stack();
     //keeps references for objects initilized inside the code
-    private Map objects = new TreeMap();
+    private Map<String, Object> objects = new TreeMap<String, Object>();
     private Map functions = new TreeMap();
 	private Map parserFunctions;
     private Map parserClasses;
@@ -128,9 +128,8 @@ NON_APPLICABLE_HEADER;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
     }
 
 
-    public List getDependencies() {
-        return dependencies == null ? Collections.EMPTY_LIST 
-        : new ArrayList(dependencies);
+    public Set<String> getDependencies() {
+        return dependencies == null ? Collections.EMPTY_SET : dependencies;
     }
 
 
@@ -142,11 +141,14 @@ NON_APPLICABLE_HEADER;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
 
 
     public void appendVariables(Map variables) {
-        objects.putAll(variables);
+    	if (variables != null)
+        	objects.putAll(variables);
     }
 
 
     public void appendFunctions(List funcs) {
+    	if (funcs == null)
+    		return;
         for (Iterator it = funcs.iterator(); it.hasNext();) {
             Method meth = (Method) it.next();
             functions.put(meth.getName(), meth);
@@ -566,7 +568,7 @@ NON_APPLICABLE_HEADER;INVALID_OBJECT; CONCAT; CONCAT_ASSIGN;
         if (method.isFirstCall() && method.isAccessibleOutsideParent()) {
             Map globals = method.getGlobalObjects();
             for (Iterator it = globals.keySet().iterator(); it.hasNext();) {
-                Object name = it.next();
+                String name = (String)it.next();
                 Object value = globals.get(name);
                 if (!(value instanceof ASPObjectInstance)) {
                     objects.remove(name);
@@ -2260,6 +2262,8 @@ BAND, "&"); }
         log.error("Failed to parse included file:" + #include.getText(), ex);
     }
 }
+
+@script : ! // Scripts are not processed in jscript
 
 @twith : !
 @with_obj : {

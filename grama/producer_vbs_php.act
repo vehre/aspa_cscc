@@ -120,6 +120,11 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
     out.println("require '" + #INCLUDE.getText() + "';");
 }
 
+@script : {
+    out.println("<script " + #SCRIPT.getText() + ">");
+}
+
+
 @eq_html : {
     out.print("echo ");
 }

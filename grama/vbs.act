@@ -33,6 +33,7 @@ import gr.omadak.leviathan.asp.objects.Method;
 import gr.omadak.leviathan.asp.objects.GenericASPProperty;
 import gr.omadak.leviathan.asp.objects.GenericMethod;
 import gr.omadak.leviathan.asp.objects.XmlASPClass;
+import gr.omadak.leviathan.asp.HtmlLexerUtil;
 import org.apache.log4j.Logger;
 
 @tokens :

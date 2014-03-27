@@ -31,14 +31,34 @@ public class HtmlLexerUtil {
     public final static int JS_END = 30009;
     public final static int VBS_END = 30010;
     public final static int UNKNOWN_CONTROL = 30011;
+    public final static int SCRIPT = 30012;
     
     private final static String KEY_SCRIPT = "script";
     private final static String KEY_LANG = "language";
+    private final static String KEY_MIMETYPE = "type";
     private final static String KEY_RUNAT = "runat";
     private final static String KEY_SRC = "src";
     private final static String KEY_FILE = "file";
     private final static String KEY_VIRTUAL = "virtual";
 
+    /** Step over all server side code introduced by <% tag. */
+    private boolean ignoreServerSide = false;
+    
+    /** Enable parsing of server side code instructions. */
+    public void enableServerSideCode() {
+    	ignoreServerSide = false;
+    }
+    
+    /** Disable parsing of server side code instructions. */
+    public void disableServerSideCode() {
+    	ignoreServerSide = true;
+    }
+    
+    /** */
+    public boolean serverSideIncludesAllowed() {
+    	return !ignoreServerSide;
+    }
+    
     /** Store and transport information of included or "scripted" files.
      * 
      * @author vehre
@@ -46,29 +66,26 @@ public class HtmlLexerUtil {
      */
     public class InputInfo {
     	/** The type of the data in the file given by location. 
-    	 * Expected to be either JS_START or VBS_START for script tags, and
-    	 * TYPE_FILE or TYPE_VIRTUAL for includes. */
-    	public int type;
+    	 * Expected to be either JS_START or VBS_START. */
+    	public int fileType;
+    	/**  The include type, either TYPE_FILE or TYPE_VIRTUAL. */
+    	public int includeType;
     	/** The location where the input is stored. */
     	public String location;
     	/** Set if this is a server side include. */
     	public boolean serverSide;
     	/** Create a new instance. */
-    	public InputInfo(int type, String location, boolean serverSide) {
-    		this.type = type;
+    	public InputInfo(int fileType, int includeType, String location, boolean serverSide) {
+    		this.fileType = fileType;
+    		this.includeType = includeType;
     		this.location = location;
     		this.serverSide = serverSide;
     	}
-    	/** Construct assuming server side to be true. */
-    	public InputInfo(int type, String location) {
-    		this(type, location, true);
-    	}
     }
-    /** The last include is the last file seen in an include tag. 
-     * Either asp or html comment. */
-    private InputInfo lastInclude;
-    /** The last script is the last file seen in a script tag. */
-    private InputInfo lastScript;
+    /** Store information about the last file to include. This can either
+     * be a server side or a client side include, which is only 
+     * determined by the flag serverside in the InputInfo. */
+    private InputInfo storeInputInfo;
 
     /** Remove all quotes (",') and all spaces from the string supplied.
      * @param str String to strip of all quotes and whitespaces.
@@ -90,30 +107,59 @@ public class HtmlLexerUtil {
         return sb.toString();
     }
 
-
-    public int getType(String name, Map attributes) {
+    /**
+     * Process the attributes given in a script tag.
+     * @param name The tag name. This has to be script and is checked here for security.
+     * @param attributes The map of attributes.
+     * @return Either HTML, when the script type could not be recognized,
+     * 	or JS_START for a javascript script, or VBS_START for a vbscript.
+     */
+    public int processScriptAttributes(String name, Map<String, String> attributes) {
         if (!KEY_SCRIPT.equalsIgnoreCase(name)
                  || !attributes.keySet().contains(KEY_LANG) ){
             return HTML;
         }
-        String lang = clearAllQuotesAndWhiteSpaces(attributes.get(KEY_LANG).toString());
+        
         boolean runatServer = attributes.containsKey(KEY_RUNAT) 
         		&& clearAllQuotesAndWhiteSpaces(attributes.get(KEY_RUNAT).toString()).equalsIgnoreCase("server");
         String src = null;
         if (attributes.containsKey(KEY_SRC)) {
             src = attributes.get(KEY_SRC).toString();
         }
-        int type = HTML;
-        if (runatServer|| lang.equalsIgnoreCase("vbscript")) {
-            type = getLangType(lang);
-        }
+        int type = getLanguageType(attributes.containsKey(KEY_LANG) ?
+        		clearAllQuotesAndWhiteSpaces(attributes.get(KEY_LANG)) :
+        			attributes.get(KEY_MIMETYPE));
         if (type != HTML) {
-            lastScript = new InputInfo(type, src, runatServer);
+        	storeInputInfo = new InputInfo(type, TYPE_FILE, src, runatServer);
         }
+        if ( attributes.containsKey(KEY_SRC) )
+        	return SCRIPT;
         return type;
     }
 
+    /** Determine the language type also checking for mime types.
+     * @param lang Either the content of a language key or of a type key.
+     * @return HTML, JS_START or VBS_START depending on the input lang.  
+     */
+    private int getLanguageType(String lang) {
+    	int result = HTML;
+    	if ( lang != null ) {
+	    	try {
+	    		result = getLangType(lang);
+	    	} catch (RuntimeException e) {
+	    		if ( lang.equalsIgnoreCase("text/javascript") )
+	    			result = JS_START;
+	    		else if ( lang.equalsIgnoreCase("text/vbscript") )
+	    			result = VBS_START;
+	    	}
+    	}
+    	return result;
+    }
 
+    /** Get the language type for a language attribute only.
+     * @param lang The content of the language attribute of a script tag.
+     * @return HTML, JS_START or VBS_START depending on the input lang.
+     */
     public int getLangType(String lang) {
         lang = clearAllQuotesAndWhiteSpaces(lang);
         if (lang.equalsIgnoreCase("js")
@@ -129,28 +175,35 @@ public class HtmlLexerUtil {
     }
 
 
+    /** Fill the storedInputInfo from a server side include statement.
+     * 
+     * @param includeType Either file or virtual
+     * @param path The file name an path. The ending is used to determine
+     * which type the file has.
+     */
     public void addInclude(String includeType, String path) {
-        path = clearAllQuotesAndWhiteSpaces(path);
-        int type = 0;
+        int incType = TYPE_FILE, langType = INCLUDE;
         if (KEY_FILE.equalsIgnoreCase(includeType)) {
-            type = TYPE_FILE;
+            incType = TYPE_FILE;
         } else if (KEY_VIRTUAL.equalsIgnoreCase(includeType)) {
-            type = TYPE_VIRTUAL;
+            incType = TYPE_VIRTUAL;
         }
-        lastInclude = new InputInfo(type, path);
+        String ending = path.substring(path.lastIndexOf('.') + 1);
+        if ( ending.equalsIgnoreCase("vbs") )
+        	langType = VBS_START;
+        else if ( ending.equalsIgnoreCase("js") || ending.equalsIgnoreCase("jsp") )
+        	langType = JS_START;
+        else if (ending.equalsIgnoreCase("htm") || ending.equalsIgnoreCase("html") )
+        	langType = INCLUDE;
+        storeInputInfo = new InputInfo(langType, incType, path, true);
     }
 
-
-    public InputInfo getLastInclude() {
-        InputInfo result = lastInclude;
-        lastInclude = null;
-        return result;
-    }
-
-
-    public InputInfo getLastScript() {
-        InputInfo result = lastScript;
-        lastScript = null;
+	/** Get the inputInfo stored.
+	 * @return The stored input info, or null, if none is stored.
+	 */
+    public InputInfo getStoredInclude() {
+        InputInfo result = storeInputInfo;
+        storeInputInfo = null;
         return result;
     }
 }
