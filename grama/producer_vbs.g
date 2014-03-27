@@ -168,6 +168,7 @@ expression
   | INVALID_OBJECT <inv_obj>
   | CONSTANT <const>
   | EMBEDDED_ASP <embedded_asp>
+  | EMPTYARG
   ;
   exception // for rule
   catch [NoViableAltException ex] {

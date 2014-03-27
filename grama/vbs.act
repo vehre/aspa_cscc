@@ -54,7 +54,7 @@ import org.apache.log4j.Logger;
     FOR_INIT; INCLUDE; EXIT_PROPERTY; ARRAY; GOTO;
     DIMENSION_LENGTH; REDIM_PRESERVE; EMBEDDED_ASP;
 
-	VAR;
+	VAR; EMPTYARG;
 
 @init : {
     private boolean inWith;
@@ -477,6 +477,7 @@ import org.apache.log4j.Logger;
 @expression_list : {
     #expressionList = #(#[ARGLIST_VALUES,"ARGLIST_VALUES"], #expressionList);
 }
+@empty_expression : { ## = #[EMPTYARG, ""]; }
 
 @expression : {#expression = #(#[EXPR,"EXPR"], #expression);}
 

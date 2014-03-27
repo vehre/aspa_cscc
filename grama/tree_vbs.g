@@ -264,7 +264,7 @@ indexes
 
 argListValues
   :
-  !#(ARGLIST_VALUES <arg_val> (arg:expression <arg_val_end>)+)
+  !#(ARGLIST_VALUES <arg_val> (arg:expression <arg_val_end> | EMPTYARG <arg_empty> )+)
   ;
 
 
