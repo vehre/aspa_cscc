@@ -816,6 +816,12 @@ typeStack.push(new Integer(DINT));
 	arguments[1].add(new Integer(lastType));
 	typeStack.clear();
 }
+@arg_empty : {
+    List[] arguments = (List[]) argStack.peek();
+    arguments[0].add(#[EMPTYARG]);
+	arguments[1].add(new Integer(0));
+	typeStack.clear();
+}
 
 @init_stat : { int lastStackSize = 0; redimp = false; }
 @init_expr : { int lastStackSize = 0;  }
@@ -1231,7 +1237,7 @@ typeStack.push(new Integer(DINT));
         log.error("Failed to parse included file:" + #include.getText(), aex);
     }
 }
-
+@script : ! // script tags are not processed in conversion to php
 
 @class_init : {
     Map properties = new HashMap();

@@ -152,6 +152,7 @@ non_term
   :
   !h:HTML <html> //placed here because html does not need an statement_term
   | INCLUDE
+  | SCRIPT
   ;
 
 
@@ -402,18 +403,22 @@ method_arg!
 
 expressionList
   :
-  assignementExpression (COMMA! assignementExpression)*
+  assignmentExpression (COMMA! opt_argument)*
   <expression_list>
   ;
 
-
+opt_argument
+	:
+	( assignmentExpression | <empty_expression> )
+	;
+	
 expression
   :
-  assignementExpression <expression>
+  assignmentExpression <expression>
   ;
 
 
-assignementExpression
+assignmentExpression
   :
   left:relationalImpNEQxpression
   (ASSIGN^ relationalImpExpression <check_id>)?
@@ -730,7 +735,7 @@ DIVIDE : '/' ;
 INT_DIVIDE: '\\';
 ASSIGN : '=';
 GT: '>' ;
-LT : '<' ;
+LT : { LA(2) != '!' && LA(3) != '-' && LA(4) != '-' }? '<' ;
 GE: ">=";
 GE2 : "=>" <lexer_ge>;
 LE : "<=" | "=<" ;
@@ -801,13 +806,14 @@ protected LINE : (~'\n')* '\n' <lexer_line> ;
 
 COMMENT
   :
-  '\''
-  (      
+  ( '\''
+  	(      
         {LA(2) != '>'}? '%'
         | ~('\n' | '%')
-  )*
-  <lexer_comment>
-  ;
+  	)* <lexer_comment>
+  | ("<!--" ( {LA(2) != '-' && LA(3) != '>'}? '-' | ~'-' )* "-->") <lexer_ignored> 
+  )
+    ;
 
 
 IGNORED

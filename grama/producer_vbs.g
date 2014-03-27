@@ -31,17 +31,18 @@ options {
 <init>
 
 generate
-  :
-  statements <end>
-  ;
+	:
+	(HTML <html>
+	| SCRIPT <script>
+	| (<script_begin> statements <script_end>))*
+	;
 
-
+  	
 statements
-  :
-  (HTML <html> | statement)*
-  ;
-
-
+	:
+	(statement)+
+	;
+	
 function
   :
   #(FUNCTION <function>
@@ -78,6 +79,12 @@ nested
   ;
 
 
+select_case
+  :
+  #(CASE <case> expr <case_expr_end>
+       statements <case_end>)
+  ;
+
 statement
   :
   INCLUDE <include>
@@ -92,14 +99,7 @@ statement
   | #(VAR <var_decl> (<next_var> expr)+) <exp_end>
   | #(CONST <const_decl> (<next_const> expr)+) <exp_end>
   ;
-
-select_case
-  :
-  #(CASE <case> expr <case_expr_end>
-       statements <case_end>)
-  ;
-
-
+  
 expr
   :
   #(EXPR expression)
@@ -168,6 +168,7 @@ expression
   | INVALID_OBJECT <inv_obj>
   | CONSTANT <const>
   | EMBEDDED_ASP <embedded_asp>
+  | EMPTYARG
   ;
   exception // for rule
   catch [NoViableAltException ex] {

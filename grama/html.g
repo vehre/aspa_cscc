@@ -35,11 +35,10 @@ options {
 <init>
 
 TAG
-  <init_tag>
   :
   '<'
   (
-      { (!ignoreServerSide) }? "!" (
+      { (util.serverSideIncludesAllowed()) }? "!" (
               "--"
               ((' ' | '\t')=> SPACE_TAB |)
               (
@@ -50,15 +49,12 @@ TAG
               ("-->")?
               | ~'-' (~('\n' | '>'))*
           )
-      | { (!ignoreServerSide) }? '%' <asp_start> // Only scan server side instructions when allowed to.
+      | { (util.serverSideIncludesAllowed()) }? '%' <asp_start> // Only scan server side instructions when allowed to.
       |
       (
-          n:NAME <check_script>
-          (
-          {isScript}?
-              MSPACE_WS
-              ATTRIBUTES
-              '>' <check_server>
+          n:NAME 
+          ( {n.getText() != null && n.getText().equalsIgnoreCase("script")}?
+              MSPACE_WS ATTRIBUTES '>' <checkScriptTag>
           |
           )
       )
@@ -128,8 +124,10 @@ protected ATTRIBUTE_VALUE
   (
       (MSPACE_WS)?
       (
-          '\'' (~('\'' | '\n' | '\r'))* '\''
-          | '"' (~('"' | '\n' | '\r'))* '"'
+      	/* Scan arbitrary strings in single or double quotes, but
+      		do not add the quotes to the string. */
+          '\''! (~('\'' | '\n' | '\r'))* '\''!
+          | '"'! (~('"' | '\n' | '\r'))* '"'!
       )
   )
   | (UNQUOTED)+

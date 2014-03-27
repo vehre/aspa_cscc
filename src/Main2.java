@@ -62,7 +62,7 @@ public class Main2 {
         }
     }
 
-
+/*
     public static void main(String[] args) throws IOException {
         boolean printTokens = false;
         boolean showTree = false;
@@ -166,5 +166,5 @@ public class Main2 {
         CommonAST tree = new CommonAST(new CommonToken(300, label));
         tree.addChild(child);
         return tree;
-    }
+    } */
 }

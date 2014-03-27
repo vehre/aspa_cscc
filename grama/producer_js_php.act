@@ -39,9 +39,10 @@ import java.io.Writer;
 
 @expr_end : { out.println(";"); }
 @html : {
-    out.printHTML(#HTML.getText());
+    out.print(#HTML.getText());
 }
 @include : { out.println("require '" + #INCLUDE.getText() + "'");}
+@script : { out.println("<script " + #SCRIPT.getText() + "/>");}
 @break : {
     String text = "break";
     if (#num != null) {
@@ -272,4 +273,11 @@ import java.io.Writer;
 @lp : { out.print('('); }
 @lp_end : { out.print(')'); }
 @concat : { out.print(" . "); }
-@end : { out.end();}
+@script_begin : {
+	out.println("<?php");
+	out.startCode();
+}
+@script_end : { 
+	out.println("?>");
+	out.endCode();
+}

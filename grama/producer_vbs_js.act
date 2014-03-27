@@ -25,9 +25,16 @@ import gr.omadak.leviathan.asp.objects.ObjectAST;
 
 @init : {
 	private static Logger LOG = Logger.getLogger(VbsJsGenerator.class);
+	/** Set when the javascript code to emit is inlined in a html document. */
+	private boolean inlineJS = true;
 	
 	public void setWriter(Writer writer) {
-        out = new SourceBuffer(new PrintWriter(writer), false);
+        out = new SourceBuffer(new PrintWriter(writer));
+    }
+    
+    /** Make the emitter produce pure javascript w/o start and end script-tag. */
+    public void setNonInline() {
+    	inlineJS = false;
     }
     
     public static final int OBJECT = CommonConstants.OBJECT;
@@ -132,12 +139,15 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
 @arg_end : { out.print(')'); }
 
 @html : {
-    out.printHTML(#HTML.getText());
+    out.print(#HTML.getText());
 }
 
 
 @include : {
     out.println("import '" + #INCLUDE.getText() + "';");
+}
+@script : {
+    out.println("<script type=\"text/javascript\" src=\"" + #SCRIPT.getText() + "\">");
 }
 
 @eq_html : {
@@ -284,4 +294,15 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
     out.println("var " + #IDENTIFIER.getText() + ";");
     ids.add(#IDENTIFIER.getText());
 }
-@end : { out.end();}
+
+@script_begin : {
+	if ( inlineJS ) 
+		out.println("<script type=\"text/javascript\">");
+	out.startCode();
+}
+@script_end : { 
+	if ( inlineJS ) 
+		out.println("</script>");
+	out.endCode();
+}
+

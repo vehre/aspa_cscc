@@ -51,6 +51,7 @@ statement
   :
   HTML
   | include:INCLUDE <include>
+  | script:SCRIPT <script>
   | expr
   |<tconst> #(CONST <const_init> (ci:IDENTIFIER cex:expression <const_decl>)+ <const_end>)
   |<trand> #(RANDOMIZE (ex:expr)? <randomize>)
@@ -263,7 +264,7 @@ indexes
 
 argListValues
   :
-  !#(ARGLIST_VALUES <arg_val> (arg:expression <arg_val_end>)+)
+  !#(ARGLIST_VALUES <arg_val> (arg:expression <arg_val_end> | EMPTYARG <arg_empty> )+)
   ;
 
 

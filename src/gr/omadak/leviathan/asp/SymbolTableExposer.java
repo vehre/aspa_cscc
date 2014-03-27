@@ -19,6 +19,7 @@ package gr.omadak.leviathan.asp;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface SymbolTableExposer {
     /**
@@ -26,10 +27,10 @@ public interface SymbolTableExposer {
     * during parsing.Each key is the variable name.
     * If the value is not null then the value is an ASPObjectInstance
     * object.If is null then it is either a primitive, or it's type
-    * is uknown.
+    * is unknown.
     * If no variable is found then an empty Map is returned.
     */
-    public Map getVariables();
+    public Map<String, Object> getVariables();
     /**
     * Provides access to the functions found during parsing.
     * Each element is either a JsUserDefinedMethod or VbUserDefinedMethod
@@ -46,24 +47,24 @@ public interface SymbolTableExposer {
     * Returns the files which should be included
     * in the generated code.
     */
-    public List getDependencies();
+    public Set<String> getDependencies();
     /**
     * Sets the AspParser instance which is used for parsing of
     * included files.
     */
     public void setAspParser(AspParser parser);
     /**
-    * Sets the variables discoverd by an other SymbolTableExposer
+    * Sets the variables discovered by an other SymbolTableExposer
     * in this instance.
     */
-    public void appendVariables(Map variables);
+    public void appendVariables(Map<String, Object> variables);
     /**
-    * Sets the functions discoverd by an other SymbolTableExposer
+    * Sets the functions discovered by an other SymbolTableExposer
     * in this instance.
     */
     public void appendFunctions(List funcs);
     /**
-    * Sets the classes discoverd by an other SymbolTableExposer
+    * Sets the classes discovered by an other SymbolTableExposer
     * in this instance.
     */
     public void appendClasses(List classes);

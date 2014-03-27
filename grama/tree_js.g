@@ -48,6 +48,7 @@ statement
   expr
   | HTML
   | include:INCLUDE <include>
+  | script:SCRIPT <script>
   | #(EQ_HTML expr)
   | #(SLIST (statement)*)
   | <tfunc> #(FUNCTION <func_decl> fncstm:statement <func_end>)

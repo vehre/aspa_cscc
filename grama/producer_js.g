@@ -33,15 +33,20 @@ options {
 
 generate
   :
-  (statement)* <end>
+  (HTML <html> |
+  <script_begin> statements <script_end>)*
   ;
 
+statements
+  :
+  (statement)+
+  ;
 
 statement
   :
   expr <expr_end>
-  | HTML <html>
   | INCLUDE <include>
+  | SCRIPT <script>
   | #(EQ_HTML <eq_html> expr) <eq_html_end>
   | #(BREAK (num:NUM_INT)?) <break>
   | #(CONTINUE (cnum:NUM_INT)?) <continue>
