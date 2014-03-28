@@ -29,8 +29,7 @@ import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
@@ -50,7 +49,7 @@ public class AspStreamSelector extends TokenStreamSelector {
     private File currentFile;
     private FileInputStream fis;
     private BufferedReader bis;
-    private List<Token> storedTokens = new ArrayList<Token>();
+    private LinkedList<Token> storedTokens = new LinkedList<Token>();
     private HtmlLexerUtil utility = new HtmlLexerUtil();
     private HtmlLexer htmlLexer;
     private VbsLexer vbsLexer;
@@ -282,7 +281,7 @@ public class AspStreamSelector extends TokenStreamSelector {
         }
         if (sb.length() > i) {
             storedTokens.add(result);
-            result = createToken(pageLanguage == LEX_JS
+            result = createToken(pageLanguage == LEX_JS || t != null && t.getType() == HtmlLexerUtil.JS_START
             		? JsTokenTypes.HTML : VbsTokenTypes.HTML, sb.toString(),
             				line_col[0], line_col[1]);
         }
@@ -411,7 +410,7 @@ public class AspStreamSelector extends TokenStreamSelector {
         //make an attempt to determine default language
         if (findLang) {
             Token first = getNextToken();
-            storedTokens.add(0, first);
+            storedTokens.add(first);
         }
     }
 
@@ -429,8 +428,8 @@ public class AspStreamSelector extends TokenStreamSelector {
 
     public Token nextToken() throws TokenStreamException {
         Token result = !storedTokens.isEmpty()
-        ? (Token) storedTokens.remove(0)
-        : getNextToken();
+        		? storedTokens.remove()
+        		: getNextToken();
         return result;
     }
 
@@ -441,10 +440,33 @@ public class AspStreamSelector extends TokenStreamSelector {
         }
     }
 
-
-    public boolean isVbCurrent() {
-        return (lexerType == LEX_HTML && pageLanguage == LEX_VB)
-        || lexerType == LEX_VB;
+    /** Determine, if the language of the next non-HTML token is VB.
+     * 
+     * @return true, if the next language is vbscript.
+     * @throws TokenStreamException
+     */
+    public boolean isVbCurrent() throws TokenStreamException {
+    	Token nextT;
+    	if ( !storedTokens.isEmpty() )
+    		/* Get the last token from the stored ones. That token is the
+    		 * first available to learn if the parser to use is VB or JS. 
+    		 */
+    		nextT = storedTokens.peekFirst();
+    	else {
+    		/* nextToken() looks into the queue, but we already know, that that is empty. */
+    		nextT = getNextToken();
+        	// Don't pop the token, just analyze it.
+        	storedTokens.add(nextT);    		
+    	}
+    	switch ( nextT.getType() ) {
+    	case HtmlLexerUtil.JS_START:
+    	case JsTokenTypes.NEW_LINE:
+    	case JsTokenTypes.INCLUDE:
+    		return false;
+    	default:
+	        return (lexerType == LEX_HTML && pageLanguage == LEX_VB)
+	        		|| lexerType == LEX_VB;
+    	}
     }
 
 
