@@ -1116,5 +1116,31 @@
         </key>
     </map>
   </method>
+  
+  <method name="MsgBox" type="VOID">
+  	<args />
+	<ast name="METHOD_CALL" text="alert">
+		<ast name="ARGLIST_VALUES">
+			<args />
+		</ast>
+	</ast>
+  </method>
+  
+  <method name="escape" type="DSTRING">
+  	<args />
+	<ast name="METHOD_CALL" text="escape">
+		<ast name="ARGLIST_VALUES">
+			<args />
+		</ast>
+	</ast>
+  </method>
 
+  <method name="unescape" type="DSTRING">
+  	<args />
+	<ast name="METHOD_CALL" text="unescape">
+		<ast name="ARGLIST_VALUES">
+			<args />
+		</ast>
+	</ast>
+  </method>
 </functions>
