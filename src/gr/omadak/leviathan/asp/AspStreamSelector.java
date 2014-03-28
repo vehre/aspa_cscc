@@ -452,8 +452,13 @@ public class AspStreamSelector extends TokenStreamSelector {
         this.baseDir = baseDir;
     }
 
-
+    /** Tell the parsing loop, that there are still tokens available.
+     * Only close the files, when no tokens are stored anymore.
+     * @return True, when tokens are still available.
+     */
     public boolean hasMoreTokens() {
+    	if (!storedTokens.isEmpty())
+    		return true;
         if (foundEOF) {
             //close the streams
             try {
