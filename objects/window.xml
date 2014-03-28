@@ -16,7 +16,23 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 -->
 <class name="window" standalone="true">
-	<method name="open" type="window">
+	<class name="MSDOMWindow">
+	</class>
+	<property name="status" type="DSTRING">
+          <read>
+		      <ast name="DOT">
+				<this/>
+				<ast name="IDENTIFIER" text="status" />
+			  </ast>
+          </read>
+          <write>
+		      <ast name="DOT">
+				<this/>
+				<ast name="IDENTIFIER" text="status" />
+			  </ast>
+          </write>
+	</property>
+	<method name="open" type="MSDOMWindow">
 		<args />
   		<ast name="DOT">
   			<this />
@@ -27,7 +43,7 @@
 			</ast>
 		</ast>
 	</method>
-	<method name="close" type="window">
+	<method name="close" type="VOID">
   		<ast name="DOT">
   			<this />
 			<ast name="METHOD_CALL" text="close">
