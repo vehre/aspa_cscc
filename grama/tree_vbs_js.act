@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Stack;
 import java.util.Collections;
 import java.util.Iterator;
@@ -296,13 +297,13 @@ import org.apache.commons.collections.Transformer;
                 result = #(funcRoot, nullRet);
             }
         } else {
-            List elements = new ArrayList();
+            LinkedList<AST> elements = new LinkedList<AST>();
             if (fList != null) {
                 elements.add(fList);
             }
             /* Check, if the function name has been assigned to. */
             if ( (functionReturnsMask & (1<< functionNestingLevel))> 0) {
-            	/* Compute the type of the function_result and create a suitable initializer. */
+            	/* Compute the type of the function_result and create a suitable initializer. *
             	AST initializer;
             	switch (currentFunction.getVariableType(VbsAbstractTreeParser.FUNCTION_RESULT)) {
 				case DSTRING:
@@ -317,16 +318,17 @@ import org.apache.commons.collections.Transformer;
 				default:
 					initializer = #[NULL, "null"];
 					break;	
-				}					
+				}			*/		
                 AST declExpr =
 	                #([VAR, "var" ], 
-	                	([EXPR, "EXPR"],
-	                    	([ASSIGN, "="],
+	                	([EXPR, "EXPR"], [IDENTIFIER, FUNCTION_RESULT])
+	                ) ;
+/*	                    	([ASSIGN, "="],
 	                        	[IDENTIFIER, FUNCTION_RESULT],
 	                        	initializer
 	                        )
 	                    )
-	                );
+	                );*/
                 elements.add(declExpr);
             }
             AST stm = statements;
@@ -334,17 +336,35 @@ import org.apache.commons.collections.Transformer;
             while ((stm = stm.getNextSibling()) != null) {
                 elements.add(stm);
             }
-            if ( (functionReturnsMask & (1<< functionNestingLevel))> 0 ) {
-                AST retExpr =
-                #([RETURN, "return"],
-                    ([EXPR, "EXPR"],
-                        [IDENTIFIER, FUNCTION_RESULT]
-                    )
-                );
-                elements.add(retExpr);
+            /* Check if a return of function_result is necessary, but prevent duplicated
+            	returns. */
+            if ( (functionReturnsMask & (1<< functionNestingLevel))> 0 &&
+            		elements.getLast().getType() != RETURN ) {
+            	if ( elements.getLast().getType() == EXPR &&
+            			elements.getLast().getFirstChild() != null &&
+            			elements.getLast().getFirstChild().getType() == ASSIGN &&
+            			elements.getLast().getFirstChild().getFirstChild() != null &&
+            			elements.getLast().getFirstChild().getFirstChild().getText().equals(FUNCTION_RESULT) &&
+            			elements.getLast().getFirstChild().getFirstChild().getNextSibling() != null) {
+            		/* The last expression of this expression list is an 
+            			assignment to the function_result. Convert it to a return lhs; */
+            		AST lastExpr= elements.peekLast();
+            		AST lhs= lastExpr.getFirstChild().getFirstChild().getNextSibling();
+            		lastExpr.setType(RETURN);
+            		lastExpr.setText("return");
+            		lastExpr.setFirstChild(#([EXPR], lhs));
+            	} else {
+	                AST retExpr =
+	                #([RETURN, "return"],
+	                    ([EXPR, "EXPR"],
+	                        [IDENTIFIER, FUNCTION_RESULT]
+	                    )
+	                );
+	                elements.add(retExpr);
+            	}
             }
             result = makeFromList(elements,
-            #[funcRoot.getType(), funcRoot.getText()]);
+					#[funcRoot.getType(), funcRoot.getText()]);
         }
         currentFunction = null;
         /* Remove the marker, that the function on this level returns a value. */
