@@ -18,8 +18,19 @@
 -->
 <class name="document" dependent="true">
 
-<class name="MSDOMNode" dependant="true">
-</class>
+  <class name="MSDOMNode" dependant="true">
+  </class>
+  <class name="location">
+  </class>
+
+  <property name="location" type="location">
+    <read>
+		<ast name="DOT">
+			<this/>
+			<ast name="IDENTIFIER" text="location" />
+		</ast>
+	</read>
+  </property>
 
   <method name="all" type="MSDOMNode">
 	<arg type="DSTRING" />

@@ -16,67 +16,40 @@
     along with Aspa; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 -->
-<class name="MSDOMDocument" dependant="true">
-
-  <constructor>
-	<ast name="NEW">
-	  <ast name="IDENTIFIER" text="ActiveXObject">
-	  </ast>
-		<ast name="ARGLIST_VALUES">
-			<ast name="DSTRING" text="msxml2.domdocument"/>
-		</ast>
-	</ast>
-  </constructor>
-
-	<property name="documentElement" type="MSDOMDocument">
-		<read>
-			<ast name="DOT">
-				<this />
-				<ast name="IDENTIFIER" text="documentElement" />
-			</ast>
-		</read>
-	</property>
-  
-	<property name="childNodes" type="Array">
+<class name="history">
+	<property name="length" type="DINT">
 		<read>
 			 <ast name="DOT">
                 <this />
-                <ast name="IDENTIFIER" text="childNodes" />
+                <ast name="IDENTIFIER" text="length" />
             </ast>
 		</read>
 	</property>
 
-	<method name="selectSingleNode" type="MSDOMNode">
-		<arg type="DSTRING"/>
+	<method name="back" type="VOID">
 		<ast name="DOT">
 			<this/>
-			<ast name="METHOD_CALL" text="selectSingleNode">
-			  <ast name="ARGLIST_VALUES">
-				<arg index="1" />
-			  </ast>
+			<ast name="METHOD_CALL" text="back">
+			</ast>
+		</ast>
+	</method>
+
+	<method name="forward" type="VOID">
+		<ast name="DOT">
+			<this/>
+			<ast name="METHOD_CALL" text="forward">
 			</ast>
 		</ast>
 	</method>
 	
-	<method name="getAttribute" type="DSTRING">
-		<arg type="DSTRING"/>
-		<ast name="DOT">
-			<this/>
-			<ast name="METHOD_CALL" text="getAttribute">
-			  <ast name="ARGLIST_VALUES">
-				<arg index="1" />
-			  </ast>
-			</ast>
-		</ast>
-	</method>
-	<method name="appendChild" type="ANY">
+	<method name="go" type="VOID">
 		<args />
 		<ast name="DOT">
 			<this/>
-			<ast name="METHOD_CALL" text="appendChild">
-			  <ast name="ARGLIST_VALUES">
-				<args />
-			  </ast>
+			<ast name="METHOD_CALL" text="go">
+				<ast name="ARGLIST_VALUES">
+					<args />
+				</ast>
 			</ast>
 		</ast>
 	</method>
