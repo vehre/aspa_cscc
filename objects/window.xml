@@ -15,9 +15,13 @@
     along with Aspa; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 -->
-<class name="window" standalone="true">
-	<class name="MSDOMWindow">
+<class name="window">
+	<class name="MSDOMWindow" dependant="true">
 	</class>
+	<class name="history" dependant="true">
+	</class>
+	<property name="history" use="history">
+	</property>
 	<property name="status" type="DSTRING">
           <read>
 		      <ast name="DOT">
@@ -26,10 +30,13 @@
 			  </ast>
           </read>
           <write>
+			<ast name="ASSIGN">
 		      <ast name="DOT">
 				<this/>
 				<ast name="IDENTIFIER" text="status" />
 			  </ast>
+			  <arg index="1" />
+			 </ast>
           </write>
 	</property>
 	<method name="open" type="MSDOMWindow">

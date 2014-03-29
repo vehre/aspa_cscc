@@ -16,6 +16,35 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 -->
 <functions>
+
+
+  <method name="msgbox" type="VOID">
+  	<args />
+	<ast name="METHOD_CALL" text="alert">
+		<ast name="ARGLIST_VALUES">
+			<args />
+		</ast>
+	</ast>
+  </method>
+  
+  <method name="escape" type="DSTRING">
+  	<args />
+	<ast name="METHOD_CALL" text="escape">
+		<ast name="ARGLIST_VALUES">
+			<args />
+		</ast>
+	</ast>
+  </method>
+
+  <method name="unescape" type="DSTRING">
+  	<args />
+	<ast name="METHOD_CALL" text="unescape">
+		<ast name="ARGLIST_VALUES">
+			<args />
+		</ast>
+	</ast>
+  </method>
+
     <!-- just convert name case -->
     <method name="abs" type="DINT">
         <arg type="DINT" />
@@ -1117,30 +1146,4 @@
     </map>
   </method>
   
-  <method name="MsgBox" type="VOID">
-  	<args />
-	<ast name="METHOD_CALL" text="alert">
-		<ast name="ARGLIST_VALUES">
-			<args />
-		</ast>
-	</ast>
-  </method>
-  
-  <method name="escape" type="DSTRING">
-  	<args />
-	<ast name="METHOD_CALL" text="escape">
-		<ast name="ARGLIST_VALUES">
-			<args />
-		</ast>
-	</ast>
-  </method>
-
-  <method name="unescape" type="DSTRING">
-  	<args />
-	<ast name="METHOD_CALL" text="unescape">
-		<ast name="ARGLIST_VALUES">
-			<args />
-		</ast>
-	</ast>
-  </method>
 </functions>

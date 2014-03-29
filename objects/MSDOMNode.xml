@@ -33,9 +33,12 @@
 			</ast>
 		</read>
 		<write>
-			 <ast name="DOT">
-				<this />
-				<ast name="IDENTIFIER" text="readonly" />
+			<ast name="ASSIGN">
+				<ast name="DOT">
+					<this />
+					<ast name="IDENTIFIER" text="readonly" />
+				</ast>
+				<arg index="1" />
 			</ast>
 		</write>
 	</property>

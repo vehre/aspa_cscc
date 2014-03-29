@@ -63,9 +63,14 @@
 	</method>
 	
 	<method name="send" type="VOID">
+		<args />
 		<ast name="DOT">
 			<this />
-			<ast name="METHOD_CALL" text="send" />
+			<ast name="METHOD_CALL" text="send">
+				<ast name="ARGLIST_VALUES">
+					<args />
+				</ast>
+			</ast>
 		</ast>
 	</method>
 </class>

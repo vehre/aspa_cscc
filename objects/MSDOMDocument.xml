@@ -17,6 +17,15 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 -->
 <class name="MSDOMDocument" dependant="true">
+
+  <constructor>
+	<ast name="NEW">
+	  <ast name="IDENTIFIER" text="ActiveXObject">
+	    <ast name="IDENTIFIER" text="msxml2.domdocument" />
+	  </ast>
+	</ast>
+  </constructor>
+  
 	<property name="childNodes" type="Array">
 		<read>
 			 <ast name="DOT">
