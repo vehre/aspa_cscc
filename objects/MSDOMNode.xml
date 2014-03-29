@@ -17,6 +17,40 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 -->
 <class name="MSDOMNode" dependant="true">
+	<property name="bgcolor" type="DSTRING">
+		<read>
+			 <ast name="DOT">
+				<this />
+				<ast name="IDENTIFIER" text="bgcolor" />
+			</ast>
+		</read>
+		<write>
+			<ast name="ASSIGN">
+				<ast name="DOT">
+					<this />
+					<ast name="IDENTIFIER" text="bgcolor" />
+				</ast>
+				<arg index="1" />
+			</ast>
+		</write>
+	</property>
+	<property name="text" type="DSTRING">
+		<read>
+			 <ast name="DOT">
+				<this />
+				<ast name="IDENTIFIER" text="text" />
+			</ast>
+		</read>
+		<write>
+			<ast name="ASSIGN">
+				<ast name="DOT">
+					<this />
+					<ast name="IDENTIFIER" text="text" />
+				</ast>
+				<arg index="1" />
+			</ast>
+		</write>
+	</property>
 	<property name="Value" type="DSTRING">
 		<read>
 			 <ast name="DOT">

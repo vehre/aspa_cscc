@@ -15,28 +15,7 @@
     along with Aspa; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 -->
-<class name="window">
-	<class name="MSDOMWindow" dependant="true">
-	</class>
-	<class name="history" dependant="true">
-	</class>
-	<property name="history" type="history">
-		<read>
-			<ast name="DOT">
-				<this/>
-				<ast name="IDENTIFIER" text="history" />
-			</ast>
-		</read>
-		<write>
-			<ast name="ASSIGN">
-				<ast name="DOT">
-					<this/>
-					<ast name="IDENTIFIER" text="history" />
-				</ast>
-				<arg index="1" />
-			</ast>
-		</write>
-	</property>
+<class name="MSDOMWindow" dependant="true">
 	<property name="status" type="DSTRING">
           <read>
 		      <ast name="DOT">
@@ -51,7 +30,7 @@
 				<ast name="IDENTIFIER" text="status" />
 			  </ast>
 			  <arg index="1" />
-			 </ast>
+			</ast>
           </write>
 	</property>
 	<method name="open" type="MSDOMWindow">
@@ -107,6 +86,28 @@
   		<ast name="DOT">
   			<this />
 			<ast name="METHOD_CALL" text="setInterval">
+				<ast name="ARGLIST_VALUES">
+					<args />
+				</ast>
+			</ast>
+		</ast>
+	</method>
+	<method name="moveTo" type="VOID">
+		<args />
+  		<ast name="DOT">
+  			<this />
+			<ast name="METHOD_CALL" text="moveTo">
+				<ast name="ARGLIST_VALUES">
+					<args />
+				</ast>
+			</ast>
+		</ast>
+	</method>
+	<method name="resizeTo" type="VOID">
+		<args />
+  		<ast name="DOT">
+  			<this />
+			<ast name="METHOD_CALL" text="resizeTo">
 				<ast name="ARGLIST_VALUES">
 					<args />
 				</ast>
