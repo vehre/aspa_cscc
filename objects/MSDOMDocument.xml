@@ -21,8 +21,10 @@
   <constructor>
 	<ast name="NEW">
 	  <ast name="IDENTIFIER" text="ActiveXObject">
-	    <ast name="IDENTIFIER" text="msxml2.domdocument" />
 	  </ast>
+		<ast name="ARGLIST_VALUES">
+			<ast name="DSTRING" text="msxml2.domdocument"/>
+		</ast>
 	</ast>
   </constructor>
 
