@@ -18,6 +18,7 @@
 header {
 package gr.omadak.leviathan.asp;
 import java.util.Map;
+import java.util.HashMap;
 }
 
 class JSTreeResolver extends TreeParser;
@@ -31,6 +32,25 @@ tokens {
 }
 {
 	private Map<String, Object> variables;
+	
+	private final int DECLARED = 1;
+	private final int INIT = 2;
+	private final int DECLAREDANDINIT = 3;
+	
+	private class Scope extends HashMap<String, Integer> {
+		private Scope parent;
+		public Scope() {
+			super();
+			parent = null;
+		}
+		public boolean resolveDECLARED(String id) {
+			return !containsKey(id) || (get(id) & DECLARED) != DECLARED;
+		}
+		public boolean resolveDECLINIT(String id) {
+			return !containsKey(id) || (get(id) & DECLAREDANDINIT) != DECLAREDANDINIT;
+		}
+	} 
+	private Scope currentScope = new Scope();
 	
 	/** Set the variables for this parser. */
 	public void setVariables(Map<String, Object> vars) {
@@ -55,7 +75,26 @@ breadth_first
 			breadth_first(var.getNextSibling());
 			#breadth_first.setNextSibling(returnAST);
 		}
-	} 
+	}
+	| #(ass:ASSIGN lhs:. rhs:.) {
+		if ( rhs != null ) {
+			breadth_first(rhs);
+			#rhs = returnAST;
+		}
+		if ( lhs.getType() == IDENTIFIER )
+			if (! currentScope.resolveDECLARED(lhs.getText()) ) {
+				System.out.println("Variable " + lhs.getText() + " assigned to w/o being declared.");
+			}
+		if ( ass.getNextSibling() != null ) {
+			breadth_first(ass.getNextSibling());
+			#breadth_first.setNextSibling(returnAST);
+		}
+	}
+	| id:IDENTIFIER {
+		if (! currentScope.resolveDECLINIT(id.getText()) ) {
+			System.out.println("Variable " + id.getText() + " used w/o being declared.");
+		}	
+	}
 	| !cand:. {
 		if ( cand.getFirstChild() != null ) {
 			breadth_first(cand.getFirstChild());
@@ -78,23 +117,30 @@ candvar
 		/* When the vdecl is already an ASSIGN, then getText() yields
 			"=", which is not a legal name for a variable and therefore
 			it will not be in the map of variables. */
-		if ( variables.containsKey(#vdecl.getText()) &&
-				 variables.get(#vdecl.getText()) instanceof Integer) {
-			AST initializer = null;
-			switch (((Integer) variables.get(#vdecl.getText())).intValue()) {
-				case DINT: initializer = #([DINT, "0"]); break;
-				case DFLOAT: initializer = #([DFLOAT, "0.0"]); break;
-				case DSTRING: initializer = #([DSTRING, ""]); break;
-				default: break; 
+		if ( variables.containsKey(#vdecl.getText()) ) {
+			if ( variables.get(#vdecl.getText()) instanceof Integer) {
+				AST initializer = null;
+				switch (((Integer) variables.get(#vdecl.getText())).intValue()) {
+					case DINT: initializer = #([DINT, "0"]); break;
+					case DFLOAT: initializer = #([DFLOAT, "0.0"]); break;
+					case DSTRING: initializer = #([DSTRING, ""]); break;
+					default: break; 
+				}
+				if ( initializer != null ) {
+					// Only when the initializer is set, do a modify.
+					AST tmp = #([ASSIGN, "="], #vdecl, initializer);
+					/* The following line is copied from the output of antlr and correct, because
+					ANTLR does not generate the EXPR in the astFactory.create() correctly. */
+					## = (AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(EXPR,"EXPR")).add(tmp));
+				}
 			}
-			if ( initializer != null ) {
-				// Only when the initializer is set, do a modify.
-				AST tmp = #([ASSIGN, "="], #vdecl, initializer);
-				/* The following line is copied from the output of antlr and correct, because
-				ANTLR does not generate the EXPR in the astFactory.create() correctly. */
-				## = (AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(EXPR,"EXPR")).add(tmp));
-			}
-		}
+			currentScope.put(#vdecl.getText(), DECLARED);
+		} else if ( #vdecl.getType() == ASSIGN )
+			currentScope.put(#vdecl.getFirstChild().getText(), DECLAREDANDINIT);
+		else if ( #vdecl.getType() == IDENTIFIER )
+			currentScope.put(#vdecl.getText(), DECLAREDANDINIT);
+		else
+			System.out.println("Decl. unknown: " + vdecl.toStringList());
 	}
 	;
 	
