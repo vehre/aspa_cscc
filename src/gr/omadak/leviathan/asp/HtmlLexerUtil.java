@@ -54,7 +54,7 @@ public class HtmlLexerUtil {
     	ignoreServerSide = true;
     }
     
-    /** */
+    /** Check if server side includes are allowed and should be processed.*/
     public boolean serverSideIncludesAllowed() {
     	return !ignoreServerSide;
     }
@@ -122,19 +122,29 @@ public class HtmlLexerUtil {
         
         boolean runatServer = attributes.containsKey(KEY_RUNAT) 
         		&& clearAllQuotesAndWhiteSpaces(attributes.get(KEY_RUNAT).toString()).equalsIgnoreCase("server");
+        /* When server side includes are to be ignored, then treat this script-tag
+         * as HTML.
+         */
+        if ( runatServer && ignoreServerSide )
+        	return HTML;
+
         String src = null;
-        if (attributes.containsKey(KEY_SRC)) {
+        if (attributes.containsKey(KEY_SRC))
             src = attributes.get(KEY_SRC).toString();
-        }
+        
         int type = getLanguageType(attributes.containsKey(KEY_LANG) ?
         		clearAllQuotesAndWhiteSpaces(attributes.get(KEY_LANG)) :
         			attributes.get(KEY_MIMETYPE));
-        if (type != HTML) {
+        /* When the type is vbscript and we are doing client side processing, 
+         * then continue, else treat the type as HTML, which ignores the script
+         * tag for further processing. 
+         */
+        if(ignoreServerSide && type != VBS_START )
+        	return HTML;
+        if ( type != HTML)
         	storeInputInfo = new InputInfo(type, TYPE_FILE, src, runatServer);
-        }
-        if ( attributes.containsKey(KEY_SRC) )
-        	return SCRIPT;
-        return type;
+
+        return attributes.containsKey(KEY_SRC) ? SCRIPT : type;
     }
 
     /** Determine the language type also checking for mime types.
@@ -188,12 +198,13 @@ public class HtmlLexerUtil {
         } else if (KEY_VIRTUAL.equalsIgnoreCase(includeType)) {
             incType = TYPE_VIRTUAL;
         }
-        String ending = path.substring(path.lastIndexOf('.') + 1);
-        if ( ending.equalsIgnoreCase("vbs") )
+        String extention = path.substring(path.lastIndexOf('.') + 1);
+        if ( extention.equalsIgnoreCase("vbs") )
         	langType = VBS_START;
-        else if ( ending.equalsIgnoreCase("js") || ending.equalsIgnoreCase("jsp") )
+        else if ( extention.equalsIgnoreCase("js") || extention.equalsIgnoreCase("jsp") )
         	langType = JS_START;
-        else if (ending.equalsIgnoreCase("htm") || ending.equalsIgnoreCase("html") )
+        else if (extention.equalsIgnoreCase("htm") || extention.equalsIgnoreCase("html") 
+        		|| extention.equalsIgnoreCase("asp") )
         	langType = INCLUDE;
         storeInputInfo = new InputInfo(langType, incType, path, true);
     }
@@ -205,6 +216,32 @@ public class HtmlLexerUtil {
         InputInfo result = storeInputInfo;
         storeInputInfo = null;
         return result;
+    }
+    
+    /**
+     * 
+     * @param attr
+     * @return
+     */
+    public String formatScriptAttributes(Map<String, String> attrs) {
+    	StringBuilder result = new StringBuilder("<script");
+    	for ( Map.Entry<String, String> entry : attrs.entrySet()) {
+    		if ( entry.getKey().equalsIgnoreCase("language") ) {
+    			if ( entry.getValue().equalsIgnoreCase("vbscript") )
+    				result.append(" type=\"text/vbscript\"");
+    			else if ( entry.getValue().equalsIgnoreCase("js")
+    	        		|| entry.getValue().equalsIgnoreCase("jsscript")
+    	        		|| entry.getValue().toLowerCase().startsWith("javascript")
+    	        		|| entry.getValue().equalsIgnoreCase("jscript") )
+    				result.append(" type=\"text/javascript\"");
+    			else
+    				result.append(" language=\"").append(entry.getValue()).append('"');
+    		} else {
+    			result.append(' ').append(entry.getKey()).append("=\"").append(entry.getValue()).append('"');
+    		}
+    	}
+    	result.append('>');
+    	return result.toString();
     }
 }
 

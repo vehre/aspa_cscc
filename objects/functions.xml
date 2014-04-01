@@ -16,6 +16,35 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 -->
 <functions>
+
+
+  <method name="msgbox" type="VOID">
+  	<args />
+	<ast name="METHOD_CALL" text="alert">
+		<ast name="ARGLIST_VALUES">
+			<args />
+		</ast>
+	</ast>
+  </method>
+  
+  <method name="escape" type="DSTRING">
+  	<args />
+	<ast name="METHOD_CALL" text="escape">
+		<ast name="ARGLIST_VALUES">
+			<args />
+		</ast>
+	</ast>
+  </method>
+
+  <method name="unescape" type="DSTRING">
+  	<args />
+	<ast name="METHOD_CALL" text="unescape">
+		<ast name="ARGLIST_VALUES">
+			<args />
+		</ast>
+	</ast>
+  </method>
+
     <!-- just convert name case -->
     <method name="abs" type="DINT">
         <arg type="DINT" />
@@ -1108,9 +1137,13 @@
         <key value="msxml2.domdocument" use="MSDOMDocument" />
         <key value="Microsoft.xmlhttp" use="MSXMLHttp" /> 
         <key>
-            <ast name="INVALID_OBJECT" />
+            <ast name="METHOD_CALL" text="CreateObject">
+				<ast name="ARGLIST_VALUES">
+					<arg index="1" />
+				</ast>
+			</ast>
         </key>
     </map>
   </method>
-
+  
 </functions>

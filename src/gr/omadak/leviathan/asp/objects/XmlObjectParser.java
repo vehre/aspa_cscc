@@ -20,6 +20,7 @@ package gr.omadak.leviathan.asp.objects;
 import antlr.ASTFactory;
 import antlr.collections.AST;
 import gr.omadak.leviathan.asp.CommonConstants;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,6 +28,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -94,7 +96,7 @@ public class XmlObjectParser {
 		}
 	}
 
-	public void configureMethods(Map placeIn, URL url) throws DocumentException {
+	public void configureMethods(Map<String, Object> placeIn, URL url) throws DocumentException {
 		Document doc = loadDocument(url);
 		Element root = doc.getRootElement();
 		List classes = doc.selectNodes("class");

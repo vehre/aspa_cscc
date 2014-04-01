@@ -38,13 +38,13 @@ import org.dom4j.DocumentException;
 public class MapLoader {
     private static Logger LOG = Logger.getLogger(MapLoader.class);
 
-    public Map loadMap(URL desiredTokens, URL[] tokensFile)
+    public Map<String, Integer> loadMap(URL desiredTokens, URL[] tokensFile)
     throws IOException {
         LOG.info("Loading map from urls:" + desiredTokens + " => "
         + tokensFile[0]);
         BufferedReader brDesired = getReader(desiredTokens);
-        Map ref = new HashMap();
-        Map result = new TreeMap();
+        Map<String, Integer> ref = new HashMap<String, Integer>();
+        Map<String, Integer> result = new TreeMap<String, Integer>();
         String line;
         for (int i = 0; i < tokensFile.length; i++) {
             BufferedReader brRef = getReader(tokensFile[i]);
@@ -97,8 +97,8 @@ public class MapLoader {
     }
 
 
-    public void loadObjects(URL configFile, Class resourceResolver,
-    Map objectClasses, Map functions, XmlObjectParser parser)
+    public void loadObjects(URL configFile, Class<?> resourceResolver,
+    		Map<String, XmlASPClass> objectClasses, Map<String, Object> functions, XmlObjectParser parser)
     throws IOException, DocumentException {
         Properties props = new Properties();
         props.load(configFile.openStream());
@@ -107,10 +107,10 @@ public class MapLoader {
         To solve this, add an entry for each class
         in the objectClasses map and later configure them.
         */
-        List classes = new ArrayList();
-        List resources = new ArrayList();
-        Stack globfunctions = new Stack();
-        for (Iterator it = props.keySet().iterator(); it.hasNext();) {
+        List<XmlASPClass> classes = new ArrayList<XmlASPClass>();
+        List<URL> resources = new ArrayList<URL>();
+        Stack<String> globfunctions = new Stack<String>();
+        for (Iterator<?> it = props.keySet().iterator(); it.hasNext();) {
             String key = (String) it.next();
             if (key.startsWith("Object.")) {
                 String objName = key.substring(7);

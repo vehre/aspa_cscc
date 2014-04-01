@@ -19,12 +19,8 @@ package gr.omadak.leviathan.asp;
 
 import antlr.ANTLRException;
 import antlr.collections.AST;
-import gr.omadak.leviathan.asp.AspParser.EntityInfo.SubEntityInfo;
 import gr.omadak.leviathan.asp.objects.XmlASPClass;
 import gr.omadak.leviathan.asp.objects.XmlObjectParser;
-
-
-//import gr.omadak.leviathan.asp.objects.GenericClass;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileWriter;
@@ -32,7 +28,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -42,18 +37,10 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
-
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.log4j.Logger;
 
 public class AspParser {
-/*	private static class DataHolder {
-		Map variables;
-		List functions;
-		List classes;
-		boolean isVb;
-	}*/
-
 	/**
 	 * Collect and store information about a file parsed.
 	 * @author vehre
@@ -77,33 +64,13 @@ public class AspParser {
 		/** The functions exposed by this file's ASTs. */
 		public List functions;
 		/** The class exposed by this file's ASTs. */
-		public List classes;
-		/** Default constructor. *
-		public EntityInfo() {
-			inputTree = null; 
-			transformedTree = null;
-			variables = null;
-			functions = null;
-			classes = null;
-			vbs = false;
-			serverSide = false;
-		}*/
-		/** Construct a new entityInfo taking the argument as pattern. *
-		public EntityInfo(EntityInfo in) {
-			inputTree = null; 
-			transformedTree = null;
-			variables = in.variables != null ? new HashMap<String, Object>(in.variables) : null;
-			functions = in.functions != null ? new ArrayList(in.functions) : null;
-			classes = in.classes != null ? new ArrayList(in.classes) : null;
-			vbs= in.vbs;
-			serverSide = in.serverSide;
-		}*/
+		public List<XmlASPClass> classes;
 		/** Fill the entity from a symbol table. */
 		public void fillFromSymTable(SymbolTableExposer sTable) {
 			if (variables == null) {
-				variables = new HashMap(sTable.getVariables());
+				variables = new HashMap<String, Object>(sTable.getVariables());
 				functions = new ArrayList(sTable.getFunctions());
-				classes = new ArrayList(sTable.getClasses());
+				classes = new ArrayList<XmlASPClass>(sTable.getClasses());
 			} else {
 				variables.putAll(sTable.getVariables());
 				functions.addAll(sTable.getFunctions());
@@ -181,7 +148,6 @@ public class AspParser {
 	private File baseDir;
 	private File baseOutDir;
 	private Map<String, EntityInfo> parsedFiles;
-	// private Map parsedAST;
 	private boolean generateCode;
 	/** If set, then ignore all server side code given by <% directives. */
 	private boolean disableServerSideCode;
@@ -189,7 +155,7 @@ public class AspParser {
 
 	private static Logger LOG = Logger.getLogger(AspParser.class);
 
-	private static XmlASPClass getInstrictObject(String name, Map map) {
+	private static XmlASPClass getInstrictObject(String name, Map<String, XmlASPClass> map) {
 		XmlASPClass clazz = (XmlASPClass) map.remove(name.toUpperCase());
 		if (clazz == null) {
 			LOG.error("Instrict object " + name + " was not loaded");
@@ -206,7 +172,7 @@ public class AspParser {
 		}
 		try {
 			MapLoader loader = new MapLoader();
-			Map jsTypes = loader
+			Map<String, Integer> jsTypes = loader
 					.loadMap(
 							AspParser.class.getResource("tokens/js.txt"),
 							new URL[] {
@@ -214,8 +180,8 @@ public class AspParser {
 											.getResource("tokens/TreeJsTokenTypes.txt"),
 									AspParser.class
 											.getResource("tokens/common.txt") });
-			Map objectClasses = new HashMap();
-			Map functions = new TreeMap();
+			Map<String, XmlASPClass> objectClasses = new HashMap<String, XmlASPClass>();
+			Map<String, Object> functions = new TreeMap<String, Object>();
 			XmlObjectParser xmlParser = new XmlObjectParser(jsTypes,
 					objectClasses);
 			loader.loadObjects(
@@ -234,9 +200,9 @@ public class AspParser {
 			 * for (Iterator it = objectClasses.values().iterator();
 			 * it.hasNext();) { printClass((ASPClass) it.next()); }
 			 */
-			objectClasses = new HashMap();
-			functions = new TreeMap();
-			Map vbTypes = loader
+			objectClasses = new HashMap<String, XmlASPClass>();
+			functions = new TreeMap<String, Object>();
+			Map<String, Integer> vbTypes = loader
 					.loadMap(
 							AspParser.class.getResource("tokens/vbs.txt"),
 							new URL[] {
@@ -330,7 +296,7 @@ public class AspParser {
 		EntityInfo entityInfo = parsedFiles == null ? null : parsedFiles.get(file.getAbsolutePath());
 		if (entityInfo != null) {
 			if (sTable != null) { // is an include file
-				mergeSymbols(entityInfo, sTable);
+				entityInfo.mergeTo(sTable);
 			}
 			return null;
 		} else {
@@ -342,8 +308,8 @@ public class AspParser {
 										 */, disableServerSideCode);
 			VbsParser vbParser = null;
 			JsParser jsParser = null;
-			VbsAbstractTreeParser vbtree = null;
-			JsTree jsTree = null;
+			VbsAbstractTreeParser vbTreeParser = null;
+			JsTree jsTreeParser = null;
 			selector.setDefaultVb(isVb);
 			Set<String> includes = null;
 			if (generateCode) {
@@ -363,32 +329,34 @@ public class AspParser {
 					// new antlr.DumpASTVisitor().visit(node);
 					if (node != null) {
 						/*
-						 * TODO: Decide, if conversion to php or to javascript
-						 * should be done.
+						 * TODO: The decision, if conversion to php or to javascript
+						 * should be done, should be made by examining the code in the
+						 * vbParser and not by the flag.
 						 */
-						if (vbtree == null
-								|| !(true /* node.isClientSideVbs() */&& vbtree instanceof VbsJsTree)) {
-							/*
-							 * NOTE: Currently always the client side Vbs to js
-							 * converter is used.
-							 */
-							if (true /* node.isClientSideVbs() */) {
-								vbtree = new VbsJsTree();
+						if (vbTreeParser == null /*
+								|| !( disableServerSideCode && vbTreeParser instanceof VbsJsTree)*/) {
+							if ( disableServerSideCode ) {
+								vbTreeParser = new VbsJsTree();
 							} else {
-								vbtree = new VbsPhpTree();
+								vbTreeParser = new VbsPhpTree();
 							}
-							vbtree.setAspParser(this);
+							vbTreeParser.setAspParser(this);
 						}
-						vbtree.setFunctions(vbParser.getFunctions());
-						vbtree.setClasses(vbParser.getClasses());
-						vbtree.setGlobalIds(vbParser.getGlobalIds());
-						entityInfo.mergeTo(vbtree);
-						vbtree.start_rule(node);
+						vbTreeParser.setFunctions(vbParser.getFunctions());
+						vbTreeParser.setClasses(vbParser.getClasses());
+						vbTreeParser.setGlobalIds(vbParser.getGlobalIds());
+						entityInfo.mergeTo(vbTreeParser);
+						vbTreeParser.start_rule(node);
+						AST transTree = vbTreeParser.getAST();
+						JSTreeResolver resolver = new JSTreeResolver();
+						resolver.setVariables(vbTreeParser.getVariables());
+						resolver.breadth_first(transTree);
+						transTree = resolver.getAST();
 						if (generateCode) {
-							includes.addAll(vbtree.getDependencies());
+							includes.addAll(vbTreeParser.getDependencies());
 						}
-						entityInfo.fillFromSymTable(vbtree);
-						entityInfo.addTrees(node, vbtree.getAST(), true,
+						entityInfo.fillFromSymTable(vbTreeParser);
+						entityInfo.addTrees(node, transTree, true,
 								false);
 					}
 				} else {
@@ -399,21 +367,21 @@ public class AspParser {
 					AST node = jsParser.getAST();
 					if (node != null) {
 						// new antlr.DumpASTVisitor().visit(node);
-						if (jsTree == null) {
-							jsTree = new JsTree();
-							jsTree.setAspParser(this);
-							jsTree.setFunctions(jsParser.getFunctions());
-							jsTree.setAnonymousFunctions(jsParser
+						if (jsTreeParser == null) {
+							jsTreeParser = new JsTree();
+							jsTreeParser.setAspParser(this);
+							jsTreeParser.setFunctions(jsParser.getFunctions());
+							jsTreeParser.setAnonymousFunctions(jsParser
 									.getAnonymousFunctions());
-							jsTree.setParserClasses(jsParser.getClasses());
+							jsTreeParser.setParserClasses(jsParser.getClasses());
 						}
-						entityInfo.mergeTo(jsTree);
-						jsTree.start_rule(node);
+						entityInfo.mergeTo(jsTreeParser);
+						jsTreeParser.start_rule(node);
 						if (generateCode) {
-							includes.addAll(jsTree.getDependencies());
+							includes.addAll(jsTreeParser.getDependencies());
 						}
-						entityInfo.fillFromSymTable(jsTree);
-						entityInfo.addTrees(node, jsTree.getAST(), false, true);
+						entityInfo.fillFromSymTable(jsTreeParser);
+						entityInfo.addTrees(node, jsTreeParser.getAST(), false, true);
 					}
 				}
 			}
@@ -443,8 +411,8 @@ public class AspParser {
 		CodeGenerator vbgenerator = null;
 		JsGenerator jsgenerator = null;
 		boolean isFirst = true;
-		for (Iterator<SubEntityInfo> it = eI.trees.iterator(); it.hasNext();) {
-			SubEntityInfo node = it.next();
+		for (Iterator<EntityInfo.SubEntityInfo> it = eI.trees.iterator(); it.hasNext();) {
+			EntityInfo.SubEntityInfo node = it.next();
 			CodeGenerator generator;
 			if (node.vbs) {
 				if (vbgenerator == null
@@ -488,10 +456,6 @@ public class AspParser {
 				}
 			}
 		}
-	}
-
-	private void mergeSymbols(EntityInfo holder, SymbolTableExposer dest) {
-
 	}
 
 	private void printIncludes(CodeGenerator generator, Set<String> includes) {
@@ -566,9 +530,8 @@ public class AspParser {
 				return extension.equalsIgnoreCase("asp")
 						|| disServerSideCode
 						&& (extension.equalsIgnoreCase("jsp")
-								|| extension.equalsIgnoreCase("html")
-								|| extension.equalsIgnoreCase("htm") || extension
-									.equalsIgnoreCase("vbs"));
+								|| extension.toLowerCase().startsWith("htm") // Catch htm and html suffixes
+								|| extension.equalsIgnoreCase("vbs"));
 			}
 		};
 		Stack<File> stack = new Stack<File>();

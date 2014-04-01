@@ -185,6 +185,12 @@
         debug="${antlr.debug}" html="${antlr.html}"
         diagnostic="${antlr.diagnostic}"
     />
+	
+	<antlr target="${grama_dir}/JSTreeResolver.g"
+	        outputdirectory="${build_dir}/src/gr/omadak/leviathan/asp"
+	        debug="${antlr.debug}" html="${antlr.html}"
+	        diagnostic="${antlr.diagnostic}"
+	    />
 </target>
 
 <!--  COMPILE -->

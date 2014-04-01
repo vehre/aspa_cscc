@@ -38,6 +38,8 @@ import java.util.HashMap;
 
 @checkScriptTag : {
     _ttype = util.processScriptAttributes(n.getText(), attributes);
+    if ( _ttype == HtmlLexerUtil.HTML )
+    	setText(util.formatScriptAttributes(attributes));
     attributes.clear();
 }
 
@@ -50,7 +52,7 @@ import java.util.HashMap;
 
 @put_attr : {
 	/* Mangling filenames is a major problem on all decent OS, so don't do it. */
-	attributes.put(k.getText().toLowerCase(), k.getText().equalsIgnoreCase("src")? l.getText(): l.getText().toLowerCase()); 
+	attributes.put(k.getText().toLowerCase(), l.getText()); 
 }
 
 

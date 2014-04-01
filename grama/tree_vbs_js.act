@@ -474,11 +474,10 @@ import org.apache.commons.collections.Transformer;
     }
 			
     
-    private AST makeVarDeclsFromList(List elems) {
+    private AST makeVarDeclsFromList(List<AST> elems) {
 		AST result = null;
 		if (! elems.isEmpty()) {
-			for (Iterator it = elems.iterator(); it.hasNext();) {
-				AST element = (AST) it.next();
+			for (AST element : elems) {
 				element.setNextSibling(null);
 				addVariable(element.getFirstChild().getText(), element.getFirstChild().getType());
 			}
@@ -489,13 +488,11 @@ import org.apache.commons.collections.Transformer;
 		return result;
 	}
 	
-	private AST makeConstDeclsFromList(List elems) {
+	private AST makeConstDeclsFromList(List<AST> elems) {
 		AST result = null;
 		if (! elems.isEmpty()) {
-			for (Iterator it = elems.iterator(); it.hasNext();) {
-				AST element = (AST) it.next();
+			for (AST element : elems) 
 				element.setNextSibling(null);
-			}
 			elems.add(0, #([CONST, "const"]));
 			AST[] array = (AST[]) elems.toArray(new AST[0]);
 			result = astFactory.make(array);
@@ -656,7 +653,7 @@ import org.apache.commons.collections.Transformer;
     	For now, just emit a warning. */
     if ( argByRef ) {
     	log.warn("By ref argument '" + #eq_ex1.getText() + "' is written to in function/sub " + currentFunction.getName());
-    	System.out.println("By ref argument '" + #eq_ex1.getText() + "' is written to in function/sub " + currentFunction.getName());
+    	//System.out.println("By ref argument '" + #eq_ex1.getText() + "' is written to in function/sub " + currentFunction.getName());
 		#eq_ex1.setText( "/* TODO ByRef Parameter Modification Detected */" + #eq_ex1.getText() );
     }
 	typeStack.clear();
@@ -755,13 +752,11 @@ import org.apache.commons.collections.Transformer;
 				will be executed. */
     	}
         #expression = res;
-        if (#res != null ) System.out.println(#res.toStringList());
     } 
     if (res == null ) {
         log.warn("Unable to resolve Member:" + #do2.getText() + " from object:" + #do1.getText());
         
         #expression = #(DOT, #do1, #do2);
-        System.out.println("Helper: " + #expression.toStringList());
     }
 }
 
@@ -1196,7 +1191,7 @@ typeStack.push(new Integer(DINT));
 	}
     ## = #([ASSIGN, "="], [IDENTIFIER, varName], result);
 }
-@dim_init : { List varDecls = new ArrayList(); }
+@dim_init : { List<AST> varDecls = new ArrayList<AST>(); }
 @dim_decl : {
     varDecls.add(#decl.getType() != EXPR ? #([EXPR, "EXPR"], #decl) : #decl);
     if (currentFunction != null) {
@@ -1207,7 +1202,7 @@ typeStack.push(new Integer(DINT));
         				: #decl.getFirstChild().getText()), CommonConstants.UKNOWN_TYPE, true);
     }
 }
-@dim_end : { ##  = makeVarDeclsFromList(varDecls); }
+@dim_end : { ## = makeVarDeclsFromList(varDecls); }
 
 /* Process constant declarations. */
 @const_init : { List constDecls = new ArrayList(); }

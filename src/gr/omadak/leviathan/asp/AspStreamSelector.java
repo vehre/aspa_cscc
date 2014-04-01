@@ -387,7 +387,7 @@ public class AspStreamSelector extends TokenStreamSelector {
             fis = new FileInputStream(currentFile);
             bis = new BufferedReader(
             		new InputStreamReader(fis), 1024);
-            if ( currentFile.getName().endsWith(".vbs")) {
+            if ( currentFile.getName().toLowerCase().endsWith(".vbs")) {
 	            vbsLexer = new VbsLexer(bis);
 	            vbsLexer.setFilename(currentFile.getAbsolutePath());
 	            addInputStream(vbsLexer, "1");
@@ -410,7 +410,7 @@ public class AspStreamSelector extends TokenStreamSelector {
         //make an attempt to determine default language
         if (findLang) {
             Token first = getNextToken();
-            storedTokens.add(first);
+            storedTokens.addFirst(first);
         }
     }
 
