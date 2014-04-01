@@ -92,7 +92,7 @@ breadth_first
 	}
 	| id:IDENTIFIER {
 		if (! currentScope.resolveDECLINIT(id.getText()) ) {
-			System.out.println("Variable " + id.getText() + " used w/o being declared.");
+			System.out.println("Variable " + id.getText() + " read w/o being declared.");
 		}	
 	}
 	| !cand:. {
