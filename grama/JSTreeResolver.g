@@ -41,10 +41,13 @@ options {
 			parent = null;
 		}
 		public boolean resolveDECLARED(String id) {
-			return !containsKey(id) || (get(id) & DECLARED) != DECLARED;
+			return containsKey(id) && (get(id).intValue() & DECLARED) == DECLARED;
 		}
 		public boolean resolveDECLINIT(String id) {
-			return !containsKey(id) || (get(id) & DECLAREDANDINIT) != DECLAREDANDINIT;
+			return containsKey(id) && (get(id).intValue() & DECLAREDANDINIT) == DECLAREDANDINIT;
+		}
+		public String resolveToString(String id) {
+			return !containsKey(id) ? " declared" : ((get(id).intValue() & INIT) != INIT ? " initialized" : " ???");			
 		}
 	} 
 	private Scope currentScope = new Scope();
@@ -52,6 +55,15 @@ options {
 	/** Set the variables for this parser. */
 	public void setVariables(Map<String, Object> vars) {
 		variables = vars;
+	}
+	
+	private String getPos(AST in) {
+		StringBuilder str = new StringBuilder(" at (");
+		if ( in != null ) 
+			str.append(in.getLine()).append(", ").append(in.getColumn());
+		else 
+			str.append("null");
+		return str.append(")").toString();
 	}
 	
 	public static final int OBJECT = CommonConstants.OBJECT;
@@ -64,66 +76,48 @@ options {
 	writing rules for all possible nodes. */
 breadth_first
 	:
-	#(var:VAR (candvar)+) {
-		/* (candvar)+ will walk along all children on its own.
-		The only thing left is to walk along the siblings of
-		the var node. */
-		if ( var.getNextSibling() != null ) {
-			breadth_first(var.getNextSibling());
-			#breadth_first.setNextSibling(returnAST);
+	( 
+		  #(VAR (candvar)+)
+			/* (candvar)+ will walk along all children on its own. */
+		| #(ASSIGN lhs:.) {
+			if ( lhs.getType() == IDENTIFIER )
+				if (! currentScope.resolveDECLARED(lhs.getText()) ) {
+					System.out.println("Variable '" + lhs.getText() + "' assigned to w/o being" + 
+						currentScope.resolveToString(lhs.getText()) + getPos(lhs));
+				}
+			##.setFirstChild(lhs);
 		}
-	}
-	| #(ass:ASSIGN lhs:. rhs:.) {
-		if ( rhs != null ) {
-			breadth_first(rhs);
-			#rhs = returnAST;
+		| id:IDENTIFIER {
+			if (! currentScope.resolveDECLINIT(id.getText()) ) {
+				System.out.println("Variable '" + id.getText() + "' read w/o being" + 
+					currentScope.resolveToString(id.getText()) + getPos(id));
+			}	
 		}
-		if ( lhs.getType() == IDENTIFIER )
-			if (! currentScope.resolveDECLARED(lhs.getText()) ) {
-				System.out.println("Variable " + lhs.getText() + " assigned to w/o being declared.");
+		| #(OBJECT obj_arg:.) {
+			if ( obj_arg != null ) {
+				breadth_first(obj_arg);
+				##.setFirstChild(returnAST);
 			}
-		#ass = (AST)astFactory.make( (new ASTArray(3)).add(astFactory.create(ASSIGN,"=")).add(lhs).add(#rhs));
-		if ( ass.getNextSibling() != null ) {
-			breadth_first(ass.getNextSibling());
-			#ass.setNextSibling(returnAST);
 		}
-		## = #ass;
-	}
-	| id:IDENTIFIER {
-		if (! currentScope.resolveDECLINIT(id.getText()) ) {
-			System.out.println("Variable " + id.getText() + " read w/o being declared.");
-		}	
-	}
-	| #(obj:OBJECT obj_arg:.) {
-		if ( obj_arg != null ) {
-			breadth_first(obj_arg);
-			#obj_arg = returnAST;
+		| #(OBJECT_RET (obj_ret_arg:.)?) {
+			if ( obj_ret_arg != null ) {
+				breadth_first(obj_ret_arg);
+				##.setFirstChild(returnAST);
+			}
 		}
-		if ( obj.getNextSibling() != null ) {
-			breadth_first(obj.getNextSibling());
-			#obj.setNextSibling(returnAST);
+		| cand:. {
+			if ( cand.getFirstChild() != null ) {
+				breadth_first(cand.getFirstChild());
+				#cand.setFirstChild(returnAST);
+			}
+			## = #cand;
+		} ) 
+	{
+		/* Now do the next sibling processing. */
+		if ( breadth_first_AST_in.getNextSibling() != null ) {
+			breadth_first(breadth_first_AST_in.getNextSibling());
+			##.setNextSibling(returnAST);
 		}
-	}
-	| #(objr:OBJECT_RET (obj_ret_arg:.)?) {
-		if ( obj_ret_arg != null ) {
-			breadth_first(obj_ret_arg);
-			#obj_ret_arg = returnAST;
-		}
-		if ( objr.getNextSibling() != null ) {
-			breadth_first(objr.getNextSibling());
-			#objr.setNextSibling(returnAST);
-		}
-	}
-	| !cand:. {
-		if ( cand.getFirstChild() != null ) {
-			breadth_first(cand.getFirstChild());
-			#cand.setFirstChild(returnAST);
-		}
-		if ( cand.getNextSibling() != null ) {
-			breadth_first(cand.getNextSibling());
-			#cand.setNextSibling(returnAST);
-		}
-		## = #cand;
 	} 
 	;
 	
@@ -157,7 +151,7 @@ candvar
 		} else if ( vdecl.getType() == ASSIGN )
 			currentScope.put(vdecl.getFirstChild().getText(), DECLAREDANDINIT);
 		else if ( vdecl.getType() == IDENTIFIER )
-			currentScope.put(vdecl.getText(), DECLAREDANDINIT);
+			currentScope.put(vdecl.getText(), DECLARED);
 		else
 			System.out.println("Decl. unknown: " + vdecl.toStringList());
 	}
