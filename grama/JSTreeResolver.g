@@ -27,9 +27,6 @@ options {
     buildAST=true;
     defaultErrorHandler=false;
 }
-tokens {
-	OBJECT; OBJECT_RET;
-}
 {
 	private Map<String, Object> variables;
 	
@@ -57,8 +54,8 @@ tokens {
 		variables = vars;
 	}
 	
-	public final int OBJECT = CommonConstants.OBJECT;
-	public final int OBJECT_RET = CommonConstants.OBJECT_RET;
+	public static final int OBJECT = CommonConstants.OBJECT;
+	public static final int OBJECT_RET = CommonConstants.OBJECT_RET;
 }
 
 
@@ -85,15 +82,37 @@ breadth_first
 			if (! currentScope.resolveDECLARED(lhs.getText()) ) {
 				System.out.println("Variable " + lhs.getText() + " assigned to w/o being declared.");
 			}
+		#ass = (AST)astFactory.make( (new ASTArray(3)).add(astFactory.create(ASSIGN,"=")).add(lhs).add(#rhs));
 		if ( ass.getNextSibling() != null ) {
 			breadth_first(ass.getNextSibling());
-			#breadth_first.setNextSibling(returnAST);
+			#ass.setNextSibling(returnAST);
 		}
+		## = #ass;
 	}
 	| id:IDENTIFIER {
 		if (! currentScope.resolveDECLINIT(id.getText()) ) {
 			System.out.println("Variable " + id.getText() + " read w/o being declared.");
 		}	
+	}
+	| #(obj:OBJECT obj_arg:.) {
+		if ( obj_arg != null ) {
+			breadth_first(obj_arg);
+			#obj_arg = returnAST;
+		}
+		if ( obj.getNextSibling() != null ) {
+			breadth_first(obj.getNextSibling());
+			#obj.setNextSibling(returnAST);
+		}
+	}
+	| #(objr:OBJECT_RET (obj_ret_arg:.)?) {
+		if ( obj_ret_arg != null ) {
+			breadth_first(obj_ret_arg);
+			#obj_ret_arg = returnAST;
+		}
+		if ( objr.getNextSibling() != null ) {
+			breadth_first(objr.getNextSibling());
+			#objr.setNextSibling(returnAST);
+		}
 	}
 	| !cand:. {
 		if ( cand.getFirstChild() != null ) {
@@ -117,10 +136,10 @@ candvar
 		/* When the vdecl is already an ASSIGN, then getText() yields
 			"=", which is not a legal name for a variable and therefore
 			it will not be in the map of variables. */
-		if ( variables.containsKey(#vdecl.getText()) ) {
-			if ( variables.get(#vdecl.getText()) instanceof Integer) {
+		if ( variables.containsKey(vdecl.getText()) ) {
+			if ( variables.get(vdecl.getText()) instanceof Integer) {
 				AST initializer = null;
-				switch (((Integer) variables.get(#vdecl.getText())).intValue()) {
+				switch (((Integer) variables.get(vdecl.getText())).intValue()) {
 					case DINT: initializer = #([DINT, "0"]); break;
 					case DFLOAT: initializer = #([DFLOAT, "0.0"]); break;
 					case DSTRING: initializer = #([DSTRING, ""]); break;
@@ -134,11 +153,11 @@ candvar
 					## = (AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(EXPR,"EXPR")).add(tmp));
 				}
 			}
-			currentScope.put(#vdecl.getText(), DECLARED);
-		} else if ( #vdecl.getType() == ASSIGN )
-			currentScope.put(#vdecl.getFirstChild().getText(), DECLAREDANDINIT);
-		else if ( #vdecl.getType() == IDENTIFIER )
-			currentScope.put(#vdecl.getText(), DECLAREDANDINIT);
+			currentScope.put(vdecl.getText(), DECLARED);
+		} else if ( vdecl.getType() == ASSIGN )
+			currentScope.put(vdecl.getFirstChild().getText(), DECLAREDANDINIT);
+		else if ( vdecl.getType() == IDENTIFIER )
+			currentScope.put(vdecl.getText(), DECLAREDANDINIT);
 		else
 			System.out.println("Decl. unknown: " + vdecl.toStringList());
 	}
