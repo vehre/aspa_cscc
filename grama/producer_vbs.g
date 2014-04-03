@@ -67,7 +67,7 @@ nested
       (#(CASE_ELSE <default> (statements)? <case_end>))?
     )
   | #(FOR #(FOR_INIT <finit>
-          expr <fexpr1>
+          (vardecl | expr)<fexpr1>
           expr <fexpr1>
           expr <fexpr3>)
       (statements)?
@@ -96,10 +96,15 @@ statement
   | #(ERROR (RESUME | DINT))
   | #(RETURN <return> (expr)?) <exp_end>
   | expr <exp_end>
-  | #(VAR <var_decl> (<next_var> expr)+) <exp_end>
+  | vardecl <exp_end>
   | #(CONST <const_decl> (<next_const> expr)+) <exp_end>
   ;
   
+vardecl
+	:
+	#(VAR <var_decl> (<next_var> expr)+)
+	;
+	 
 expr
   :
   #(EXPR expression)

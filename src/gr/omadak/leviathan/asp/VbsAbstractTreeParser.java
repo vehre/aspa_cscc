@@ -90,14 +90,14 @@ public abstract class VbsAbstractTreeParser extends antlr.TreeParser implements
 	public abstract void start_rule(AST _t) throws RecognitionException;
 
 	/* Implementation of SymbolTableExposer */
-	public Map getVariables() {
+	public Map<String, Object> getVariables() {
 		/*
 		 * HashMap variables = new HashMap(objects); if (identifiers != null) {
 		 * for (Iterator it = identifiers.iterator(); it.hasNext();) { String id
 		 * = (String) it.next(); if (!variables.containsKey(id)) {
 		 * variables.put(id, null); } } } return new HashMap(objects);
 		 */
-		return new HashMap(variables);
+		return new TreeMap<String, Object>(variables);
 	}
 
 	public List getFunctions() {

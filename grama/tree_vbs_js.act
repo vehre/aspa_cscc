@@ -253,25 +253,10 @@ import org.apache.commons.collections.Transformer;
             fList = null;
         }
         subRoot.setType(FUNCTION);
-        List globals = currentFunction.getUsedGlobals();
-        AST globalsAST = null;
-        if (!globals.isEmpty()) {
-            globalsAST = makeFromList(transform(globals), #[GLOBALS, "GLOBALS"]);
-        }
         if (fList != null) {
             AST fChild = subRoot.getFirstChild();
             subRoot.setFirstChild(fList);
             fList.setNextSibling(fChild);
-        }
-        if (fList != null && globalsAST != null) {
-            AST arguments = subRoot.getFirstChild();
-            AST next = arguments.getNextSibling();
-            arguments.setNextSibling(globalsAST);
-            globalsAST.setNextSibling(next);
-        } else if (globalsAST != null) {
-            AST fChild = subRoot.getFirstChild();
-            subRoot.setFirstChild(globalsAST);
-            globalsAST.setNextSibling(fChild);
         }
         currentFunction = null;
     }
@@ -1356,6 +1341,12 @@ typeStack.push(new Integer(DINT));
         }
         String operatorName = _tokenNames[operator];
         AST toExpression = #toexpr.getFirstChild();
+        /* Ensure the loop variable is declared before first use. */
+        if ( currentFunction == null && !variables.containsKey(counterName.getText()) ||
+        		currentFunction != null && !currentFunction.hasVar(counterName.getText()) ) {
+        	/* It is not, therefore ensure declaration. */
+        	#fInit = #([VAR, "var"], #fInit);	
+        }
         fIn =
         #([forInitCode, "for_init"],
             #fInit,
@@ -1398,6 +1389,11 @@ typeStack.push(new Integer(DINT));
     } else if (fInit != null) {
         int forCode = FOR;
         ## = #([forCode, "for"], fIn, fstm);
+        /* Ensure, that a variable declared in the init part of the for, is deleted
+        	at the end of the loop's body. 
+        if ( #fInit.getType() == VAR ) {
+        	variables.remove(counterName.getText());
+        } */
     } else { //talking about foreach
         //TODO: Try to determine if the iterated variable is an array
         ## =

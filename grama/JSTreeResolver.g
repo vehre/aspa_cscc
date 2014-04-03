@@ -36,21 +36,44 @@ options {
 	
 	private class Scope extends HashMap<String, Integer> {
 		private Scope parent;
-		public Scope() {
+		private String name;
+		public Scope(String name) {
 			super();
 			parent = null;
+			this.name = name;
 		}
 		public boolean resolveDECLARED(String id) {
-			return containsKey(id) && (get(id).intValue() & DECLARED) == DECLARED;
+			return containsKey(id) && (get(id).intValue() & DECLARED) == DECLARED
+				|| parent != null && parent.resolveDECLARED(id);
 		}
 		public boolean resolveDECLINIT(String id) {
-			return containsKey(id) && (get(id).intValue() & DECLAREDANDINIT) == DECLAREDANDINIT;
+			return containsKey(id) && (get(id).intValue() & DECLAREDANDINIT) == DECLAREDANDINIT
+				|| parent != null && parent.resolveDECLINIT(id);
 		}
 		public String resolveToString(String id) {
 			return !containsKey(id) ? " declared" : ((get(id).intValue() & INIT) != INIT ? " initialized" : " ???");			
 		}
+		
+		public void addArgs(AST args) {
+			if (args != null)
+				for(AST arg= args.getFirstChild(); arg != null; arg = arg.getNextSibling()) 
+					currentScope.put(arg.getText(), DECLAREDANDINIT);
+		}
 	} 
-	private Scope currentScope = new Scope();
+	private Scope currentScope = new Scope("*** global ***");
+	
+	private void pushNewScope(String name) {
+		Scope newScope = new Scope(name);
+		newScope.parent = currentScope;
+		currentScope = newScope;	
+	}
+	
+	private void popScope() {
+		if ( currentScope.parent != null) 
+			currentScope = currentScope.parent;
+		else
+			System.err.println("Tried to pop global scope!!!");
+	}
 	
 	/** Set the variables for this parser. */
 	public void setVariables(Map<String, Object> vars) {
@@ -76,9 +99,8 @@ options {
 	writing rules for all possible nodes. */
 breadth_first
 	:
-	( 
-		  #(VAR (candvar)+)
-			/* (candvar)+ will walk along all children on its own. */
+	(     #(VAR (candvar)+)
+		  /* (candvar)+ will walk along all children on its own. */
 		| #(ASSIGN lhs:.) {
 			if ( lhs.getType() == IDENTIFIER )
 				if (! currentScope.resolveDECLARED(lhs.getText()) ) {
@@ -92,6 +114,12 @@ breadth_first
 				System.out.println("Variable '" + id.getText() + "' read w/o being" + 
 					currentScope.resolveToString(id.getText()) + getPos(id));
 			}	
+		}
+		| #(name:FUNCTION { pushNewScope(name.getText()); }
+			(args:ARGLIST { currentScope.addArgs(args); 
+				##.setFirstChild(args); })? (breadth_first)?) { 
+			popScope(); 
+					
 		}
 		| #(OBJECT obj_arg:.) {
 			if ( obj_arg != null ) {
@@ -111,14 +139,14 @@ breadth_first
 				#cand.setFirstChild(returnAST);
 			}
 			## = #cand;
-		} ) 
-	{
+		} 
+	) {
 		/* Now do the next sibling processing. */
 		if ( breadth_first_AST_in.getNextSibling() != null ) {
 			breadth_first(breadth_first_AST_in.getNextSibling());
 			##.setNextSibling(returnAST);
 		}
-	} 
+	}
 	;
 	
 /** All child nodes of a VAR node are EXPR, i.e. expressions. If
@@ -149,7 +177,9 @@ candvar
 			}
 			currentScope.put(vdecl.getText(), DECLARED);
 		} else if ( vdecl.getType() == ASSIGN )
-			currentScope.put(vdecl.getFirstChild().getText(), DECLAREDANDINIT);
+			currentScope.put(vdecl.getFirstChild().getType() == IDENTIFIER 
+					? vdecl.getFirstChild().getText()
+					: vdecl.getFirstChild().getFirstChild().getText(), DECLAREDANDINIT);
 		else if ( vdecl.getType() == IDENTIFIER )
 			currentScope.put(vdecl.getText(), DECLARED);
 		else
