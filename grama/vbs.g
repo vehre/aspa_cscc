@@ -328,7 +328,7 @@ else_rule
 
 select_case_statement
   :
-  SELECT^ CASE! expression statement_term
+  SELECT^ (CASE!)? expression statement_term
   (case_rule)*
   (case_else)?
   (!END SELECT)

@@ -1244,8 +1244,11 @@ typeStack.push(new Integer(DINT));
             }
             lastCond = caseCond;
         }
-        lastCond.getFirstChild().setNextSibling(#st);
-        #st.setNextSibling(#[BREAK, "break"]);
+        if (st != null) {
+	        lastCond.getFirstChild().setNextSibling(#st);
+	        #st.setNextSibling(#[BREAK, "break"]);
+        } else
+        	lastCond.getFirstChild().setNextSibling(#[BREAK, "break"]);
         #case_stm = root;
     }
 }
@@ -1267,7 +1270,7 @@ typeStack.push(new Integer(DINT));
             } else {
                 lastExamned.setNextSibling(child);
             }
-            lastExamned = child;
+            lastExamned = caseNode;
             child = next;
         } else {
             lastExamned = child;
